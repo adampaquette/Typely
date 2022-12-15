@@ -4,40 +4,40 @@ namespace FluentType.Benchmarks;
 
 public class EqualsBenchmark
 {
-    //[MemoryDiagnoser]
-    //public class Int
-    //{
-    //    readonly int val1 = new Random().Next();
-    //    readonly int val2 = new Random().Next();
+    [MemoryDiagnoser]
+    public class Int
+    {
+        readonly int val1 = new Random().Next();
+        readonly int val2 = new Random().Next();
 
-    //    [Benchmark]
-    //    public bool Int_EqualOperator() => val1 == val2;
+        [Benchmark]
+        public bool Int_EqualOperator() => val1 == val2;
 
-    //    [Benchmark]
-    //    public bool Int_EqualityComparer() => EqualityComparer<int>.Default.Equals(val1, val2);
+        [Benchmark]
+        public bool Int_EqualityComparer() => EqualityComparer<int>.Default.Equals(val1, val2);
 
-    //    [Benchmark]
-    //    public bool Int_Equals() => val1.Equals(val2);
-    //}
+        [Benchmark]
+        public bool Int_Equals() => val1.Equals(val2);
+    }
 
-    //[MemoryDiagnoser]
-    //public class String
-    //{
-    //    readonly string val1 = "value1";
-    //    readonly string val2 = "value2";
+    [MemoryDiagnoser]
+    public class String
+    {
+        readonly string val1 = "value1";
+        readonly string val2 = "value2";
 
-    //    [Benchmark]
-    //    public bool String_EqualOperator() => val1 == val2;
+        [Benchmark]
+        public bool String_EqualOperator() => val1 == val2;
 
-    //    [Benchmark]
-    //    public bool String_EqualityComparer() => EqualityComparer<string>.Default.Equals(val1, val2);
+        [Benchmark]
+        public bool String_EqualityComparer() => EqualityComparer<string>.Default.Equals(val1, val2);
 
-    //    [Benchmark]
-    //    public bool String_Equals() => val1.Equals(val2);
+        [Benchmark]
+        public bool String_Equals() => val1.Equals(val2);
 
-    //    [Benchmark]
-    //    public bool String_StaticEquals() => string.Equals(val1, val2);
-    //}
+        [Benchmark]
+        public bool String_StaticEquals() => string.Equals(val1, val2);
+    }
 
     [MemoryDiagnoser]
     public class ValueObjectString
