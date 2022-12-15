@@ -2,4 +2,5 @@
 using BenchmarkDotNet.Running;
 using FluentType.Benchmarks;
 
-BenchmarkRunner.Run(typeof(Program).Assembly);
+BenchmarkRunner.Run<EqualsBenchmark.GuidTests>();
+//BenchmarkRunner.Run(typeof(Program).Assembly);

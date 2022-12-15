@@ -5,7 +5,7 @@ namespace FluentType.Benchmarks;
 public class EqualsBenchmark
 {
     [MemoryDiagnoser]
-    public class Int
+    public class IntTests
     {
         readonly int val1 = new Random().Next();
         readonly int val2 = new Random().Next();
@@ -21,10 +21,10 @@ public class EqualsBenchmark
     }
 
     [MemoryDiagnoser]
-    public class String
+    public class StringTests
     {
-        readonly string val1 = "value1";
-        readonly string val2 = "value2";
+        readonly string val1 = new Random().Next().ToString();
+        readonly string val2 = new Random().Next().ToString();
 
         [Benchmark]
         public bool String_EqualOperator() => val1 == val2;
@@ -40,7 +40,48 @@ public class EqualsBenchmark
     }
 
     [MemoryDiagnoser]
-    public class ValueObjectString
+    public class GuidTests
+    {
+        readonly Guid val1 = Guid.NewGuid();
+        readonly Guid val2 = Guid.NewGuid();
+
+        [Benchmark]
+        public bool Guid_EqualOperator() => val1 == val2;
+
+        [Benchmark]
+        public bool Guid_EqualityComparer() => EqualityComparer<Guid>.Default.Equals(val1, val2);
+
+        [Benchmark]
+        public bool Guid_Equals() => val1.Equals(val2);
+    }
+
+    [MemoryDiagnoser]
+    public class ValueObjectIntTests
+    {
+        public record struct FirstName_EqualityComparer(int Value)
+        {
+            public bool Equals(FirstName_EqualityComparer other) => EqualityComparer<int>.Default.Equals(Value, other.Value);
+        }
+
+        public record struct FirstName_Equals(int Value)
+        {
+            public bool Equals(FirstName_Equals other) => Value.Equals(other.Value);
+        }
+
+        readonly FirstName_EqualityComparer val1 = new FirstName_EqualityComparer(new Random().Next());
+        readonly FirstName_EqualityComparer val2 = new FirstName_EqualityComparer(new Random().Next());
+        readonly FirstName_Equals val3 = new FirstName_Equals(new Random().Next());
+        readonly FirstName_Equals val4 = new FirstName_Equals(new Random().Next());
+
+        [Benchmark]
+        public bool ValueObjectInt_EqualityComparer() => val1.Equals(val2);
+
+        [Benchmark]
+        public bool ValueObjectInt_Equals() => val3.Equals(val4);
+    }
+
+    [MemoryDiagnoser]
+    public class ValueObjectStringTests
     {
         public record struct FirstName_EqualityComparer(string Value)
         {
@@ -49,13 +90,13 @@ public class EqualsBenchmark
 
         public record struct FirstName_Equals(string Value)
         {
-            public bool Equals(FirstName_Equals other) => Value.Equals(Value);
+            public bool Equals(FirstName_Equals other) => Value.Equals(other.Value);
         }
 
-        readonly FirstName_EqualityComparer val1 = new FirstName_EqualityComparer("value1");
-        readonly FirstName_EqualityComparer val2 = new FirstName_EqualityComparer("value2");
-        readonly FirstName_Equals val3 = new FirstName_Equals("value3");
-        readonly FirstName_Equals val4 = new FirstName_Equals("value4");
+        readonly FirstName_EqualityComparer val1 = new FirstName_EqualityComparer(new Random().Next().ToString());
+        readonly FirstName_EqualityComparer val2 = new FirstName_EqualityComparer(new Random().Next().ToString());
+        readonly FirstName_Equals val3 = new FirstName_Equals(new Random().Next().ToString());
+        readonly FirstName_Equals val4 = new FirstName_Equals(new Random().Next().ToString());
 
         [Benchmark]
         public bool ValueObjectString_EqualityComparer() => val1.Equals(val2);
