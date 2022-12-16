@@ -1,4 +1,5 @@
-﻿
+﻿namespace FluentType.Playground;
+
 //using System.Numerics;
 
 ///*
@@ -118,6 +119,8 @@ partial class Program
         //var builder = ValueObjectBuilder.Instance;
 
         //builder.For<UserId>().As<int>().Length(1, 100);
+
+        //var a = Program.
     }
 
     static partial void HelloFrom(string name);

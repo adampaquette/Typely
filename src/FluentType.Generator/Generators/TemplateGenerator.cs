@@ -2,7 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Scriban;
 
-namespace BuilderGen.Generators
+namespace FluentType.Generator.Generators
 {
     internal static class TemplateGenerator
     {

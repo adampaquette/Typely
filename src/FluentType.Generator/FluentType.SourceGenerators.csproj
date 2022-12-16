@@ -24,4 +24,8 @@
         <EmbeddedResource Include="Templates\**\*.txt" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\FluentType.Core\FluentType.Core.csproj" />
+    </ItemGroup>
+
 </Project>

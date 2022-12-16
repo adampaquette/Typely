@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FluentType.Generator
+namespace FluentType.Bootstrap
 {
     public class Class1
     {

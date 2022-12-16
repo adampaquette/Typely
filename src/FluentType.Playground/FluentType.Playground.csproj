@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
     
     <ItemGroup>
-        <ProjectReference Include="..\FluentType.Generator\FluentType.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+        <ProjectReference Include="..\FluentType.Core\FluentType.Core.csproj" />
+        <ProjectReference Include="..\FluentType.Generator\FluentType.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
     </ItemGroup>
 </Project>
