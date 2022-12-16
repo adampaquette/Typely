@@ -15,7 +15,7 @@ public class MyDomainTypesConfiguration : IFluentTypesConfiguration
             .AsStruct()
             .Length(20)
             .WithMessage("Pleasy specify a {TypeName} with a length of {Length}.")
-            .Matches("[0-9]{5}[a-Z]{15}");
+            .Matches("[0-9]{5}[a-Z]{15}")
             .WithName("user identifier");
     }
 }
@@ -63,8 +63,6 @@ builder.For<string>("Name").NotEqual("value", StringComparer.OrdinalIgnoreCase);
 ```
 ___
 ## Length Validator
-
-
 
 ## MinLength Validator
 
