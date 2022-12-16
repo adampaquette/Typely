@@ -3,5 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
-
+    
+    <ItemGroup>
+        <ProjectReference Include="..\FluentType.Generator\FluentType.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+    </ItemGroup>
 </Project>

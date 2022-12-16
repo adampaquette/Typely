@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Generator": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\FluentType.Playground\\FluentType.Playground.csproj"
+    }
+  }
+}
