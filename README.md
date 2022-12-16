@@ -9,14 +9,20 @@ public class MyDomainTypesConfiguration : IFluentTypesConfiguration
         builder.For<int>("Likes");
         builder.For<decimal>("Rating").InclusiveBetween(0, 5);
         builder.For<string>("FirstName").NotEmpty();
+        
         builder
             .For<int>("UserId")
             .Namespace("MyDomain")
             .AsStruct()
             .Length(20)
-            .WithMessage("Pleasy specify a {TypeName} with a length of {Length}.")
+            .WithMessage("Pleasy specify a {Name} with a length of {Length}.")
             .Matches("[0-9]{5}[a-Z]{15}")
             .WithName("user identifier");
+
+        builder
+            .For<string>("Title")
+            .NotEmpty().WithMessage(c => $"Pleasy specify a {c.Name}.")
+            .MaxLength(20).WithMessage(c => $"Pleasy specify a {c.Name} with a max length of {c.MaxLength}.");
     }
 }
 

@@ -15,7 +15,7 @@ public class TypesConfiguration : IFluentTypesConfiguration
             .Namespace("MyDomain")
             .AsStruct()
             .Length(20)
-            .WithMessage("Pleasy specify a {TypeName} with a length of {Length}.")
+            .WithMessage("Pleasy specify a {Name} with a length of {Length}.")
             .Matches("[0-9]{5}[a-Z]{15}")
             .WithName("user identifier");
     }
