@@ -28,19 +28,53 @@ var userId = UserId.From(-1); //Throws ArgumentException
 
 ## NotEmpty Validator
 
+Ensures that the value is not null, an empty string or whitespace or the default value for value types, e.g., 0 for int.
+
+Example:
+
+```c#
+builder.For<string>("Name").NotEmpty();
+```
+Example error: 'Name' must not be empty.
+
+String format args:
+- `Name`: Name of the type being validated
+- `Value`: Current value of the property
+___
 ## NotEqual Validator
 
+Ensures that the value is not equal to a specified value.
+
+Example:
+
+```c#
+builder.For<string>("Name").NotEqual("value");
+```
+Example error: 'Name' must not be empty.
+
+String format args:
+- `Name`: Name of the type being validated
+- `Value`: Current value of the property
+- `ComparisonValue`: Value that should not equal
+
+Optionally, a comparer can be specified:
+```c#
+builder.For<string>("Name").NotEqual("value", StringComparer.OrdinalIgnoreCase);
+```
+___
 ## Length Validator
+
+
 
 ## MinLength Validator
 
 ## MaxLength Validator
 
-## LessThan Validator
+## LessThan Validator  (Max?)
 
 ## LessThanOrEqual Validator
 
-## GreaterThan Validator
+## GreaterThan Validator (Min?)
 
 ## GreaterThanOrEqual Validator
 
@@ -70,7 +104,7 @@ var rating = Rating.From(4.8);
 
 if(cost >= rating)
 {
-    // Compiled and did not throw 
+    // Compile and does not throw 
 }
 ```
 
