@@ -108,6 +108,11 @@ if(cost >= rating)
 }
 ```
 
+# Why do generated types have an interface?
+
+Because we need type safety, we can't use implicit conversion, so we need a way to access the underlying type.
+All generated types implements `IValue`, giving access to the value.
+
 # Benchmarks
 
 |               Method |      Mean |     Error |    StdDev |    Median | Allocated |
