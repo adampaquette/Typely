@@ -31,12 +31,22 @@ Combine validators:
 builder
     .NotEmpty<UserId>()
     .Length(20)
-    .Matches("[0-9]{20}");
+    .Matches("[0-9]{5}[a-Z]{15}");
+
+builder
+    .For("UserId")
+    .Namespace("")
+    .AsStruct()
+    .Of<int>()
+    .Length(1, 100)
+    .WithMessage("Pleasy specify a {TypeName} with a minimum length of {MinLength}.")
+    .Matches("[0-9]{5}[a-Z]{15}");
+    .WithName("user identifier");
 
 Extend validators:
 
 builder.MinLength<UserId>().WithMessage("Pleasy specify a {TypeName} with a minimum length of {MinLength}.");
-builder.For<UserId>().As<int>().Must(BeAValidEmail).WithMessage("Please enter a valid email.");
+builder.For<UserId>().Of<int>().Must(BeAValidEmail).WithMessage("Please enter a valid email.");
 
 
 Global configurations:

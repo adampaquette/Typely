@@ -1,3 +1,81 @@
+
+# Example
+
+```c#
+public class MyDomainTypesConfiguration : IFluentTypesConfiguration
+{
+    public void Configure(FluentTypeBuilder builder)
+    {
+        builder.For<int>("Likes");
+        builder.For<decimal>("Rating").InclusiveBetween(0, 5);
+        builder.For<string>("FirstName").NotEmpty();
+        builder
+            .For<int>("UserId")
+            .Namespace("MyDomain")
+            .AsStruct()
+            .Length(20)
+            .WithMessage("Pleasy specify a {TypeName} with a length of {Length}.")
+            .Matches("[0-9]{5}[a-Z]{15}");
+            .WithName("user identifier");
+    }
+}
+
+var firstName = FirstName.From("Adam");
+var userId = UserId.From(-1); //Throws ArgumentException
+```
+
+# Built-in Validators
+
+## NotEmpty Validator
+
+## NotEqual Validator
+
+## Length Validator
+
+## MinLength Validator
+
+## MaxLength Validator
+
+## LessThan Validator
+
+## LessThanOrEqual Validator
+
+## GreaterThan Validator
+
+## GreaterThanOrEqual Validator
+
+## Must Validator
+
+`Must`
+
+## Regular Expression Validator
+
+`Matches`
+
+## InclusiveBetween Validator
+
+## ExclusiveBetween Validator
+
+## PrecisionScale Validator
+
+# Why is there no implicit conversion?
+
+Because it would remove the type safety brought by the value objects. Let's suppose the following scenario:
+```c#
+builder.For<decimal>("Cost");
+builder.For<decimal>("Rating");
+
+var cost = Cost.From(12.1);
+var rating = Rating.From(4.8);
+
+if(cost >= rating)
+{
+    // Compiled and did not throw 
+}
+```
+
+# Benchmarks
+
 |               Method |      Mean |     Error |    StdDev |    Median | Allocated |
 |--------------------- |----------:|----------:|----------:|----------:|----------:|
 |    Int_EqualOperator | 0.0028 ns | 0.0053 ns | 0.0050 ns | 0.0000 ns |         - |
@@ -26,3 +104,12 @@
 |----------------------------------- |---------:|----------:|----------:|----------:|
 | ValueObjectString_EqualityComparer | 5.228 ns | 0.0702 ns | 0.0657 ns |         - |
 |           ValueObjectString_Equals | 2.643 ns | 0.0417 ns | 0.0370 ns |         - |
+
+
+# VNext
+
+```c#
+builder.For<string>("Sexe")
+    .In("Male", "Female")
+    .Comparer(StringComparer.OrdinalIgnoreCase);
+```
