@@ -6,6 +6,6 @@
     
     <ItemGroup>
         <ProjectReference Include="..\FluentType.Core\FluentType.Core.csproj" />
-        <ProjectReference Include="..\FluentType.Generator\FluentType.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+        <ProjectReference Include="..\FluentType.Generators\FluentType.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
     </ItemGroup>
 </Project>
