@@ -21,29 +21,27 @@ public partial class FluentTypeGenerator
         }
 
         internal static bool IsSyntaxTargetForGeneration(SyntaxNode syntaxNode) =>
-        syntaxNode is ClassDeclarationSyntax c && c.HasInterface(nameof(IFluentTypesConfiguration));
+            syntaxNode is ClassDeclarationSyntax c && c.HasInterface(nameof(IFluentTypesConfiguration));
 
         internal static ClassDeclarationSyntax? GetSemanticTargetForGeneration(GeneratorSyntaxContext context)
         {
             var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
-            var classSymbol = context.SemanticModel.GetSymbolInfo(classDeclarationSyntax).Symbol;
-            if (classSymbol == null)
+            var classSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax) as INamedTypeSymbol;
+            if(classSymbol == null)
             {
                 return null;
             }
-
-            //https://weblog.west-wind.com/posts/2022/Jun/07/Runtime-CSharp-Code-Compilation-Revisited-for-Roslyn
-            //https://andrewlock.net/exploring-dotnet-6-part-9-source-generator-updates-incremental-generators/
-            return classDeclarationSyntax;
+            return classSymbol.AllInterfaces.Any(x => x.ToString() == typeof(IFluentTypesConfiguration).FullName) ?
+                classDeclarationSyntax : null;
         }
 
-        public IReadOnlyList<FluentTypeModel> GetFluentTypes(IEnumerable<ClassDeclarationSyntax> classes) 
+        public IReadOnlyList<FluentTypeModel> GetFluentTypes(IEnumerable<ClassDeclarationSyntax> classes)
         {
             return Array.Empty<FluentTypeModel>();
         }
     }
 
     internal class FluentTypeModel
-    { 
+    {
     }
 }

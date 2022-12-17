@@ -1,6 +1,4 @@
-﻿using FluentType.Core;
-using FluentType.SourceGenerators.Extensions;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
@@ -13,11 +11,11 @@ public partial class FluentTypeGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var classDeclarations = context.SyntaxProvider
+        IncrementalValuesProvider<ClassDeclarationSyntax> classDeclarations = context.SyntaxProvider
             .CreateSyntaxProvider(
                 predicate: static (x, _) => Parser.IsSyntaxTargetForGeneration(x),
                 transform: static (ctx, _) => Parser.GetSemanticTargetForGeneration(ctx))
-            .Where(static m => m is not null);
+            .Where(x => x is not null);
 
         var compilationAndClasses = context.CompilationProvider.Combine(classDeclarations.Collect());
 
