@@ -15,7 +15,7 @@ public class MyDomainTypesConfiguration : IFluentTypesConfiguration
             .Namespace("MyDomain")
             .AsStruct()
             .Length(20)
-            .WithMessage("Pleasy specify a {Name} with a length of {Length}.")
+            .WithMessage("Pleasy specify a user id with a length of 20.")
             .Matches("[0-9]{5}[a-Z]{15}")
             .WithName("user identifier");
 
@@ -155,4 +155,23 @@ All generated types implements `IValue`, giving access to the value.
 builder.For<string>("Sexe")
     .In("Male", "Female")
     .Comparer(StringComparer.OrdinalIgnoreCase);
+
+//Typed factory
+var factory = builder.Factory<string>()
+    .Namespace("MyDomain")
+    .AsStruct()
+    .Length(3, 50)
+    .Build();
+    
+factory.For("FirstName");
+factory.For("LastName");
+
+//Untyped factory
+var factory2 = builder.Factory()
+    .Namespace("MyDomain")
+    .NotEmpty()
+    .Build();
+    
+factory2.For<int>("Days");
+factory2.For<long>("Timespan");
 ```
