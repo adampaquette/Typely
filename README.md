@@ -156,6 +156,9 @@ builder.For<string>("Sexe")
     .In("Male", "Female")
     .Comparer(StringComparer.OrdinalIgnoreCase);
 
+builder.For<string>("Sexe")
+    .In((1, "Male"), (2, "Female"));
+
 //Typed factory
 var factory = builder.Factory<string>()
     .Namespace("MyDomain")
