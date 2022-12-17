@@ -14,11 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentType.SourceGenerators", "FluentType.Generator\FluentType.SourceGenerators.csproj", "{56060B69-59C7-46FC-ABC3-B2C4A0C3EAFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentType.Generators", "FluentType.Generators\FluentType.Generators.csproj", "{56060B69-59C7-46FC-ABC3-B2C4A0C3EAFD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentType.Bootstrap", "FluentType.Bootstrap\FluentType.Bootstrap.csproj", "{75B58901-0E4F-4813-8088-045DB31D0A0A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentType.Core", "FluentType.Core\FluentType.Core.csproj", "{B36F5C90-D068-4D41-8D2E-44FD87060CBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentType.Core", "FluentType.Core\FluentType.Core.csproj", "{B36F5C90-D068-4D41-8D2E-44FD87060CBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,10 +36,6 @@ Global
 		{56060B69-59C7-46FC-ABC3-B2C4A0C3EAFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56060B69-59C7-46FC-ABC3-B2C4A0C3EAFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56060B69-59C7-46FC-ABC3-B2C4A0C3EAFD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{75B58901-0E4F-4813-8088-045DB31D0A0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75B58901-0E4F-4813-8088-045DB31D0A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75B58901-0E4F-4813-8088-045DB31D0A0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75B58901-0E4F-4813-8088-045DB31D0A0A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B36F5C90-D068-4D41-8D2E-44FD87060CBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B36F5C90-D068-4D41-8D2E-44FD87060CBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B36F5C90-D068-4D41-8D2E-44FD87060CBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
