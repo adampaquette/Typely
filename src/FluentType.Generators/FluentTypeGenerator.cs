@@ -2,12 +2,9 @@
 using FluentType.SourceGenerators.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
-using Scriban.Parsing;
 using System.Collections.Immutable;
-using System.Text;
 
-namespace FluentType.SourceGenerators.Generators;
+namespace FluentType.Generators;
 
 [Generator]
 public class FluentTypeGenerator : IIncrementalGenerator
