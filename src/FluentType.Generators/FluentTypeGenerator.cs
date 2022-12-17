@@ -11,7 +11,7 @@ public partial class FluentTypeGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        IncrementalValuesProvider<ClassDeclarationSyntax> classDeclarations = context.SyntaxProvider
+        var classDeclarations = context.SyntaxProvider
             .CreateSyntaxProvider(
                 predicate: static (x, _) => Parser.IsSyntaxTargetForGeneration(x),
                 transform: static (ctx, _) => Parser.GetSemanticTargetForGeneration(ctx))
