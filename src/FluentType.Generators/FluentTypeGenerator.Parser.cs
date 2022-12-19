@@ -5,7 +5,8 @@ using FluentType.SourceGenerators.Extensions;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Reflection;
 using FluentType.Generators.Extensions;
-using System.Linq.Expressions;
+using Basic.Reference.Assemblies;
+using Microsoft.Extensions.DependencyModel;
 
 namespace FluentType.Generators;
 
@@ -56,12 +57,10 @@ public partial class FluentTypeGenerator
 
                 var syntaxTree = group.Key;
                 var compilation = CSharpCompilation.Create(assemblyName: Path.GetRandomFileName())
-                    .WithReferences(typeof(object), typeof(IFluentTypesConfiguration), typeof(Enumerable), typeof(Expression))
-                    .WithDefaultNetCoreReferences()
+                    .WithReferenceAssemblies(ReferenceAssemblyKind.NetStandard20)
+                    .AddReferences(typeof(IFluentTypesConfiguration))
                     .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                     .AddSyntaxTrees(syntaxTree);
-
-                var refs = compilation.References.ToList();
 
                 using (var ms = new MemoryStream())
                 {
@@ -80,10 +79,8 @@ public partial class FluentTypeGenerator
                     }
                     catch (Exception ex)
                     {
-                        var a = ex;
-
+                        var gga = ex;
                     }
-
 
                     dynamic fluentTypeConfiguration = assembly.CreateInstance("FluentType.Playground.TypesConfiguration");
 
