@@ -59,13 +59,18 @@ public partial class FluentTypeGenerator
                     _cancellationToken.ThrowIfCancellationRequested();
 
                     var configurationAssembly = CompileUserCodeTypeConfiguration(group.Key);
-                    var fluentTypesConfigurationTypes = configurationAssembly.GetTypes()
+                    if (configurationAssembly == null)
+                    {
+                        continue;
+                    }
+
+                    var configurationTypes = configurationAssembly.GetTypes()
                         .Where(x => x.GetInterfaces().Contains(typeof(IFluentTypesConfiguration)))
                         .ToList();
 
-                    foreach (var fluentTypesConfigurationType in fluentTypesConfigurationTypes)
+                    foreach (var configurationType in configurationTypes)
                     {
-                        var fluentTypeConfiguration = (IFluentTypesConfiguration)configurationAssembly.CreateInstance(fluentTypesConfigurationType.FullName);
+                        var fluentTypeConfiguration = (IFluentTypesConfiguration)configurationAssembly.CreateInstance(configurationType.FullName);
                         var fluentBuilder = new FluentTypeBuilder();
                         fluentTypeConfiguration.Configure(fluentBuilder);
                         var called = fluentBuilder.Called;
@@ -80,8 +85,13 @@ public partial class FluentTypeGenerator
             return Array.Empty<FluentTypeModel>();
         }
 
-        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args) =>
-            AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == args.Name);
+        /// <summary>
+        /// Only resolve known assemblies. 
+        /// </summary>
+        private Assembly? CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args) => 
+            args.Name == "FluentType.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" 
+                ? AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == args.Name) 
+                : null;
 
         private Assembly? CompileUserCodeTypeConfiguration(SyntaxTree syntaxTree)
         {
