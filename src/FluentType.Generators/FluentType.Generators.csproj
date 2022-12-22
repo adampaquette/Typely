@@ -1,12 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>       
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
         <IsRoslynComponent>true</IsRoslynComponent>       
         <PreserveCompilationContext>true</PreserveCompilationContext>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     </PropertyGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="..\FluentType.Core\IFluentTypeBuilder.cs" Link="Ressources\IFluentTypeBuilder.cs" />
+      <EmbeddedResource Include="..\FluentType.Core\IFluentTypesConfiguration.cs" Link="Ressources\IFluentTypesConfiguration.cs" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Basic.Reference.Assemblies" Version="1.4.1" />

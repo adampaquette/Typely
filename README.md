@@ -149,6 +149,10 @@ All generated types implements `IValue`, giving access to the value.
 |           ValueObjectString_Equals | 2.643 ns | 0.0417 ns | 0.0370 ns |         - |
 
 
+# Limitations
+
+- Currently classes implementing `IFluentTypesConfiguration` should have explicit references. This will be lift off in the futur.
+
 # VNext
 
 ```c#
