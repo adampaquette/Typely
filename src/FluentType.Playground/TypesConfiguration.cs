@@ -6,5 +6,6 @@ public class TypesConfiguration : IFluentTypesConfiguration
 {
     public void Configure(IFluentTypeBuilder builder)
     {
+        builder.For<int>("UserId");
     }
 }

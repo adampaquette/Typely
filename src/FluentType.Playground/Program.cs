@@ -1,4 +1,10 @@
-﻿namespace FluentType.Playground;
+﻿using FluentType.Core;
+using Test;
+
+var a = new TypesConfiguration();
+var b = (IFluentTypesConfiguration)a;
+
+Console.WriteLine("aa");
 
 //using System.Numerics;
 
@@ -109,19 +115,3 @@
 //        throw new NotImplementedException();
 //    }
 //}
-
-partial class Program
-{
-    static void Main(string[] args)
-    {
-        HelloFrom("Generated Code");
-
-        //var builder = ValueObjectBuilder.Instance;
-
-        //builder.For<UserId>().As<int>().Length(1, 100);
-
-        //var a = Program.
-    }
-
-    static partial void HelloFrom(string name);
-}

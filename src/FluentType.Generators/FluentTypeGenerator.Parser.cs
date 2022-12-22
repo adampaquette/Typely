@@ -57,9 +57,11 @@ public partial class FluentTypeGenerator
                 var syntaxTree = group.Key;
                 var compilation = CSharpCompilation.Create(assemblyName: Path.GetRandomFileName())
                     .WithReferenceAssemblies(ReferenceAssemblyKind.NetStandard20)
+                    .AddReferences(typeof(IFluentTypesConfiguration))
                     .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
-                    .AddSyntaxTrees(syntaxTree)
-                    .AddSyntaxTrees(GetDependencySyntaxTrees());
+                    .AddSyntaxTrees(syntaxTree);
+
+                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
                 using (var ms = new MemoryStream())
                 {
@@ -75,12 +77,17 @@ public partial class FluentTypeGenerator
 
                     try
                     {
-                        var types = assembly.GetTypes();
-                        dynamic fluentTypeConfiguration = assembly.CreateInstance("Test.TypesConfiguration");
+                        var fluentTypesConfigurationTypes = assembly.GetTypes()
+                            .Where(x => x.GetInterfaces().Contains(typeof(IFluentTypesConfiguration)))
+                            .ToList();
 
-                        var fluentBuilder = new FluentTypeBuilder();
-                        fluentTypeConfiguration.Configure(null);
-                        var called = fluentBuilder.Called;
+                        foreach (var fluentTypesConfigurationType in fluentTypesConfigurationTypes)
+                        {
+                            var fluentTypeConfiguration = (IFluentTypesConfiguration)assembly.CreateInstance(fluentTypesConfigurationType.FullName);
+                            var fluentBuilder = new FluentTypeBuilder();
+                            fluentTypeConfiguration.Configure(fluentBuilder);
+                            var called = fluentBuilder.Called;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -92,24 +99,15 @@ public partial class FluentTypeGenerator
             return Array.Empty<FluentTypeModel>();
         }
 
-        private IEnumerable<SyntaxTree> GetDependencySyntaxTrees() =>
-            GetType().Assembly.GetManifestResourceNames()
-            .Select(GetEmbededResource)
-            .Select(x => SyntaxFactory.ParseSyntaxTree(x));
-
-        private string GetEmbededResource(string path)
-        {            
-            using var stream = GetType().Assembly.GetManifestResourceStream(path);
-            using var streamReader = new StreamReader(stream);
-            return streamReader.ReadToEnd();
-        }
+        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args) =>
+            AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == args.Name);
     }
 
     internal class FluentTypeModel
     {
     }
 
-    internal class FluentTypeBuilder : IFluentTypeBuilder
+    public class FluentTypeBuilder : IFluentTypeBuilder
     {
         public int Called { get; set; }
 
