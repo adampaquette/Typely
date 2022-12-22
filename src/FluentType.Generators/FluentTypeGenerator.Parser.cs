@@ -48,52 +48,33 @@ public partial class FluentTypeGenerator
 
         public IReadOnlyList<FluentTypeModel> GetFluentTypes(IEnumerable<ClassDeclarationSyntax> classes)
         {
-            // We enumerate by syntax tree, to minimize impact on performance
-            foreach (var group in classes.GroupBy(x => x.SyntaxTree))
+            try
             {
-                // Stop if we're asked to
-                _cancellationToken.ThrowIfCancellationRequested();
-
-                var syntaxTree = group.Key;
-                var compilation = CSharpCompilation.Create(assemblyName: Path.GetRandomFileName())
-                    .WithReferenceAssemblies(ReferenceAssemblyKind.NetStandard20)
-                    .AddReferences(typeof(IFluentTypesConfiguration))
-                    .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
-                    .AddSyntaxTrees(syntaxTree);
-
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
-                using (var ms = new MemoryStream())
+                // We enumerate by syntax tree, to minimize impact on performance
+                foreach (var group in classes.GroupBy(x => x.SyntaxTree))
                 {
-                    var result = compilation.Emit(ms);
-                    if (!result.Success)
+                    // Stop if we're asked to
+                    _cancellationToken.ThrowIfCancellationRequested();
+
+                    var configurationAssembly = CompileUserCodeTypeConfiguration(group.Key);
+                    var fluentTypesConfigurationTypes = configurationAssembly.GetTypes()
+                        .Where(x => x.GetInterfaces().Contains(typeof(IFluentTypesConfiguration)))
+                        .ToList();
+
+                    foreach (var fluentTypesConfigurationType in fluentTypesConfigurationTypes)
                     {
-                        return Array.Empty<FluentTypeModel>();
-                    }
-
-                    ms.Seek(0, SeekOrigin.Begin);
-
-                    var assembly = Assembly.Load(ms.ToArray());
-
-                    try
-                    {
-                        var fluentTypesConfigurationTypes = assembly.GetTypes()
-                            .Where(x => x.GetInterfaces().Contains(typeof(IFluentTypesConfiguration)))
-                            .ToList();
-
-                        foreach (var fluentTypesConfigurationType in fluentTypesConfigurationTypes)
-                        {
-                            var fluentTypeConfiguration = (IFluentTypesConfiguration)assembly.CreateInstance(fluentTypesConfigurationType.FullName);
-                            var fluentBuilder = new FluentTypeBuilder();
-                            fluentTypeConfiguration.Configure(fluentBuilder);
-                            var called = fluentBuilder.Called;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        var gga = ex;
+                        var fluentTypeConfiguration = (IFluentTypesConfiguration)configurationAssembly.CreateInstance(fluentTypesConfigurationType.FullName);
+                        var fluentBuilder = new FluentTypeBuilder();
+                        fluentTypeConfiguration.Configure(fluentBuilder);
+                        var called = fluentBuilder.Called;
                     }
                 }
+            }
+            finally
+            {
+                AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             }
 
             return Array.Empty<FluentTypeModel>();
@@ -101,6 +82,26 @@ public partial class FluentTypeGenerator
 
         private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args) =>
             AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == args.Name);
+
+        private Assembly? CompileUserCodeTypeConfiguration(SyntaxTree syntaxTree)
+        {
+            var compilation = CSharpCompilation.Create(assemblyName: $"FluentType_{Path.GetRandomFileName()}")
+                .WithReferenceAssemblies(ReferenceAssemblyKind.NetStandard20)
+                .AddReferences(typeof(IFluentTypesConfiguration))
+                .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+                .AddSyntaxTrees(syntaxTree);
+
+            using var ms = new MemoryStream();
+            var result = compilation.Emit(ms);
+            if (!result.Success)
+            {
+                //TODO : DIAGNOSTICS
+                return null;
+            }
+
+            ms.Seek(0, SeekOrigin.Begin);
+            return Assembly.Load(ms.ToArray());
+        }
     }
 
     internal class FluentTypeModel
