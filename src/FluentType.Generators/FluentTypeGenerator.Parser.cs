@@ -48,31 +48,43 @@ public partial class FluentTypeGenerator
                 classDeclarationSyntax : null;
         }
 
+        /// <summary>
+        /// Execute the different <see cref="IFluentTypesConfiguration"/> classes founds and generate models of the desired user types.
+        /// </summary>
+        /// <param name="classes">Classes to parse.</param>
+        /// <returns>A list of representation of desired user types.</returns>
         public IReadOnlyList<FluentTypeModel> GetFluentTypes(IEnumerable<ClassDeclarationSyntax> classes)
         {
             // We enumerate by syntax tree, to minimize impact on performance
-            foreach (var group in classes.GroupBy(x => x.SyntaxTree))
+            return classes.GroupBy(x => x.SyntaxTree).SelectMany(x => GetFluentTypes(x.Key)).ToList().AsReadOnly();
+        }
+
+        /// <summary>
+        /// Execute the different <see cref="IFluentTypesConfiguration"/> classes and generate models of the desired user types.
+        /// </summary>
+        /// <param name="syntaxTree">SyntaxTree to parse</param>
+        /// <returns>A list of representation of desired user types.</returns>
+        private IEnumerable<FluentTypeModel> GetFluentTypes(SyntaxTree syntaxTree)
+        {
+            // Stop if we're asked to
+            _cancellationToken.ThrowIfCancellationRequested();
+
+            var configurationAssembly = CompileUserCodeTypesConfiguration(syntaxTree);
+            if (configurationAssembly == null)
             {
-                // Stop if we're asked to
-                _cancellationToken.ThrowIfCancellationRequested();
+                return Array.Empty<FluentTypeModel>();
+            }
 
-                var configurationAssembly = CompileUserCodeTypeConfiguration(group.Key);
-                if (configurationAssembly == null)
-                {
-                    continue;
-                }
+            var configurationTypes = configurationAssembly.GetTypes()
+                .Where(x => x.GetInterfaces().Contains(typeof(IFluentTypesConfiguration)))
+                .ToList();
 
-                var configurationTypes = configurationAssembly.GetTypes()
-                    .Where(x => x.GetInterfaces().Contains(typeof(IFluentTypesConfiguration)))
-                    .ToList();
-
-                foreach (var configurationType in configurationTypes)
-                {
-                    var fluentTypeConfiguration = (IFluentTypesConfiguration)configurationAssembly.CreateInstance(configurationType.FullName);
-                    var fluentBuilder = new FluentTypeBuilder();
-                    fluentTypeConfiguration.Configure(fluentBuilder);
-                    var called = fluentBuilder.Called;
-                }
+            foreach (var configurationType in configurationTypes)
+            {
+                var fluentTypeConfiguration = (IFluentTypesConfiguration)configurationAssembly.CreateInstance(configurationType.FullName);
+                var fluentBuilder = new FluentTypeBuilder();
+                fluentTypeConfiguration.Configure(fluentBuilder);
+                var called = fluentBuilder.Called;
             }
 
             return Array.Empty<FluentTypeModel>();
@@ -86,7 +98,7 @@ public partial class FluentTypeGenerator
                 ? AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == args.Name)
                 : null;
 
-        private Assembly? CompileUserCodeTypeConfiguration(SyntaxTree syntaxTree)
+        private Assembly? CompileUserCodeTypesConfiguration(SyntaxTree syntaxTree)
         {
             var compilation = CSharpCompilation.Create(assemblyName: $"FluentType_{Path.GetRandomFileName()}")
                 .WithReferenceAssemblies(ReferenceAssemblyKind.NetStandard20)
@@ -113,6 +125,9 @@ public partial class FluentTypeGenerator
         }
     }
 
+    /// <summary>
+    /// Define the representation of a desired user type.
+    /// </summary>
     internal class FluentTypeModel
     {
     }
