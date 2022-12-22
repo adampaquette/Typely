@@ -11,7 +11,7 @@ namespace FluentType.Generators;
 
 public partial class FluentTypeGenerator
 {
-    internal class Parser
+    internal sealed class Parser : IDisposable
     {
         private readonly CancellationToken _cancellationToken;
         private readonly Compilation _compilation;
@@ -22,6 +22,8 @@ public partial class FluentTypeGenerator
             _compilation = compilation;
             _cancellationToken = cancellationToken;
             _reportDiagnostic = reportDiagnostic;
+
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
         }
 
         /// <summary>
@@ -48,38 +50,29 @@ public partial class FluentTypeGenerator
 
         public IReadOnlyList<FluentTypeModel> GetFluentTypes(IEnumerable<ClassDeclarationSyntax> classes)
         {
-            try
+            // We enumerate by syntax tree, to minimize impact on performance
+            foreach (var group in classes.GroupBy(x => x.SyntaxTree))
             {
-                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+                // Stop if we're asked to
+                _cancellationToken.ThrowIfCancellationRequested();
 
-                // We enumerate by syntax tree, to minimize impact on performance
-                foreach (var group in classes.GroupBy(x => x.SyntaxTree))
+                var configurationAssembly = CompileUserCodeTypeConfiguration(group.Key);
+                if (configurationAssembly == null)
                 {
-                    // Stop if we're asked to
-                    _cancellationToken.ThrowIfCancellationRequested();
-
-                    var configurationAssembly = CompileUserCodeTypeConfiguration(group.Key);
-                    if (configurationAssembly == null)
-                    {
-                        continue;
-                    }
-
-                    var configurationTypes = configurationAssembly.GetTypes()
-                        .Where(x => x.GetInterfaces().Contains(typeof(IFluentTypesConfiguration)))
-                        .ToList();
-
-                    foreach (var configurationType in configurationTypes)
-                    {
-                        var fluentTypeConfiguration = (IFluentTypesConfiguration)configurationAssembly.CreateInstance(configurationType.FullName);
-                        var fluentBuilder = new FluentTypeBuilder();
-                        fluentTypeConfiguration.Configure(fluentBuilder);
-                        var called = fluentBuilder.Called;
-                    }
+                    continue;
                 }
-            }
-            finally
-            {
-                AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+
+                var configurationTypes = configurationAssembly.GetTypes()
+                    .Where(x => x.GetInterfaces().Contains(typeof(IFluentTypesConfiguration)))
+                    .ToList();
+
+                foreach (var configurationType in configurationTypes)
+                {
+                    var fluentTypeConfiguration = (IFluentTypesConfiguration)configurationAssembly.CreateInstance(configurationType.FullName);
+                    var fluentBuilder = new FluentTypeBuilder();
+                    fluentTypeConfiguration.Configure(fluentBuilder);
+                    var called = fluentBuilder.Called;
+                }
             }
 
             return Array.Empty<FluentTypeModel>();
@@ -88,9 +81,9 @@ public partial class FluentTypeGenerator
         /// <summary>
         /// Only resolve known assemblies. 
         /// </summary>
-        private Assembly? CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args) => 
-            args.Name == "FluentType.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" 
-                ? AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == args.Name) 
+        private Assembly? CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args) =>
+            args.Name == "FluentType.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                ? AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == args.Name)
                 : null;
 
         private Assembly? CompileUserCodeTypeConfiguration(SyntaxTree syntaxTree)
@@ -111,6 +104,12 @@ public partial class FluentTypeGenerator
 
             ms.Seek(0, SeekOrigin.Begin);
             return Assembly.Load(ms.ToArray());
+        }
+
+        public void Dispose()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+            GC.SuppressFinalize(this);
         }
     }
 
