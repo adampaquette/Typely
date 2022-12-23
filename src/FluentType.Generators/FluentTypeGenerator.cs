@@ -19,7 +19,7 @@ public partial class FluentTypeGenerator : IIncrementalGenerator
 
         var compilationAndClasses = context.CompilationProvider.Combine(classDeclarations.Collect());
 
-        context.RegisterSourceOutput(compilationAndClasses, static (spc, source) => Execute(source.Item1, source.Item2, spc));
+        context.RegisterSourceOutput(compilationAndClasses, static (spc, source) => Execute(source.Left, source.Right, spc));
     }
 
     private static void Execute(Compilation compilation, ImmutableArray<ClassDeclarationSyntax> classes, SourceProductionContext context)

@@ -105,17 +105,27 @@ public partial class FluentTypeGenerator
                 .AddReferences(typeof(IFluentTypesConfiguration))
                 .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddSyntaxTrees(syntaxTree);
+            
 
             using var ms = new MemoryStream();
             var result = compilation.Emit(ms);
+
             if (!result.Success)
             {
-                //TODO : DIAGNOSTICS
+                foreach (var diagnostic in result.Diagnostics)
+                {
+                    _reportDiagnostic(diagnostic);
+                }
                 return null;
             }
 
             ms.Seek(0, SeekOrigin.Begin);
             return Assembly.Load(ms.ToArray());
+        }
+
+        private void Diag(DiagnosticDescriptor desc, Location? location, params object?[]? messageArgs)
+        {
+            _reportDiagnostic(Diagnostic.Create(desc, location, messageArgs));
         }
 
         public void Dispose()
@@ -124,6 +134,14 @@ public partial class FluentTypeGenerator
             GC.SuppressFinalize(this);
         }
     }
+
+    //Diag(new DiagnosticDescriptor(
+    //                id: "AD",
+    //                title: "my title",
+    //                messageFormat: "my message",
+    //                category: "category",
+    //                DiagnosticSeverity.Error,
+    //                isEnabledByDefault: true), null, null);
 
     /// <summary>
     /// Define the representation of a desired user type.
