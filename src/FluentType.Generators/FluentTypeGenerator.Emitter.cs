@@ -8,7 +8,7 @@ public partial class FluentTypeGenerator
 {
     internal class Emitter
     {
-        public string Emit(IReadOnlyList<FluentTypeModel> fluentTypes, CancellationToken cancellationToken)
+        public string Emit(IReadOnlyList<FluentTypeConfiguration> fluentTypes, CancellationToken cancellationToken)
         {
             return "";
         }

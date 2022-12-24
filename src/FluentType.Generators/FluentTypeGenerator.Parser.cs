@@ -6,6 +6,9 @@ using Microsoft.CodeAnalysis.CSharp;
 using System.Reflection;
 using FluentType.Generators.Extensions;
 using Basic.Reference.Assemblies;
+using System.Linq.Expressions;
+using System.Reflection.Metadata;
+using static FluentType.Generators.FluentTypeGenerator;
 
 namespace FluentType.Generators;
 
@@ -53,7 +56,7 @@ public partial class FluentTypeGenerator
         /// </summary>
         /// <param name="classes">Classes to parse.</param>
         /// <returns>A list of representation of desired user types.</returns>
-        public IReadOnlyList<FluentTypeModel> GetFluentTypes(IEnumerable<ClassDeclarationSyntax> classes)
+        public IReadOnlyList<FluentTypeConfiguration> GetFluentTypes(IEnumerable<ClassDeclarationSyntax> classes)
         {
             // We enumerate by syntax tree, to minimize impact on performance
             return classes.GroupBy(x => x.SyntaxTree).SelectMany(x => GetFluentTypes(x.Key)).ToList().AsReadOnly();
@@ -64,15 +67,15 @@ public partial class FluentTypeGenerator
         /// </summary>
         /// <param name="syntaxTree">SyntaxTree to parse</param>
         /// <returns>A list of representation of desired user types.</returns>
-        private IEnumerable<FluentTypeModel> GetFluentTypes(SyntaxTree syntaxTree)
+        private IEnumerable<FluentTypeConfiguration> GetFluentTypes(SyntaxTree syntaxTree)
         {
             // Stop if we're asked to
             _cancellationToken.ThrowIfCancellationRequested();
 
-            var configurationAssembly = CompileUserCodeTypesConfiguration(syntaxTree);
+            var configurationAssembly = CreateConfigurationAssembly(syntaxTree);
             if (configurationAssembly == null)
             {
-                return Array.Empty<FluentTypeModel>();
+                return Array.Empty<FluentTypeConfiguration>();
             }
 
             var configurationTypes = configurationAssembly.GetTypes()
@@ -82,12 +85,12 @@ public partial class FluentTypeGenerator
             foreach (var configurationType in configurationTypes)
             {
                 var fluentTypeConfiguration = (IFluentTypesConfiguration)configurationAssembly.CreateInstance(configurationType.FullName);
-                var fluentBuilder = new FluentTypeBuilder();
+                var fluentBuilder = new FluentTypesBuilder(syntaxTree);
                 fluentTypeConfiguration.Configure(fluentBuilder);
-                var called = fluentBuilder.Called;
+                var called = fluentBuilder.GetFluentTypeConfigurations();
             }
 
-            return Array.Empty<FluentTypeModel>();
+            return Array.Empty<FluentTypeConfiguration>();
         }
 
         /// <summary>
@@ -98,14 +101,16 @@ public partial class FluentTypeGenerator
                 ? AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == args.Name)
                 : null;
 
-        private Assembly? CompileUserCodeTypesConfiguration(SyntaxTree syntaxTree)
+        /// <summary>
+        /// Compiles the user's code.
+        /// </summary>
+        private Assembly? CreateConfigurationAssembly(SyntaxTree syntaxTree)
         {
             var compilation = CSharpCompilation.Create(assemblyName: $"FluentType_{Path.GetRandomFileName()}")
                 .WithReferenceAssemblies(ReferenceAssemblyKind.NetStandard20)
                 .AddReferences(typeof(IFluentTypesConfiguration))
                 .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddSyntaxTrees(syntaxTree);
-            
 
             using var ms = new MemoryStream();
             var result = compilation.Emit(ms);
@@ -143,21 +148,155 @@ public partial class FluentTypeGenerator
     //                DiagnosticSeverity.Error,
     //                isEnabledByDefault: true), null, null);
 
-    /// <summary>
-    /// Define the representation of a desired user type.
-    /// </summary>
-    internal class FluentTypeModel
+    public class FluentTypesBuilder : IFluentTypesBuilder
     {
-    }
+        private List<FluentTypeConfiguration> _typeConfigurations = new List<FluentTypeConfiguration>();
+        private SyntaxTree _syntaxTree;
 
-    public class FluentTypeBuilder : IFluentTypeBuilder
-    {
-        public int Called { get; set; }
+        public FluentTypesBuilder(SyntaxTree syntaxTree)
+        {
+            _syntaxTree = syntaxTree;
+        }
 
         public IFluentTypeBuilder<T> For<T>(string typeName)
         {
-            Called++;
-            return default;
+            var fluentTypeConfiguration = new FluentTypeConfiguration
+            {
+                UnderlyingType = typeof(T),
+                SyntaxTree = _syntaxTree,
+                Name = typeName
+            };
+            _typeConfigurations.Add(fluentTypeConfiguration);
+
+            return new RuleBuilder<T>(fluentTypeConfiguration);
+        }
+
+        public IReadOnlyList<FluentTypeConfiguration> GetFluentTypeConfigurations() =>
+            _typeConfigurations.ToList().AsReadOnly();
+    }
+
+    public record struct FluentTypeConfiguration(SyntaxTree SyntaxTree, Type UnderlyingType, string Name);
+
+    public class RuleBuilder<T> : FluentTypeBuilder<T>, IRuleBuilder<T>
+    {
+        private readonly FluentTypeConfiguration _type;
+
+        public RuleBuilder(FluentTypeConfiguration type)
+        {
+            _type = type;
+        }
+
+        public IRuleBuilder<T> When(Expression<Func<T, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> WithMessage(string message)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class FluentTypeBuilder<T> : IFluentTypeBuilder<T>
+    {
+        public IFluentTypeBuilder<T> AsClass()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IFluentTypeBuilder<T> AsRecord()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IFluentTypeBuilder<T> AsStruct()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> ExclusiveBetween(T min, T max)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> GreaterThan(T value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> GreaterThanOrEqual(T value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> InclusiveBetween(T min, T max)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> Length(int min, T max)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> Length(int exactLength)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> LessThan(T value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> LessThanOrEqual(T value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> Matches(string regex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> MaxLength(int maxLength)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> MinLength(int minLength)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> Must(Expression<Func<T, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IFluentTypeBuilder<T> Namespace(string value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> NotEmpty()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> NotEqual(T value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRuleBuilder<T> PrecisionScale(int precision, int scale)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IFluentTypeBuilder<T> WithName(string message)
+        {
+            throw new NotImplementedException();
         }
     }
 }

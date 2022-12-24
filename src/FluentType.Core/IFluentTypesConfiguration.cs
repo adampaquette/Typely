@@ -2,5 +2,5 @@
 
 public interface IFluentTypesConfiguration
 {
-    void Configure(IFluentTypeBuilder builder);
+    void Configure(IFluentTypesBuilder builder);
 }

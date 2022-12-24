@@ -3,7 +3,7 @@ using System;
 
 namespace FluentType.Core;
 
-public interface IFluentTypeBuilder
+public interface IFluentTypesBuilder
 {
     IFluentTypeBuilder<T> For<T>(string typeName);
 }

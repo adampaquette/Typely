@@ -4,8 +4,9 @@ namespace Test;
 
 public class TypesConfiguration : IFluentTypesConfiguration
 {
-    public void Configure(IFluentTypeBuilder builder)
+    public void Configure(IFluentTypesBuilder builder)
     {
         builder.For<int>("UserId");
+        builder.For<string>("Username");
     }
 }
