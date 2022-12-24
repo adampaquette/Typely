@@ -104,6 +104,8 @@ public partial class FluentTypeGenerator
             Debug.WriteLine(log);
             Console.WriteLine(log);
 
+            // AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == args.Name)
+
             return args.Name == "FluentType.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
                 ? Assembly.LoadFile("C:\\Users\\nfs12\\source\\repos\\FluentType\\src\\FluentType.Core\\bin\\Debug\\netstandard2.0\\FluentType.Core.dll")
                 : null;
