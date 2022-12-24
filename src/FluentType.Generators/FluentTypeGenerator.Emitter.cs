@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FluentType.Generators;
+﻿namespace FluentType.Generators;
 
 public partial class FluentTypeGenerator
 {
     internal class Emitter
     {
-        public string Emit(IReadOnlyList<FluentTypeConfiguration> fluentTypes, CancellationToken cancellationToken)
+        public string Emit(FluentType config)
         {
-            return "";
+            var type = config.UnderlyingType.Name;
+
+            return $$"""
+                namespace AA
+                {
+                    public struct {{config.Name}} 
+                    {
+                        public {{type}} Value {get; set;}
+                    }
+                }
+                """;
         }
     }
 }

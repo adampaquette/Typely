@@ -8,5 +8,6 @@ public class TypesConfiguration : IFluentTypesConfiguration
     {
         builder.For<int>("UserId");
         builder.For<string>("Username");
+
     }
 }

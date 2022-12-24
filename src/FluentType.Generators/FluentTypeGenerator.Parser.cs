@@ -9,6 +9,7 @@ using Basic.Reference.Assemblies;
 using System.Linq.Expressions;
 using System.Reflection.Metadata;
 using static FluentType.Generators.FluentTypeGenerator;
+using System.Diagnostics;
 
 namespace FluentType.Generators;
 
@@ -56,7 +57,7 @@ public partial class FluentTypeGenerator
         /// </summary>
         /// <param name="classes">Classes to parse.</param>
         /// <returns>A list of representation of desired user types.</returns>
-        public IReadOnlyList<FluentTypeConfiguration> GetFluentTypes(IEnumerable<ClassDeclarationSyntax> classes)
+        public IReadOnlyList<FluentType> GetFluentTypes(IEnumerable<ClassDeclarationSyntax> classes)
         {
             // We enumerate by syntax tree, to minimize impact on performance
             return classes.GroupBy(x => x.SyntaxTree).SelectMany(x => GetFluentTypes(x.Key)).ToList().AsReadOnly();
@@ -67,7 +68,7 @@ public partial class FluentTypeGenerator
         /// </summary>
         /// <param name="syntaxTree">SyntaxTree to parse</param>
         /// <returns>A list of representation of desired user types.</returns>
-        private IEnumerable<FluentTypeConfiguration> GetFluentTypes(SyntaxTree syntaxTree)
+        private IReadOnlyList<FluentType> GetFluentTypes(SyntaxTree syntaxTree)
         {
             // Stop if we're asked to
             _cancellationToken.ThrowIfCancellationRequested();
@@ -75,31 +76,38 @@ public partial class FluentTypeGenerator
             var configurationAssembly = CreateConfigurationAssembly(syntaxTree);
             if (configurationAssembly == null)
             {
-                return Array.Empty<FluentTypeConfiguration>();
+                return Array.Empty<FluentType>();
             }
 
             var configurationTypes = configurationAssembly.GetTypes()
                 .Where(x => x.GetInterfaces().Contains(typeof(IFluentTypesConfiguration)))
                 .ToList();
 
+            var fluentTypes = new List<FluentType>();
             foreach (var configurationType in configurationTypes)
             {
-                var fluentTypeConfiguration = (IFluentTypesConfiguration)configurationAssembly.CreateInstance(configurationType.FullName);
+                var fluentTypesConfiguration = (IFluentTypesConfiguration)configurationAssembly.CreateInstance(configurationType.FullName);
                 var fluentBuilder = new FluentTypesBuilder(syntaxTree);
-                fluentTypeConfiguration.Configure(fluentBuilder);
-                var called = fluentBuilder.GetFluentTypeConfigurations();
+                fluentTypesConfiguration.Configure(fluentBuilder);
+                fluentTypes.AddRange(fluentBuilder.GetFluentTypes());
             }
 
-            return Array.Empty<FluentTypeConfiguration>();
+            return fluentTypes;
         }
 
         /// <summary>
         /// Only resolve known assemblies. 
         /// </summary>
-        private Assembly? CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args) =>
-            args.Name == "FluentType.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-                ? AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == args.Name)
+        private Assembly? CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var log = string.Join(",", AppDomain.CurrentDomain.GetAssemblies().Select(x => x.FullName));
+            Debug.WriteLine(log);
+            Console.WriteLine(log);
+
+            return args.Name == "FluentType.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                ? Assembly.LoadFile("C:\\Users\\nfs12\\source\\repos\\FluentType\\src\\FluentType.Core\\bin\\Debug\\netstandard2.0\\FluentType.Core.dll")
                 : null;
+        }
 
         /// <summary>
         /// Compiles the user's code.
@@ -150,7 +158,7 @@ public partial class FluentTypeGenerator
 
     public class FluentTypesBuilder : IFluentTypesBuilder
     {
-        private List<FluentTypeConfiguration> _typeConfigurations = new List<FluentTypeConfiguration>();
+        private List<FluentType> _fluentTypes = new List<FluentType>();
         private SyntaxTree _syntaxTree;
 
         public FluentTypesBuilder(SyntaxTree syntaxTree)
@@ -160,28 +168,28 @@ public partial class FluentTypeGenerator
 
         public IFluentTypeBuilder<T> For<T>(string typeName)
         {
-            var fluentTypeConfiguration = new FluentTypeConfiguration
+            var fluentTypeConfiguration = new FluentType
             {
                 UnderlyingType = typeof(T),
                 SyntaxTree = _syntaxTree,
                 Name = typeName
             };
-            _typeConfigurations.Add(fluentTypeConfiguration);
+            _fluentTypes.Add(fluentTypeConfiguration);
 
             return new RuleBuilder<T>(fluentTypeConfiguration);
         }
 
-        public IReadOnlyList<FluentTypeConfiguration> GetFluentTypeConfigurations() =>
-            _typeConfigurations.ToList().AsReadOnly();
+        public IReadOnlyList<FluentType> GetFluentTypes() =>
+            _fluentTypes.ToList().AsReadOnly();
     }
 
-    public record struct FluentTypeConfiguration(SyntaxTree SyntaxTree, Type UnderlyingType, string Name);
+    public record struct FluentType(SyntaxTree SyntaxTree, Type UnderlyingType, string Name);
 
     public class RuleBuilder<T> : FluentTypeBuilder<T>, IRuleBuilder<T>
     {
-        private readonly FluentTypeConfiguration _type;
+        private readonly FluentType _type;
 
-        public RuleBuilder(FluentTypeConfiguration type)
+        public RuleBuilder(FluentType type)
         {
             _type = type;
         }

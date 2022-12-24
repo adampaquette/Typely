@@ -29,16 +29,21 @@ public partial class FluentTypeGenerator : IIncrementalGenerator
             return;
         }
 
-        var distinctClasses = classes.Distinct();       
+        var distinctClasses = classes.Distinct();
         var parser = new Parser(compilation, context.ReportDiagnostic, context.CancellationToken);
         var fluentTypes = parser.GetFluentTypes(distinctClasses);
-        
-        if (fluentTypes.Count > 0)
-        {
-            var emitter = new Emitter();
-            var source = emitter.Emit(fluentTypes, context.CancellationToken);
 
-            context.AddSource("FluentTypes.g.cs", SourceText.From(source, Encoding.UTF8));
+        if (fluentTypes.Count == 0)
+        {
+            return;
+        }
+
+        var emitter = new Emitter();
+
+        foreach (var fluentType in fluentTypes)
+        {
+            var source = emitter.Emit(fluentType);
+            context.AddSource($"{fluentType.Name}.g.cs", SourceText.From(source, Encoding.UTF8));
         }
     }
 }
