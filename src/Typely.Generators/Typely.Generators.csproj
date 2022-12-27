@@ -2,9 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
         <IsRoslynComponent>true</IsRoslynComponent>
         <Description>Typerly let you create types easyly with a fluent API to embrace Domain-driven design and value objects. This package contains type generators.</Description>
     </PropertyGroup>
