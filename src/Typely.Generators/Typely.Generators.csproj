@@ -26,7 +26,7 @@
     <!-- Generator dependencies -->
     <ItemGroup Condition="'$(Configuration)'!='Debug'">
         <PackageReference Include="Basic.Reference.Assemblies" Version="1.4.1" GeneratePathProperty="true" PrivateAssets="all" />
-        <PackageReference Include="Typely.Core" Version="0.0.1-dev" GeneratePathProperty="true" PrivateAssets="all" />
+        <PackageReference Include="Typely.Core" Version="0.0.1" GeneratePathProperty="true" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'=='Debug'">
@@ -40,7 +40,7 @@
     </PropertyGroup>
 
     <Target Name="GetDependencyTargetPaths">
-        <ItemGroup>
+        <ItemGroup Condition="'$(Configuration)'!='Debug'">
             <TargetPathWithTargetPlatformMoniker Include="$(PKGTypely_Core)\lib\netstandard2.0\Typely.Core.dll" IncludeRuntimeDependency="false" />
             <TargetPathWithTargetPlatformMoniker Include="$(PKGBasic_Reference_Assemblies)\lib\netstandard2.0\Basic.Reference.Assemblies.dll" IncludeRuntimeDependency="false" />
             <!-- Pack both our DLL and the dependencies into a generated Nuget Package -->

@@ -44,6 +44,6 @@
 
     <!-- Set output folder for created NuGet packages -->
     <PropertyGroup>
-        <PackageOutputPath Condition=" '$(PackageOutputPath)'=='' ">$(SourceRoot)../artifacts/$(Configuration)</PackageOutputPath>
+        <PackageOutputPath Condition=" '$(PackageOutputPath)'=='' ">$(SourceRoot)../artifacts</PackageOutputPath>
     </PropertyGroup>
 </Project>

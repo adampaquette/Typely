@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Typely.Generators" Version="0.0.1-dev" />
+        <PackageReference Include="Typely.Generators" Version="0.0.1" />
     </ItemGroup>
 
     <ItemGroup>
