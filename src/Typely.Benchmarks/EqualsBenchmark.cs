@@ -61,11 +61,13 @@ public class EqualsBenchmark
         public record struct FirstName_EqualityComparer(int Value)
         {
             public bool Equals(FirstName_EqualityComparer other) => EqualityComparer<int>.Default.Equals(Value, other.Value);
+            public override int GetHashCode() => Value.GetHashCode();
         }
 
         public record struct FirstName_Equals(int Value)
         {
             public bool Equals(FirstName_Equals other) => Value.Equals(other.Value);
+            public override int GetHashCode() => Value.GetHashCode();            
         }
 
         readonly FirstName_EqualityComparer val1 = new FirstName_EqualityComparer(new Random().Next());
@@ -86,11 +88,13 @@ public class EqualsBenchmark
         public record struct FirstName_EqualityComparer(string Value)
         {
             public bool Equals(FirstName_EqualityComparer other) => EqualityComparer<string>.Default.Equals(Value, other.Value);
+            public override int GetHashCode() => Value.GetHashCode();
         }
 
         public record struct FirstName_Equals(string Value)
         {
             public bool Equals(FirstName_Equals other) => Value.Equals(other.Value);
+            public override int GetHashCode() => Value.GetHashCode();
         }
 
         readonly FirstName_EqualityComparer val1 = new FirstName_EqualityComparer(new Random().Next().ToString());

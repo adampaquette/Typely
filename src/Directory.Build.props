@@ -18,7 +18,7 @@
 		<RepositoryUrl>https://github.com/adampaquette/Typely</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIcon>logo.png</PackageIcon>
-        <PackageTags>Typerly Value Object Fluent Primitive C# .NET</PackageTags>
+        <PackageTags>Typerly Value Object Fluent Primitive Source Generator Validation C# .NET</PackageTags>
 	</PropertyGroup>
     
     <ItemGroup>
@@ -39,7 +39,7 @@
 
     <!-- For Debug builds -->
     <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
-        <VersionSuffix Condition=" '$(VersionSuffix)'=='' ">dev</VersionSuffix>        
+        <VersionSuffix Condition=" '$(VersionSuffix)'=='' ">dev</VersionSuffix>
     </PropertyGroup>
 
     <!-- Set output folder for created NuGet packages -->

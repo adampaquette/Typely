@@ -3,7 +3,7 @@ using System;
 
 namespace Typely.Core;
 
-public interface ITypelysBuilder
+public interface ITypelyBuilder
 {
     ITypelyBuilder<T> For<T>(string typeName);
 }

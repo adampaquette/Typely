@@ -6,7 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsRoslynComponent>true</IsRoslynComponent>
-        <Description>Typerly let you create types easyly with a fluent API to embrace Domain-driven design and value objects. This package contains the type generators. </Description>
+        <Description>Typerly let you create types easyly with a fluent API to embrace Domain-driven design and value objects. This package contains type generators.</Description>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,15 +18,20 @@
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.4.0" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.4.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
-    <ItemGroup>
-        <!-- Generator dependencies -->
+    <!-- Generator dependencies -->
+    <ItemGroup Condition="'$(Configuration)'!='Debug'">
         <PackageReference Include="Basic.Reference.Assemblies" Version="1.4.1" GeneratePathProperty="true" PrivateAssets="all" />
         <PackageReference Include="Typely.Core" Version="0.0.1-dev" GeneratePathProperty="true" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)'=='Debug'">
+        <PackageReference Include="Basic.Reference.Assemblies" Version="1.4.1" />
+        <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
     </ItemGroup>
 
     <PropertyGroup>

@@ -2,9 +2,9 @@
 
 namespace Test;
 
-public class TypesConfiguration : ITypelysConfiguration
+public class TypesConfiguration : ITypelyConfiguration
 {
-    public void Configure(ITypelysBuilder builder)
+    public void Configure(ITypelyBuilder builder)
     {
         builder.For<int>("UserId");
         builder.For<string>("Username");

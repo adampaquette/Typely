@@ -31,7 +31,7 @@ public partial class TypelyGenerator
         /// Filter classes having an interface name <see cref="ITypelysConfiguration"/>.
         /// </summary>
         internal static bool IsSyntaxTargetForGeneration(SyntaxNode syntaxNode) =>
-            syntaxNode is ClassDeclarationSyntax c && c.HasInterface(nameof(ITypelysConfiguration));
+            syntaxNode is ClassDeclarationSyntax c && c.HasInterface(nameof(ITypelyConfiguration));
 
         /// <summary>
         /// Filter classes having an interface <see cref="ITypelysConfiguration"/> that matches the 
@@ -45,7 +45,7 @@ public partial class TypelyGenerator
             {
                 return null;
             }
-            return classSymbol.AllInterfaces.Any(x => x.ToString() == typeof(ITypelysConfiguration).FullName) ?
+            return classSymbol.AllInterfaces.Any(x => x.ToString() == typeof(ITypelyConfiguration).FullName) ?
                 classDeclarationSyntax : null;
         }
 
@@ -77,14 +77,14 @@ public partial class TypelyGenerator
             }
 
             var configurationTypes = configurationAssembly.GetTypes()
-                .Where(x => x.GetInterfaces().Select(x => x.FullName).Contains(typeof(ITypelysConfiguration).FullName))
+                .Where(x => x.GetInterfaces().Select(x => x.FullName).Contains(typeof(ITypelyConfiguration).FullName))
                 .ToList();
 
             var Typelys = new List<Typely>();
             foreach (var configurationType in configurationTypes)
             {
                 dynamic TypelysConfiguration = configurationAssembly.CreateInstance(configurationType.FullName);
-                var fluentBuilder = new TypelysBuilder(syntaxTree);
+                var fluentBuilder = new TypelyBuilder(syntaxTree);
                 TypelysConfiguration.Configure(fluentBuilder);
                 Typelys.AddRange(fluentBuilder.GetTypelys());
             }
@@ -107,7 +107,7 @@ public partial class TypelyGenerator
         {
             var compilation = CSharpCompilation.Create(assemblyName: $"Typely_{Path.GetRandomFileName()}")
                 .WithReferenceAssemblies(ReferenceAssemblyKind.NetStandard20)
-                .AddReferences(typeof(ITypelysConfiguration))
+                .AddReferences(typeof(ITypelyConfiguration))
                 .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                 .AddSyntaxTrees(syntaxTree);
 
@@ -147,12 +147,12 @@ public partial class TypelyGenerator
     //                DiagnosticSeverity.Error,
     //                isEnabledByDefault: true), null, null);
 
-    public class TypelysBuilder : ITypelysBuilder
+    public class TypelyBuilder : ITypelyBuilder
     {
         private List<Typely> _Typelys = new List<Typely>();
         private SyntaxTree _syntaxTree;
 
-        public TypelysBuilder(SyntaxTree syntaxTree)
+        public TypelyBuilder(SyntaxTree syntaxTree)
         {
             _syntaxTree = syntaxTree;
         }
