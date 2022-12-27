@@ -41,6 +41,8 @@
     <!-- For Debug builds -->
     <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
         <VersionSuffix Condition=" '$(VersionSuffix)'=='' ">dev</VersionSuffix>
+        <!-- There are currently limitations to package in debug with dependencies -->
+        <IsPackable>false</IsPackable> 
     </PropertyGroup>
 
     <!-- Set output folder for created NuGet packages -->
