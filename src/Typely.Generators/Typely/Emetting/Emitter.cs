@@ -1,14 +1,14 @@
-﻿namespace Typely.Generators;
+﻿using Typely.Generators.Typely.Parsing;
 
-public partial class TypelyGenerator
+namespace Typely.Generators.Typely.Emetting;
+
+internal class Emitter
 {
-    internal class Emitter
+    public string Emit(EmittableType emittableType)
     {
-        public string Emit(EmittableType emittableType)
-        {
-            var type = emittableType.UnderlyingType.Name;
+        var type = emittableType.UnderlyingType.Name;
 
-            return $$"""
+        return $$"""
                 namespace {{emittableType.Namespace}}
                 {
                     public struct {{emittableType.Name}} 
@@ -17,6 +17,5 @@ public partial class TypelyGenerator
                     }
                 }
                 """;
-        }
     }
 }

@@ -3,6 +3,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
 using System.Text;
+using Typely.Generators.Typely.Emetting;
+using Typely.Generators.Typely.Parsing;
 
 namespace Typely.Generators;
 
