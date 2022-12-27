@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using static Typely.Generators.TypelyGenerator;
 using Typely.Core;
 
 namespace Typely.Generators.Typely.Parsing;
