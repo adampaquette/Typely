@@ -2,7 +2,7 @@
   "profiles": {
     "Generator": {
       "commandName": "DebugRoslynComponent",
-      "targetProject": "..\\FluentType.Playground\\FluentType.Playground.csproj"
+      "targetProject": "..\\Typely.Playground\\Typely.Playground.csproj"
     }
   }
 }

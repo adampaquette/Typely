@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace FluentType.SourceGenerators.Extensions;
+namespace Typely.SourceGenerators.Extensions;
 
 internal static class ClassDeclarationSyntaxExtensions
 {

@@ -1,10 +1,10 @@
-﻿namespace FluentType.Generators;
+﻿namespace Typely.Generators;
 
-public partial class FluentTypeGenerator
+public partial class TypelyGenerator
 {
     internal class Emitter
     {
-        public string Emit(FluentType config)
+        public string Emit(Typely config)
         {
             var type = config.UnderlyingType.Name;
 

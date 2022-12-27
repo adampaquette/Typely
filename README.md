@@ -2,9 +2,9 @@
 # Example
 
 ```c#
-public class MyDomainTypesConfiguration : IFluentTypesConfiguration
+public class MyDomainTypesConfiguration : ITypelysConfiguration
 {
-    public void Configure(IFluentTypesBuilder builder)
+    public void Configure(ITypelysBuilder builder)
     {
         builder.For<int>("Likes");
         builder.For<decimal>("Rating").InclusiveBetween(0, 5);
@@ -151,7 +151,7 @@ All generated types implements `IValue`, giving access to the value.
 
 # Limitations
 
-- Currently classes implementing `IFluentTypesConfiguration` should have explicit references. This will be lift off in the futur.
+- Currently classes implementing `ITypelysConfiguration` should have explicit references. This will be lift off in the futur.
 
 # VNext
 

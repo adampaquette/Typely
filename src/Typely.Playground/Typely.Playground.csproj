@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
+        <ProjectReference Include="..\Typely.Generators\Typely.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+    </ItemGroup>
+</Project>

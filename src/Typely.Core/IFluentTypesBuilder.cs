@@ -1,20 +1,20 @@
 ﻿using System.Linq.Expressions;
 using System;
 
-namespace FluentType.Core;
+namespace Typely.Core;
 
-public interface IFluentTypesBuilder
+public interface ITypelysBuilder
 {
-    IFluentTypeBuilder<T> For<T>(string typeName);
+    ITypelyBuilder<T> For<T>(string typeName);
 }
 
-public interface IFluentTypeBuilder<T>
+public interface ITypelyBuilder<T>
 {
-    IFluentTypeBuilder<T> Namespace(string value);
-    IFluentTypeBuilder<T> AsStruct();
-    IFluentTypeBuilder<T> AsClass();
-    IFluentTypeBuilder<T> AsRecord();
-    IFluentTypeBuilder<T> WithName(string message);
+    ITypelyBuilder<T> Namespace(string value);
+    ITypelyBuilder<T> AsStruct();
+    ITypelyBuilder<T> AsClass();
+    ITypelyBuilder<T> AsRecord();
+    ITypelyBuilder<T> WithName(string message);
 
     IRuleBuilder<T> NotEmpty(); //T
     IRuleBuilder<T> NotEqual(T value); //T
@@ -33,7 +33,7 @@ public interface IFluentTypeBuilder<T>
     IRuleBuilder<T> PrecisionScale(int precision, int scale); //INumber
 }
 
-public interface IRuleBuilder<T> : IFluentTypeBuilder<T>
+public interface IRuleBuilder<T> : ITypelyBuilder<T>
 {
     IRuleBuilder<T> WithMessage(string message);
     IRuleBuilder<T> When(Expression<Func<T, bool>> predicate);

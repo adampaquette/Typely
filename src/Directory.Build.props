@@ -8,7 +8,7 @@
 
 	<PropertyGroup Label="PackageMetadata">
 		<Authors>Adam Paquette</Authors>
-		<RepositoryUrl>https://github.com/adampaquette/FluentType</RepositoryUrl>
+		<RepositoryUrl>https://github.com/adampaquette/Typely</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 </Project>

@@ -1,6 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 
-namespace FluentType.Benchmarks;
+namespace Typely.Benchmarks;
 
 public class EqualsBenchmark
 {

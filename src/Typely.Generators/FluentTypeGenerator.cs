@@ -4,10 +4,10 @@ using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
 using System.Text;
 
-namespace FluentType.Generators;
+namespace Typely.Generators;
 
 [Generator]
-public partial class FluentTypeGenerator : IIncrementalGenerator
+public partial class TypelyGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -31,19 +31,19 @@ public partial class FluentTypeGenerator : IIncrementalGenerator
 
         var distinctClasses = classes.Distinct();
         var parser = new Parser(compilation, context.ReportDiagnostic, context.CancellationToken);
-        var fluentTypes = parser.GetFluentTypes(distinctClasses);
+        var Typelys = parser.GetTypelys(distinctClasses);
 
-        if (fluentTypes.Count == 0)
+        if (Typelys.Count == 0)
         {
             return;
         }
 
         var emitter = new Emitter();
 
-        foreach (var fluentType in fluentTypes)
+        foreach (var Typely in Typelys)
         {
-            var source = emitter.Emit(fluentType);
-            context.AddSource($"{fluentType.Name}.g.cs", SourceText.From(source, Encoding.UTF8));
+            var source = emitter.Emit(Typely);
+            context.AddSource($"{Typely.Name}.g.cs", SourceText.From(source, Encoding.UTF8));
         }
     }
 }

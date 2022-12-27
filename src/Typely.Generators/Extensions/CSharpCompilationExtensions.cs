@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 
-namespace FluentType.Generators.Extensions;
+namespace Typely.Generators.Extensions;
 internal static class CSharpCompilationExtensions
 {
     public static CSharpCompilation AddReferences(this CSharpCompilation compilation, params Type[] references) =>

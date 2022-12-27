@@ -1,6 +1,6 @@
 ﻿
 using BenchmarkDotNet.Running;
-using FluentType.Benchmarks;
+using Typely.Benchmarks;
 
 BenchmarkRunner.Run<EqualsBenchmark.GuidTests>();
 //BenchmarkRunner.Run(typeof(Program).Assembly);
