@@ -1,6 +1,7 @@
 ﻿
 
 var a = "";
+
 //public struct Age
 //{ 
 //    //private Age() { }

@@ -4,7 +4,7 @@
 ```c#
 public class MyDomainTypesConfiguration : IFluentTypesConfiguration
 {
-    public void Configure(FluentTypeBuilder builder)
+    public void Configure(IFluentTypesBuilder builder)
     {
         builder.For<int>("Likes");
         builder.For<decimal>("Rating").InclusiveBetween(0, 5);

@@ -5,15 +5,11 @@
         <LangVersion>latest</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-        <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
-        <IsRoslynComponent>true</IsRoslynComponent>       
-        <PreserveCompilationContext>true</PreserveCompilationContext>
-        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <IsRoslynComponent>true</IsRoslynComponent>
     </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Basic.Reference.Assemblies" Version="1.4.1" />
+    <ItemGroup>       
+        <PackageReference Include="H.Generators.Extensions" Version="1.8.3" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" PrivateAssets="all" />
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
             <PrivateAssets>all</PrivateAssets>
@@ -28,7 +24,20 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\FluentType.Core\FluentType.Core.csproj" />
+        <!-- Generator dependencies -->
+        <PackageReference Include="Basic.Reference.Assemblies" Version="1.4.1" />
+        <PackageReference Include="FluentType.Core" Version="1.0.0" />
     </ItemGroup>
+
+    <PropertyGroup>
+        <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
+        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <Target Name="GetDependencyTargetPaths">
+        <ItemGroup>
+            <TargetPathWithTargetPlatformMoniker Include="$(PKGFluentType_Core)\lib\netstandard2.0\FluentType.Core.dll" IncludeRuntimeDependency="false" />
+        </ItemGroup>
+    </Target>
 
 </Project>

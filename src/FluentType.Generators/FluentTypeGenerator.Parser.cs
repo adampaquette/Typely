@@ -7,9 +7,6 @@ using System.Reflection;
 using FluentType.Generators.Extensions;
 using Basic.Reference.Assemblies;
 using System.Linq.Expressions;
-using System.Reflection.Metadata;
-using static FluentType.Generators.FluentTypeGenerator;
-using System.Diagnostics;
 
 namespace FluentType.Generators;
 
@@ -80,13 +77,13 @@ public partial class FluentTypeGenerator
             }
 
             var configurationTypes = configurationAssembly.GetTypes()
-                .Where(x => x.GetInterfaces().Contains(typeof(IFluentTypesConfiguration)))
+                .Where(x => x.GetInterfaces().Select(x => x.FullName).Contains(typeof(IFluentTypesConfiguration).FullName))
                 .ToList();
 
             var fluentTypes = new List<FluentType>();
             foreach (var configurationType in configurationTypes)
             {
-                var fluentTypesConfiguration = (IFluentTypesConfiguration)configurationAssembly.CreateInstance(configurationType.FullName);
+                dynamic fluentTypesConfiguration = configurationAssembly.CreateInstance(configurationType.FullName);
                 var fluentBuilder = new FluentTypesBuilder(syntaxTree);
                 fluentTypesConfiguration.Configure(fluentBuilder);
                 fluentTypes.AddRange(fluentBuilder.GetFluentTypes());
@@ -98,18 +95,10 @@ public partial class FluentTypeGenerator
         /// <summary>
         /// Only resolve known assemblies. 
         /// </summary>
-        private Assembly? CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            var log = string.Join(",", AppDomain.CurrentDomain.GetAssemblies().Select(x => x.FullName));
-            Debug.WriteLine(log);
-            Console.WriteLine(log);
-
-            // AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == args.Name)
-
-            return args.Name == "FluentType.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-                ? Assembly.LoadFile("C:\\Users\\nfs12\\source\\repos\\FluentType\\src\\FluentType.Core\\bin\\Debug\\netstandard2.0\\FluentType.Core.dll")
-                : null;
-        }
+        private Assembly? CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args) =>
+            args.Name == "FluentType.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                ? AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == args.Name)
+                : null;        
 
         /// <summary>
         /// Compiles the user's code.
