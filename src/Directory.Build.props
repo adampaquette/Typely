@@ -1,4 +1,9 @@
 <Project>
+    <!-- Set the repository root into a variable -->
+    <PropertyGroup>
+        <SourceRoot>$(MSBuildThisFileDirectory)</SourceRoot>
+    </PropertyGroup>
+    
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
@@ -6,9 +11,39 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
-	<PropertyGroup Label="PackageMetadata">
+    <!-- Set common assembly and nuget properties -->
+	<PropertyGroup>
 		<Authors>Adam Paquette</Authors>
+        <Product>Typely</Product>
 		<RepositoryUrl>https://github.com/adampaquette/Typely</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIcon>logo.png</PackageIcon>
+        <PackageTags>Typerly Value Object Fluent Primitive C# .NET</PackageTags>
 	</PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="$(SourceRoot)../assets/logo.png" Pack="true" Visible="false" PackagePath="/" />
+    </ItemGroup>
+
+    <!-- Common compile parameters -->
+    <PropertyGroup>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <NoWarn>$(NoWarn);</NoWarn>
+    </PropertyGroup>
+
+    <!-- Versioning properties -->
+    <PropertyGroup>
+        <AssemblyVersion>0.0.1</AssemblyVersion>
+        <VersionPrefix Condition=" '$(VersionPrefix)'=='' ">0.0.1</VersionPrefix>
+    </PropertyGroup>
+
+    <!-- For Debug builds -->
+    <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
+        <VersionSuffix Condition=" '$(VersionSuffix)'=='' ">dev</VersionSuffix>        
+    </PropertyGroup>
+
+    <!-- Set output folder for created NuGet packages -->
+    <PropertyGroup>
+        <PackageOutputPath Condition=" '$(PackageOutputPath)'=='' ">$(SourceRoot)../artifacts/$(Configuration)</PackageOutputPath>
+    </PropertyGroup>
 </Project>
