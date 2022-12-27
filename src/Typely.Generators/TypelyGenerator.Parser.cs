@@ -50,22 +50,22 @@ public partial class TypelyGenerator
         }
 
         /// <summary>
-        /// Execute the different <see cref="ITypelysConfiguration"/> classes founds and generate models of the desired user types.
+        /// Execute the different <see cref="ITypelyConfiguration"/> classes founds and generate models of the desired user types.
         /// </summary>
         /// <param name="classes">Classes to parse.</param>
         /// <returns>A list of representation of desired user types.</returns>
-        public IReadOnlyList<Typely> GetTypelys(IEnumerable<ClassDeclarationSyntax> classes)
+        public IReadOnlyList<EmittableType> GetEmittableTypes(IEnumerable<ClassDeclarationSyntax> classes)
         {
             // We enumerate by syntax tree, to minimize impact on performance
-            return classes.GroupBy(x => x.SyntaxTree).SelectMany(x => GetTypelys(x.Key)).ToList().AsReadOnly();
+            return classes.GroupBy(x => x.SyntaxTree).SelectMany(x => GetEmittableTypes(x.Key)).ToList().AsReadOnly();
         }
 
         /// <summary>
-        /// Execute the different <see cref="ITypelysConfiguration"/> classes and generate models of the desired user types.
+        /// Execute the different <see cref="ITypelyConfiguration"/> classes and generate models of the desired user types.
         /// </summary>
         /// <param name="syntaxTree">SyntaxTree to parse</param>
         /// <returns>A list of representation of desired user types.</returns>
-        private IReadOnlyList<Typely> GetTypelys(SyntaxTree syntaxTree)
+        private IEnumerable<EmittableType> GetEmittableTypes(SyntaxTree syntaxTree)
         {
             // Stop if we're asked to
             _cancellationToken.ThrowIfCancellationRequested();
@@ -73,30 +73,30 @@ public partial class TypelyGenerator
             var configurationAssembly = CreateConfigurationAssembly(syntaxTree);
             if (configurationAssembly == null)
             {
-                return Array.Empty<Typely>();
+                return Array.Empty<EmittableType>();
             }
 
             var configurationTypes = configurationAssembly.GetTypes()
                 .Where(x => x.GetInterfaces().Select(x => x.FullName).Contains(typeof(ITypelyConfiguration).FullName))
                 .ToList();
 
-            var Typelys = new List<Typely>();
+            var emittableTypes = new List<EmittableType>();
             foreach (var configurationType in configurationTypes)
             {
-                dynamic TypelysConfiguration = configurationAssembly.CreateInstance(configurationType.FullName);
-                var fluentBuilder = new TypelyBuilder(syntaxTree);
-                TypelysConfiguration.Configure(fluentBuilder);
-                Typelys.AddRange(fluentBuilder.GetTypelys());
+                var configuration = (ITypelyConfiguration)configurationAssembly.CreateInstance(configurationType.FullName);
+                var builder = new TypelyBuilder(syntaxTree, configurationType);
+                configuration.Configure(builder);
+                emittableTypes.AddRange(builder.GetEmittableTypes());
             }
 
-            return Typelys;
+            return emittableTypes;
         }
 
         /// <summary>
         /// Only resolve known assemblies. 
         /// </summary>
         private Assembly? CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args) =>
-            args.Name == "Typely.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+            args.Name.Contains($"{nameof(Typely)}.{nameof(Core)}")
                 ? AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == args.Name)
                 : null;        
 
@@ -105,7 +105,7 @@ public partial class TypelyGenerator
         /// </summary>
         private Assembly? CreateConfigurationAssembly(SyntaxTree syntaxTree)
         {
-            var compilation = CSharpCompilation.Create(assemblyName: $"Typely_{Path.GetRandomFileName()}")
+            var compilation = CSharpCompilation.Create(assemblyName: $"{nameof(Typely)}_{Path.GetRandomFileName()}")
                 .WithReferenceAssemblies(ReferenceAssemblyKind.NetStandard20)
                 .AddReferences(typeof(ITypelyConfiguration))
                 .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
@@ -149,40 +149,43 @@ public partial class TypelyGenerator
 
     public class TypelyBuilder : ITypelyBuilder
     {
-        private List<Typely> _Typelys = new List<Typely>();
+        private List<EmittableType> _emittableTypes = new List<EmittableType>();
         private SyntaxTree _syntaxTree;
+        private readonly Type _configurationType;
 
-        public TypelyBuilder(SyntaxTree syntaxTree)
+        public TypelyBuilder(SyntaxTree syntaxTree, Type configurationType)
         {
             _syntaxTree = syntaxTree;
+            _configurationType = configurationType;
         }
 
         public ITypelyBuilder<T> For<T>(string typeName)
         {
-            var TypelyConfiguration = new Typely
+            var emittableType = new EmittableType
             {
                 UnderlyingType = typeof(T),
                 SyntaxTree = _syntaxTree,
-                Name = typeName
+                Name = typeName,
+                Namespace = _configurationType.Namespace
             };
-            _Typelys.Add(TypelyConfiguration);
+            _emittableTypes.Add(emittableType);
 
-            return new RuleBuilder<T>(TypelyConfiguration);
+            return new RuleBuilder<T>(emittableType);
         }
 
-        public IReadOnlyList<Typely> GetTypelys() =>
-            _Typelys.ToList().AsReadOnly();
+        public IReadOnlyList<EmittableType> GetEmittableTypes() =>
+            _emittableTypes.ToList().AsReadOnly();
     }
 
-    public record struct Typely(SyntaxTree SyntaxTree, Type UnderlyingType, string Name);
+    public record struct EmittableType(SyntaxTree SyntaxTree, Type UnderlyingType, string Name, string Namespace);
 
     public class RuleBuilder<T> : TypelyBuilder<T>, IRuleBuilder<T>
     {
-        private readonly Typely _type;
+        private readonly EmittableType _emittableType;
 
-        public RuleBuilder(Typely type)
+        public RuleBuilder(EmittableType emittableType)
         {
-            _type = type;
+            _emittableType = emittableType;
         }
 
         public IRuleBuilder<T> When(Expression<Func<T, bool>> predicate)

@@ -28,7 +28,7 @@
     <!-- Common compile parameters -->
     <PropertyGroup>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <NoWarn>$(NoWarn);</NoWarn>
+        <NoWarn>$(NoWarn);NU5128</NoWarn>
     </PropertyGroup>
 
     <!-- Versioning properties -->

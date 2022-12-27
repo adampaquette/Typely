@@ -5,10 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Typely.Generators" Version="0.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
+        <ProjectReference Include="..\Typely.Generators\Typely.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
     </ItemGroup>
 </Project>

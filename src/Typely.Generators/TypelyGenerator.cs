@@ -31,19 +31,27 @@ public partial class TypelyGenerator : IIncrementalGenerator
 
         var distinctClasses = classes.Distinct();
         var parser = new Parser(compilation, context.ReportDiagnostic, context.CancellationToken);
-        var Typelys = parser.GetTypelys(distinctClasses);
-
-        if (Typelys.Count == 0)
+        
+        try
         {
-            return;
+            var emittableTypes = parser.GetEmittableTypes(distinctClasses);
+
+            if (emittableTypes.Count == 0)
+            {
+                return;
+            }
+
+            var emitter = new Emitter();
+
+            foreach (var emittableType in emittableTypes)
+            {
+                var source = emitter.Emit(emittableType);
+                context.AddSource($"{emittableType.Name}.g.cs", SourceText.From(source, Encoding.UTF8));
+            }
         }
-
-        var emitter = new Emitter();
-
-        foreach (var Typely in Typelys)
+        catch (Exception)
         {
-            var source = emitter.Emit(Typely);
-            context.AddSource($"{Typely.Name}.g.cs", SourceText.From(source, Encoding.UTF8));
+            throw;
         }
     }
 }

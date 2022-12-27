@@ -24,19 +24,23 @@
     </ItemGroup>
 
     <!-- Generator dependencies -->
-    <ItemGroup Condition="'$(Configuration)'!='Debug'">
+    <ItemGroup>
         <PackageReference Include="Basic.Reference.Assemblies" Version="1.4.1" GeneratePathProperty="true" PrivateAssets="all" />
+    </ItemGroup>
+    
+    <ItemGroup Condition="'$(Configuration)'!='Debug'">        
         <PackageReference Include="Typely.Core" Version="0.0.1" GeneratePathProperty="true" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'=='Debug'">
-        <PackageReference Include="Basic.Reference.Assemblies" Version="1.4.1" />
         <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
     </ItemGroup>
 
     <PropertyGroup>
         <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
         <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     </PropertyGroup>
 
     <Target Name="GetDependencyTargetPaths">

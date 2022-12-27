@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33103.201
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Playground", "Typely.Playground\Typely.Playground.csproj", "{6F2B0814-D001-4CCD-81A0-AB1226EF5D60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Generators.Tester", "Typely.Generators.Tester\Typely.Generators.Tester.csproj", "{6F2B0814-D001-4CCD-81A0-AB1226EF5D60}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Benchmarks", "Typely.Benchmarks\Typely.Benchmarks.csproj", "{63BCC1A7-CD97-4990-BDFB-AFA0585D9410}"
 EndProject
@@ -17,6 +17,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Generators", "Typely.Generators\Typely.Generators.csproj", "{56060B69-59C7-46FC-ABC3-B2C4A0C3EAFD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Core", "Typely.Core\Typely.Core.csproj", "{B36F5C90-D068-4D41-8D2E-44FD87060CBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.Consumer", "Typely.Consumer\Typely.Consumer.csproj", "{F86339F7-E43A-490B-B8F3-E75DDD94F8F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +42,10 @@ Global
 		{B36F5C90-D068-4D41-8D2E-44FD87060CBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B36F5C90-D068-4D41-8D2E-44FD87060CBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B36F5C90-D068-4D41-8D2E-44FD87060CBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F86339F7-E43A-490B-B8F3-E75DDD94F8F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F86339F7-E43A-490B-B8F3-E75DDD94F8F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F86339F7-E43A-490B-B8F3-E75DDD94F8F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F86339F7-E43A-490B-B8F3-E75DDD94F8F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
