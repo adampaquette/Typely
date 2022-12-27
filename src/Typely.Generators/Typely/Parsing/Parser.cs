@@ -27,13 +27,13 @@ internal sealed class Parser : IDisposable
     }
 
     /// <summary>
-    /// Filter classes having an interface name <see cref="ITypelysConfiguration"/>.
+    /// Filter classes having an interface name <see cref="ITypelyConfiguration"/>.
     /// </summary>
     internal static bool IsSyntaxTargetForGeneration(SyntaxNode syntaxNode) =>
         syntaxNode is ClassDeclarationSyntax c && c.HasInterface(nameof(ITypelyConfiguration));
 
     /// <summary>
-    /// Filter classes having an interface <see cref="ITypelysConfiguration"/> that matches the 
+    /// Filter classes having an interface <see cref="ITypelyConfiguration"/> that matches the 
     /// namespace and returns the <see cref="ClassDeclarationSyntax"/>.
     /// </summary>
     internal static ClassDeclarationSyntax? GetSemanticTargetForGeneration(GeneratorSyntaxContext context)
