@@ -9,8 +9,6 @@ using Typely.Generators.Extensions;
 
 namespace Typely.Generators.Typely.Parsing;
 
-internal record struct EmittableType(SyntaxTree SyntaxTree, Type UnderlyingType, string Name, string Namespace);
-
 internal sealed class Parser : IDisposable
 {
     private readonly CancellationToken _cancellationToken;

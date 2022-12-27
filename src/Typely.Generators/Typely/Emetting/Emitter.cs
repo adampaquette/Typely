@@ -6,7 +6,7 @@ internal class Emitter
 {
     public string Emit(EmittableType emittableType)
     {
-        var type = emittableType.UnderlyingType.Name;
+        var type = emittableType.UnderlyingType!.Name;
 
         return $$"""
                 namespace {{emittableType.Namespace}}
