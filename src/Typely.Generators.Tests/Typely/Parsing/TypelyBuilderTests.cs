@@ -13,7 +13,7 @@ public class TypelyBuilderTests
         var emittableTypes = builder.GetEmittableTypes();
 
         var emittableType = Assert.Single(emittableTypes);
-        Assert.Equal(expectedTypeName, emittableType.Namespace);
+        Assert.Equal(expectedTypeName, emittableType.Name);
     }
 
     [Fact]
