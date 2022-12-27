@@ -32,10 +32,9 @@
     <ItemGroup Condition="'$(Configuration)'=='Debug'">
         <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
     </ItemGroup>
-
+    
     <PropertyGroup>
         <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
-        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     </PropertyGroup>
