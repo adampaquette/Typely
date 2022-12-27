@@ -23,6 +23,7 @@
     
     <ItemGroup>
         <None Include="$(SourceRoot)../assets/logo.png" Pack="true" Visible="false" PackagePath="/" />
+        <InternalsVisibleTo Include="$(AssemblyName).Tests" />
     </ItemGroup>
 
     <!-- Common compile parameters -->
