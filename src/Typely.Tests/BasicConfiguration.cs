@@ -6,6 +6,6 @@ public class BasicConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.For<string>("Password");
+        builder.For<string>("FirstName");
     }
 }
