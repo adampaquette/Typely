@@ -1,4 +1,4 @@
-![Typely](assets/logo-400.png)
+![Typely](assets/logo-300.png)
 
 Typerly let you create types easyly with a fluent API to embrace Domain-driven design and value objects. 
 
