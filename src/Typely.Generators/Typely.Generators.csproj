@@ -30,7 +30,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'=='Debug'">
-        <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
+        <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
     </ItemGroup>
     
     <PropertyGroup>
@@ -40,9 +40,14 @@
     </PropertyGroup>
 
     <Target Name="GetDependencyTargetPaths">
+        <ItemGroup>           
+            <TargetPathWithTargetPlatformMoniker Include="$(PKGBasic_Reference_Assemblies)\lib\netstandard2.0\Basic.Reference.Assemblies.dll" IncludeRuntimeDependency="false" />
+        </ItemGroup>
+        <ItemGroup Condition="'$(Configuration)'=='Debug'">
+            <TargetPathWithTargetPlatformMoniker Include="..\Typely.Core\$(OutputPath)Typely.Core.dll" IncludeRuntimeDependency="false" />
+        </ItemGroup>
         <ItemGroup Condition="'$(Configuration)'!='Debug'">
             <TargetPathWithTargetPlatformMoniker Include="$(PKGTypely_Core)\lib\netstandard2.0\Typely.Core.dll" IncludeRuntimeDependency="false" />
-            <TargetPathWithTargetPlatformMoniker Include="$(PKGBasic_Reference_Assemblies)\lib\netstandard2.0\Basic.Reference.Assemblies.dll" IncludeRuntimeDependency="false" />
             <!-- Pack both our DLL and the dependencies into a generated Nuget Package -->
             <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
             <None Include="$(PKGTypely_Core)\lib\netstandard2.0\Typely.Core.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
