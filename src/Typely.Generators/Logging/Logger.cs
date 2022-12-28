@@ -17,5 +17,6 @@ internal static class Logger
     public static void WriteFile(SourceProductionContext context)
     {
         context.AddSource($"Logs.g.cs", SourceText.From("/*" + _logs.ToString() + "*/", Encoding.UTF8));
+        _logs.Clear();
     }
 }
