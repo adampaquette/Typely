@@ -17,19 +17,22 @@ internal class TypelyBuilder<T> : ITypelyBuilder<T>
     public ITypelyBuilder<T> AsClass()
     {
         Logger.Log("AsClass");
-        throw new NotImplementedException();
+        _emittableType.ObjectType = ObjectType.Class;
+        return this;
     }
 
     public ITypelyBuilder<T> AsRecord()
     {
         Logger.Log("AsRecord");
-        throw new NotImplementedException();
+        _emittableType.ObjectType = ObjectType.Record;
+        return this;
     }
 
     public ITypelyBuilder<T> AsStruct()
     {
         Logger.Log("AsStruct");
-        throw new NotImplementedException();
+        _emittableType.ObjectType = ObjectType.Struct;
+        return this;
     }
 
     public IRuleBuilder<T> ExclusiveBetween(T min, T max)

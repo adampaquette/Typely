@@ -4,18 +4,27 @@ namespace Typely.Generators.Typely.Emetting;
 
 internal class Emitter
 {
-    public string Emit(EmittableType emittableType)
+    public string Emit(EmittableType t)
     {
-        var type = emittableType.UnderlyingType!.Name;
+        var underlyingType = t.UnderlyingType!.Name;
+        var objectType = GetObjectType(t.ObjectType);
 
         return $$"""
-                namespace {{emittableType.Namespace}}
+                namespace {{t.Namespace}}
                 {
-                    public struct {{emittableType.Name}} 
+                    public {{objectType}} {{t.Name}} 
                     {
-                        public {{type}} Value {get; set;}
+                        public {{underlyingType}} Value {get; set;}
                     }
                 }
                 """;
     }
+
+    public string GetObjectType(ObjectType objectType) => objectType switch
+    {
+        ObjectType.Struct => "struct",
+        ObjectType.Record => "record",
+        ObjectType.Class => "class",
+        _ => throw new ArgumentOutOfRangeException(nameof(objectType), $"Unexpected value {objectType}"),
+    };
 }

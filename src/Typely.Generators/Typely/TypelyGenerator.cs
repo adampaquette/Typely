@@ -6,7 +6,6 @@ using System.Text;
 using Typely.Generators.Logging;
 using Typely.Generators.Typely.Emetting;
 using Typely.Generators.Typely.Parsing;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Typely.Generators;
 
