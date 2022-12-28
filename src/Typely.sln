@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33103.201
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Generators.Tester", "Typely.Generators.Tester\Typely.Generators.Tester.csproj", "{6F2B0814-D001-4CCD-81A0-AB1226EF5D60}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Benchmarks", "Typely.Benchmarks\Typely.Benchmarks.csproj", "{63BCC1A7-CD97-4990-BDFB-AFA0585D9410}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0FD893A2-2A37-4E40-A600-55C9A3BD476D}"
@@ -18,9 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Generators", "Typely
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Core", "Typely.Core\Typely.Core.csproj", "{B36F5C90-D068-4D41-8D2E-44FD87060CBC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Consumer.Tester", "Typely.Consumer.Tester\Typely.Consumer.Tester.csproj", "{F86339F7-E43A-490B-B8F3-E75DDD94F8F7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.Generators.Tests", "Typely.Generators.Tests\Typely.Generators.Tests.csproj", "{1022A22B-2C4D-44F5-8B8C-8D80557F67E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Generators.Tests", "Typely.Generators.Tests\Typely.Generators.Tests.csproj", "{1022A22B-2C4D-44F5-8B8C-8D80557F67E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,10 +24,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6F2B0814-D001-4CCD-81A0-AB1226EF5D60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F2B0814-D001-4CCD-81A0-AB1226EF5D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6F2B0814-D001-4CCD-81A0-AB1226EF5D60}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F2B0814-D001-4CCD-81A0-AB1226EF5D60}.Release|Any CPU.Build.0 = Release|Any CPU
 		{63BCC1A7-CD97-4990-BDFB-AFA0585D9410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{63BCC1A7-CD97-4990-BDFB-AFA0585D9410}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63BCC1A7-CD97-4990-BDFB-AFA0585D9410}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -44,10 +36,6 @@ Global
 		{B36F5C90-D068-4D41-8D2E-44FD87060CBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B36F5C90-D068-4D41-8D2E-44FD87060CBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B36F5C90-D068-4D41-8D2E-44FD87060CBC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F86339F7-E43A-490B-B8F3-E75DDD94F8F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F86339F7-E43A-490B-B8F3-E75DDD94F8F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F86339F7-E43A-490B-B8F3-E75DDD94F8F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F86339F7-E43A-490B-B8F3-E75DDD94F8F7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1022A22B-2C4D-44F5-8B8C-8D80557F67E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1022A22B-2C4D-44F5-8B8C-8D80557F67E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1022A22B-2C4D-44F5-8B8C-8D80557F67E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
