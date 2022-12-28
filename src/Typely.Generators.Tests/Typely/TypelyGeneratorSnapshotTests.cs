@@ -5,13 +5,22 @@ namespace Typely.Generators.Tests.Typely;
 [UsesVerify]
 public class TypelyGeneratorSnapshotTests
 {
-    [Theory]
-    [InlineData(nameof(BasicConfiguration))]
-    //[InlineData(nameof(NamespaceConfiguration))]
-    public Task Basic(string className)
+    [Fact]
+    public Task Basic()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurationFileFromClassName(className)
+            .WithConfigurationFileFromClassName(nameof(BasicConfiguration))
+            .Create()
+            .Run();
+
+        return Verify(driver);
+    }
+
+    [Fact]
+    public Task Namespace()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurationFileFromClassName(nameof(NamespaceConfiguration))
             .Create()
             .Run();
 

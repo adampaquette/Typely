@@ -1,4 +1,5 @@
-﻿using Typely.Core;
+﻿using System;
+using Typely.Core;
 
 namespace Typely.Generators.Tests.Typely.Configurations;
 
