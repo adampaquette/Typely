@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Typely.Core;
 
 namespace Typely.Generators.Tests.Typely;
+
 internal class TypelyGeneratorDriverFixture : BaseFixture<TypelyGeneratorDriver>
 {
     private string? _sourceFilePath;
@@ -29,9 +30,9 @@ internal class TypelyGeneratorDriverFixture : BaseFixture<TypelyGeneratorDriver>
         return this;
     }
 
-    public TypelyGeneratorDriverFixture WithConfigurationFileFromClassName(string methodName)
+    public TypelyGeneratorDriverFixture WithClassConfigurationFile(string className)
     {
-        var fileName = methodName + ".cs";
+        var fileName = className + ".cs";
         return WithConfigurationFileFromFileName(fileName);
     }
 

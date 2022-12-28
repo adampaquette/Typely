@@ -9,7 +9,7 @@ public class TypelyGeneratorSnapshotTests
     public Task Basic()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurationFileFromClassName(nameof(BasicConfiguration))
+            .WithClassConfigurationFile(nameof(BasicConfiguration))
             .Create()
             .Run();
 
@@ -20,7 +20,7 @@ public class TypelyGeneratorSnapshotTests
     public Task Namespace()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurationFileFromClassName(nameof(NamespaceConfiguration))
+            .WithClassConfigurationFile(nameof(NamespaceConfiguration))
             .Create()
             .Run();
 
