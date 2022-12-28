@@ -1,9 +1,10 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Typely.Generators.Typely;
 
 namespace Typely.Generators.Tests.Typely;
 
-internal class TypelyGeneratorDriver : IGeneratorDriver
+internal class TypelyGeneratorDriver
 {
     private Compilation _compilation;
 
@@ -12,9 +13,9 @@ internal class TypelyGeneratorDriver : IGeneratorDriver
         _compilation = compilation;
     }
 
-    public GeneratorDriverRunResult Run()
+    public GeneratorDriver Run()
     {
-        // directly create an instance of the generator
+        // Directly create an instance of the generator
         // (Note: in the compiler this is loaded from an assembly, and created via reflection at runtime)
         var generator = new TypelyGenerator();
 
@@ -23,8 +24,6 @@ internal class TypelyGeneratorDriver : IGeneratorDriver
 
         // Run the generation pass
         // (Note: the generator driver itself is immutable, and all calls return an updated version of the driver that you should use for subsequent calls)
-        driver = driver.RunGeneratorsAndUpdateCompilation(_compilation, out var _, out var _);
-
-        return driver.GetRunResult();
+        return driver.RunGenerators(_compilation);
     }
 }

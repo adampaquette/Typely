@@ -1,8 +1,8 @@
 ﻿using Typely.Core;
 
-namespace Typely.Generators.Tests.Typely.ConfigurationsUnderTest;
+namespace Typely.Generators.Tests.Typely.Configurations;
 
-public class SimpleConfiguration : ITypelyConfiguration
+public class BasicConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {

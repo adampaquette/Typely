@@ -1,6 +1,6 @@
 ﻿using Typely.Core;
 
-namespace Typely.Generators.Tests.Typely.ConfigurationsUnderTest;
+namespace Typely.Generators.Tests.Typely.Configurations;
 
 internal class NamespaceConfiguration : ITypelyConfiguration
 {
@@ -12,7 +12,7 @@ internal class NamespaceConfiguration : ITypelyConfiguration
         builder.For<string>("Password")
             .Namespace("B");
 
-        builder.For<string>("Password2")
+        builder.For<Guid>("Key")
             .Namespace("C");
     }
 }

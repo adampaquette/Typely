@@ -7,7 +7,7 @@ using Typely.Generators.Logging;
 using Typely.Generators.Typely.Emetting;
 using Typely.Generators.Typely.Parsing;
 
-namespace Typely.Generators;
+namespace Typely.Generators.Typely;
 
 [Generator]
 public partial class TypelyGenerator : IIncrementalGenerator

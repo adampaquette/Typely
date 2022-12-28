@@ -4,7 +4,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using System.Reflection;
 using Typely.Core;
-using Typely.SourceGenerators.Extensions;
 using Typely.Generators.Extensions;
 
 namespace Typely.Generators.Typely.Parsing;

@@ -1,6 +1,6 @@
 ﻿using Typely.Core;
 
-namespace MyTypes;
+namespace Typely.Consumer.Tester;
 
 public class TypelyConfiguration : ITypelyConfiguration
 {

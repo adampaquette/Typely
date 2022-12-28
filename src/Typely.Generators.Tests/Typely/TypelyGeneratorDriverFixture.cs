@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using System.Reflection;
+using Typely.Core;
 
 namespace Typely.Generators.Tests.Typely;
 internal class TypelyGeneratorDriverFixture : BaseFixture<TypelyGeneratorDriver>
@@ -19,26 +19,29 @@ internal class TypelyGeneratorDriverFixture : BaseFixture<TypelyGeneratorDriver>
 
             // Create the 'input' compilation that the generator will act on
             var source = File.ReadAllText(_sourceFilePath);
-            return CreateCompilation(source);            
+            return CreateCompilation(source);
         });
     }
 
     public TypelyGeneratorDriverFixture WithConfigurationFileFromFileName(string fileName)
     {
-        _sourceFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"..\\..\\..\\Typely\\ConfigurationsUnderTest\\{fileName}");
+        _sourceFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"..\\..\\..\\{nameof(Typely)}\\{nameof(Configurations)}\\{fileName}");
         return this;
     }
 
-    public TypelyGeneratorDriverFixture WithConfigurationFileFromMethodName(string methodName)
+    public TypelyGeneratorDriverFixture WithConfigurationFileFromClassName(string methodName)
     {
-        var prefixLength = "Generator_With_".Length;
-        var fileName = methodName.Substring(prefixLength) + ".cs";
+        var fileName = methodName + ".cs";
         return WithConfigurationFileFromFileName(fileName);
     }
 
-    private static Compilation CreateCompilation(string source)
-           => CSharpCompilation.Create("compilation",
-               new[] { CSharpSyntaxTree.ParseText(source) },
-               new[] { MetadataReference.CreateFromFile(typeof(Binder).GetTypeInfo().Assembly.Location) },
-               new CSharpCompilationOptions(OutputKind.ConsoleApplication));
+    private static Compilation CreateCompilation(string source) => 
+        CSharpCompilation.Create(
+            assemblyName: "tests",
+            syntaxTrees: new[] { CSharpSyntaxTree.ParseText(source) },
+            references: new[] 
+            { 
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(ITypelyConfiguration).Assembly.Location),
+            });
 }
