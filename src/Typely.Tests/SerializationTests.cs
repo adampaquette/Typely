@@ -5,27 +5,33 @@ public class SerializationTests
     [Fact]
     public void SystemTextJson_Should_Serialize()
     {
-        var firstName = new FirstName
+        var obj = new BasicClass
         {
-            Value = "Adam"
+            FirstName = new FirstName
+            {
+                Value = "Adam"
+            }
         };
 
-        var actual = System.Text.Json.JsonSerializer.Serialize(firstName);
+        var actual = System.Text.Json.JsonSerializer.Serialize(obj);
 
-        Assert.Equal("{\"Value\":\"Adam\"}", actual);
+        Assert.Equal("{\"FirstName\":\"Adam\"}", actual);
     }
 
     [Fact]
     public void SystemTextJson_Should_Deserialize()
     {
-        var expected = new FirstName
+        var expected = new BasicClass
         {
-            Value = "Adam"
+            FirstName = new FirstName
+            {
+                Value = "Adam"
+            }
         };
 
-        var firstName = "{\"Value\":\"Adam\"}";
+        var obj = "{\"FirstName\":\"Adam\"}";
 
-        var actual = System.Text.Json.JsonSerializer.Deserialize<FirstName>(firstName);
+        var actual = System.Text.Json.JsonSerializer.Deserialize<BasicClass>(obj);
 
         Assert.Equal(expected, actual);
     }
@@ -33,27 +39,33 @@ public class SerializationTests
     [Fact]
     public void Newtonsoft_Json_Should_Serialize()
     {
-        var firstName = new FirstName
+        var obj = new BasicClass
         {
-            Value = "Adam"
+            FirstName = new FirstName
+            {
+                Value = "Adam"
+            }
         };
 
-        var actual = Newtonsoft.Json.JsonConvert.SerializeObject(firstName);
+        var actual = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
 
-        Assert.Equal("{\"Value\":\"Adam\"}", actual);
+        Assert.Equal("{\"FirstName\":\"Adam\"}", actual);
     }
 
     [Fact]
     public void Newtonsoft_Json_Should_Deserialize()
     {
-        var expected = new FirstName
+        var expected = new BasicClass
         {
-            Value = "Adam"
+            FirstName = new FirstName
+            {
+                Value = "Adam"
+            }
         };
 
-        var firstName = "{\"Value\":\"Adam\"}";
+        var obj = "{\"FirstName\":\"Adam\"}";
 
-        var actual = Newtonsoft.Json.JsonConvert.DeserializeObject<FirstName>(firstName);
+        var actual = Newtonsoft.Json.JsonConvert.DeserializeObject<BasicClass>(obj);
 
         Assert.Equal(expected, actual);
     }
