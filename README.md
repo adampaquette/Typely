@@ -1,3 +1,7 @@
+![Typely](assets/logo.png)
+
+Typerly let you create types easyly with a fluent API to embrace Domain-driven design and value objects. 
+
 
 # Example
 
