@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+      <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Typely.Core" Version="0.0.3" />
+    <PackageReference Include="Typely.Generators" Version="0.0.3" />
+  </ItemGroup>
+
+</Project>

@@ -7,8 +7,8 @@ public class TypelyConfiguration : ITypelyConfiguration
     public void Configure(ITypelyBuilder builder)
     {
         builder.For<int>("UserId")
-            .Namespace("CustomTypes");
+            .Namespace("aa");
 
-        builder.For<string>("Username");
+        builder.For<string>("Password").Namespace("supername");
     }
 }
