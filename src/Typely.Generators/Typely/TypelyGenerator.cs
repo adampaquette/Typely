@@ -32,7 +32,6 @@ public partial class TypelyGenerator : IIncrementalGenerator
         {
             return;
         }
-        context.AddSource($"test.g.cs", SourceText.From("//hhh", Encoding.UTF8));
 
         var distinctClasses = classes.Distinct();
         var parser = new Parser(compilation, context.ReportDiagnostic, context.CancellationToken);
