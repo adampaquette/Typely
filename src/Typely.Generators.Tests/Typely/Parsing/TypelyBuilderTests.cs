@@ -1,3 +1,5 @@
+using Typely.Generators.Typely.Parsing;
+
 namespace Typely.Generators.Tests.Typely.Parsing;
 
 public class TypelyBuilderTests
@@ -31,5 +33,47 @@ public class TypelyBuilderTests
 
         var emittableType = Assert.Single(emittableTypes);
         Assert.Equal(expectedNamespace, emittableType.Namespace);
+    }
+
+    [Fact]
+    public void ObjectType_ShouldBe_Class()
+    {
+        var builder = new TypelyBuilderFixture().Create();
+
+        builder.For<int>("UserId")
+            .AsClass();
+
+        var emittableTypes = builder.GetEmittableTypes();
+
+        var emittableType = Assert.Single(emittableTypes);
+        Assert.Equal(ObjectType.Class, emittableType.ObjectType);
+    }
+
+    [Fact]
+    public void ObjectType_ShouldBe_Struct()
+    {
+        var builder = new TypelyBuilderFixture().Create();
+
+        builder.For<int>("UserId")
+            .AsStruct();
+
+        var emittableTypes = builder.GetEmittableTypes();
+
+        var emittableType = Assert.Single(emittableTypes);
+        Assert.Equal(ObjectType.Struct, emittableType.ObjectType);
+    }
+
+    [Fact]
+    public void ObjectType_ShouldBe_Record()
+    {
+        var builder = new TypelyBuilderFixture().Create();
+
+        builder.For<int>("UserId")
+            .AsRecord();
+
+        var emittableTypes = builder.GetEmittableTypes();
+
+        var emittableType = Assert.Single(emittableTypes);
+        Assert.Equal(ObjectType.Record, emittableType.ObjectType);
     }
 }
