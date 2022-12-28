@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Typely.Core;
+using Typely.Generators.Logging;
 
 namespace Typely.Generators.Typely.Parsing;
 
@@ -17,6 +18,7 @@ internal class TypelyBuilder : ITypelyBuilder
 
     public ITypelyBuilder<T> For<T>(string typeName)
     {
+        Logger.Log($"For {typeName}");
         var emittableType = new EmittableType
         {
             UnderlyingType = typeof(T),
@@ -26,6 +28,7 @@ internal class TypelyBuilder : ITypelyBuilder
         };
         _emittableTypes.Add(emittableType);
 
+        Logger.Log($"new RuleBuilder<T>");
         return new RuleBuilder<T>(emittableType);
     }
 

@@ -3,8 +3,10 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
 using System.Text;
+using Typely.Generators.Logging;
 using Typely.Generators.Typely.Emetting;
 using Typely.Generators.Typely.Parsing;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Typely.Generators;
 
@@ -30,10 +32,11 @@ public partial class TypelyGenerator : IIncrementalGenerator
         {
             return;
         }
+        context.AddSource($"test.g.cs", SourceText.From("//hhh", Encoding.UTF8));
 
         var distinctClasses = classes.Distinct();
         var parser = new Parser(compilation, context.ReportDiagnostic, context.CancellationToken);
-        
+
         try
         {
             var emittableTypes = parser.GetEmittableTypes(distinctClasses);
@@ -47,6 +50,7 @@ public partial class TypelyGenerator : IIncrementalGenerator
 
             foreach (var emittableType in emittableTypes)
             {
+                Logger.Log($"Emitting type {emittableType.Name}");
                 var source = emitter.Emit(emittableType);
                 context.AddSource($"{emittableType.Name}.g.cs", SourceText.From(source, Encoding.UTF8));
             }
@@ -54,6 +58,10 @@ public partial class TypelyGenerator : IIncrementalGenerator
         catch (Exception)
         {
             throw;
+        }
+        finally
+        {
+            Logger.WriteFile(context);
         }
     }
 }
