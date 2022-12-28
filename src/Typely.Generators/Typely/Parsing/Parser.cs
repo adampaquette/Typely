@@ -102,7 +102,7 @@ internal sealed class Parser : IDisposable
     private Assembly? CreateConfigurationAssembly(SyntaxTree syntaxTree)
     {
         var compilation = CSharpCompilation.Create(assemblyName: $"{nameof(Typely)}_{Path.GetRandomFileName()}")
-            .WithReferenceAssemblies(ReferenceAssemblyKind.NetStandard20)
+            .AddReferences(NetStandard20.References.All)
             .AddReferences(typeof(ITypelyConfiguration))
             .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
             .AddSyntaxTrees(syntaxTree);
