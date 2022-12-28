@@ -1,7 +1,7 @@
 
 # Example
 
-```c#
+```csharp
 public class MyDomainTypesConfiguration : ITypelysConfiguration
 {
     public void Configure(ITypelysBuilder builder)
