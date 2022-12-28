@@ -21,8 +21,10 @@ public class MyDomainTypesConfiguration : ITypelysConfiguration
 
         builder
             .For<string>("Title")
+            .Normalize(x => x.Replace(" ", "").Trim())            
             .NotEmpty().WithMessage(c => $"Pleasy specify a {c.Name}.")
-            .MaxLength(20).WithMessage(c => $"Pleasy specify a {c.Name} with a max length of {c.MaxLength}.");
+            .MaxLength(20).WithMessage(c => $"Pleasy specify a {c.Name} with a max length of {c.MaxLength}.")
+            .Must(x => !x.contains("custom"));
     }
 }
 
