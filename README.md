@@ -6,9 +6,9 @@ Typerly let you create types easyly with a fluent API to embrace Domain-driven d
 # Example
 
 ```csharp
-public class MyDomainTypesConfiguration : ITypelysConfiguration
+public class TypesConfiguration : DefaultTypelyConfiguration
 {
-    public void Configure(ITypelysBuilder builder)
+    public void Configure(ITypelyBuilder builder)
     {
         builder.For<int>("Likes");
         builder.For<decimal>("Rating").InclusiveBetween(0, 5);
@@ -120,8 +120,19 @@ if(cost >= rating)
 
 # Why do generated types have an interface?
 
-Because we need type safety, we can't use implicit conversion, so we need a way to access the underlying type.
-All generated types implements `IValue`, giving access to the value.
+First, because our value objects need to be compile-time type safe, we can't use implicit conversions, so we need to have some way to access the underlying value.
+Second, to respect the open-close principle, we want developers to be able to add new functionality to their value object without having to modify the sources of the `Typely` generator.
+Third, the use of interface reduces the redundancy such as for example converters.
+
+All the generated types implements `IValue`, giving access to a property names `Value`.
+
+# Supported frameworks
+
+Because I wanted the code base to be as simple as possible and extensible, I needed the value objects to be created generically for exemple in the converters.
+As the feature for static method inside interfaces came with C# 8.0, it requires .NET Standard 2.1 or .NET Core. 3.x. 
+https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-8.0/default-interface-methods
+https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version
+https://learn.microsoft.com/en-us/dotnet/standard/net-standard?tabs=net-standard-2-1#when-to-target-net50-or-net60-vs-netstandard
 
 # Benchmarks
 
@@ -187,4 +198,29 @@ var factory2 = builder.Factory()
     
 factory2.For<int>("Days");
 factory2.For<long>("Timespan");
+
+// Requires to load dependencies of the SyntaxTree
+builder.Attributes
+    .Clear()
+    .Add(new JsonConverterAttribute(typeof(TypelyJsonConverter<LastName, string>)));
+
+builder.Converters
+    .Clear()
+    .Add(new JsonConverterAttribute(typeof(TypelyJsonConverter<LastName, string>)))
+    .AddSystemTextJsonConverter()
+    .AddNewtonsoftJsonConverter()
+    .AddTypeConverter();
+
+// Creating a class with default configurations.
+// Requires the generator to recursively detect the interface `ITypelyConfiguration`
+public class DefaultTypelyConfiguration : ITypelyConfiguration
+{
+    public void Configure(ITypelyBuilder builder)
+    {
+        builder.Converters
+            .AddFromDetectedDepencencies()
+            .AddSystemTextJsonConverter()
+            .AddTypeConverter();
+    }
+}
 ```
