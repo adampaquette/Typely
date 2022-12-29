@@ -120,16 +120,19 @@ if(cost >= rating)
 
 # Why do generated types have an interface?
 
-First, because our value objects need to be compile-time type safe, we can't use implicit conversions, so we need to have some way to access the underlying value.
-Second, to respect the open-close principle, we want developers to be able to add new functionality to their value object without having to modify the sources of the `Typely` generator.
-Third, the use of interface reduces the redundancy such as for example converters.
+- First, because our value objects need to be compile-time type safe, we can't use implicit conversions, so we need to have some way to access the underlying value.
+- Second, to respect the open-close principle, we want developers to be able to add new functionality to their value object without having to modify the sources of the `Typely` generator.
+- Third, the use of interface reduces the redundancy such as for example converters.
 
-All the generated types implements `IValue`, giving access to a property names `Value`.
+All the generated types implements `IValue`, giving access to a property named `Value`.
 
 # Supported frameworks
 
+- .NET 5.0 or greater are first class citizens frameworks
+- Backward compatible .NET Standard 2.0
+
 Because I wanted the code base to be as simple as possible and extensible, I needed the value objects to be created generically for exemple in the converters.
-As the feature for static method inside interfaces came with C# 8.0, it requires .NET Standard 2.1 or .NET Core. 3.x. 
+As the feature for static method inside interfaces came with C# 8.0, it could not be part of .NET Standard 2.0. The trade off here is that projects targeting .NET 5.0 or greater will be first class citizens and projects using .NET Standard 2.0 will benefits from all the same features but using reflexion where generic static method could not be used.
 https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-8.0/default-interface-methods
 https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version
 https://learn.microsoft.com/en-us/dotnet/standard/net-standard?tabs=net-standard-2-1#when-to-target-net50-or-net60-vs-netstandard
