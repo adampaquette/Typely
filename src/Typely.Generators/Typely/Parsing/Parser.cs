@@ -104,6 +104,7 @@ internal sealed class Parser : IDisposable
         var compilation = CSharpCompilation.Create(assemblyName: $"{nameof(Typely)}_{Path.GetRandomFileName()}")
             .AddReferences(NetStandard20.References.All)
             .AddReferences(typeof(ITypelyConfiguration))
+            //.AddReferences(_compilation.References) //Swap with thoses for optimisation
             .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
             .AddSyntaxTrees(syntaxTree);
 
