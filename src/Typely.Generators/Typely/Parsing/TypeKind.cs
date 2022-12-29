@@ -1,9 +1,9 @@
 ﻿namespace Typely.Generators.Typely.Parsing;
 
 /// <summary>
-/// Contains the type's structures.
+/// Enumeration for possible kinds of type constructs.
 /// </summary>
-internal enum ConstructType
+internal enum TypeKind
 {
     Struct,
     Class,

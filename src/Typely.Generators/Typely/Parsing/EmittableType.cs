@@ -8,5 +8,5 @@ internal class EmittableType
     public Type? UnderlyingType { get; set; }
     public string? Name { get; set; }
     public string? Namespace { get; set; }
-    public ConstructType ConstructType { get; set; } = ConstructType.Struct;
+    public TypeKind TypeKind { get; set; } = TypeKind.Struct;
 }
