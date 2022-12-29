@@ -6,7 +6,7 @@ Typerly let you create types easyly with a fluent API to embrace Domain-driven d
 # Example
 
 ```csharp
-public class TypesConfiguration : DefaultTypelyConfiguration
+public class TypesConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
@@ -129,7 +129,7 @@ All the generated types implements `IValue`, giving access to a property named `
 # Supported frameworks
 
 - .NET 5.0 or greater are first class citizens frameworks
-- Backward compatible .NET Standard 2.0
+- Backward compatible with .NET Standard 2.0
 
 Because I wanted the code base to be as simple as possible and extensible, I needed the value objects to be created generically for exemple in the converters.
 As the feature for static method inside interfaces came with C# 8.0, it could not be part of .NET Standard 2.0. The trade off here is that projects targeting .NET 5.0 or greater will be first class citizens and projects using .NET Standard 2.0 will benefits from all the same features but using reflexion where generic static method could not be used.
@@ -171,7 +171,14 @@ https://learn.microsoft.com/en-us/dotnet/standard/net-standard?tabs=net-standard
 
 # Limitations
 
-- Currently classes implementing `ITypelysConfiguration` should have explicit references. This will be lift off in the futur.
+- Classes implementing `ITypelyConfiguration` should have explicit references for references outside of following list:
+    - System
+    - System.Collections.Generic
+    - System.IO
+    - System.Linq
+    - System.Net.Http
+    - System.Threading
+    - System.Threading.Tasks
 
 # VNext
 
