@@ -183,37 +183,14 @@ https://learn.microsoft.com/en-us/dotnet/standard/net-standard?tabs=net-standard
 # VNext
 
 ```c#
-builder.For<string>("Sexe")
-    .In("Male", "Female")
-    .Comparer(StringComparer.OrdinalIgnoreCase);
+// Localization
+builder.Localization
+    .Enable()
+    .Disable()
+    .Culture(new CultureInfo("fr-CA"));
 
-builder.For<string>("Sexe")
-    .In((1, "Male"), (2, "Female"));
-
-//Typed factory
-var factory = builder.Factory<string>()
-    .Namespace("MyDomain")
-    .AsStruct()
-    .Length(3, 50)
-    .Build();
-    
-factory.For("FirstName");
-factory.For("LastName");
-
-//Untyped factory
-var factory2 = builder.Factory()
-    .Namespace("MyDomain")
-    .NotEmpty()
-    .Build();
-    
-factory2.For<int>("Days");
-factory2.For<long>("Timespan");
-
+// Converters
 // Requires to load dependencies of the SyntaxTree
-builder.Attributes
-    .Clear()
-    .Add(new JsonConverterAttribute(typeof(TypelyJsonConverter<LastName, string>)));
-
 builder.Converters
     .Clear()
     .Add(new JsonConverterAttribute(typeof(TypelyJsonConverter<LastName, string>)))
@@ -233,4 +210,36 @@ public class DefaultTypelyConfiguration : ITypelyConfiguration
             .AddTypeConverter();
     }
 }
+
+// Enums
+builder.For<string>("Sexe")
+    .In("Male", "Female")
+    .Comparer(StringComparer.OrdinalIgnoreCase);
+
+builder.For<string>("Sexe")
+    .In((1, "Male"), (2, "Female"));
+
+// Typed factory
+var factory = builder.Factory<string>()
+    .Namespace("MyDomain")
+    .AsStruct()
+    .Length(3, 50)
+    .Build();
+    
+factory.For("FirstName");
+factory.For("LastName");
+
+// Untyped factory
+var factory2 = builder.Factory()
+    .Namespace("MyDomain")
+    .NotEmpty()
+    .Build();
+    
+factory2.For<int>("Days");
+factory2.For<long>("Timespan");
+
+// Attributes
+builder.Attributes
+    .Clear()
+    .Add(new JsonConverterAttribute(typeof(TypelyJsonConverter<LastName, string>)));
 ```
