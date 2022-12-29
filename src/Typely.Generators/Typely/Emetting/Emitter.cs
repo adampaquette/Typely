@@ -10,9 +10,11 @@ internal class Emitter
         var objectType = GetObjectType(t.ObjectType);
 
         return $$"""
+                using Typely.Core;
+
                 namespace {{t.Namespace}}
                 {
-                    public {{objectType}} {{t.Name}} 
+                    public {{objectType}} {{t.Name}} : IValue<{{underlyingType}}, {{t.Name}}>
                     {
                         public {{underlyingType}} Value {get; set;}
                     }

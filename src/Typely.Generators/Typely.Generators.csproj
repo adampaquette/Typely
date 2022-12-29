@@ -4,6 +4,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <IsRoslynComponent>true</IsRoslynComponent>
         <Description>Typerly let you create types easyly with a fluent API to embrace Domain-driven design and value objects. This package contains type generators.</Description>
+        <VersionPrefix>0.0.9</VersionPrefix>
     </PropertyGroup>
 
     <ItemGroup>
@@ -26,7 +27,7 @@
     </ItemGroup>
     
     <ItemGroup Condition="'$(Configuration)'!='Debug'">        
-        <PackageReference Include="Typely.Core" Version="0.0.4" GeneratePathProperty="true" PrivateAssets="all" />
+        <PackageReference Include="Typely.Core" Version="0.1.0" GeneratePathProperty="true" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'=='Debug'">

@@ -4,8 +4,7 @@
         <SourceRoot>$(MSBuildThisFileDirectory)</SourceRoot>
     </PropertyGroup>
     
-	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+	<PropertyGroup>		
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
@@ -35,7 +34,7 @@
     <!-- Versioning properties -->
     <PropertyGroup>
         <AssemblyVersion>0.0.1</AssemblyVersion>
-        <VersionPrefix Condition=" '$(VersionPrefix)'=='' ">0.0.4</VersionPrefix>
+        <VersionPrefix Condition=" '$(VersionPrefix)'=='' ">0.0.8</VersionPrefix>
     </PropertyGroup>
 
     <!-- For Debug builds -->
