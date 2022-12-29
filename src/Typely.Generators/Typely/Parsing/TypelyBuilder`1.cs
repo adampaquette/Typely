@@ -17,21 +17,21 @@ internal class TypelyBuilder<T> : ITypelyBuilder<T>
     public ITypelyBuilder<T> AsClass()
     {
         Logger.Log("AsClass");
-        _emittableType.ObjectType = ObjectType.Class;
+        _emittableType.ConstructType = ConstructType.Class;
         return this;
     }
 
     public ITypelyBuilder<T> AsRecord()
     {
         Logger.Log("AsRecord");
-        _emittableType.ObjectType = ObjectType.Record;
+        _emittableType.ConstructType = ConstructType.Record;
         return this;
     }
 
     public ITypelyBuilder<T> AsStruct()
     {
         Logger.Log("AsStruct");
-        _emittableType.ObjectType = ObjectType.Struct;
+        _emittableType.ConstructType = ConstructType.Struct;
         return this;
     }
 

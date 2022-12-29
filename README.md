@@ -19,15 +19,15 @@ public class TypesConfiguration : DefaultTypelyConfiguration
             .Namespace("MyDomain")
             .AsStruct()
             .Length(20)
-            .WithMessage("Pleasy specify a user id with a length of 20.")
+            .WithMessage("Please specify a user id with a length of 20.")
             .Matches("[0-9]{5}[a-Z]{15}")
             .WithName("user identifier");
 
         builder
             .For<string>("Title")
             .Normalize(x => x.Replace(" ", "").Trim())            
-            .NotEmpty().WithMessage(c => $"Pleasy specify a {c.Name}.")
-            .MaxLength(20).WithMessage(c => $"Pleasy specify a {c.Name} with a max length of {c.MaxLength}.")
+            .NotEmpty().WithMessage(c => $"Please specify a {c.Name}.")
+            .MaxLength(20).WithMessage(c => $"Please specify a {c.Name} with a max length of {c.MaxLength}.")
             .Must(x => !x.contains("custom"));
     }
 }

@@ -7,7 +7,7 @@ internal class Emitter
     public string Emit(EmittableType t)
     {
         var underlyingType = t.UnderlyingType!.Name;
-        var objectType = GetObjectType(t.ObjectType);
+        var objectType = GetObjectType(t.ConstructType);
 
         return $$"""
                 using Typely.Core;
@@ -22,11 +22,11 @@ internal class Emitter
                 """;
     }
 
-    public string GetObjectType(ObjectType objectType) => objectType switch
+    public string GetObjectType(ConstructType objectType) => objectType switch
     {
-        ObjectType.Struct => "struct",
-        ObjectType.Record => "record",
-        ObjectType.Class => "class",
+        ConstructType.Struct => "struct",
+        ConstructType.Record => "record",
+        ConstructType.Class => "class",
         _ => throw new ArgumentOutOfRangeException(nameof(objectType), $"Unexpected value {objectType}"),
     };
 }

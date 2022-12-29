@@ -46,7 +46,7 @@ public class TypelyBuilderTests
         var emittableTypes = builder.GetEmittableTypes();
 
         var emittableType = Assert.Single(emittableTypes);
-        Assert.Equal(ObjectType.Class, emittableType.ObjectType);
+        Assert.Equal(ConstructType.Class, emittableType.ConstructType);
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class TypelyBuilderTests
         var emittableTypes = builder.GetEmittableTypes();
 
         var emittableType = Assert.Single(emittableTypes);
-        Assert.Equal(ObjectType.Struct, emittableType.ObjectType);
+        Assert.Equal(ConstructType.Struct, emittableType.ConstructType);
     }
 
     [Fact]
@@ -74,6 +74,6 @@ public class TypelyBuilderTests
         var emittableTypes = builder.GetEmittableTypes();
 
         var emittableType = Assert.Single(emittableTypes);
-        Assert.Equal(ObjectType.Record, emittableType.ObjectType);
+        Assert.Equal(ConstructType.Record, emittableType.ConstructType);
     }
 }
