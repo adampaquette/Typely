@@ -35,45 +35,45 @@ public class TypelyBuilderTests
         Assert.Equal(expectedNamespace, emittableType.Namespace);
     }
 
-    [Fact]
-    public void ObjectType_ShouldBe_Class()
-    {
-        var builder = new TypelyBuilderFixture().Create();
+    //[Fact]
+    //public void ObjectType_ShouldBe_Class()
+    //{
+    //    var builder = new TypelyBuilderFixture().Create();
 
-        builder.For<int>("UserId")
-            .AsClass();
+    //    builder.For<int>("UserId")
+    //        .AsClass();
 
-        var emittableTypes = builder.GetEmittableTypes();
+    //    var emittableTypes = builder.GetEmittableTypes();
 
-        var emittableType = Assert.Single(emittableTypes);
-        Assert.Equal(TypeKind.Class, emittableType.TypeKind);
-    }
+    //    var emittableType = Assert.Single(emittableTypes);
+    //    Assert.Equal(TypeKind.Class, emittableType.TypeKind);
+    //}
 
-    [Fact]
-    public void ObjectType_ShouldBe_Struct()
-    {
-        var builder = new TypelyBuilderFixture().Create();
+    //[Fact]
+    //public void ObjectType_ShouldBe_Struct()
+    //{
+    //    var builder = new TypelyBuilderFixture().Create();
 
-        builder.For<int>("UserId")
-            .AsStruct();
+    //    builder.For<int>("UserId")
+    //        .AsStruct();
 
-        var emittableTypes = builder.GetEmittableTypes();
+    //    var emittableTypes = builder.GetEmittableTypes();
 
-        var emittableType = Assert.Single(emittableTypes);
-        Assert.Equal(TypeKind.Struct, emittableType.TypeKind);
-    }
+    //    var emittableType = Assert.Single(emittableTypes);
+    //    Assert.Equal(TypeKind.Struct, emittableType.TypeKind);
+    //}
 
-    [Fact]
-    public void ObjectType_ShouldBe_Record()
-    {
-        var builder = new TypelyBuilderFixture().Create();
+    //[Fact]
+    //public void ObjectType_ShouldBe_Record()
+    //{
+    //    var builder = new TypelyBuilderFixture().Create();
 
-        builder.For<int>("UserId")
-            .AsRecord();
+    //    builder.For<int>("UserId")
+    //        .AsRecord();
 
-        var emittableTypes = builder.GetEmittableTypes();
+    //    var emittableTypes = builder.GetEmittableTypes();
 
-        var emittableType = Assert.Single(emittableTypes);
-        Assert.Equal(TypeKind.Record, emittableType.TypeKind);
-    }
+    //    var emittableType = Assert.Single(emittableTypes);
+    //    Assert.Equal(TypeKind.Record, emittableType.TypeKind);
+    //}
 }
