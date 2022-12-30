@@ -2,13 +2,13 @@
 
 namespace Typely.Core;
 
-public abstract struct ValueBase<TValue, TThis> : IValue<TValue, TThis> where TThis : ValueBase<TValue, TThis>
+public abstract class ValueClassBase<TValue, TThis> : IValue<TValue, TThis> where TThis : ValueClassBase<TValue, TThis>
 {
     public TValue Value { get; }
 
-    protected ValueBase() { throw new Exception("Parameterless constructor not accessible."); }
+    protected ValueClassBase() { throw new Exception("Parameterless constructor not accessible."); }
 
-    public ValueBase(TValue value)
+    public ValueClassBase(TValue value)
     {
         ValidateAndThrow(value);
         Value = value;
@@ -29,7 +29,11 @@ public abstract struct ValueBase<TValue, TThis> : IValue<TValue, TThis> where TT
     {
         validationError = Validate(value);
         var isValid = validationError != null;
+#if NET5_0_OR_GREATER
         instance = isValid ? IValue<TValue, TThis>.From(value) : default;
+#else
+        instance = null;//TODO
+#endif
         return isValid;
     }
 }
