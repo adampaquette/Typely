@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Resources;
+﻿using System.Resources;
 using Typely.Core;
+using Typely.POC;
 
 namespace Typely.Tests;
 
@@ -19,19 +19,17 @@ public readonly struct ReferenceSample : IValue<int, ReferenceSample>
 
     public ReferenceSample(int value)
     {
-        ValidateAndThrow(value);
+        IValue<int, ReferenceSample>.ValidateAndThrow(value);
         Value = value;
     }
 
-    public static ValidationError? Validate(int value) => null;
-
-    public static void ValidateAndThrow(int value)
+    public static ValidationError? Validate(int value)
     {
-        var validationError = Validate(value);
-        if (validationError != null)
+        if (value < 0)
         {
-            throw new ArgumentException(validationError.ToString()); //Comment la désérialisation Json va fonctionner?
+            return new ValidationError("ERR001", "Value can't be negative", "Value can't be negative", value, "ValidationError");
         }
+        return null;
     }
 
     public static ReferenceSample From(int value) => new(value);

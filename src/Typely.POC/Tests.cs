@@ -2,6 +2,7 @@
 
 public class Tests
 {
+    [Fact]
     public void BadLanguageConstructs()
     {
         var a = new MyStruct();
@@ -9,6 +10,7 @@ public class Tests
         var c = default(MyStruct);
     }
 
+    [Fact]
     public void TestReferenceSample()
     {
         var a = ReferenceSample.From(1);

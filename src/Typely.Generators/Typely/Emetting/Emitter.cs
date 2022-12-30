@@ -8,18 +8,18 @@ internal class Emitter
     {
         var underlyingType = t.UnderlyingType!.Name;
         var objectType = GetObjectType(t.TypeKind);
+        return "";
+        //return $$"""
+        //        using Typely.Core;
 
-        return $$"""
-                using Typely.Core;
-
-                namespace {{t.Namespace}}
-                {
-                    public partial {{objectType}} {{t.Name}} : IValue<{{underlyingType}}, {{t.Name}}>
-                    {
-                        public {{underlyingType}} Value {get; set;}
-                    }
-                }
-                """;
+        //        namespace {{t.Namespace}}
+        //        {
+        //            public partial {{objectType}} {{t.Name}} : IValue<{{underlyingType}}, {{t.Name}}>
+        //            {
+        //                public {{underlyingType}} Value {get; set;}
+        //            }
+        //        }
+        //        """;
     }
 
     public string GetObjectType(TypeKind objectType) => objectType switch

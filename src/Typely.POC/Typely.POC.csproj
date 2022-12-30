@@ -1,7 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>        
+        <TargetFramework>net7.0</TargetFramework>
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,7 +20,21 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
-        <ProjectReference Include="..\Typely.Generators\Typely.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
-    
+
+    <ItemGroup>
+        <Compile Update="ErrorMessages.Designer.cs">
+            <DependentUpon>ErrorMessages.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="ErrorMessages.resx">
+            <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
+            <Generator>ResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+    </ItemGroup>
+
 </Project>
