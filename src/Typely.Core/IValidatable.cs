@@ -2,7 +2,7 @@
 
 namespace Typely.Core;
 
-public interface IValidatable<TValue, TThis>
+public interface IValidatable<TValue, TThis> where TThis : IValue<TValue, TThis>
 {
 #if NET5_0_OR_GREATER
     static ValidationError? Validate(TValue value) => throw new NotImplementedException();

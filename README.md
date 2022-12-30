@@ -171,7 +171,7 @@ The validation state of a value object should not be dependant of any external s
 
 # Limitations
 
-- Classes implementing `ITypelyConfiguration` should have explicit references for references outside of following list:
+- Classes implementing `ITypelyConfiguration` should have explicit references for references outside of the following list:
     - System
     - System.Collections.Generic
     - System.IO
@@ -185,29 +185,25 @@ The validation state of a value object should not be dependant of any external s
 ```c#
 - Localisation of messages
 - NotEmpty(); //T
-
-//Example
-builder.For<string>("FirstName").NotEmpty();
-builder.For<decimal>("Rating").InclusiveBetween(0, 5);
-var rating = Rating.From(-1); //Throws ValidationException
-
-- AsStruct();
-- AsClass();
-- AsRecord();
-- WithName(string message);
+    builder.For<string>("FirstName").NotEmpty();
 - NotEqual(T value); //T
-- Must(Expression<Func<T, bool>> predicate); //T
-- Length(int min, T max); //string
+- WithName(string message);
+- WithMessage(string message);
+- WithErrorCode(string errorCode);
+- Length(int min, int max); //string
 - Length(int exactLength); //string
 - MinLength(int minLength); //string
-- IRuleBuilder<T> IRuleBuilder<T> Matches(string regex); //string
 - LessThan(T value); //IComparable
 - LessThanOrEqual(T value); //IComparable
 - GreaterThan(T value); //IComparable
 - GreaterThanOrEqual(T value); //IComparable    
 - InclusiveBetween(T min, T max); //INumber
+    builder.For<decimal>("Rating").InclusiveBetween(0, 5);
+    var rating = Rating.From(-1); //Throws ValidationException
 - ExclusiveBetween(T min, T max); //INumber
 - PrecisionScale(int precision, int scale); //INumber
+- IRuleBuilder<T> IRuleBuilder<T> Matches(string regex); //string
+- Must(Expression<Func<T, bool>> predicate); //T
 
 // Complex examples
 builder
@@ -227,7 +223,7 @@ builder
 
 // Localization
 builder.Localization
-    .ForceCulture(new CultureInfo("fr-CA"))
+    .ForceCultureTo(new CultureInfo("fr-CA"))
     .WithResourceManager<MyLocalizedMessages>();
 
 // Logging
@@ -266,6 +262,11 @@ public class DefaultTypelyConfiguration : ITypelyConfiguration
             .AddTypeConverter();
     }
 }
+
+// Type kinds
+- AsStruct();
+- AsClass();
+- AsRecord();
 
 // Enums
 builder.For<string>("Sexe")

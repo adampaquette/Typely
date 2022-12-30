@@ -37,5 +37,4 @@ public interface IRuleBuilder<T> : ITypelyBuilder<T>
 {
     IRuleBuilder<T> WithMessage(string message);
     //IRuleBuilder<T> WithErrorCode(string errorCode);
-    //IRuleBuilder<T> When(Expression<Func<T, bool>> predicate);
 }
