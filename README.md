@@ -122,7 +122,18 @@ https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csh
 https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version
 https://learn.microsoft.com/en-us/dotnet/standard/net-standard?tabs=net-standard-2-1#when-to-target-net50-or-net60-vs-netstandard
 
-# Async validations
+# Validations
+
+Throwing and catching exceptions are very costly so `Typely` implements validations using the class `ValidationError`. To avoid extra memory allocation, if all validations passes, the object returned by the `Validate` method from the interface `IValidatable<T>` will be `null`. 
+
+Note that you should use the method `TryFrom` to perform validation without throwing exception where possible otherwise `From`.
+
+|                Method |         Mean |      Error |     StdDev |   Gen0 | Allocated |
+|---------------------- |-------------:|-----------:|-----------:|-------:|----------:|
+|       ReturnException | 5,407.274 ns | 28.0004 ns | 26.1916 ns | 0.0763 |     240 B |
+| ReturnValidationError |     9.879 ns |  0.1042 ns |  0.0924 ns | 0.0153 |      48 B |
+
+## Async validations
 
 The validation state of a value object should not be dependant of any external state or services and thus calling async validations are not supported.
 
