@@ -3,7 +3,7 @@ using Typely.Core;
 
 namespace Typely.Tests;
 
-public class ReferenceSample : IValue<int, ReferenceSample>, IValidatable<int>
+public class ReferenceSample : IValue<int, ReferenceSample>
 {
     public int Value { get; }
 
@@ -22,16 +22,6 @@ public class ReferenceSample : IValue<int, ReferenceSample>, IValidatable<int>
 
         return new ReferenceSample(value);
     }
-
-    public static bool TryFrom(int value, out ReferenceSample? instance, out ValidationError? validationError)
-    {
-        validationError = Validate(value);
-        var isValid = validationError != null;
-        instance = isValid ? new ReferenceSample(value) : null;
-        return isValid;
-    }
-
-    public static ReferenceSample FromUnsafe(int value) => new ReferenceSample(value);
 
     public static ValidationError? Validate(int value)
     {

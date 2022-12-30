@@ -11,32 +11,32 @@ public class ValidationError
     /// A unique identifier for the error.
     /// </summary>
     /// <remarks>The value is used for translations.</remarks>
-    public string ErrorCode { get; init; }
+    public string ErrorCode { get; }
 
     /// <summary>
     /// The error message translated.
     /// </summary>
-    public string ErrorMessage { get; init; }
+    public string ErrorMessage { get; }
 
     /// <summary>
     /// The error message translated with placeholders.
     /// </summary>
-    public string ErrorMessageWithPlaceholders { get; init; }
+    public string ErrorMessageWithPlaceholders { get; }
 
     /// <summary>
     /// The value that caused the error.
     /// </summary>
-    public object AttemptedValue { get; init; }
+    public object AttemptedValue { get; }
 
     /// <summary>
     /// Type that generated the error.
     /// </summary>
-    public string Source { get; init; }
+    public string Source { get; }
 
     /// <summary>
     /// List of placeholders with their values.
     /// </summary>
-    public Dictionary<string, object> PlaceholderValues { get; init; } = new Dictionary<string, object>();
+    public Dictionary<string, object> PlaceholderValues { get; } = new Dictionary<string, object>();
 
     /// <summary>
     /// Constructor of <see cref="ValidationError"/>.
