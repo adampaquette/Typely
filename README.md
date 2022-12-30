@@ -10,30 +10,15 @@ public class TypesConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.For<int>("Likes");
-        builder.For<decimal>("Rating").InclusiveBetween(0, 5);
-        builder.For<string>("FirstName").NotEmpty();
-        
-        builder
-            .For<int>("UserId")
-            .Namespace("MyDomain")
-            .AsStruct()
-            .Length(20)
-            .WithMessage("Please specify a user id with a length of 20.")
-            .Matches("[0-9]{5}[a-Z]{15}")
-            .WithName("user identifier");
+        builder.For<int>("Likes");    
 
         builder
-            .For<string>("Title")
-            .Normalize(x => x.Replace(" ", "").Trim())            
-            .NotEmpty().WithMessage(c => $"Please specify a {c.Name}.")
-            .MaxLength(20).WithMessage(c => $"Please specify a {c.Name} with a max length of {c.MaxLength}.")
-            .Must(x => !x.contains("custom"));
+            .For<int>("UserId")
+            .Namespace("UserAggregate");
     }
 }
 
-var firstName = FirstName.From("Adam");
-var userId = UserId.From(-1); //Throws ArgumentException
+var likes = Likes.From(1365);
 ```
 
 # Built-in Validators
@@ -137,6 +122,10 @@ https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csh
 https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version
 https://learn.microsoft.com/en-us/dotnet/standard/net-standard?tabs=net-standard-2-1#when-to-target-net50-or-net60-vs-netstandard
 
+# Async validations
+
+The validation state of a value object should not be dependant of any external state or services and thus calling async validations are not supported.
+
 # Benchmarks
 
 |               Method |      Mean |     Error |    StdDev |    Median | Allocated |
@@ -183,11 +172,67 @@ https://learn.microsoft.com/en-us/dotnet/standard/net-standard?tabs=net-standard
 # VNext
 
 ```c#
+- Localisation of messages
+- NotEmpty(); //T
+
+//Example
+builder.For<string>("FirstName").NotEmpty();
+builder.For<decimal>("Rating").InclusiveBetween(0, 5);
+var rating = Rating.From(-1); //Throws ValidationException
+
+- AsStruct();
+- AsClass();
+- AsRecord();
+- WithName(string message);
+- NotEqual(T value); //T
+- Must(Expression<Func<T, bool>> predicate); //T
+- Length(int min, T max); //string
+- Length(int exactLength); //string
+- MinLength(int minLength); //string
+- IRuleBuilder<T> IRuleBuilder<T> Matches(string regex); //string
+- LessThan(T value); //IComparable
+- LessThanOrEqual(T value); //IComparable
+- GreaterThan(T value); //IComparable
+- GreaterThanOrEqual(T value); //IComparable    
+- InclusiveBetween(T min, T max); //INumber
+- ExclusiveBetween(T min, T max); //INumber
+- PrecisionScale(int precision, int scale); //INumber
+
+// Complex examples
+builder
+    .For<int>("UserId")
+    .Namespace("MyDomain")
+    .AsStruct()
+    .Length(20).WithMessage("Please specify a user id with a length of 20.")
+    .Matches("[0-9]{5}[a-Z]{15}").WithMessage(x => LocalizedResx.MyMessage)
+    .WithName("user identifier");
+
+builder
+    .For<string>("Title")
+    .Normalize(x => x.Replace(" ", "").Trim())            
+    .NotEmpty().WithErrorCode("T0001")
+    .MaxLength(20).WithMessage(c => $"Please specify a {c.Name} with a max length of {c.MaxLength}.")
+    .Must(x => !x.contains("custom"));
+
 // Localization
 builder.Localization
-    .Enable()
-    .Disable()
-    .Culture(new CultureInfo("fr-CA"));
+    .ForceCulture(new CultureInfo("fr-CA"))
+    .WithResourceManager<MyLocalizedMessages>();
+
+// Logging
+builder.Logging.Fields
+    .Clear()
+    .AddErrorCode()
+    .AddErrorMessage()
+    .AddErrorMessageWithPlaceHolders()
+    .AddSource()
+    .AddPlaceholderValues();
+
+public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+{
+    // Defer the check to the runtime
+    Typely.EnableSensitiveDataLogging(env.IsDevelopment()); //Log AttemptedValue with the error message
+}
 
 // Converters
 // Requires to load dependencies of the SyntaxTree

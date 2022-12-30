@@ -14,7 +14,7 @@ internal class Emitter
 
                 namespace {{t.Namespace}}
                 {
-                    public {{objectType}} {{t.Name}} : IValue<{{underlyingType}}, {{t.Name}}>
+                    public partial {{objectType}} {{t.Name}} : IValue<{{underlyingType}}, {{t.Name}}>
                     {
                         public {{underlyingType}} Value {get; set;}
                     }
