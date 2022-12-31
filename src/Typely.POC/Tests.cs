@@ -1,4 +1,6 @@
-﻿namespace Typely.Tests;
+﻿using System.Text.Json;
+
+namespace Typely.Tests;
 
 public class Tests
 {
@@ -17,6 +19,16 @@ public class Tests
         var b = new ReferenceSample(2);
         ReferenceSample.TryFrom(1, out var i, out var e);
         ReferenceSample.Validate(-1);
+
+        var c = JsonSerializer.Serialize(a);
+        try
+        {
+            var d = JsonSerializer.Deserialize<ReferenceSample>("-1");
+        }
+        catch (Exception ex)
+        {
+            var f = ex.ToString();
+        }
     }
 }
 

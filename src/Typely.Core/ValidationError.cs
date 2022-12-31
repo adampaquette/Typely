@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Typely.Core;
+﻿namespace Typely.Core;
 
 /// <summary>
 /// Represent a single validation that resulted in an error.

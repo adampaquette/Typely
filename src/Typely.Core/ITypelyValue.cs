@@ -1,14 +1,13 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace Typely.Core;
 
-public interface IValue<out TValue>
+public interface ITypelyValue<out TValue>
 {
     TValue Value { get; }
 }
 
-public interface IValue<TValue, TThis> : IValue<TValue> where TThis : IValue<TValue, TThis>
+public interface ITypelyValue<TValue, TThis> : ITypelyValue<TValue> where TThis : ITypelyValue<TValue, TThis>
 {
 #if NET7_0_OR_GREATER
     static abstract ValidationError? Validate(TValue value);
