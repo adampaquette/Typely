@@ -4,14 +4,12 @@ using Typely.POC;
 
 namespace Typely.Tests;
 
-public class ReferenceSample2 : ValueClassBase<int, ReferenceSample2>
-{
-    private ReferenceSample2() { }
-    public ReferenceSample2(int value) : base(value) { }    
-    public static ReferenceSample2 From(int value) => new(value);
+public struct Value
+{ 
+
 }
 
-public readonly struct ReferenceSample : IValue<int, ReferenceSample>
+public readonly partial struct ReferenceSample : IValue<int, ReferenceSample>
 {
     public int Value { get; }
 
@@ -19,8 +17,17 @@ public readonly struct ReferenceSample : IValue<int, ReferenceSample>
 
     public ReferenceSample(int value)
     {
-        IValue<int, ReferenceSample>.ValidateAndThrow(value);
+        ValidateAndThrow(value);
         Value = value;
+    }
+    
+    public static void ValidateAndThrow(int value)
+    {
+        var validationError = Validate(value);
+        if (validationError != null)
+        {
+            throw new ArgumentException(validationError.ToString()); //Comment la désérialisation Json va fonctionner?
+        }
     }
 
     public static ValidationError? Validate(int value)
@@ -34,13 +41,15 @@ public readonly struct ReferenceSample : IValue<int, ReferenceSample>
 
     public static ReferenceSample From(int value) => new(value);
 
-    public static bool TryFrom(int value, out ReferenceSample? instance, out ValidationError? validationError)
+    public static bool TryFrom(int value, out ReferenceSample instance, out ValidationError? validationError)
     {
         validationError = Validate(value);
         var isValid = validationError != null;
-        instance = isValid ? IValue<int, ReferenceSample>.From(value) : default;
+        instance = isValid ? new(value) : default;
         return isValid;
     }
+
+
 }
 
 
