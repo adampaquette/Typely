@@ -3,7 +3,6 @@ using System.Resources;
 using System.Text.Json.Serialization;
 using Typely.Core;
 using Typely.Core.Converters;
-using Typely.POC;
 
 namespace Typely.Tests;
 
@@ -39,10 +38,10 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>
 
             return new ValidationError(
                 errorCode: "NotEmpty",
-                errorMessage: "'{Name}' must not be empty",
+                errorMessage: ErrorMessages.NotEmpty,
                 attemptedValue: attemptedValue,
-                source: "ReferenceSample",
-                errorMessageWithPlaceholders: "'{ReferenceSample}' must not be empty",
+                source: nameof(ReferenceSample),
+                errorMessageWithPlaceholders: ErrorMessages.NotEmpty,
                 placeholderValues: placeholderValues);
         }
         return null;
