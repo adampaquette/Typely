@@ -64,7 +64,6 @@ internal sealed class Parser : IDisposable
     /// <returns>A list of representation of desired user types.</returns>
     private IEnumerable<EmittableType> GetEmittableTypes(SyntaxTree syntaxTree)
     {
-        // Stop if we're asked to
         _cancellationToken.ThrowIfCancellationRequested();
 
         var configurationAssembly = CreateConfigurationAssembly(syntaxTree);
