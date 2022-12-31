@@ -17,19 +17,17 @@ internal class TypelyBuilder : ITypelyBuilder
 
     public ITypelyBuilder<T> For<T>(string typeName)
     {
-        var emittableType = new EmittableType
-        {
-            UnderlyingType = typeof(T),
-            SyntaxTree = _syntaxTree,
-            TypeName = typeName,
-            Namespace = _configurationType.Namespace
-        };
+        var emittableType = new EmittableType(
+            syntaxTree: _syntaxTree,
+            underlyingType: typeof(T),
+            typeName: typeName,
+            @namespace: _configurationType.Namespace);
+
         _emittableTypes.Add(emittableType);
 
         return new RuleBuilder<T>(emittableType);
     }
 
-    public IReadOnlyList<EmittableType> GetEmittableTypes() =>
-        _emittableTypes.ToList().AsReadOnly();
+    public IReadOnlyList<EmittableType> GetEmittableTypes() => _emittableTypes.AsReadOnly();
 }
 

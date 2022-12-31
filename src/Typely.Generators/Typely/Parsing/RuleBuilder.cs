@@ -6,8 +6,15 @@ internal class RuleBuilder<T> : TypelyBuilder<T>, IRuleBuilder<T>
 {
     public RuleBuilder(EmittableType emittableType) : base(emittableType) { }
 
+    public IRuleBuilder<T> WithErrorCode(string errorCode)
+    {
+        _emittableType.CurrentValidation!.ErrorCode = errorCode;
+        return this;
+    }
+
     public IRuleBuilder<T> WithMessage(string message)
     {
-        throw new NotImplementedException();
+        _emittableType.CurrentValidation!.ValidationMessage = () => message;
+        return this;
     }
 }

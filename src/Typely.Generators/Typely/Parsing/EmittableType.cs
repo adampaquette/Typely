@@ -1,21 +1,24 @@
 ﻿using Microsoft.CodeAnalysis;
-using System.Linq.Expressions;
 
 namespace Typely.Generators.Typely.Parsing;
 
 internal class EmittableType
 {
-    public SyntaxTree? SyntaxTree { get; set; }
-    public Type? UnderlyingType { get; set; }
-    public string? TypeName { get; set; }
-    public string? Namespace { get; set; }
+    public SyntaxTree SyntaxTree { get; }
+    public Type UnderlyingType { get; }    
+    public string TypeName { get; }
+    public string Name { get; set; }
+    public string Namespace { get; set; }
     public ConstructTypeKind ConstructTypeKind { get; set; } = ConstructTypeKind.Struct;
-    public List<EmittableValidation> Validations { get; set; } = new List<EmittableValidation>();
-    public EmittableValidation? CurrentValidation { get; set; }
-}
+    public List<EmittableValidation> Validations { get; } = new List<EmittableValidation>();
+    public EmittableValidation? CurrentValidation { get; set; } = null;
 
-internal class EmittableValidation
-{
-    public Expression? ValidationExpression { get; set; }
-    public string? ValidationMessage { get; set; }
+    public EmittableType(SyntaxTree syntaxTree, Type underlyingType, string typeName, string @namespace)
+    {
+        SyntaxTree = syntaxTree;
+        UnderlyingType = underlyingType;
+        TypeName = typeName;
+        Name = typeName;
+        Namespace = @namespace;
+    }
 }

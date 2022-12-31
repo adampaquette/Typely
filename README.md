@@ -10,7 +10,7 @@ public class TypesConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.For<int>("Likes");    
+        builder.For<int>("Likes");
 
         builder
             .For<int>("UserId")
@@ -186,7 +186,7 @@ The validation state of a value object should not be dependant of any external s
 - NotEmpty(); //T
     builder.For<string>("FirstName").NotEmpty();
 - NotEqual(T value); //T
-- WithName(string message);
+- Name(string message);
 - WithMessage(string message);
 - WithErrorCode(string errorCode);
 - Length(int min, int max); //string
@@ -211,7 +211,7 @@ builder
     .AsStruct()
     .Length(20).WithMessage("Please specify a user id with a length of 20.")
     .Matches("[0-9]{5}[a-Z]{15}").WithMessage(x => LocalizedResx.MyMessage)
-    .WithName("user identifier");
+    .Name("user identifier");
 
 builder
     .For<string>("Title")

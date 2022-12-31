@@ -100,20 +100,16 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
     {
         var type = typeof(TValue);
 
-        Expression predicate = type == typeof(string)
+        Expression validation = type == typeof(string)
             ? (string x) => string.IsNullOrWhiteSpace(x)
             : type.IsValueType
                 ? (TValue x) => !EqualityComparer<TValue>.Default.Equals(x, default!)
                 : (TValue x) => x == null || !EqualityComparer<TValue>.Default.Equals(x, default!);
 
-        var validation = new EmittableValidation
-        {
-            ValidationExpression = predicate,
-            ValidationMessage = "'{Name}' must not be empty."
-        };
+        var emittableValidation = new EmittableValidation(ErrorCodes.NotEmpty, validation, () => ErrorMessages.NotEmpty);
 
-        _emittableType.CurrentValidation = validation;
-        _emittableType.Validations.Add(validation);
+        _emittableType.CurrentValidation = emittableValidation;
+        _emittableType.Validations.Add(emittableValidation);
         return (IRuleBuilder<TValue>)this;
     }
 
@@ -127,8 +123,9 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         throw new NotImplementedException();
     }
 
-    public ITypelyBuilder<TValue> WithName(string name)
+    public ITypelyBuilder<TValue> Name(string name)
     {
-        throw new NotImplementedException();
+        _emittableType.Name = name;
+        return this;
     }
 }

@@ -21,36 +21,20 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>
 
     public static ValidationError? Validate(int value)
     {
-        if (value < 0)
+        var placeholderValues = new Dictionary<string, object?>
         {
-            var placeholderValues = new Dictionary<string, object>
-                {
-                    { "Name", "ReferenceSample" },
-                };
+            { "Name", "CustomName" }
+        };
 
-            object? attemptedValue = value;
-
-            if(TypelyOptions.Instance.IsSensitiveDataLoggingEnabled)
-            {
-                placeholderValues.Add("Value", value);
-                attemptedValue = null;
-            }
-
-            return new ValidationError(
-                errorCode: "NotEmpty",
-                errorMessage: ErrorMessages.NotEmpty,
-                attemptedValue: attemptedValue,
-                source: nameof(ReferenceSample),
-                errorMessageWithPlaceholders: ErrorMessages.NotEmpty,
-                placeholderValues: placeholderValues);
+        //NotEmpty
+        if (value != default)
+        {
+            return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, nameof(ReferenceSample), placeholderValues);
         }
 
-        if(value < 0)
+        //NotEmpty
+        if (value != default) 
         {
-            var placeholderValues = new Dictionary<string, object?>
-            {
-                { "Name", "ReferenceSample" },
-            };
             return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, nameof(ReferenceSample), placeholderValues);
         }
         return null;

@@ -14,7 +14,7 @@ public interface ITypelyBuilder<T>
     //ITypelyBuilder<T> AsStruct();
     //ITypelyBuilder<T> AsClass();
     //ITypelyBuilder<T> AsRecord();
-    //ITypelyBuilder<T> WithName(string message);
+    ITypelyBuilder<T> Name(string name);
 
     IRuleBuilder<T> NotEmpty(); //T
     //IRuleBuilder<T> NotEqual(T value); //T
@@ -35,6 +35,8 @@ public interface ITypelyBuilder<T>
 
 public interface IRuleBuilder<T> : ITypelyBuilder<T>
 {
+    IRuleBuilder<T> WithErrorCode(string errorCode);
     IRuleBuilder<T> WithMessage(string message);
+
     //IRuleBuilder<T> WithErrorCode(string errorCode);
 }

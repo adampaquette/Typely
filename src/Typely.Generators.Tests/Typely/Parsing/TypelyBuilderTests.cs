@@ -51,6 +51,61 @@ public class TypelyBuilderTests
         var validation = Assert.Single(emittableType.Validations);
     }
 
+    [Fact]
+    public void ErrorCode_Should_Match()
+    {
+        var expectedTypeName = "UserId";
+        var expectedErrorCode = "ERR001";
+
+        var builder = new TypelyBuilderFixture().Create();
+
+        builder.For<int>(expectedTypeName)
+            .NotEmpty()
+            .WithErrorCode(expectedErrorCode);
+
+        var emittableTypes = builder.GetEmittableTypes();
+
+        var emittableType = Assert.Single(emittableTypes);
+        var validation = Assert.Single(emittableType.Validations);
+        Assert.Equal(expectedErrorCode, validation.ErrorCode);
+    }
+
+    [Fact]
+    public void Message_Should_Match()
+    {
+        var expectedTypeName = "UserId";
+        var expectedMessage = "Error message";
+
+        var builder = new TypelyBuilderFixture().Create();
+
+        builder.For<int>(expectedTypeName)
+            .NotEmpty()
+            .WithMessage(expectedMessage);
+
+        var emittableTypes = builder.GetEmittableTypes();
+
+        var emittableType = Assert.Single(emittableTypes);
+        var validation = Assert.Single(emittableType.Validations);
+        Assert.Equal(expectedMessage, validation.ValidationMessage.Compile().Invoke());
+    }
+
+    [Fact]
+    public void Name_Should_Match()
+    {
+        var expectedTypeName = "UserId";
+        var expectedName = "Owner identifier";
+
+        var builder = new TypelyBuilderFixture().Create();
+
+        builder.For<int>(expectedTypeName)
+            .Name(expectedName);
+
+        var emittableTypes = builder.GetEmittableTypes();
+
+        var emittableType = Assert.Single(emittableTypes);
+        Assert.Equal(expectedName, emittableType.Name);
+    }
+
     //[Fact]
     //public void ObjectType_ShouldBe_Class()
     //{

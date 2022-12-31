@@ -2,18 +2,31 @@
 
 public static class ValidationErrorFactory
 {
-    public static ValidationError Create<TValue>(TValue value, string errorCode, string errorMessageWithPlaceholders, string source, Dictionary<string, object?> placeholderValues)
+    public static ValidationError Create<TValue>(TValue value, string errorCode, string errorMessageWithPlaceholders, string typeName, Dictionary<string, object?>? placeholderValues = null)
     {
         object? attemptedValue = null;
 
+        if(placeholderValues == null)
+        {
+            placeholderValues = new Dictionary<string, object?>();
+        }
+
+        if (!placeholderValues.ContainsKey(ValidationPlaceholders.Name))
+        {
+            placeholderValues.Add(ValidationPlaceholders.Name, typeName);
+        }
+
         if (TypelyOptions.Instance.IsSensitiveDataLoggingEnabled)
         {
-            placeholderValues.Add("Value", value);
+            if (!placeholderValues.ContainsKey(ValidationPlaceholders.Value))
+            {
+                placeholderValues.Add(ValidationPlaceholders.Value, value);
+            }
             attemptedValue = value;
         }
 
         var errorMessage = string.Format(errorMessageWithPlaceholders, placeholderValues.Values);
 
-        return new ValidationError(errorCode, errorMessage, errorMessageWithPlaceholders, attemptedValue, source, placeholderValues);
+        return new ValidationError(errorCode, errorMessage, errorMessageWithPlaceholders, attemptedValue, typeName, placeholderValues);
     }
 }
