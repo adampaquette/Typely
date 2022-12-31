@@ -1,4 +1,5 @@
 ﻿using AgileObjects.ReadableExpressions;
+using Microsoft.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Text;
 using Typely.Generators.Typely.Parsing;
@@ -7,10 +8,19 @@ namespace Typely.Generators.Typely.Emetting;
 
 internal class Emitter
 {
+    private readonly Action<Diagnostic> _reportDiagnostic;
+    private readonly CancellationToken _cancellationToken;
+
+    public Emitter(Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
+    {
+        _reportDiagnostic = reportDiagnostic;
+        _cancellationToken = cancellationToken;
+    }
+
     public string Emit(EmittableType t)
     {
         var underlyingType = t.UnderlyingType!.Name;
-        var objectType = GetObjectType(t.TypeKind);
+        var constructType = GetConstructType(t.ConstructTypeKind);
         var validationBlock = GenerateValidations(t.Validations);
 
         return $$"""
@@ -25,7 +35,7 @@ internal class Emitter
             namespace {{t.Namespace}}
             {
                 [JsonConverter(typeof(TypelyJsonConverter<{{underlyingType}}, {{t.TypeName}}>))]
-                public partial {{objectType}} {{t.TypeName}} : ITypelyValue<{{underlyingType}}, {{t.TypeName}}>
+                public partial {{constructType}} {{t.TypeName}} : ITypelyValue<{{underlyingType}}, {{t.TypeName}}>
                 {
                     public {{underlyingType}} Value { get; private set; }
 
@@ -57,11 +67,11 @@ internal class Emitter
             """;
     }
 
-    public string GetObjectType(TypeKind objectType) => objectType switch
+    public string GetConstructType(ConstructTypeKind objectType) => objectType switch
     {
-        TypeKind.Struct => "struct",
-        TypeKind.Record => "record",
-        TypeKind.Class => "class",
+        ConstructTypeKind.Struct => "struct",
+        ConstructTypeKind.Record => "record",
+        ConstructTypeKind.Class => "class",
         _ => throw new ArgumentOutOfRangeException(nameof(objectType), $"Unexpected value {objectType}"),
     };
 
@@ -77,6 +87,8 @@ internal class Emitter
 
         foreach (var validation in validations)
         {
+            _cancellationToken.ThrowIfCancellationRequested();
+
             var lambda = validation.ValidationExpression as LambdaExpression;
             if (lambda == null)
             {

@@ -3,7 +3,7 @@
 /// <summary>
 /// Enumeration for possible kinds of type constructs.
 /// </summary>
-internal enum TypeKind
+internal enum ConstructTypeKind
 {
     Struct,
     Class,
