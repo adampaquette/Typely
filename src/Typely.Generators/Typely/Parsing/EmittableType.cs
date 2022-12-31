@@ -17,6 +17,6 @@ internal class EmittableType
 
 internal class EmittableValidation
 {
-    public Expression<Func<object, bool>>? ValidationExpression { get; set; }
+    public Expression? ValidationExpression { get; set; }
     public string? ValidationMessage { get; set; }
 }

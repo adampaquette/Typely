@@ -117,9 +117,13 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
     public IRuleBuilder<TValue> NotEmpty()
     {
         Logger.Log("NotEmpty");
+        Expression predicate = typeof(TValue) == typeof(string) 
+            ? (string x) => string.IsNullOrWhiteSpace(x)
+            : (TValue x) => x == null || !EqualityComparer<TValue>.Default.Equals(x, default!);        
+
         var validation = new EmittableValidation
         {
-            ValidationExpression = (x) => x != default,
+            ValidationExpression = predicate,
             ValidationMessage = "'{Name}' must not be empty."
         };
 
