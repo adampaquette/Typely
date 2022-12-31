@@ -49,7 +49,7 @@ Example:
 ```c#
 builder.For<string>("Name").NotEqual("value");
 ```
-Example error: 'Name' must not be empty.
+Example error: 'Name' should not be equal to 'value'.
 
 String format args:
 - `Name`: Name of the type being validated

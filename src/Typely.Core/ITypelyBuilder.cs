@@ -17,7 +17,7 @@ public interface ITypelyBuilder<T>
     ITypelyBuilder<T> Name(string name);
 
     IRuleBuilder<T> NotEmpty(); //T
-    //IRuleBuilder<T> NotEqual(T value); //T
+    IRuleBuilder<T> NotEqual(T value); //T
     //IRuleBuilder<T> Must(Expression<Func<T, bool>> predicate); //T
     //IRuleBuilder<T> Length(int min, T max); //string
     //IRuleBuilder<T> Length(int exactLength); //string

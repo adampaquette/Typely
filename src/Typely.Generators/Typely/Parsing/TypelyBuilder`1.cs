@@ -102,9 +102,7 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
 
         Expression validation = type == typeof(string)
             ? (string x) => string.IsNullOrWhiteSpace(x)
-            : type.IsValueType
-                ? (TValue x) => !EqualityComparer<TValue>.Default.Equals(x, default!)
-                : (TValue x) => x == null || !EqualityComparer<TValue>.Default.Equals(x, default!);
+            : (TValue x) => !EqualityComparer<TValue>.Default.Equals(x, default!);
 
         var emittableValidation = new EmittableValidation(ErrorCodes.NotEmpty, validation, () => ErrorMessages.NotEmpty);
 
@@ -115,7 +113,15 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
 
     public IRuleBuilder<TValue> NotEqual(TValue value)
     {
-        throw new NotImplementedException();
+        var type = typeof(TValue);
+
+        Expression validation = (TValue x) => !EqualityComparer<TValue>.Default.Equals(x, value);                
+
+        var emittableValidation = new EmittableValidation(ErrorCodes.NotEqual, validation, () => ErrorMessages.NotEqual);
+
+        _emittableType.CurrentValidation = emittableValidation;
+        _emittableType.Validations.Add(emittableValidation);
+        return (IRuleBuilder<TValue>)this;
     }
 
     public IRuleBuilder<TValue> PrecisionScale(int precision, int scale)

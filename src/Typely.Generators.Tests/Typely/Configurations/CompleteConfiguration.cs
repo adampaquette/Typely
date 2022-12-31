@@ -9,6 +9,7 @@ internal class CompleteConfiguration : ITypelyConfiguration
             .For<int>("UserId")
             .Namespace("UserAggregate")
             .Name("Owner identifier")
-            .NotEmpty().WithMessage("'Name' cannot be empty.").WithErrorCode("ERR001");
+            .NotEmpty().WithMessage("'Name' cannot be empty.").WithErrorCode("ERR001")
+            .NotEqual(1);        
     }
 }

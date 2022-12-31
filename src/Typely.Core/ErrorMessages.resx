@@ -120,4 +120,7 @@
   <data name="NotEmpty" xml:space="preserve">
     <value>'{Name}' must not be empty.</value>
   </data>
+  <data name="NotEqual" xml:space="preserve">
+    <value>'{Name}' should not be equal to '{ComparisonValue}'.</value>
+  </data>
 </root>

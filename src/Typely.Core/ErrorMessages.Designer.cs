@@ -68,5 +68,14 @@ namespace Typely.Core {
                 return ResourceManager.GetString("NotEmpty", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{Name}&apos; should not be equal to &apos;{ComparisonValue}&apos;..
+        /// </summary>
+        public static string NotEqual {
+            get {
+                return ResourceManager.GetString("NotEqual", resourceCulture);
+            }
+        }
     }
 }
