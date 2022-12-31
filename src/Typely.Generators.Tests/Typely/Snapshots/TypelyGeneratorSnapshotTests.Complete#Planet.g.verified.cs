@@ -22,12 +22,12 @@ namespace Typely.Generators.Tests.Typely.Configurations
             Value = value;
         }
 
-        public static ValidationError? Validate(String value)
+        public static ValidationError? Validate(String value) 
         {
             if (!EqualityComparer<string>.Default.Equals(value, "sun"))
             {
                 return ValidationErrorFactory.Create(value, "NotEqual", ErrorMessages.NotEqual, "Planet",
-                    new Dictionary<string, object?>
+                    new Dictionary<string, object?> 
                     {
                         { "ComparisonValue", "sun" },
                     });

@@ -22,7 +22,7 @@ namespace Typely.Generators.Tests.Typely.Configurations
             Value = value;
         }
 
-        public static ValidationError? Validate(Int32 value)
+        public static ValidationError? Validate(Int32 value) 
         {
             if (!EqualityComparer<int>.Default.Equals(value, 0))
             {

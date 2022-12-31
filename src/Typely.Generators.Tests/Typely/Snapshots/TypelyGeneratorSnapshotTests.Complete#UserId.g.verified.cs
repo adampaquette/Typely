@@ -22,7 +22,7 @@ namespace UserAggregate
             Value = value;
         }
 
-        public static ValidationError? Validate(Int32 value)
+        public static ValidationError? Validate(Int32 value) 
         {
             if (!EqualityComparer<int>.Default.Equals(value, 0))
             {
@@ -32,7 +32,7 @@ namespace UserAggregate
             if (!EqualityComparer<int>.Default.Equals(value, 1))
             {
                 return ValidationErrorFactory.Create(value, "NotEqual", ErrorMessages.NotEqual, "Owner identifier",
-                    new Dictionary<string, object?>
+                    new Dictionary<string, object?> 
                     {
                         { "ComparisonValue", 1 },
                     });
