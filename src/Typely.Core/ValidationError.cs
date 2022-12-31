@@ -12,12 +12,12 @@ public class ValidationError
     public string ErrorCode { get; }
 
     /// <summary>
-    /// The error message translated.
+    /// The error message localized.
     /// </summary>
     public string ErrorMessage { get; }
 
     /// <summary>
-    /// The error message translated with placeholders.
+    /// The error message localized with placeholders.
     /// </summary>
     public string ErrorMessageWithPlaceholders { get; }
 
