@@ -1,4 +1,5 @@
-﻿using System.Resources;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Resources;
 using Typely.Core;
 using Typely.Core.Converters;
 using Typely.POC;
@@ -10,7 +11,7 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>
 {
     public int Value { get; private set; }
 
-    public ReferenceSample() => throw new Exception("Parameterless constructor not accessible.");
+    public ReferenceSample() => throw new Exception("Parameterless constructor is not allowed.");
 
     public ReferenceSample(int value)
     {
@@ -29,20 +30,13 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>
 
     public static ReferenceSample From(int value) => new(value);
 
-    /// <summary>
-    /// Tries to create a <see cref="ReferenceSample"/> by validating the value first.
-    /// <param name="value">The underlying <see cref="int"/> value.</param>
-    /// <param name="typelyType">The created <see cref="ReferenceSample"/>.</param>
-    /// <param name="validationError">A localized error.</param>
-    /// <returns><see langword="true" /> if </returns>
-    public static bool TryFrom(int value, out ReferenceSample typelyType, out ValidationError? validationError)
+    public static bool TryFrom(int value, [MaybeNullWhen(false)] out ReferenceSample typelyType, out ValidationError? validationError)
     {
         validationError = Validate(value);
         var isValid = validationError == null;
         typelyType = default;
         if (isValid)
         {
-            // Bypass constructor to avoid validating again
             typelyType.Value = value;
         }
         return isValid;
