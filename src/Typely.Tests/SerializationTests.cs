@@ -7,10 +7,7 @@ public class SerializationTests
     {
         var obj = new BasicClass
         {
-            FirstName = new FirstName
-            {
-                Value = "Adam"
-            }
+            FirstName = FirstName.From("Adam")
         };
 
         var actual = System.Text.Json.JsonSerializer.Serialize(obj);
@@ -23,10 +20,7 @@ public class SerializationTests
     {
         var expected = new BasicClass
         {
-            FirstName = new FirstName
-            {
-                Value = "Adam"
-            }
+            FirstName = FirstName.From("Adam")
         };
 
         var obj = "{\"FirstName\":\"Adam\"}";
@@ -41,10 +35,7 @@ public class SerializationTests
     {
         var obj = new BasicClass
         {
-            FirstName = new FirstName
-            {
-                Value = "Adam"
-            }
+            FirstName = FirstName.From("Adam")
         };
 
         var actual = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
@@ -57,10 +48,7 @@ public class SerializationTests
     {
         var expected = new BasicClass
         {
-            FirstName = new FirstName
-            {
-                Value = "Adam"
-            }
+            FirstName = FirstName.From("Adam")
         };
 
         var obj = "{\"FirstName\":\"Adam\"}";

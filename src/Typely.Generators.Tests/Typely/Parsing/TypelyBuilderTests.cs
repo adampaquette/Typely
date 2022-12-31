@@ -15,7 +15,7 @@ public class TypelyBuilderTests
         var emittableTypes = builder.GetEmittableTypes();
 
         var emittableType = Assert.Single(emittableTypes);
-        Assert.Equal(expectedTypeName, emittableType.Name);
+        Assert.Equal(expectedTypeName, emittableType.TypeName);
     }
 
     [Fact]

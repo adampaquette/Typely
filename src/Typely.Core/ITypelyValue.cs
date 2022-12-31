@@ -39,6 +39,7 @@ public interface ITypelyValue<TValue, TThis> : ITypelyValue<TValue> where TThis 
 
     /// <summary>
     /// Tries to create a <see cref="TThis"/> by validating the value first.
+    /// </summary>
     /// <param name="value">The underlying <see cref="TValue"/> value.</param>
     /// <param name="typelyType">The created <see cref="TThis"/>.</param>
     /// <param name="validationError">A localized error.</param>

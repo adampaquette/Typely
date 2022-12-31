@@ -23,7 +23,7 @@ internal class TypelyBuilder : ITypelyBuilder
         {
             UnderlyingType = typeof(T),
             SyntaxTree = _syntaxTree,
-            Name = typeName,
+            TypeName = typeName,
             Namespace = _configurationType.Namespace
         };
         _emittableTypes.Add(emittableType);
