@@ -183,7 +183,6 @@ The validation state of a value object should not be dependant of any external s
 # VNext
 
 ```c#
-- Localisation of messages
 - NotEmpty(); //T
     builder.For<string>("FirstName").NotEmpty();
 - NotEqual(T value); //T

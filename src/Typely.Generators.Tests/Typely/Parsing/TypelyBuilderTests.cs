@@ -35,6 +35,22 @@ public class TypelyBuilderTests
         Assert.Equal(expectedNamespace, emittableType.Namespace);
     }
 
+    [Fact]
+    public void NotEmpty_ShouldBe_Set()
+    {
+        var expectedTypeName = "UserId";
+
+        var builder = new TypelyBuilderFixture().Create();
+
+        builder.For<int>(expectedTypeName)
+            .NotEmpty();
+
+        var emittableTypes = builder.GetEmittableTypes();
+
+        var emittableType = Assert.Single(emittableTypes);
+        var validation = Assert.Single(emittableType.Validations);
+    }
+
     //[Fact]
     //public void ObjectType_ShouldBe_Class()
     //{
