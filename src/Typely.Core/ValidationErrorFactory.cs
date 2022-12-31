@@ -12,7 +12,7 @@ public static class ValidationErrorFactory
             attemptedValue = value;
         }
 
-        var errorMessage = errorMessageWithPlaceholders;
+        var errorMessage = string.Format(errorMessageWithPlaceholders, placeholderValues.Values);
 
         return new ValidationError(errorCode, errorMessage, errorMessageWithPlaceholders, attemptedValue, source, placeholderValues);
     }

@@ -44,6 +44,15 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>
                 errorMessageWithPlaceholders: ErrorMessages.NotEmpty,
                 placeholderValues: placeholderValues);
         }
+
+        if(value < 0)
+        {
+            var placeholderValues = new Dictionary<string, object?>
+            {
+                { "Name", "ReferenceSample" },
+            };
+            return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, nameof(ReferenceSample), placeholderValues);
+        }
         return null;
     }
 
