@@ -1,7 +1,11 @@
 ﻿using System.Linq.Expressions;
+using Typely.Core;
 
 namespace Typely.Generators.Typely.Emetting;
 
+/// <summary>
+/// Visit a lambda expression and modify the parameter to match the <see cref="ITypelyValue{T}.Value"/> property.
+/// </summary>
 internal class ValidationParameterModifier : ExpressionVisitor
 {
     private ParameterExpression _parameterExp { get; }
@@ -11,7 +15,12 @@ internal class ValidationParameterModifier : ExpressionVisitor
         _parameterExp = parameterExp;
     }
 
-    public Expression Modify(Expression expression)
+    /// <summary>
+    /// Visit the lambda expression and modify the parameter to match the <see cref="ITypelyValue{T}.Value"/> property.
+    /// </summary>
+    /// <param name="expression">Expression to modify.</param>
+    /// <returns>The modified expression.</returns>
+    public Expression Modify(LambdaExpression expression)
     {
         return Visit(expression);
     }
@@ -20,7 +29,7 @@ internal class ValidationParameterModifier : ExpressionVisitor
     {
         if (node == _parameterExp)
         {
-            return Expression.Parameter(node.Type, "Value");
+            return Expression.Parameter(node.Type, Consts.ValidateParameterName);
         }
         
         return base.VisitParameter(node);

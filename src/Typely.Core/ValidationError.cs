@@ -24,7 +24,7 @@ public class ValidationError
     /// <summary>
     /// The value that caused the error.
     /// </summary>
-    public object AttemptedValue { get; }
+    public object? AttemptedValue { get; }
 
     /// <summary>
     /// Type that generated the error.
@@ -34,7 +34,7 @@ public class ValidationError
     /// <summary>
     /// List of placeholders with their values.
     /// </summary>
-    public Dictionary<string, object> PlaceholderValues { get; } = new Dictionary<string, object>();
+    public Dictionary<string, object> PlaceholderValues { get; }
 
     /// <summary>
     /// Constructor of <see cref="ValidationError"/>.
@@ -42,12 +42,13 @@ public class ValidationError
     /// <param name="errorCode">A unique identifier for the error.</param>
     /// <param name="errorMessage">The error message.</param>
     /// <param name="attemptedValue">The value that caused the error.</param>
-    public ValidationError(string errorCode, string errorMessage, string errorMessageWithPlaceholders, object attemptedValue, string source)
+    public ValidationError(string errorCode, string errorMessage, string errorMessageWithPlaceholders, object? attemptedValue, string source, Dictionary<string, object> placeholderValues)
     {
         ErrorCode = errorCode;
         ErrorMessage = errorMessage;
         ErrorMessageWithPlaceholders = errorMessageWithPlaceholders;
         AttemptedValue = attemptedValue;
         Source = source;
+        PlaceholderValues = placeholderValues;
     }
 }

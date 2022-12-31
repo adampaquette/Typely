@@ -98,9 +98,13 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
 
     public IRuleBuilder<TValue> NotEmpty()
     {
-        Expression predicate = typeof(TValue) == typeof(string) 
+        var type = typeof(TValue);
+
+        Expression predicate = type == typeof(string)
             ? (string x) => string.IsNullOrWhiteSpace(x)
-            : (TValue x) => x == null || !EqualityComparer<TValue>.Default.Equals(x, default!);        
+            : type.IsValueType
+                ? (TValue x) => !EqualityComparer<TValue>.Default.Equals(x, default!)
+                : (TValue x) => x == null || !EqualityComparer<TValue>.Default.Equals(x, default!);
 
         var validation = new EmittableValidation
         {

@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Resources;
+using System.Text.Json.Serialization;
 using Typely.Core;
 using Typely.Core.Converters;
 using Typely.POC;
 
 namespace Typely.Tests;
 
-[System.Text.Json.Serialization.JsonConverter(typeof(TypelyJsonConverter<int, ReferenceSample>))]
+[JsonConverter(typeof(TypelyJsonConverter<int, ReferenceSample>))]
 public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>
 {
     public int Value { get; private set; }
@@ -23,7 +24,26 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>
     {
         if (value < 0)
         {
-            return new ValidationError("ERR001", "Value can't be negative", "Value can't be negative", value, "ValidationError");
+            var placeholderValues = new Dictionary<string, object>
+                {
+                    { "Name", "ReferenceSample" },
+                };
+
+            object? attemptedValue = value;
+
+            if(TypelyOptions.Instance.IsSensitiveDataLoggingEnabled)
+            {
+                placeholderValues.Add("Value", value);
+                attemptedValue = null;
+            }
+
+            return new ValidationError(
+                errorCode: "NotEmpty",
+                errorMessage: "'{Name}' must not be empty",
+                attemptedValue: attemptedValue,
+                source: "ReferenceSample",
+                errorMessageWithPlaceholders: "'{ReferenceSample}' must not be empty",
+                placeholderValues: placeholderValues);
         }
         return null;
     }
