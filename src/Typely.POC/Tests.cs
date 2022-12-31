@@ -4,7 +4,7 @@ namespace Typely.Tests;
 
 public class Tests
 {
-    [Fact]
+    [Fact(Skip = "debug")]
     public void BadLanguageConstructs()
     {
         var a = new MyStruct();
@@ -12,7 +12,7 @@ public class Tests
         var c = default(MyStruct);
     }
 
-    [Fact]
+    [Fact(Skip = "debug")]
     public void TestReferenceSample()
     {
         var a = ReferenceSample.From(1);
