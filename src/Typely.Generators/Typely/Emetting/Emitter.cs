@@ -15,6 +15,8 @@ internal class Emitter
             using System.Diagnostics.CodeAnalysis;
             using System.Text.Json.Serialization;
 
+            #nullable enable
+
             namespace {{t.Namespace}}
             {
                 [JsonConverter(typeof(TypelyJsonConverter<{{underlyingType}}, {{t.TypeName}}>))]
