@@ -37,6 +37,7 @@ public interface IRuleBuilder<T> : ITypelyBuilder<T>
 {
     IRuleBuilder<T> WithErrorCode(string errorCode);
     IRuleBuilder<T> WithMessage(string message);
+    IRuleBuilder<T> WithMessage(Expression<Func<string>> expression);
 
     //IRuleBuilder<T> WithErrorCode(string errorCode);
 }

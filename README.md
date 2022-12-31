@@ -14,7 +14,9 @@ public class TypesConfiguration : ITypelyConfiguration
 
         builder
             .For<int>("UserId")
-            .Namespace("UserAggregate");
+            .Namespace("UserAggregate")
+            .Name("Owner identifier")
+            .NotEmpty().WithMessage("'Name' cannot be empty.").WithErrorCode("ERR001");
     }
 }
 
@@ -183,12 +185,7 @@ The validation state of a value object should not be dependant of any external s
 # VNext
 
 ```c#
-- NotEmpty(); //T
-    builder.For<string>("FirstName").NotEmpty();
 - NotEqual(T value); //T
-- Name(string message);
-- WithMessage(string message);
-- WithErrorCode(string errorCode);
 - Length(int min, int max); //string
 - Length(int exactLength); //string
 - MinLength(int minLength); //string

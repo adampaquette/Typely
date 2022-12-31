@@ -83,7 +83,13 @@ internal class Emitter
         }
 
         var builder = new StringBuilder(Environment.NewLine);
-        builder.Append("        {").Append(Environment.NewLine);
+        builder.AppendLine("        {");
+        builder.AppendLine("""
+                        var placeholderValues = new Dictionary<string, object?>
+                        {
+                        };
+            """);
+        builder.AppendLine();
 
         foreach (var emittableValidation in emittableValidations)
         {
@@ -97,38 +103,38 @@ internal class Emitter
             var errorCode = emittableValidation.ErrorCode;
             var validationMessage = emittableValidation.ValidationMessage.Body.ToReadableString();
 
-            builder.Append($$"""
+            builder.AppendLine($$"""
                             if ({{validation}})
                             {
-                                return ValidationErrorFactory.Create(value, {{errorCode}}, {{validationMessage}}, {{name}}, placeholderValues);
+                                return ValidationErrorFactory.Create(value, "{{errorCode}}", {{validationMessage}}, "{{name}}", placeholderValues);
                             }
                 """);
         }
 
-        builder.Append(Environment.NewLine)
-            .Append("        }")
-            .Append(Environment.NewLine);
+        builder
+            .AppendLine("            return null;")
+            .AppendLine("        }");
 
         return builder.ToString();
     }
 
     private static string? CreateCSharpValidation(EmittableValidation emittableValidation)
     {
-        var lambda = emittableValidation.Validation as LambdaExpression;
-        if (lambda == null)
+        var validationExpression = emittableValidation.Validation as LambdaExpression;
+        if (validationExpression == null)
         {
             //diagnostic unsupported expression
             return null;
         }
 
-        if (lambda.Parameters.Count != 1)
+        if (validationExpression.Parameters.Count != 1)
         {
             //new diagnostic
             return null;
         }
 
-        var parameterModifier = new ValidationParameterModifier(lambda.Parameters[0]);
-        var validationExpression = (LambdaExpression)parameterModifier.Modify(lambda);
-        return validationExpression.Body.ToReadableString();
+        var parameterModifier = new ValidationParameterModifier(validationExpression.Parameters[0]);
+        var modifiedValidationExpression = (LambdaExpression)parameterModifier.Modify(validationExpression);
+        return modifiedValidationExpression.Body.ToReadableString();
     }
 }
