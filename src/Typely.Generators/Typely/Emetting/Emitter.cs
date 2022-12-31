@@ -84,17 +84,11 @@ internal class Emitter
 
         var builder = new StringBuilder(Environment.NewLine);
         builder.AppendLine("        {");
-        builder.AppendLine("""
-                        var placeholderValues = new Dictionary<string, object?>
-                        {
-                        };
-            """);
-        builder.AppendLine();
 
         foreach (var emittableValidation in emittableValidations)
         {
             _cancellationToken.ThrowIfCancellationRequested();
-            var validation = CreateCSharpValidation(emittableValidation);
+            var validation = GenerateValidation(emittableValidation);
             if (validation == null)
             {
                 continue;
@@ -102,23 +96,25 @@ internal class Emitter
 
             var errorCode = emittableValidation.ErrorCode;
             var validationMessage = emittableValidation.ValidationMessage.Body.ToReadableString();
+            var placeholders = GenerateValidationPlaceholders(emittableValidation.PlaceholderValues);
 
             builder.AppendLine($$"""
                             if ({{validation}})
                             {
-                                return ValidationErrorFactory.Create(value, "{{errorCode}}", {{validationMessage}}, "{{name}}", placeholderValues);
+                                return ValidationErrorFactory.Create(value, "{{errorCode}}", {{validationMessage}}, "{{name}}"{{placeholders}}
                             }
                 """)
                 .AppendLine();
         }
 
-        builder.AppendLine("            return null;")
-            .AppendLine("        }");
+        builder
+            .AppendLine("            return null;")
+            .Append("        }");
 
         return builder.ToString();
     }
 
-    private static string? CreateCSharpValidation(EmittableValidation emittableValidation)
+    private static string? GenerateValidation(EmittableValidation emittableValidation)
     {
         var validationExpression = emittableValidation.Validation as LambdaExpression;
         if (validationExpression == null)
@@ -136,5 +132,29 @@ internal class Emitter
         var parameterModifier = new ValidationParameterModifier(validationExpression.Parameters[0]);
         var modifiedValidationExpression = (LambdaExpression)parameterModifier.Modify(validationExpression);
         return modifiedValidationExpression.Body.ToReadableString();
+    }
+
+    private static string GenerateValidationPlaceholders(Dictionary<string, object?> placeholders)
+    {
+        if (!placeholders.Any())
+        {
+            return ");";
+        }
+
+        var builder = new StringBuilder("""
+            ,
+                                new Dictionary<string, object?> 
+                                {
+            """)
+            .AppendLine();
+
+        foreach (var placeholder in placeholders)
+        {
+            var value = Expression.Constant(placeholder.Value).ToReadableString();
+            builder.AppendLine($$"""                        { "{{placeholder.Key}}", {{value}} },""");
+        }
+
+        return builder.Append("                    });")
+            .ToString();
     }
 }

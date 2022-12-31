@@ -30,6 +30,18 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return this;
     }
 
+    public ITypelyBuilder<TValue> Namespace(string value)
+    {
+        _emittableType.Namespace = value;
+        return this;
+    }
+
+    public ITypelyBuilder<TValue> Name(string name)
+    {
+        _emittableType.Name = name;
+        return this;
+    }
+
     public IRuleBuilder<TValue> ExclusiveBetween(TValue min, TValue max)
     {
         throw new NotImplementedException();
@@ -90,38 +102,25 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         throw new NotImplementedException();
     }
 
-    public ITypelyBuilder<TValue> Namespace(string value)
-    {
-        _emittableType.Namespace = value;
-        return this;
-    }
-
     public IRuleBuilder<TValue> NotEmpty()
     {
-        var type = typeof(TValue);
-
-        Expression validation = type == typeof(string)
+        Expression validation = typeof(TValue) == typeof(string)
             ? (string x) => string.IsNullOrWhiteSpace(x)
             : (TValue x) => !EqualityComparer<TValue>.Default.Equals(x, default!);
 
-        var emittableValidation = new EmittableValidation(ErrorCodes.NotEmpty, validation, () => ErrorMessages.NotEmpty);
+        var emittableValidation = EmittableValidation.From(ErrorCodes.NotEmpty, validation, () => ErrorMessages.NotEmpty);
 
-        _emittableType.CurrentValidation = emittableValidation;
-        _emittableType.Validations.Add(emittableValidation);
-        return (IRuleBuilder<TValue>)this;
+        return AddValidation(emittableValidation);
     }
 
     public IRuleBuilder<TValue> NotEqual(TValue value)
     {
-        var type = typeof(TValue);
+        Expression<Func<TValue, bool>> validation = (TValue x) => !EqualityComparer<TValue>.Default.Equals(x, value);
+       
+        var emittableValidation = EmittableValidation.From(ErrorCodes.NotEqual, validation, () => ErrorMessages.NotEqual);
+        emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.ComparisonValue, value);
 
-        Expression validation = (TValue x) => !EqualityComparer<TValue>.Default.Equals(x, value);                
-
-        var emittableValidation = new EmittableValidation(ErrorCodes.NotEqual, validation, () => ErrorMessages.NotEqual);
-
-        _emittableType.CurrentValidation = emittableValidation;
-        _emittableType.Validations.Add(emittableValidation);
-        return (IRuleBuilder<TValue>)this;
+        return AddValidation(emittableValidation);
     }
 
     public IRuleBuilder<TValue> PrecisionScale(int precision, int scale)
@@ -129,9 +128,10 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         throw new NotImplementedException();
     }
 
-    public ITypelyBuilder<TValue> Name(string name)
+    private IRuleBuilder<TValue> AddValidation(EmittableValidation emittableValidation)
     {
-        _emittableType.Name = name;
-        return this;
+        _emittableType.CurrentValidation = emittableValidation;
+        _emittableType.Validations.Add(emittableValidation);
+        return (IRuleBuilder<TValue>)this;
     }
 }

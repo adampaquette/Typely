@@ -2,11 +2,12 @@
 
 public static class ValidationErrorFactory
 {
-    public static ValidationError Create<TValue>(TValue value, string errorCode, string errorMessageWithPlaceholders, string typeName, Dictionary<string, object?>? placeholderValues = null)
+    public static ValidationError Create<TValue>(TValue value, string errorCode, 
+        string errorMessageWithPlaceholders, string typeName, Dictionary<string, object?>? placeholderValues = null)
     {
         object? attemptedValue = null;
 
-        if(placeholderValues == null)
+        if (placeholderValues == null)
         {
             placeholderValues = new Dictionary<string, object?>();
         }

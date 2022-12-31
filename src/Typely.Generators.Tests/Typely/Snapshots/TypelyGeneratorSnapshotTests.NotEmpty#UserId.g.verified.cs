@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 #nullable enable
 
-namespace UserAggregate
+namespace Typely.Generators.Tests.Typely.Configurations
 {
     [JsonConverter(typeof(TypelyJsonConverter<Int32, UserId>))]
     public partial struct UserId : ITypelyValue<Int32, UserId>
@@ -26,16 +26,7 @@ namespace UserAggregate
         {
             if (!EqualityComparer<int>.Default.Equals(value, 0))
             {
-                return ValidationErrorFactory.Create(value, "ERR001", "'Name' cannot be empty.", "Owner identifier");
-            }
-
-            if (!EqualityComparer<int>.Default.Equals(value, 1))
-            {
-                return ValidationErrorFactory.Create(value, "NotEqual", ErrorMessages.NotEqual, "Owner identifier",
-                    new Dictionary<string, object?>
-                    {
-                        { "ComparisonValue", 1 },
-                    });
+                return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, "UserId");
             }
 
             return null;

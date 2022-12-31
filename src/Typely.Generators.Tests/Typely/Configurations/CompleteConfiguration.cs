@@ -10,6 +10,9 @@ internal class CompleteConfiguration : ITypelyConfiguration
             .Namespace("UserAggregate")
             .Name("Owner identifier")
             .NotEmpty().WithMessage("'Name' cannot be empty.").WithErrorCode("ERR001")
-            .NotEqual(1);        
+            .NotEqual(1);
+
+        builder.For<string>("Planet")
+            .NotEqual("sun");
     }
 }

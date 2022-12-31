@@ -21,22 +21,22 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>
 
     public static ValidationError? Validate(int value)
     {
-        var placeholderValues = new Dictionary<string, object?>
-        {
-            { "Name", "CustomName" }
-        };
-
         //NotEmpty
         if (value != default)
         {
-            return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, nameof(ReferenceSample), placeholderValues);
+            return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, nameof(ReferenceSample), 
+                new Dictionary<string, object?> 
+                {
+                    { "Name", "My sample object" }
+                });
         }
 
         //NotEmpty
         if (value != default) 
         {
-            return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, nameof(ReferenceSample), placeholderValues);
+            return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, nameof(ReferenceSample));
         }
+
         return null;
     }
 
