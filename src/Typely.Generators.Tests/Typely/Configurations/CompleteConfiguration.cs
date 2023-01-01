@@ -15,7 +15,7 @@ internal class CompleteConfiguration : ITypelyConfiguration
             .NotEqual(100).WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001");
 
         builder.For<int>("UPC")
-            .Name(() => Names.UniversalProductCode)
+            .Name(() => Names.UniversalProductCode) 
             .NotEmpty().WithMessage(() => ErrorMessages.NotEqual);
     }
 }
