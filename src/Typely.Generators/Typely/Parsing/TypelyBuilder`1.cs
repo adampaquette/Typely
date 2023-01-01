@@ -106,7 +106,7 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
     {
         Expression validation = typeof(TValue) == typeof(string)
             ? (string x) => string.IsNullOrWhiteSpace(x)
-            : (TValue x) => !EqualityComparer<TValue>.Default.Equals(x, default!);
+            : (TValue x) => EqualityComparer<TValue>.Default.Equals(x, default!);
 
         var emittableValidation = EmittableValidation.From(ErrorCodes.NotEmpty, validation, () => ErrorMessages.NotEmpty);
 
