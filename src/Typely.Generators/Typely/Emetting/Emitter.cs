@@ -87,7 +87,7 @@ internal class Emitter
         _ => throw new ArgumentOutOfRangeException(nameof(objectType), $"Unexpected value {objectType}"),
     };
 
-    public string GenerateValidations(List<EmittableValidation> emittableValidations, string name)
+    public string GenerateValidations(List<EmittableValidation> emittableValidations, Expression<Func<string>> nameExpression)
     {
         if (!emittableValidations.Any())
         {
@@ -107,6 +107,7 @@ internal class Emitter
             }
 
             var errorCode = emittableValidation.ErrorCode;
+            var name = nameExpression.Body.ToReadableString();
             var validationMessage = emittableValidation.ValidationMessage.Body.ToReadableString();
             var placeholders = GenerateValidationPlaceholders(emittableValidation.PlaceholderValues);
 

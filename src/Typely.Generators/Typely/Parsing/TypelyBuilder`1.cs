@@ -32,7 +32,13 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
 
     public ITypelyBuilder<TValue> Name(string name)
     {
-        _emittableType.Name = name;
+        _emittableType.Name = Expression.Lambda<Func<string>>(Expression.Constant(name));
+        return this;
+    }
+
+    public ITypelyBuilder<TValue> Name(Expression<Func<string>> expression)
+    {
+        _emittableType.Name = expression;
         return this;
     }
 

@@ -21,7 +21,7 @@ public class TypesConfiguration : ITypelyConfiguration
             .NotEqual(1);
 
         builder.For<string>("Planet")
-            .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual);
+            .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual).WithName();
     }
 }
 
@@ -200,7 +200,6 @@ builder.For<string>("Planet")
 # VNext
 
 ```c#
-- .Name(() => TypesName.Plant)
 - Length(int min, int max); //string
 - Length(int exactLength); //string
 - MinLength(int minLength); //string

@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using System.Linq.Expressions;
 
 namespace Typely.Generators.Typely.Parsing;
 
@@ -7,7 +8,7 @@ internal class EmittableType
     public SyntaxTree SyntaxTree { get; }
     public Type UnderlyingType { get; }    
     public string TypeName { get; }
-    public string Name { get; set; }
+    public Expression<Func<string>> Name { get; set; }
     public string Namespace { get; set; }
     public ConstructTypeKind ConstructTypeKind { get; set; } = ConstructTypeKind.Struct;
     public List<EmittableValidation> Validations { get; } = new List<EmittableValidation>();
@@ -18,7 +19,7 @@ internal class EmittableType
         SyntaxTree = syntaxTree;
         UnderlyingType = underlyingType;
         TypeName = typeName;
-        Name = typeName;
+        Name = Expression.Lambda<Func<string>>(Expression.Constant(typeName));
         Namespace = @namespace;
     }
 }

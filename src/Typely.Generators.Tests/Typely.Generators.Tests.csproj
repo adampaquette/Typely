@@ -34,12 +34,21 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>ErrorMessages.resx</DependentUpon>
       </Compile>
+      <Compile Update="Typely\Configurations\Names.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Names.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Update="Typely\Configurations\ErrorMessages.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Typely\Configurations\Names.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Names.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 

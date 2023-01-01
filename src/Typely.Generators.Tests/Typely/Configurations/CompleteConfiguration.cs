@@ -11,10 +11,11 @@ internal class CompleteConfiguration : ITypelyConfiguration
             .Namespace("UserAggregate")
             .Name("Owner identifier")
             .AsStruct()
-            .NotEmpty().WithMessage("'{Name}' cannot be empty.").WithErrorCode("ERR001")
-            .NotEqual(1);
+            .NotEmpty()
+            .NotEqual(100).WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001");
 
-        builder.For<string>("Planet")
-            .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual);
+        builder.For<int>("UPC")
+            .Name(() => Names.UniversalProductCode)
+            .NotEmpty().WithMessage(() => ErrorMessages.NotEqual);
     }
 }

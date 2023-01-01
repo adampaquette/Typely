@@ -14,6 +14,7 @@ public interface ITypelyBuilder<T>
     ITypelyBuilder<T> AsStruct();
     //ITypelyBuilder<T> AsClass();
     ITypelyBuilder<T> Name(string name);
+    ITypelyBuilder<T> Name(Expression<Func<string>> expression);
 
     IRuleBuilder<T> NotEmpty(); //T
     IRuleBuilder<T> NotEqual(T value); //T
