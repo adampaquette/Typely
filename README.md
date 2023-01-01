@@ -1,7 +1,6 @@
 ![Typely](assets/logo-300.png)
 
-Typerly let you create types easyly with a fluent API to embrace Domain-driven design and value objects. 
-
+`Typely` let you create types easyly with a fluent API to embrace Domain-driven design and value objects. 
 
 # Example
 
@@ -28,30 +27,21 @@ public class TypesConfiguration : ITypelyConfiguration
 var likes = Likes.From(1365);
 ```
 
-# Class VS Struct
-
-Theses are the 2 main constructs to create de type. A `class` witch is a reference type, will be allocated on the heap and garbage-collected whereas a `struct`, a value type, will be allocated on the stack or inlined in the containing type then deallocated simply by moving the stackpointer back to the previous fonction.
-
-C# 9.0 introduced `record` types to the language and provides an easy way to declare reference types with equality based on immutable values.
-
-C# 10 came with `record structs` to declare value types. Theses record types are nice because they provide auto implementation of IEquatable<T> and operators ==, !=.
-
-https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct
-https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-9#record-types
-https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#record-structs
-
 # Why Typely?
 
-Typely brings validations to immutable value objects. With it's fluent Api, it let developpers enforce a set of rules witch defines a domain object that can only live if it's valid. This concept let's you build systems secure by design because you know that if an object is filled, it will be valid. Validations will also protect your system from potential vectors of attacks like Sql injection. 
+<!-- `Typely` brings validations to immutable value objects. With it's fluent Api, it let developpers enforce a set of rules witch defines a domain object that can only live if it's valid. This concept let's you build systems secure by design because you know that if an object is filled, it will be valid. Validations will also protect your system from potential vectors of attacks like Sql injection. 
 
-You can see records as syntaxic sugar over class and struct.
+You can see records as syntaxic sugar over class and struct. -->
+
+
+
 
 
 # Built-in Validators
 
 ## NotEmpty Validator
 
-Ensures that the value is not null, an empty string or whitespace or the default value for value types, e.g., 0 for int.
+Ensures that the value is not an empty string or whitespace or the default value for value types, e.g., 0 for int.
 
 Example:
 
@@ -63,7 +53,9 @@ Example error: 'Name' must not be empty.
 String format args:
 - `Name`: Name of the type being validated
 - `Value`: Current value of the property
-___
+
+<br>
+
 ## NotEqual Validator
 
 Ensures that the value is not equal to a specified value.
@@ -84,34 +76,134 @@ Optionally, a comparer can be specified:
 ```c#
 builder.For<string>("Name").NotEqual("value", StringComparer.OrdinalIgnoreCase);
 ```
-___
+
+<br>
+
 ## Length Validator
+
+Ensures that the length of a string is within the specified range.
+
+Example:
+
+```c#
+builder.For<string>("Name").Length(1, 50);
+```
+Example error: 'Name' must be between 1 and 50 characters. You entered 51 characters.
+
+String format args:
+- `Name`: Name of the type being validated
+- `Value`: Current value of the property
+- `MinLength`: Minimum length
+- `MaxLength`: Maximum length
+- `TotalLength`: Number of characters entered
+
+<br>
 
 ## MinLength Validator
 
+Ensures that the length of a string is higher or equal to the specified value.
+
+Example:
+
+```c#
+builder.For<string>("Name").MinLength(10);
+```
+Example error: The length of 'Name' must be at least 10 characters. You entered 4 characters.
+
+String format args:
+- `Name`: Name of the type being validated
+- `Value`: Current value of the property
+- `MinLength`: Minimum length
+- `TotalLength`: Number of characters entered
+
+<br>
+
 ## MaxLength Validator
+
+Ensures that the length of a string is less than or equal to the specified value.
+
+Example:
+
+```c#
+builder.For<string>("Name").MaxLength(50);
+```
+Example error: The length of 'Name' must be 50 characters or less. You entered 51 characters.
+
+String format args:
+- `Name`: Name of the type being validated
+- `Value`: Current value of the property
+- `MaxLength`: Maximum length
+- `TotalLength`: Number of characters entered
+
+<br>
 
 ## LessThan Validator  (Max?)
 
+<br>
+
 ## LessThanOrEqual Validator
+
+<br>
 
 ## GreaterThan Validator (Min?)
 
+<br>
+
 ## GreaterThanOrEqual Validator
+
+<br>
 
 ## Must Validator
 
 `Must`
 
+<br>
+
 ## Regular Expression Validator
 
 `Matches`
 
+<br>
+
 ## InclusiveBetween Validator
+
+<br>
 
 ## ExclusiveBetween Validator
 
+<br>
+
 ## PrecisionScale Validator
+
+<br>
+
+# Supported frameworks
+
+- .NET 7.0 or greater are first class citizens frameworks
+- Backward compatible with .NET Standard 2.0
+
+Because I wanted the code base to be as simple as possible and extensible, I needed the value objects to be created generically for exemple in the converters. As the requierd feature for static methods on interfaces without implementation came with C# 11, it could not be part of .NET Standard 2.0. The trade off here is that projects targeting .NET 7.0 or greater will be optimal and projects using .NET Standard 2.0 will benefits from all the same features but using reflexion where generic static method could not be used.
+
+https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-11.0/static-abstracts-in-interfaces
+https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version
+
+# Class VS Struct
+
+Theses are the 2 main constructs to create de type. A `class` witch is a reference type, will be allocated on the heap and garbage-collected whereas a `struct`, a value type, will be allocated on the stack or inlined in the containing type then deallocated simply by moving the stackpointer back to the previous fonction or when their containing type gets deallocated. Therefore memory management of value types will generally be less expensive.
+
+C# 9.0 introduced `record` types to the language and provides an easy way to declare reference types with equality based on immutable values. C# 10 came with `record structs` to declare value types witch have the same benefits of traditionnal records. Under the hood, records generates `struct` or `class` with an implementation of IEquatable<T> and operators `==`, `!=`. 
+
+So because `record` is just syntacic sugar, `Typely` won't use it but offers the same fonctionnality of creating a value type or a reference type like so:
+
+```c#
+builder.For<decimal>("Cost"); // By default, generated types will be `struct`.
+builder.For<string>("Description").AsClass(); // Makes a reference type.
+builder.For<decimal>("Rating").AsStruct(); // For complexe inheritance configurations, you can revert to the default `struct`.
+```
+
+https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct
+https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-9#record-types
+https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#record-structs
 
 # Why is there no implicit conversion?
 
@@ -135,19 +227,6 @@ if(cost >= rating)
 - Second, to respect the open-close principle, we want developers to be able to add new functionality to their value object without having to modify the sources of the `Typely` generator.
 - Third, the use of interface reduces the redundancy such as for example converters.
 
-All the generated types implements `IValue`, giving access to a property named `Value`.
-
-# Supported frameworks
-
-- .NET 7.0 or greater are first class citizens frameworks
-- Backward compatible with .NET Standard 2.0
-
-Because I wanted the code base to be as simple as possible and extensible, I needed the value objects to be created generically for exemple in the converters.
-As the feature for static method inside interfaces came with C# 8.0, it could not be part of .NET Standard 2.0. The trade off here is that projects targeting .NET 5.0 or greater will be first class citizens and projects using .NET Standard 2.0 will benefits from all the same features but using reflexion where generic static method could not be used.
-https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-8.0/default-interface-methods
-https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version
-https://learn.microsoft.com/en-us/dotnet/standard/net-standard?tabs=net-standard-2-1#when-to-target-net50-or-net60-vs-netstandard
-
 # Validations
 
 Throwing and catching exceptions are very costly so `Typely` implements validations using the class `ValidationError`. To avoid extra memory allocation, if all validations passes, the object returned by the `Validate` method will be `null`. 
@@ -169,7 +248,7 @@ You can localize validation messages using a lambda expression and a .resx file 
 
 ```c#
 builder.For<string>("Planet")
-    .Name(() => TypesName.Plant)
+    .Name(() => Names.Planet)
     .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual);
 ```
 
@@ -222,6 +301,7 @@ builder.For<string>("Planet")
 - Length(int min, int max); //string
 - Length(int exactLength); //string
 - MinLength(int minLength); //string
+- explicit convertion
 - LessThan(T value); //IComparable
 - LessThanOrEqual(T value); //IComparable
 - GreaterThan(T value); //IComparable
