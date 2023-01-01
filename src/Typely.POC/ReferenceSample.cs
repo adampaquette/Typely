@@ -60,6 +60,14 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>, IEqu
 
     public static bool operator ==(ReferenceSample left, ReferenceSample right) => left.Equals(right);
 
+    public static bool operator !=(int left, ReferenceSample right) => !(left == right);
+
+    public static bool operator ==(int left, ReferenceSample right) => left.Equals(right.Value);
+
+    public static bool operator !=(ReferenceSample left, int right) => !(left == right);
+
+    public static bool operator ==(ReferenceSample left, int right) => left.Value.Equals(right);
+
     public override int GetHashCode() => EqualityComparer<int>.Default.GetHashCode(Value);
 
     public override bool Equals([NotNullWhen(true)] object? obj) => obj is ReferenceSample && Equals((ReferenceSample)obj);

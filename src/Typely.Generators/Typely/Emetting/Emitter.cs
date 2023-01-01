@@ -70,6 +70,14 @@ internal class Emitter
 
                     public static bool operator ==({{typeName}} left, {{typeName}} right) => left.Equals(right);
 
+                    public static bool operator !=({{underlyingType}} left, {{typeName}} right) => !(left == right);
+
+                    public static bool operator ==({{underlyingType}} left, {{typeName}} right) => left.Equals(right.Value);
+
+                    public static bool operator !=({{typeName}} left, {{underlyingType}} right) => !(left == right);
+
+                    public static bool operator ==({{typeName}} left, {{underlyingType}} right) => left.Value.Equals(right);
+
                     public override int GetHashCode() => EqualityComparer<{{underlyingType}}>.Default.GetHashCode(Value);
 
                     public override bool Equals([NotNullWhen(true)] object? obj) => obj is {{typeName}} && Equals(({{typeName}})obj);

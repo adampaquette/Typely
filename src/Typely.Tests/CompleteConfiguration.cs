@@ -16,5 +16,6 @@ public class CompleteConfiguration : ITypelyConfiguration
             .NotEmpty().WithMessage("'Name' cannot be empty.").WithErrorCode("ERR001")
             .NotEqual(1);
 
+        builder.For<int>("EqualityTest");
     }
 }

@@ -52,6 +52,14 @@ namespace Typely.Generators.Tests.Typely.Configurations
 
         public static bool operator ==(UPC left, UPC right) => left.Equals(right);
 
+        public static bool operator !=(Int32 left, UPC right) => !(left == right);
+
+        public static bool operator ==(Int32 left, UPC right) => left.Equals(right.Value);
+
+        public static bool operator !=(UPC left, Int32 right) => !(left == right);
+
+        public static bool operator ==(UPC left, Int32 right) => left.Value.Equals(right);
+
         public override int GetHashCode() => EqualityComparer<Int32>.Default.GetHashCode(Value);
 
         public override bool Equals([NotNullWhen(true)] object? obj) => obj is UPC && Equals((UPC)obj);
