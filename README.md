@@ -34,7 +34,7 @@ Theses are the 2 main constructs to create de type. A `class` witch is a referen
 
 C# 9.0 introduced `record` types to the language and provides an easy way to declare reference types with equality based on immutable values.
 
-C# 10 came with `record structs` to declare value types. Theses record types are nice because they provide auto implementation of IEquatable<T> and operators ==, != but they lack validations.
+C# 10 came with `record structs` to declare value types. Theses record types are nice because they provide auto implementation of IEquatable<T> and operators ==, !=.
 
 https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct
 https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-9#record-types
@@ -42,6 +42,9 @@ https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#record-struc
 
 # Why Typely?
 
+Typely brings validations to immutable value objects. With it's fluent Api, it let developpers enforce a set of rules witch defines a domain object that can only live if it's valid. This concept let's you build systems secure by design because you know that if an object is filled, it will be valid. Validations will also protect your system from potential vectors of attacks like Sql injection. 
+
+You can see records as syntaxic sugar over class and struct.
 
 
 # Built-in Validators
