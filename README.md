@@ -34,7 +34,7 @@ var likes = Likes.From(1365);
 
 You can see records as syntaxic sugar over class and struct. -->
 
-
+- The entire boiler plate is generated for you. Example [here](./src/Typely.Generators.Tests/Typely/Snapshots/TypelyGeneratorSnapshotTests.Complete%23UserId.g.verified.cs).
 
 
 
