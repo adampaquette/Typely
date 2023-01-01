@@ -83,7 +83,6 @@ internal class Emitter
     public string GetConstructType(ConstructTypeKind objectType) => objectType switch
     {
         ConstructTypeKind.Struct => "struct",
-        ConstructTypeKind.Record => "record",
         ConstructTypeKind.Class => "class",
         _ => throw new ArgumentOutOfRangeException(nameof(objectType), $"Unexpected value {objectType}"),
     };

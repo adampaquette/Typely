@@ -6,6 +6,5 @@
 internal enum ConstructTypeKind
 {
     Struct,
-    Class,
-    Record
+    Class
 }

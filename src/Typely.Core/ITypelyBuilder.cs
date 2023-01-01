@@ -11,9 +11,8 @@ public interface ITypelyBuilder
 public interface ITypelyBuilder<T>
 {
     ITypelyBuilder<T> Namespace(string value);
-    //ITypelyBuilder<T> AsStruct();
+    ITypelyBuilder<T> AsStruct();
     //ITypelyBuilder<T> AsClass();
-    //ITypelyBuilder<T> AsRecord();
     ITypelyBuilder<T> Name(string name);
 
     IRuleBuilder<T> NotEmpty(); //T

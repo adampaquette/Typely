@@ -18,12 +18,6 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return this;
     }
 
-    public ITypelyBuilder<TValue> AsRecord()
-    {
-        _emittableType.ConstructTypeKind = ConstructTypeKind.Record;
-        return this;
-    }
-
     public ITypelyBuilder<TValue> AsStruct()
     {
         _emittableType.ConstructTypeKind = ConstructTypeKind.Struct;
