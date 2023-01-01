@@ -1,6 +1,7 @@
 ﻿using Typely.Core;
 
 namespace Typely.Generators.Tests.Typely.Configurations;
+
 internal class CompleteConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
@@ -9,10 +10,11 @@ internal class CompleteConfiguration : ITypelyConfiguration
             .For<int>("UserId")
             .Namespace("UserAggregate")
             .Name("Owner identifier")
-            .NotEmpty().WithMessage("'Name' cannot be empty.").WithErrorCode("ERR001")
+            .AsStruct()
+            .NotEmpty().WithMessage("'{Name}' cannot be empty.").WithErrorCode("ERR001")
             .NotEqual(1);
 
         builder.For<string>("Planet")
-            .NotEqual("sun");
+            .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual);
     }
 }

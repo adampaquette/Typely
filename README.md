@@ -16,7 +16,12 @@ public class TypesConfiguration : ITypelyConfiguration
             .For<int>("UserId")
             .Namespace("UserAggregate")
             .Name("Owner identifier")
-            .NotEmpty().WithMessage("'Name' cannot be empty.").WithErrorCode("ERR001");
+            .AsStruct()
+            .NotEmpty().WithMessage("'{Name}' cannot be empty.").WithErrorCode("ERR001")
+            .NotEqual(1);
+
+        builder.For<string>("Planet")
+            .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual);
     }
 }
 
@@ -115,7 +120,7 @@ All the generated types implements `IValue`, giving access to a property named `
 
 # Supported frameworks
 
-- .NET 5.0 or greater are first class citizens frameworks
+- .NET 7.0 or greater are first class citizens frameworks
 - Backward compatible with .NET Standard 2.0
 
 Because I wanted the code base to be as simple as possible and extensible, I needed the value objects to be created generically for exemple in the converters.
@@ -126,7 +131,7 @@ https://learn.microsoft.com/en-us/dotnet/standard/net-standard?tabs=net-standard
 
 # Validations
 
-Throwing and catching exceptions are very costly so `Typely` implements validations using the class `ValidationError`. To avoid extra memory allocation, if all validations passes, the object returned by the `Validate` method from the interface `IValidatable<T>` will be `null`. 
+Throwing and catching exceptions are very costly so `Typely` implements validations using the class `ValidationError`. To avoid extra memory allocation, if all validations passes, the object returned by the `Validate` method will be `null`. 
 
 Note that you should use the method `TryFrom` to perform validation without throwing exception where possible otherwise `From`.
 
@@ -138,6 +143,16 @@ Note that you should use the method `TryFrom` to perform validation without thro
 ## Async validations
 
 The validation state of a value object should not be dependant of any external state or services and thus calling async validations are not supported.
+
+## Localization
+
+You can localize validation messages using a lambda expression and a .resx file containing all translations. The body of the lambda will be built into the type itself and executed at run time.
+
+```c#
+builder.For<string>("Planet")
+    .Name(() => TypesName.Plant)
+    .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual);
+```
 
 # Benchmarks
 
@@ -185,7 +200,7 @@ The validation state of a value object should not be dependant of any external s
 # VNext
 
 ```c#
-- NotEqual(T value); //T
+- .Name(() => TypesName.Plant)
 - Length(int min, int max); //string
 - Length(int exactLength); //string
 - MinLength(int minLength); //string
@@ -260,9 +275,7 @@ public class DefaultTypelyConfiguration : ITypelyConfiguration
 }
 
 // Type kinds
-- AsStruct();
 - AsClass();
-- AsRecord();
 
 // Enums
 builder.For<string>("Sexe")
