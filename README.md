@@ -1,6 +1,6 @@
 ![Typely](assets/logo-300.png)
 
-`Typely` let you create types easyly with a fluent API to embrace Domain-driven design and value objects. 
+Typely let you create types easyly with a fluent API to embrace Domain-driven design and value objects. 
 
 # Example
 
@@ -20,7 +20,8 @@ public class TypesConfiguration : ITypelyConfiguration
             .NotEqual(1);
 
         builder.For<string>("Planet")
-            .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual).WithName();
+            .Name(() => Names.Planet)
+            .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual)
     }
 }
 
@@ -220,6 +221,9 @@ if(cost >= rating)
     // Compile and does not throw 
 }
 ```
+
+A conversion that would result in an `InvalidCastException` should not be implicit. So it is not allowed to cast from a primitive to a value object but cating a value object to a primitive is always valid so an explicit cast is implemented.
+
 
 # Why do generated types have an interface?
 

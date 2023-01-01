@@ -16,6 +16,9 @@ public class Tests
     public void TestReferenceSample()
     {
         var a = ReferenceSample.From(1);
+
+        var aa = (int)a;
+
         var b = new ReferenceSample(2);
         ReferenceSample.TryFrom(1, out var i, out var e);
         ReferenceSample.Validate(-1);

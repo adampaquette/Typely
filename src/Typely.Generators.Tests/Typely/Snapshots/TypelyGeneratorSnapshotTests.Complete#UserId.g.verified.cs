@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 namespace UserAggregate
 {
     [JsonConverter(typeof(TypelyJsonConverter<Int32, UserId>))]
-    public partial struct UserId : ITypelyValue<Int32, UserId>
+    public partial struct UserId : ITypelyValue<Int32, UserId>, IEquatable<UserId>
     {
         public Int32 Value { get; private set; }
 
@@ -22,19 +22,19 @@ namespace UserAggregate
             Value = value;
         }
 
-        public static ValidationError? Validate(Int32 value) 
+        public static ValidationError? Validate(Int32 value)
         {
             if (!EqualityComparer<int>.Default.Equals(value, 0))
             {
-                return ValidationErrorFactory.Create(value, "ERR001", "'Name' cannot be empty.", "Owner identifier");
+                return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, "Owner identifier");
             }
 
-            if (!EqualityComparer<int>.Default.Equals(value, 1))
+            if (!EqualityComparer<int>.Default.Equals(value, 100))
             {
-                return ValidationErrorFactory.Create(value, "NotEqual", ErrorMessages.NotEqual, "Owner identifier",
-                    new Dictionary<string, object?> 
+                return ValidationErrorFactory.Create(value, "ERR001", "{Name} cannot be equal to {ComparisonValue}.", "Owner identifier",
+                    new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", 1 },
+                        { "ComparisonValue", 100 },
                     });
             }
 
@@ -54,5 +54,19 @@ namespace UserAggregate
             }
             return isValid;
         }
+
+        public override string ToString() => Value.ToString();
+
+        public static bool operator !=(UserId left, UserId right) => !(left == right);
+
+        public static bool operator ==(UserId left, UserId right) => left.Equals(right);
+
+        public override int GetHashCode() => EqualityComparer<Int32>.Default.GetHashCode(Value);
+
+        public override bool Equals([NotNullWhen(true)] object? obj) => obj is UserId && Equals((UserId)obj);
+
+        public bool Equals(UserId other) => EqualityComparer<Int32>.Default.Equals(Value, other.Value);
+
+        public static explicit operator Int32(UserId value) => value.Value;
     }
 }

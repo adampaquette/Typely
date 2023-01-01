@@ -48,7 +48,7 @@ internal class Emitter
                         Value = value;
                     }
 
-                    public static ValidationError? Validate({{underlyingType}} value) {{validationBlock}}
+                    public static ValidationError? Validate({{underlyingType}} value){{validationBlock}}
 
                     public static {{typeName}} From({{underlyingType}} value) => new(value);
 
@@ -75,6 +75,8 @@ internal class Emitter
                     public override bool Equals([NotNullWhen(true)] object? obj) => obj is {{typeName}} && Equals(({{typeName}})obj);
 
                     public bool Equals({{typeName}} other) => EqualityComparer<{{underlyingType}}>.Default.Equals(Value, other.Value);
+
+                    public static explicit operator {{underlyingType}}({{typeName}} value) => value.Value;
                 }
             }
             """;
@@ -91,7 +93,7 @@ internal class Emitter
     {
         if (!emittableValidations.Any() && underlyingType.IsValueType)
         {
-            return "=> null;";
+            return " => null;";
         }
 
         var builder = new StringBuilder(Environment.NewLine);
@@ -122,7 +124,7 @@ internal class Emitter
             builder.AppendLine($$"""
                             if ({{validation}})
                             {
-                                return ValidationErrorFactory.Create(value, "{{errorCode}}", {{validationMessage}}, "{{name}}"{{placeholders}}
+                                return ValidationErrorFactory.Create(value, "{{errorCode}}", {{validationMessage}}, {{name}}{{placeholders}}
                             }
                 """)
                 .AppendLine();
@@ -164,7 +166,7 @@ internal class Emitter
 
         var builder = new StringBuilder("""
             ,
-                                new Dictionary<string, object?> 
+                                new Dictionary<string, object?>
                                 {
             """)
             .AppendLine();

@@ -65,6 +65,8 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>, IEqu
     public override bool Equals([NotNullWhen(true)] object? obj) => obj is ReferenceSample && Equals((ReferenceSample)obj);
 
     public bool Equals(ReferenceSample other) => EqualityComparer<int>.Default.Equals(Value, other.Value);
+
+    public static explicit operator int(ReferenceSample value) => value.Value;
 }
 
 public record TestR(int Value);
