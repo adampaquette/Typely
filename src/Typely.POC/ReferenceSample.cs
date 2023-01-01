@@ -7,7 +7,7 @@ using Typely.Core.Converters;
 namespace Typely.Tests;
 
 [JsonConverter(typeof(TypelyJsonConverter<int, ReferenceSample>))]
-public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>
+public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>, IEquatable<ReferenceSample>
 {
     public int Value { get; private set; }
 
@@ -24,15 +24,15 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>
         //NotEmpty
         if (value != default)
         {
-            return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, nameof(ReferenceSample), 
-                new Dictionary<string, object?> 
+            return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, nameof(ReferenceSample),
+                new Dictionary<string, object?>
                 {
                     { "Name", "My sample object" }
                 });
         }
 
         //NotEmpty
-        if (value != default) 
+        if (value != default)
         {
             return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, nameof(ReferenceSample));
         }
@@ -53,8 +53,21 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>
         }
         return isValid;
     }
+
+    public override string ToString() => Value.ToString();
+
+    public static bool operator !=(ReferenceSample left, ReferenceSample right) => !(left == right);
+
+    public static bool operator ==(ReferenceSample left, ReferenceSample right) => left.Equals(right);
+
+    public override int GetHashCode() => EqualityComparer<int>.Default.GetHashCode(Value);
+
+    public override bool Equals([NotNullWhen(true)] object? obj) => obj is ReferenceSample && Equals((ReferenceSample)obj);
+
+    public bool Equals(ReferenceSample other) => EqualityComparer<int>.Default.Equals(Value, other.Value);
 }
 
+public record TestR(int Value);
 
 public class NotEmptyValidationEmitter
 {

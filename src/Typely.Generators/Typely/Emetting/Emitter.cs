@@ -19,6 +19,7 @@ internal class Emitter
 
     public string Emit(EmittableType t)
     {
+        var typeName = t.TypeName;
         var underlyingType = t.UnderlyingType!.Name;
         var constructType = GetConstructType(t.ConstructTypeKind);
         var validationBlock = GenerateValidations(t.Validations, t.Name);
@@ -34,24 +35,24 @@ internal class Emitter
 
             namespace {{t.Namespace}}
             {
-                [JsonConverter(typeof(TypelyJsonConverter<{{underlyingType}}, {{t.TypeName}}>))]
-                public partial {{constructType}} {{t.TypeName}} : ITypelyValue<{{underlyingType}}, {{t.TypeName}}>
+                [JsonConverter(typeof(TypelyJsonConverter<{{underlyingType}}, {{typeName}}>))]
+                public partial {{constructType}} {{typeName}} : ITypelyValue<{{underlyingType}}, {{typeName}}>, IEquatable<{{typeName}}>
                 {
                     public {{underlyingType}} Value { get; private set; }
 
-                    public {{t.TypeName}}() => throw new Exception("Parameterless constructor is not allowed.");
+                    public {{typeName}}() => throw new Exception("Parameterless constructor is not allowed.");
 
-                    public {{t.TypeName}}({{underlyingType}} value)
+                    public {{typeName}}({{underlyingType}} value)
                     {
-                        TypelyValue.ValidateAndThrow<{{underlyingType}}, {{t.TypeName}}>(value);
+                        TypelyValue.ValidateAndThrow<{{underlyingType}}, {{typeName}}>(value);
                         Value = value;
                     }
 
                     public static ValidationError? Validate({{underlyingType}} value) {{validationBlock}}
 
-                    public static {{t.TypeName}} From({{underlyingType}} value) => new(value);
+                    public static {{typeName}} From({{underlyingType}} value) => new(value);
 
-                    public static bool TryFrom({{underlyingType}} value, [MaybeNullWhen(false)] out {{t.TypeName}} typelyType, out ValidationError? validationError)
+                    public static bool TryFrom({{underlyingType}} value, [MaybeNullWhen(false)] out {{typeName}} typelyType, out ValidationError? validationError)
                     {
                         validationError = Validate(value);
                         var isValid = validationError == null;
@@ -62,6 +63,18 @@ internal class Emitter
                         }
                         return isValid;
                     }
+
+                    public override string ToString() => Value.ToString();
+
+                    public static bool operator !=({{typeName}} left, {{typeName}} right) => !(left == right);
+
+                    public static bool operator ==({{typeName}} left, {{typeName}} right) => left.Equals(right);
+
+                    public override int GetHashCode() => EqualityComparer<{{underlyingType}}>.Default.GetHashCode(Value);
+
+                    public override bool Equals([NotNullWhen(true)] object? obj) => obj is {{typeName}} && Equals(({{typeName}})obj);
+
+                    public bool Equals({{typeName}} other) => EqualityComparer<{{underlyingType}}>.Default.Equals(Value, other.Value);
                 }
             }
             """;
