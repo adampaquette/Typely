@@ -28,6 +28,22 @@ public class TypesConfiguration : ITypelyConfiguration
 var likes = Likes.From(1365);
 ```
 
+# Class VS Struct
+
+Theses are the 2 main constructs to create de type. A `class` witch is a reference type, will be allocated on the heap and garbage-collected whereas a `struct`, a value type, will be allocated on the stack or inlined in the containing type then deallocated simply by moving the stackpointer back to the previous fonction.
+
+C# 9.0 introduced `record` types to the language and provides an easy way to declare reference types with equality based on immutable values.
+
+C# 10 came with `record structs` to declare value types. Theses record types are nice because they provide auto implementation of IEquatable<T> and operators ==, != but they lack validations.
+
+https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/choosing-between-class-and-struct
+https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-9#record-types
+https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#record-structs
+
+# Why Typely?
+
+
+
 # Built-in Validators
 
 ## NotEmpty Validator
