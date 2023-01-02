@@ -64,6 +64,11 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
 
     public IRuleBuilder<TValue> Length(int min, int max)
     {
+        if (typeof(TValue) != typeof(string))
+        {
+            //TODO error diagnostic
+        }
+
         Expression<Func<string, bool>> validation = (string x) => x.Length < min || x.Length > max;
 
         var emittableValidation = EmittableValidation.From(ErrorCodes.Length, validation, () => ErrorMessages.Length);
@@ -75,6 +80,11 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
 
     public IRuleBuilder<TValue> Length(int exactLength)
     {
+        if (typeof(TValue) != typeof(string))
+        {
+            //TODO error diagnostic
+        }
+
         Expression<Func<string, bool>> validation = (string x) => x.Length != exactLength;
 
         var emittableValidation = EmittableValidation.From(ErrorCodes.Length, validation, () => ErrorMessages.Length);
@@ -85,6 +95,11 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
 
     public IRuleBuilder<TValue> MinLength(int minLength)
     {
+        if (typeof(TValue) != typeof(string))
+        {
+            //TODO error diagnostic
+        }
+
         Expression<Func<string, bool>> validation = (string x) => x.Length < minLength;
 
         var emittableValidation = EmittableValidation.From(ErrorCodes.MinLength, validation, () => ErrorMessages.MinLength);
@@ -95,6 +110,11 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
 
     public IRuleBuilder<TValue> MaxLength(int maxLength)
     {
+        if (typeof(TValue) != typeof(string))
+        { 
+            //TODO error diagnostic
+        }
+
         Expression<Func<string, bool>> validation = (string x) => x.Length > maxLength;
 
         var emittableValidation = EmittableValidation.From(ErrorCodes.MaxLength, validation, () => ErrorMessages.MaxLength);

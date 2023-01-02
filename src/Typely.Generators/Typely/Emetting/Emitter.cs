@@ -150,13 +150,13 @@ internal class Emitter
         var validationExpression = emittableValidation.Validation as LambdaExpression;
         if (validationExpression == null)
         {
-            //diagnostic unsupported expression
+            //TODO diagnostic unsupported expression
             return null;
         }
 
         if (validationExpression.Parameters.Count != 1)
         {
-            //new diagnostic
+            //TODO new diagnostic
             return null;
         }
 

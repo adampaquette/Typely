@@ -117,7 +117,7 @@ internal sealed class Parser : IDisposable
         {
             foreach (var diagnostic in result.Diagnostics)
             {
-                _reportDiagnostic(diagnostic);
+                _reportDiagnostic(diagnostic); //TODO Add a prefix to inform that it came from Typely
             }
             return null;
         }

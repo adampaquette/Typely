@@ -17,5 +17,7 @@ internal class CompleteConfiguration : ITypelyConfiguration
         builder.For<int>("UPC")
             //.Name(() => Names.UniversalProductCode) 
             .NotEmpty().WithMessage(() => ErrorMessages.NotEqual);
+
+        builder.For<string>("Title").NotEmpty().MaxLength(100);
     }
 }

@@ -322,10 +322,6 @@ builder.For<string>("Planet")
 # VNext
 
 ```c#
-- Length(int min, int max); //string
-- Length(int exactLength); //string
-- MinLength(int minLength); //string
-- explicit convertion
 - LessThan(T value); //IComparable
 - LessThanOrEqual(T value); //IComparable
 - GreaterThan(T value); //IComparable
