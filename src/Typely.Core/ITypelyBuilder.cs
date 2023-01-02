@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using System;
 
 namespace Typely.Core;
 
@@ -19,10 +18,10 @@ public interface ITypelyBuilder<T>
     IRuleBuilder<T> NotEmpty(); //T
     IRuleBuilder<T> NotEqual(T value); //T
     //IRuleBuilder<T> Must(Expression<Func<T, bool>> predicate); //T
-    //IRuleBuilder<T> Length(int min, T max); //string
-    //IRuleBuilder<T> Length(int exactLength); //string
-    //IRuleBuilder<T> MinLength(int minLength); //string
-    //IRuleBuilder<T> MaxLength(int maxLength); //string
+    IRuleBuilder<T> Length(int min, int max); //string
+    IRuleBuilder<T> Length(int exactLength); //string
+    IRuleBuilder<T> MinLength(int minLength); //string
+    IRuleBuilder<T> MaxLength(int maxLength); //string
     //IRuleBuilder<T> Matches(string regex); //string
     //IRuleBuilder<T> LessThan(T value); //IComparable
     //IRuleBuilder<T> LessThanOrEqual(T value); //IComparable

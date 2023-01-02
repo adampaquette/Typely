@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Typely.Core;
+﻿namespace Typely.Core;
 
 public class ValidationException : Exception
 {

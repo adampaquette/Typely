@@ -91,14 +91,33 @@ Example:
 ```c#
 builder.For<string>("Name").Length(1, 50);
 ```
-Example error: 'Name' must be between 1 and 50 characters. You entered 51 characters.
+Example error: 'Name' must be between 1 and 50 characters but currently has 51.
 
 String format args:
 - `Name`: Name of the type being validated
 - `Value`: Current value of the property
 - `MinLength`: Minimum length
 - `MaxLength`: Maximum length
-- `TotalLength`: Number of characters entered
+- `ActualLength`: Number of characters received
+
+<br>
+
+## Exact Length Validator
+
+Ensures that the length of a string is exactly the specified length.
+
+Example:
+
+```c#
+builder.For<string>("Code").Length(10);
+```
+Example error: 'Code' must contain exactly 10 characters but currently has 11.
+
+String format args:
+- `Name`: Name of the type being validated
+- `Value`: Current value of the property
+- `ExactLength`: Exact length
+- `ActualLength`: Number of characters received
 
 <br>
 
@@ -111,13 +130,13 @@ Example:
 ```c#
 builder.For<string>("Name").MinLength(10);
 ```
-Example error: The length of 'Name' must be at least 10 characters. You entered 4 characters.
+Example error: 'Name' must be at least 10 characters but currently has 4.
 
 String format args:
 - `Name`: Name of the type being validated
 - `Value`: Current value of the property
 - `MinLength`: Minimum length
-- `TotalLength`: Number of characters entered
+- `ActualLength`: Number of characters received
 
 <br>
 
@@ -130,13 +149,13 @@ Example:
 ```c#
 builder.For<string>("Name").MaxLength(50);
 ```
-Example error: The length of 'Name' must be 50 characters or less. You entered 51 characters.
+Example error: 'Name' must be 50 characters or less but currently has 51.
 
 String format args:
 - `Name`: Name of the type being validated
 - `Value`: Current value of the property
 - `MaxLength`: Maximum length
-- `TotalLength`: Number of characters entered
+- `ActualLength`: Number of characters received
 
 <br>
 

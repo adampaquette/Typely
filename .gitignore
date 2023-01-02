@@ -351,3 +351,4 @@ MigrationBackup/
 
 # Verified
 *.received.cs
+*.received.txt

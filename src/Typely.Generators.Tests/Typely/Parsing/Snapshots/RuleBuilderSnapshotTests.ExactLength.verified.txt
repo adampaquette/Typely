@@ -1,0 +1,10 @@
+﻿[
+  {
+    ErrorCode: Length,
+    Validation: x => (x.Length != 10),
+    ValidationMessage: () => ErrorMessages.Length,
+    PlaceholderValues: {
+      ExactLength: 10
+    }
+  }
+]

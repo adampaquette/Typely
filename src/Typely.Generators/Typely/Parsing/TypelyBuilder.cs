@@ -25,7 +25,7 @@ internal class TypelyBuilder : ITypelyBuilder
 
         _emittableTypes.Add(emittableType);
 
-        return new RuleBuilder<T>(emittableType);
+        return new RuleBuilder<T>(emittableType, _emittableTypes);
     }
 
     public IReadOnlyList<EmittableType> GetEmittableTypes() => _emittableTypes.AsReadOnly();

@@ -5,7 +5,12 @@ namespace Typely.Generators.Typely.Parsing;
 
 internal class RuleBuilder<T> : TypelyBuilder<T>, IRuleBuilder<T>
 {
-    public RuleBuilder(EmittableType emittableType) : base(emittableType) { }
+    private List<EmittableType> _emittableTypes;
+
+    public RuleBuilder(EmittableType emittableType, List<EmittableType> emittableTypes) : base(emittableType)
+    {
+        _emittableTypes = emittableTypes;
+    }
 
     public IRuleBuilder<T> WithErrorCode(string errorCode)
     {
@@ -24,4 +29,6 @@ internal class RuleBuilder<T> : TypelyBuilder<T>, IRuleBuilder<T>
         _emittableType.CurrentValidation!.ValidationMessage = expression;
         return this;
     }
+
+    public IReadOnlyList<EmittableType> GetEmittableTypes() => _emittableTypes.AsReadOnly();
 }

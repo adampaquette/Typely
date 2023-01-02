@@ -61,6 +61,42 @@ namespace Typely.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{Name}&apos; must contain exactly {ExactLength} characters but currently has {ActualLength}..
+        /// </summary>
+        public static string ExactLength {
+            get {
+                return ResourceManager.GetString("ExactLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{Name}&apos; must be between {MinLength} and {MaxLength} characters but currently has {ActualLength}..
+        /// </summary>
+        public static string Length {
+            get {
+                return ResourceManager.GetString("Length", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{Name}&apos; must be {MaxLength} characters or less but currently has {ActualLength}..
+        /// </summary>
+        public static string MaxLength {
+            get {
+                return ResourceManager.GetString("MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{Name}&apos; must be at least {MinLength} characters but currently has {ActualLength}..
+        /// </summary>
+        public static string MinLength {
+            get {
+                return ResourceManager.GetString("MinLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;{Name}&apos; must not be empty..
         /// </summary>
         public static string NotEmpty {

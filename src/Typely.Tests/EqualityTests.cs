@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace Typely.Tests;
+﻿namespace Typely.Tests;
 
 public class EqualityTests
 {

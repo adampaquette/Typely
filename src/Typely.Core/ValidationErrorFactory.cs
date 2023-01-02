@@ -17,6 +17,12 @@ public static class ValidationErrorFactory
             placeholderValues.Add(ValidationPlaceholders.Name, typeName);
         }
 
+        if(typeof(TValue) == typeof(string))
+        {
+            var actualLength = (value as string)?.Length ?? 0;
+            placeholderValues.Add(ValidationPlaceholders.ActualLength, actualLength);
+        }
+
         if (TypelyOptions.Instance.IsSensitiveDataLoggingEnabled)
         {
             if (!placeholderValues.ContainsKey(ValidationPlaceholders.Value))

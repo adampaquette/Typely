@@ -62,14 +62,45 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         throw new NotImplementedException();
     }
 
-    public IRuleBuilder<TValue> Length(int min, TValue max)
+    public IRuleBuilder<TValue> Length(int min, int max)
     {
-        throw new NotImplementedException();
+        Expression<Func<string, bool>> validation = (string x) => x.Length < min || x.Length > max;
+
+        var emittableValidation = EmittableValidation.From(ErrorCodes.Length, validation, () => ErrorMessages.Length);
+        emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.MinLength, min);
+        emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.MaxLength, max);
+
+        return AddValidation(emittableValidation);
     }
 
     public IRuleBuilder<TValue> Length(int exactLength)
     {
-        throw new NotImplementedException();
+        Expression<Func<string, bool>> validation = (string x) => x.Length != exactLength;
+
+        var emittableValidation = EmittableValidation.From(ErrorCodes.Length, validation, () => ErrorMessages.Length);
+        emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.ExactLength, exactLength);
+
+        return AddValidation(emittableValidation);
+    }
+
+    public IRuleBuilder<TValue> MinLength(int minLength)
+    {
+        Expression<Func<string, bool>> validation = (string x) => x.Length < minLength;
+
+        var emittableValidation = EmittableValidation.From(ErrorCodes.MinLength, validation, () => ErrorMessages.MinLength);
+        emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.MinLength, minLength);
+
+        return AddValidation(emittableValidation);
+    }
+
+    public IRuleBuilder<TValue> MaxLength(int maxLength)
+    {
+        Expression<Func<string, bool>> validation = (string x) => x.Length > maxLength;
+
+        var emittableValidation = EmittableValidation.From(ErrorCodes.MaxLength, validation, () => ErrorMessages.MaxLength);
+        emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.MaxLength, maxLength);
+
+        return AddValidation(emittableValidation);
     }
 
     public IRuleBuilder<TValue> LessThan(TValue value)
@@ -83,16 +114,6 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
     }
 
     public IRuleBuilder<TValue> Matches(string regex)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IRuleBuilder<TValue> MaxLength(int maxLength)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IRuleBuilder<TValue> MinLength(int minLength)
     {
         throw new NotImplementedException();
     }

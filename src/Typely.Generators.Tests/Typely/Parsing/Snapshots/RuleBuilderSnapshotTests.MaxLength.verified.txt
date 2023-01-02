@@ -1,0 +1,10 @@
+﻿[
+  {
+    ErrorCode: MaxLength,
+    Validation: x => (x.Length > 10),
+    ValidationMessage: () => ErrorMessages.MaxLength,
+    PlaceholderValues: {
+      MaxLength: 10
+    }
+  }
+]

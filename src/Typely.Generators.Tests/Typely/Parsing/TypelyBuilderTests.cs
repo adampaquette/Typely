@@ -1,7 +1,6 @@
-using Typely.Generators.Typely.Parsing;
-
 namespace Typely.Generators.Tests.Typely.Parsing;
 
+[UsesVerify]
 public class TypelyBuilderTests
 {
     [Fact]
@@ -33,22 +32,6 @@ public class TypelyBuilderTests
 
         var emittableType = Assert.Single(emittableTypes);
         Assert.Equal(expectedNamespace, emittableType.Namespace);
-    }
-
-    [Fact]
-    public void NotEmpty_ShouldBe_Set()
-    {
-        var expectedTypeName = "UserId";
-
-        var builder = new TypelyBuilderFixture().Create();
-
-        builder.For<int>(expectedTypeName)
-            .NotEmpty();
-
-        var emittableTypes = builder.GetEmittableTypes();
-
-        var emittableType = Assert.Single(emittableTypes);
-        var validation = Assert.Single(emittableType.Validations);
     }
 
     [Fact]
@@ -141,6 +124,7 @@ public class TypelyBuilderTests
         var emittableType = Assert.Single(emittableTypes);
         Assert.Equal(expectedName, emittableType.Name.Compile().Invoke());
     }
+
 
     //[Fact]
     //public void ObjectType_ShouldBe_Class()

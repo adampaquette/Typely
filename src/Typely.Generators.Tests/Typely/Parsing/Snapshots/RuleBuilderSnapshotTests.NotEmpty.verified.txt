@@ -1,0 +1,7 @@
+﻿[
+  {
+    ErrorCode: NotEmpty,
+    Validation: x => EqualityComparer`1.Default.Equals(x, 0),
+    ValidationMessage: () => ErrorMessages.NotEmpty
+  }
+]
