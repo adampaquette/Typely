@@ -249,7 +249,7 @@ The preceding code compiles and does not throw. Also, a conversion that would re
 
 - First, because our value objects need to be compile-time type safe, we can't use implicit conversions, so we need to have some way to access the underlying value.
 - Second, to respect the open-close principle, we want developers to be able to add new functionality to their value object without having to modify the sources of the `Typely` generator.
-- Third, the use of interface reduces the redundancy such as for example converters. This is why Microsoft added the feature Generic Math with interfaces like `INumber<T>` over primitive types.
+- Third, the use of interface reduces the redundancy such as for example converters. The same reason why Microsoft added the feature Generic Math with interfaces like `INumber<T>` over primitive types.
 
 https://devblogs.microsoft.com/dotnet/preview-features-in-net-6-generic-math/
 
