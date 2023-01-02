@@ -9,7 +9,7 @@ namespace Typely.Tests;
 #nullable enable
 
 [JsonConverter(typeof(TypelyJsonConverter<int, ReferenceSample>))]
-public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>, IEquatable<ReferenceSample>, IEquatable<int>, IComparable<ReferenceSample>, IComparable<int>, IComparable
+public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>, IEquatable<ReferenceSample>, IComparable<ReferenceSample>, IComparable
 {
     public int Value { get; private set; }
 
@@ -24,7 +24,7 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>, IEqu
     public static ValidationError? Validate(int value)
     {
         //NotEmpty
-        if (value != default)
+        if (value == default)
         {
             return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, nameof(ReferenceSample),
                 new Dictionary<string, object?>
@@ -34,7 +34,7 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>, IEqu
         }
 
         //NotEmpty
-        if (value != default)
+        if (value == default)
         {
             return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, nameof(ReferenceSample));
         }
@@ -62,25 +62,13 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>, IEqu
 
     public static bool operator ==(ReferenceSample left, ReferenceSample right) => left.Equals(right);
 
-    public static bool operator !=(int left, ReferenceSample right) => !(left == right);
-
-    public static bool operator ==(int left, ReferenceSample right) => left.Equals(right.Value);
-
-    public static bool operator !=(ReferenceSample left, int right) => !(left == right);
-
-    public static bool operator ==(ReferenceSample left, int right) => left.Value.Equals(right);
-
     public override int GetHashCode() => Value.GetHashCode();
     
     public bool Equals(ReferenceSample other) => other.Value.Equals(Value);
 
-    public bool Equals(int other) => other.Equals(Value);
-
     public override bool Equals([NotNullWhen(true)] object? obj) => obj is ReferenceSample && Equals((ReferenceSample)obj);    
 
     public int CompareTo(ReferenceSample other) => other.Value.CompareTo(Value);
-
-    public int CompareTo(int other) =>  other.CompareTo(Value);
         
     public int CompareTo(object? obj) => obj is not ReferenceSample ? 1 : CompareTo((ReferenceSample)obj!);
 

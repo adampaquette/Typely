@@ -245,11 +245,28 @@ if(cost >= rating)
 
 The preceding code compiles and does not throw. Also, a conversion that would result in an `InvalidCastException` should not be implicit. So it is not allowed to cast from a primitive to a value object but casting a value object to a primitive is always valid, so an explicit cast is implemented.
 
-# Why do generated types have an interface?
+# Why do generated types implements an interface?
 
 - First, because our value objects need to be compile-time type safe, we can't use implicit conversions, so we need to have some way to access the underlying value.
 - Second, to respect the open-close principle, we want developers to be able to add new functionality to their value object without having to modify the sources of the `Typely` generator.
-- Third, the use of interface reduces the redundancy such as for example converters.
+- Third, the use of interface reduces the redundancy such as for example converters. This is why Microsoft added the feature Generic Math with interfaces like `INumber<T>` over primitive types.
+
+https://devblogs.microsoft.com/dotnet/preview-features-in-net-6-generic-math/
+
+# Why is there no implementation of IEquatable and IComparable on the underlying type?
+
+Premise : It would be cool if we could check for equality and be able to compare a value object with a primitive type.
+
+We could implement `IEquatable<PrimitiveType>` and `IComparable<PrimitiveType>` on the value object but it would be one sided. 
+
+See the following:
+```c#
+var name = Name.From("Joe");
+name.Equals("Joe"); // Returns true
+"Joe".Equals(name); // Returns false
+```
+
+Due to the inconsistency, no equality or comparison will be implemented on the underlying type.
 
 # Validations
 
@@ -278,7 +295,7 @@ builder.For<string>("Planet")
 
 ## Sensitive data
 
-When a validation error is created, you can choose to output the attempted value that failed. The value will be accessible in the `ValidationError.PlaceholderValues` dictionnary with the key `Value`.
+When a validation error is created, you can choose to output the attempted value that failed. The value will be accessible in the `ValidationError.PlaceholderValues` dictionnary with the key `Value` when thrown.
 
 Here is an example of how to activate the setting in your Api:
 ```c#
