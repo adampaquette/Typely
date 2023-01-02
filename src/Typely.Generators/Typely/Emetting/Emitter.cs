@@ -72,12 +72,12 @@ internal class Emitter
 
                     public override int GetHashCode() => Value.GetHashCode();
 
-                    public bool Equals({{typeName}} other) => other.Value.Equals(Value);
+                    public bool Equals({{typeName}} other) => Value.Equals(other.Value);
 
-                    public override bool Equals([NotNullWhen(true)] object? obj) => obj is {{typeName}} && Equals(({{typeName}})obj);                   
+                    public override bool Equals([NotNullWhen(true)] object? obj) => obj is {{typeName}} && Equals(({{typeName}})obj);
 
-                    public int CompareTo({{typeName}} other) => other.Value.CompareTo(Value);
-                                       
+                    public int CompareTo({{typeName}} other) => Value.CompareTo(other.Value);
+
                     public int CompareTo(object? obj) => obj is not {{typeName}} ? 1 : CompareTo(({{typeName}})obj!);
 
                     public static explicit operator {{underlyingType}}({{typeName}} value) => value.Value;
@@ -106,7 +106,7 @@ internal class Emitter
         if(!underlyingType.IsValueType)
         {
             builder.AppendLine($$"""
-                            if(value == null) throw new ArgumentNullException(nameof({{typeName}}));
+                            if (value == null) throw new ArgumentNullException(nameof({{typeName}}));
                 """)
                 .AppendLine();
         }

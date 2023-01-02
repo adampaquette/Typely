@@ -63,23 +63,15 @@ namespace Typely.Generators.Tests.Typely.Configurations
 
         public static bool operator ==(Title left, Title right) => left.Equals(right);
 
-        public static bool operator !=(String left, Title right) => !(left == right);
-
-        public static bool operator ==(String left, Title right) => left.Equals(right.Value);
-
-        public static bool operator !=(Title left, String right) => !(left == right);
-
-        public static bool operator ==(Title left, String right) => left.Value.Equals(right);
-
         public override int GetHashCode() => Value.GetHashCode();
 
-        public bool Equals(Title other) => Value.Equals(Value);
+        public bool Equals(Title other) => Value.Equals(other.Value);
 
         public override bool Equals([NotNullWhen(true)] object? obj) => obj is Title && Equals((Title)obj);
 
-        public int CompareTo(object? obj) => obj is not Title ? 1 : CompareTo((Title)obj!);
+        public int CompareTo(Title other) => Value.CompareTo(other.Value);
 
-        public int CompareTo(Title other) => other.Value.CompareTo(Value);
+        public int CompareTo(object? obj) => obj is not Title ? 1 : CompareTo((Title)obj!);
 
         public static explicit operator String(Title value) => value.Value;
     }

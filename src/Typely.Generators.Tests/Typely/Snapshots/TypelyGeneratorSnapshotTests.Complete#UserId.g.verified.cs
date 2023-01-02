@@ -61,23 +61,15 @@ namespace UserAggregate
 
         public static bool operator ==(UserId left, UserId right) => left.Equals(right);
 
-        public static bool operator !=(Int32 left, UserId right) => !(left == right);
-
-        public static bool operator ==(Int32 left, UserId right) => left.Equals(right.Value);
-
-        public static bool operator !=(UserId left, Int32 right) => !(left == right);
-
-        public static bool operator ==(UserId left, Int32 right) => left.Value.Equals(right);
-
         public override int GetHashCode() => Value.GetHashCode();
 
-        public bool Equals(UserId other) => Value.Equals(Value);
+        public bool Equals(UserId other) => Value.Equals(other.Value);
 
         public override bool Equals([NotNullWhen(true)] object? obj) => obj is UserId && Equals((UserId)obj);
 
-        public int CompareTo(object? obj) => obj is not UserId ? 1 : CompareTo((UserId)obj!);
+        public int CompareTo(UserId other) => Value.CompareTo(other.Value);
 
-        public int CompareTo(UserId other) => other.Value.CompareTo(Value);
+        public int CompareTo(object? obj) => obj is not UserId ? 1 : CompareTo((UserId)obj!);
 
         public static explicit operator Int32(UserId value) => value.Value;
     }
