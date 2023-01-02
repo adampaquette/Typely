@@ -4,7 +4,7 @@ Typely let you create types easyly with a fluent API to embrace Domain-driven de
 
 # Example
 
-```csharp
+```c#
 public class TypesConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
@@ -202,7 +202,7 @@ String format args:
 # Supported frameworks
 
 - .NET 7.0 or greater are first class citizens frameworks
-- Backward compatible with .NET Standard 2.0
+- Backward compatible with .NET Standard 2.0 (`Planned but currently not supported`)
 
 Because I wanted the code base to be as simple as possible and extensible, I needed the value objects to be created generically for exemple in the converters. As the requierd feature for static methods on interfaces without implementation came with C# 11, it could not be part of .NET Standard 2.0. The trade off here is that projects targeting .NET 7.0 or greater will be optimal and projects using .NET Standard 2.0 will benefits from all the same features but using reflexion where generic static method could not be used.
 
@@ -274,6 +274,18 @@ You can localize validation messages using a lambda expression and a .resx file 
 builder.For<string>("Planet")
     .Name(() => Names.Planet)
     .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual);
+```
+
+## Sensitive data
+
+When a validation error is created, you can also choose to output the attempted value that failed. The value will be accessible in the `ValidationError.PlaceholderValues` dictionnary with the key `Value`.
+
+Here is an example of how to activate the setting in your Api:
+```c#
+public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+{
+    TypelyOptions.EnableSensitiveDataLogging(env.IsDevelopment()); 
+}
 ```
 
 # Benchmarks
@@ -363,12 +375,6 @@ builder.Logging.Fields
     .AddErrorMessageWithPlaceHolders()
     .AddSource()
     .AddPlaceholderValues();
-
-public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-{
-    // Defer the check to the runtime
-    Typely.EnableSensitiveDataLogging(env.IsDevelopment()); //Log AttemptedValue with the error message
-}
 
 // Converters
 // Requires to load dependencies of the SyntaxTree
