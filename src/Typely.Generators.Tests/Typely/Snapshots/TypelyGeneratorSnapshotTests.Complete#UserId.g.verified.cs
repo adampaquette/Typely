@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 namespace UserAggregate
 {
     [JsonConverter(typeof(TypelyJsonConverter<Int32, UserId>))]
-    public partial struct UserId : ITypelyValue<Int32, UserId>, IEquatable<UserId>
+    public partial struct UserId : ITypelyValue<Int32, UserId>, IEquatable<UserId>, IComparable<UserId>, IComparable
     {
         public Int32 Value { get; private set; }
 
@@ -24,7 +24,7 @@ namespace UserAggregate
 
         public static ValidationError? Validate(Int32 value)
         {
-            if (!EqualityComparer<int>.Default.Equals(value, 0))
+            if (EqualityComparer<int>.Default.Equals(value, 0))
             {
                 return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, "Owner identifier");
             }
@@ -69,11 +69,15 @@ namespace UserAggregate
 
         public static bool operator ==(UserId left, Int32 right) => left.Value.Equals(right);
 
-        public override int GetHashCode() => EqualityComparer<Int32>.Default.GetHashCode(Value);
+        public override int GetHashCode() => Value.GetHashCode();
+
+        public bool Equals(UserId other) => Value.Equals(Value);
 
         public override bool Equals([NotNullWhen(true)] object? obj) => obj is UserId && Equals((UserId)obj);
 
-        public bool Equals(UserId other) => EqualityComparer<Int32>.Default.Equals(Value, other.Value);
+        public int CompareTo(object? obj) => obj is not UserId ? 1 : CompareTo((UserId)obj!);
+
+        public int CompareTo(UserId other) => other.Value.CompareTo(Value);
 
         public static explicit operator Int32(UserId value) => value.Value;
     }

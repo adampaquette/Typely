@@ -17,5 +17,8 @@ public class CompleteConfiguration : ITypelyConfiguration
             .NotEqual(1);
 
         builder.For<int>("EqualityTest");
+
+        builder.For<int>("ValueType");
+        builder.For<string>("ReferenceType");
     }
 }

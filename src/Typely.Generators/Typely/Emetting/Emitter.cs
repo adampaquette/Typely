@@ -36,7 +36,7 @@ internal class Emitter
             namespace {{t.Namespace}}
             {
                 [JsonConverter(typeof(TypelyJsonConverter<{{underlyingType}}, {{typeName}}>))]
-                public partial {{constructType}} {{typeName}} : ITypelyValue<{{underlyingType}}, {{typeName}}>, IEquatable<{{typeName}}>
+                public partial {{constructType}} {{typeName}} : ITypelyValue<{{underlyingType}}, {{typeName}}>, IEquatable<{{typeName}}>, IEquatable<{{underlyingType}}>, IComparable<{{typeName}}>, IComparable<{{underlyingType}}>, IComparable
                 {
                     public {{underlyingType}} Value { get; private set; }
 
@@ -78,11 +78,25 @@ internal class Emitter
 
                     public static bool operator ==({{typeName}} left, {{underlyingType}} right) => left.Value.Equals(right);
 
-                    public override int GetHashCode() => EqualityComparer<{{underlyingType}}>.Default.GetHashCode(Value);
+                    public override int GetHashCode() => Value.GetHashCode();
 
-                    public override bool Equals([NotNullWhen(true)] object? obj) => obj is {{typeName}} && Equals(({{typeName}})obj);
+                    public bool Equals({{typeName}} other) => other.Value.Equals(Value);
 
-                    public bool Equals({{typeName}} other) => EqualityComparer<{{underlyingType}}>.Default.Equals(Value, other.Value);
+                    {{(t.UnderlyingType!.IsValueType ?
+                        $"public bool Equals({underlyingType} other) => other.Equals(Value);" :
+                        $"public bool Equals({underlyingType}? other) => other != null && other.Equals(Value);"
+                    )}}
+
+                    public override bool Equals([NotNullWhen(true)] object? obj) => obj is {{typeName}} && Equals(({{typeName}})obj);                   
+
+                    public int CompareTo({{typeName}} other) => other.Value.CompareTo(Value);
+                    
+                    {{(t.UnderlyingType!.IsValueType ? 
+                        $"public int CompareTo({underlyingType} other) => other.CompareTo(Value);" :
+                        $"public int CompareTo({underlyingType}? other) => other == null ? 1 : other.CompareTo(Value);"
+                    )}}
+                    
+                    public int CompareTo(object? obj) => obj is not {{typeName}} ? 1 : CompareTo(({{typeName}})obj!);
 
                     public static explicit operator {{underlyingType}}({{typeName}} value) => value.Value;
                 }

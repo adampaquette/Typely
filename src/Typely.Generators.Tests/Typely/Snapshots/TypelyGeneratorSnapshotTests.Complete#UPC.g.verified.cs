@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 namespace Typely.Generators.Tests.Typely.Configurations
 {
     [JsonConverter(typeof(TypelyJsonConverter<Int32, UPC>))]
-    public partial struct UPC : ITypelyValue<Int32, UPC>, IEquatable<UPC>
+    public partial struct UPC : ITypelyValue<Int32, UPC>, IEquatable<UPC>, IComparable<UPC>, IComparable
     {
         public Int32 Value { get; private set; }
 
@@ -24,7 +24,7 @@ namespace Typely.Generators.Tests.Typely.Configurations
 
         public static ValidationError? Validate(Int32 value)
         {
-            if (!EqualityComparer<int>.Default.Equals(value, 0))
+            if (EqualityComparer<int>.Default.Equals(value, 0))
             {
                 return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEqual, "UPC");
             }
@@ -60,11 +60,15 @@ namespace Typely.Generators.Tests.Typely.Configurations
 
         public static bool operator ==(UPC left, Int32 right) => left.Value.Equals(right);
 
-        public override int GetHashCode() => EqualityComparer<Int32>.Default.GetHashCode(Value);
+        public override int GetHashCode() => Value.GetHashCode();
+
+        public bool Equals(UPC other) => Value.Equals(Value);
 
         public override bool Equals([NotNullWhen(true)] object? obj) => obj is UPC && Equals((UPC)obj);
 
-        public bool Equals(UPC other) => EqualityComparer<Int32>.Default.Equals(Value, other.Value);
+        public int CompareTo(object? obj) => obj is not UPC ? 1 : CompareTo((UPC)obj!);
+
+        public int CompareTo(UPC other) => other.Value.CompareTo(Value);
 
         public static explicit operator Int32(UPC value) => value.Value;
     }

@@ -278,7 +278,7 @@ builder.For<string>("Planet")
 
 ## Sensitive data
 
-When a validation error is created, you can also choose to output the attempted value that failed. The value will be accessible in the `ValidationError.PlaceholderValues` dictionnary with the key `Value`.
+When a validation error is created, you can choose to output the attempted value that failed. The value will be accessible in the `ValidationError.PlaceholderValues` dictionnary with the key `Value`.
 
 Here is an example of how to activate the setting in your Api:
 ```c#

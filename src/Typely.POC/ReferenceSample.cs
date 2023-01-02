@@ -6,8 +6,10 @@ using Typely.Core.Converters;
 
 namespace Typely.Tests;
 
+#nullable enable
+
 [JsonConverter(typeof(TypelyJsonConverter<int, ReferenceSample>))]
-public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>, IEquatable<ReferenceSample>
+public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>, IEquatable<ReferenceSample>, IEquatable<int>, IComparable<ReferenceSample>, IComparable<int>, IComparable
 {
     public int Value { get; private set; }
 
@@ -68,11 +70,19 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>, IEqu
 
     public static bool operator ==(ReferenceSample left, int right) => left.Value.Equals(right);
 
-    public override int GetHashCode() => EqualityComparer<int>.Default.GetHashCode(Value);
+    public override int GetHashCode() => Value.GetHashCode();
+    
+    public bool Equals(ReferenceSample other) => other.Value.Equals(Value);
 
-    public override bool Equals([NotNullWhen(true)] object? obj) => obj is ReferenceSample && Equals((ReferenceSample)obj);
+    public bool Equals(int other) => other.Equals(Value);
 
-    public bool Equals(ReferenceSample other) => EqualityComparer<int>.Default.Equals(Value, other.Value);
+    public override bool Equals([NotNullWhen(true)] object? obj) => obj is ReferenceSample && Equals((ReferenceSample)obj);    
+
+    public int CompareTo(ReferenceSample other) => other.Value.CompareTo(Value);
+
+    public int CompareTo(int other) =>  other.CompareTo(Value);
+        
+    public int CompareTo(object? obj) => obj is not ReferenceSample ? 1 : CompareTo((ReferenceSample)obj!);
 
     public static explicit operator int(ReferenceSample value) => value.Value;
 }
