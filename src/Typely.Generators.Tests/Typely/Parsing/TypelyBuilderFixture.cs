@@ -1,4 +1,4 @@
-﻿using Typely.Generators.Typely.Parsing;
+﻿using Typely.Generators.Typely.Parsing.Builders;
 
 namespace Typely.Generators.Tests.Typely.Parsing;
 

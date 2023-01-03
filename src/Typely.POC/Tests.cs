@@ -15,7 +15,8 @@ public class Tests
     public void TestReferenceSample()
     {
         Builder().Of<int>().For("name");
-        Builder().Int().For("name");
+        //Builder().Int().Length(1).For();
+        Builder().String().Length(1, 2).WithErrorCode("").For("name");
 
     }
 
