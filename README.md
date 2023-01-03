@@ -9,9 +9,10 @@ public class TypesConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.Of<int>().For("Likes");
+        builder.Int().For("Likes");
+        builder.Decimal().For("Rating").InclusiveBetween(0, 5);
 
-        builder.Of<int>()
+        builder.Int()
             .For("UserId")
             .Namespace("UserAggregate")
             .Name("Owner identifier")
@@ -19,14 +20,21 @@ public class TypesConfiguration : ITypelyConfiguration
             .NotEmpty().WithMessage("'{Name}' cannot be empty.").WithErrorCode("ERR001")
             .NotEqual(1);
 
-        builder.Of<string>()
+        builder.String()
             .For("Planet")
             .Name(() => Names.Planet)
             .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual)
     }
 }
 
+// Examples of uses:
 var likes = Likes.From(1365);
+var rating = Rating.From(-1); //Throws ValidationException
+
+if(!Rating.TryFrom(-1, out Rating instance, out ValidationError? validationError))
+{
+    // Handle error
+}
 ```
 
 # Why Typely?
@@ -62,7 +70,7 @@ String format args:
 
 ## NotEqual Validator
 
-Ensures that the value is not equal to a specified value.
+Ensures that the value is not equal to the specified value.
 
 Example:
 
@@ -246,9 +254,39 @@ String format args:
 
 ## InclusiveBetween Validator
 
+Ensures that the number is within the specified range, including both limits.
+
+Example:
+
+```c#
+builder.Int().For("Age").InclusiveBetween(18, 120);
+```
+Example error: 'Age' must be between 18 and 120, including both limits.
+
+String format args:
+- `Name`: Name of the type being validated
+- `Value`: Current value of the property
+- `Min`: Lower limit of the range
+- `Max`: Upper limit of the range
+
 <br>
 
 ## ExclusiveBetween Validator
+
+Ensures that the number is within the specified range, excluding both limits.
+
+Example:
+
+```c#
+builder.Int().For("Age").InclusiveBetween(18, 120);
+```
+Example error: 'Age' must be between 18 and 120, excluding both limits.
+
+String format args:
+- `Name`: Name of the type being validated
+- `Value`: Current value of the property
+- `Min`: Lower limit of the range
+- `Max`: Upper limit of the range
 
 <br>
 
@@ -408,14 +446,6 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 # VNext
 
 ```c#
-- LessThan(T value); //IComparable
-- LessThanOrEqual(T value); //IComparable
-- GreaterThan(T value); //IComparable
-- GreaterThanOrEqual(T value); //IComparable    
-- InclusiveBetween(T min, T max); //INumber
-    builder.For<decimal>("Rating").InclusiveBetween(0, 5);
-    var rating = Rating.From(-1); //Throws ValidationException
-- ExclusiveBetween(T min, T max); //INumber
 - PrecisionScale(int precision, int scale); //INumber
 - IRuleBuilder<T> IRuleBuilder<T> Matches(string regex); //string
 - Must(Expression<Func<T, bool>> predicate); //T

@@ -52,9 +52,26 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return this;
     }
 
-    public IRuleBuilder<TValue> ExclusiveBetween(TValue min, TValue max)
+    public IRuleBuilder<TValue> InclusiveBetween(int min, int max)
     {
-        throw new NotImplementedException();
+        Expression<Func<int, bool>> validation = (int x) => x >= min && x <= max;
+
+        var emittableValidation = EmittableValidation.From(ErrorCodes.InclusiveBetween, validation, () => ErrorMessages.InclusiveBetween);
+        emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.Min, min);
+        emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.Max, max);
+
+        return AddValidation(emittableValidation);
+    }
+
+    public IRuleBuilder<TValue> ExclusiveBetween(int min, int max)
+    {
+        Expression<Func<int, bool>> validation = (int x) => x > min && x < max;
+
+        var emittableValidation = EmittableValidation.From(ErrorCodes.ExclusiveBetween, validation, () => ErrorMessages.ExclusiveBetween);
+        emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.Min, min);
+        emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.Max, max);
+
+        return AddValidation(emittableValidation);
     }
 
     public IRuleBuilder<TValue> LessThan(TValue value)
@@ -95,11 +112,6 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.ComparisonValue, value);
 
         return AddValidation(emittableValidation);
-    }
-
-    public IRuleBuilder<TValue> InclusiveBetween(TValue min, TValue max)
-    {
-        throw new NotImplementedException();
     }
 
     public IRuleBuilder<TValue> Length(int min, int max)

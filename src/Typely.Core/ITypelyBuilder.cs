@@ -28,8 +28,8 @@ public interface ITypelyBuilder<T>
     IRuleBuilder<T> LessThanOrEqual(T value); //IComparable
     IRuleBuilder<T> GreaterThan(T value); //IComparable
     IRuleBuilder<T> GreaterThanOrEqual(T value); //IComparable    
-    //IRuleBuilder<T> InclusiveBetween(T min, T max); //INumber
-    //IRuleBuilder<T> ExclusiveBetween(T min, T max); //INumber
+    IRuleBuilder<T> InclusiveBetween(int min, int max); //INumber
+    IRuleBuilder<T> ExclusiveBetween(int min, int max); //INumber
     //IRuleBuilder<T> PrecisionScale(int precision, int scale); //INumber
 }
 

@@ -2,11 +2,13 @@
 
 public class ValidationPlaceholders
 {
-    public const string Name = "Name";
-    public const string Value = "Value";
-    public const string ComparisonValue = "ComparisonValue";
-    public const string MinLength = "MinLength";
-    public const string MaxLength = "MaxLength";
-    public const string ExactLength = "ExactLength";
-    public const string ActualLength = "ActualLength";
+    public const string Name = nameof(Name);
+    public const string Value = nameof(Value);
+    public const string ComparisonValue = nameof(ComparisonValue);
+    public const string MinLength = nameof(MinLength);
+    public const string MaxLength = nameof(MaxLength);
+    public const string ExactLength = nameof(ExactLength);
+    public const string ActualLength = nameof(ActualLength);
+    public const string Min = nameof(Min);
+    public const string Max = nameof(Max);
 }

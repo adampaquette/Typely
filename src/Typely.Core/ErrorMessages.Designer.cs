@@ -70,6 +70,15 @@ namespace Typely.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{Name}&apos; must be between {From} and {To}, excluding both limits..
+        /// </summary>
+        public static string ExclusiveBetween {
+            get {
+                return ResourceManager.GetString("ExclusiveBetween", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;{Name}&apos; must be greater than &apos;{ComparisonValue}&apos;..
         /// </summary>
         public static string GreaterThan {
@@ -84,6 +93,15 @@ namespace Typely.Core {
         public static string GreaterThanOrEqualTo {
             get {
                 return ResourceManager.GetString("GreaterThanOrEqualTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{Name}&apos; must be between {From} and {To}, including both limits..
+        /// </summary>
+        public static string InclusiveBetween {
+            get {
+                return ResourceManager.GetString("InclusiveBetween", resourceCulture);
             }
         }
         

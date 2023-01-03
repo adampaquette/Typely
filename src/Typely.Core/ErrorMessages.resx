@@ -120,11 +120,17 @@
   <data name="ExactLength" xml:space="preserve">
     <value>'{Name}' must contain exactly {ExactLength} characters but currently has {ActualLength}.</value>
   </data>
+  <data name="ExclusiveBetween" xml:space="preserve">
+    <value>'{Name}' must be between {From} and {To}, excluding both limits.</value>
+  </data>
   <data name="GreaterThan" xml:space="preserve">
     <value>'{Name}' must be greater than '{ComparisonValue}'.</value>
   </data>
   <data name="GreaterThanOrEqualTo" xml:space="preserve">
     <value>'{Name}' must be greater than or equal to '{ComparisonValue}'.</value>
+  </data>
+  <data name="InclusiveBetween" xml:space="preserve">
+    <value>'{Name}' must be between {From} and {To}, including both limits.</value>
   </data>
   <data name="Length" xml:space="preserve">
     <value>'{Name}' must be between {MinLength} and {MaxLength} characters but currently has {ActualLength}.</value>
