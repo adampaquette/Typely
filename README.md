@@ -266,8 +266,8 @@ Example error: 'Age' must be between 18 and 120, including both limits.
 String format args:
 - `Name`: Name of the type being validated
 - `Value`: Current value of the property
-- `Min`: Lower limit of the range
-- `Max`: Upper limit of the range
+- `Min`: Minimum value of the range
+- `Max`: Maximum value of the range
 
 <br>
 
@@ -278,15 +278,15 @@ Ensures that the number is within the specified range, excluding both limits.
 Example:
 
 ```c#
-builder.Int().For("Age").InclusiveBetween(18, 120);
+builder.Int().For("Age").ExclusiveBetween(18, 120);
 ```
 Example error: 'Age' must be between 18 and 120, excluding both limits.
 
 String format args:
 - `Name`: Name of the type being validated
 - `Value`: Current value of the property
-- `Min`: Lower limit of the range
-- `Max`: Upper limit of the range
+- `Min`: Minimum value of the range
+- `Max`: Maximum value of the range
 
 <br>
 
@@ -444,16 +444,15 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     - System.Threading.Tasks
 
 # VNext
-
 ```c#
-- PrecisionScale(int precision, int scale); //INumber
-- IRuleBuilder<T> IRuleBuilder<T> Matches(string regex); //string
-- Must(Expression<Func<T, bool>> predicate); //T
-
 // Builders constrained per type
 builder.String().For("UserId");
 builder.Int().For("UserId");
 builder.Guid().For("UserId");
+
+- PrecisionScale(int precision, int scale); //INumber
+- IRuleBuilder<T> IRuleBuilder<T> Matches(string regex); //string
+- Must(Expression<Func<T, bool>> predicate); //T
 
 // Type kinds
 - AsClass();
