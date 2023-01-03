@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Typely.Core;
+namespace Typely.Core.Builders;
 
 public interface ITypelyBuilder
 {

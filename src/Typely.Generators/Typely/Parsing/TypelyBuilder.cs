@@ -1,5 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
-using Typely.Core;
+using Typely.Core.Builders;
 
 namespace Typely.Generators.Typely.Parsing;
 

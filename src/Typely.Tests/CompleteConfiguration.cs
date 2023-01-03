@@ -1,4 +1,5 @@
 ﻿using Typely.Core;
+using Typely.Core.Builders;
 
 namespace Typely.Tests;
 

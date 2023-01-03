@@ -1,4 +1,6 @@
-﻿namespace Typely.Core;
+﻿using Typely.Core.Builders;
+
+namespace Typely.Core;
 
 public interface ITypelyConfiguration
 {
