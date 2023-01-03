@@ -28,5 +28,15 @@ internal class TypelyBuilder : ITypelyBuilder
     }
 
     public IReadOnlyList<EmittableType> GetEmittableTypes() => _emittableTypes.AsReadOnly();
+
+    public ITypelyBuilderOfInt Int()
+    {
+        throw new NotImplementedException();
+    }
+
+    public ITypelyBuilderOfString String()
+    {
+        throw new NotImplementedException();
+    }
 }
 

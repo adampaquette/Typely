@@ -4,7 +4,7 @@ using Typely.Core.Builders;
 
 namespace Typely.Generators.Typely.Parsing;
 
-internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
+internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue, RuleBuilder<TValue>, TypelyBuilder<TValue>>
 {
     protected EmittableType _emittableType;
 
@@ -13,7 +13,7 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         _emittableType = emittableType;
     }
 
-    public ITypelyBuilder<TValue> For(string typeName)
+    public TypelyBuilder<TValue> For(string typeName)
     {
         _emittableType.TypeName = typeName;
         if (_emittableType.Name == null)
@@ -23,37 +23,37 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return this;
     }
 
-    public ITypelyBuilder<TValue> AsClass()
+    public TypelyBuilder<TValue> AsClass()
     {
         _emittableType.ConstructTypeKind = ConstructTypeKind.Class;
         return this;
     }
 
-    public ITypelyBuilder<TValue> AsStruct()
+    public TypelyBuilder<TValue> AsStruct()
     {
         _emittableType.ConstructTypeKind = ConstructTypeKind.Struct;
         return this;
     }
 
-    public ITypelyBuilder<TValue> Namespace(string value)
+    public TypelyBuilder<TValue> Namespace(string value)
     {
         _emittableType.Namespace = value;
         return this;
     }
 
-    public ITypelyBuilder<TValue> Name(string name)
+    public TypelyBuilder<TValue> Name(string name)
     {
         _emittableType.Name = Expression.Lambda<Func<string>>(Expression.Constant(name));
         return this;
     }
 
-    public ITypelyBuilder<TValue> Name(Expression<Func<string>> expression)
+    public TypelyBuilder<TValue> Name(Expression<Func<string>> expression)
     {
         _emittableType.Name = expression;
         return this;
     }
 
-    public IRuleBuilder<TValue> InclusiveBetween(int min, int max)
+    public RuleBuilder<TValue> InclusiveBetween(int min, int max)
     {
         Expression<Func<int, bool>> validation = (int x) => x >= min && x <= max;
 
@@ -64,7 +64,7 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return AddValidation(emittableValidation);
     }
 
-    public IRuleBuilder<TValue> ExclusiveBetween(int min, int max)
+    public RuleBuilder<TValue> ExclusiveBetween(int min, int max)
     {
         Expression<Func<int, bool>> validation = (int x) => x > min && x < max;
 
@@ -75,7 +75,7 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return AddValidation(emittableValidation);
     }
 
-    public IRuleBuilder<TValue> LessThan(TValue value)
+    public RuleBuilder<TValue> LessThan(TValue value)
     {
         Expression<Func<IComparable<TValue>, bool>> validation = (IComparable<TValue> x) => x.CompareTo(value) < 0;
 
@@ -85,7 +85,7 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return AddValidation(emittableValidation);
     }
 
-    public IRuleBuilder<TValue> LessThanOrEqual(TValue value)
+    public RuleBuilder<TValue> LessThanOrEqual(TValue value)
     {
         Expression<Func<IComparable<TValue>, bool>> validation = (IComparable<TValue> x) => x.CompareTo(value) <= 0;
 
@@ -95,7 +95,7 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return AddValidation(emittableValidation);
     }
 
-    public IRuleBuilder<TValue> GreaterThan(TValue value)
+    public RuleBuilder<TValue> GreaterThan(TValue value)
     {
         Expression<Func<IComparable<TValue>, bool>> validation = (IComparable<TValue> x) => x.CompareTo(value) > 0;
 
@@ -105,7 +105,7 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return AddValidation(emittableValidation);
     }
 
-    public IRuleBuilder<TValue> GreaterThanOrEqual(TValue value)
+    public RuleBuilder<TValue> GreaterThanOrEqual(TValue value)
     {
         Expression<Func<IComparable<TValue>, bool>> validation = (IComparable<TValue> x) => x.CompareTo(value) >= 0;
 
@@ -115,7 +115,7 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return AddValidation(emittableValidation);
     }
 
-    public IRuleBuilder<TValue> Length(int min, int max)
+    public RuleBuilder<TValue> Length(int min, int max)
     {
         Expression<Func<string, bool>> validation = (string x) => x.Length < min || x.Length > max;
 
@@ -126,7 +126,7 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return AddValidation(emittableValidation);
     }
 
-    public IRuleBuilder<TValue> Length(int exactLength)
+    public RuleBuilder<TValue> Length(int exactLength)
     {
         Expression<Func<string, bool>> validation = (string x) => x.Length != exactLength;
 
@@ -136,7 +136,7 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return AddValidation(emittableValidation);
     }
 
-    public IRuleBuilder<TValue> MinLength(int minLength)
+    public RuleBuilder<TValue> MinLength(int minLength)
     {
         Expression<Func<string, bool>> validation = (string x) => x.Length < minLength;
 
@@ -146,7 +146,7 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return AddValidation(emittableValidation);
     }
 
-    public IRuleBuilder<TValue> MaxLength(int maxLength)
+    public RuleBuilder<TValue> MaxLength(int maxLength)
     {
         Expression<Func<string, bool>> validation = (string x) => x.Length > maxLength;
 
@@ -156,17 +156,17 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return AddValidation(emittableValidation);
     }
 
-    public IRuleBuilder<TValue> Matches(string regex)
+    public RuleBuilder<TValue> Matches(string regex)
     {
         throw new NotImplementedException();
     }
 
-    public IRuleBuilder<TValue> Must(Expression<Func<TValue, bool>> predicate)
+    public RuleBuilder<TValue> Must(Expression<Func<TValue, bool>> predicate)
     {
         throw new NotImplementedException();
     }
 
-    public IRuleBuilder<TValue> NotEmpty()
+    public RuleBuilder<TValue> NotEmpty()
     {
         Expression validation = typeof(TValue) == typeof(string)
             ? (string x) => string.IsNullOrWhiteSpace(x)
@@ -177,7 +177,7 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return AddValidation(emittableValidation);
     }
 
-    public IRuleBuilder<TValue> NotEqual(TValue value)
+    public RuleBuilder<TValue> NotEqual(TValue value)
     {
         Expression<Func<TValue, bool>> validation = (TValue x) => !EqualityComparer<TValue>.Default.Equals(x, value);
        
@@ -187,15 +187,15 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         return AddValidation(emittableValidation);
     }
 
-    public IRuleBuilder<TValue> PrecisionScale(int precision, int scale)
+    public RuleBuilder<TValue> PrecisionScale(int precision, int scale)
     {
         throw new NotImplementedException();
     }
 
-    private IRuleBuilder<TValue> AddValidation(EmittableValidation emittableValidation)
+    private RuleBuilder<TValue> AddValidation(EmittableValidation emittableValidation)
     {
         _emittableType.CurrentValidation = emittableValidation;
         _emittableType.Validations.Add(emittableValidation);
-        return (IRuleBuilder<TValue>)this;
+        return (RuleBuilder<TValue>)this;
     }
 }

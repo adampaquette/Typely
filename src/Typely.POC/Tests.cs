@@ -1,4 +1,6 @@
-﻿namespace Typely.Tests;
+﻿using Typely.Core.Builders;
+
+namespace Typely.Tests;
 
 public class Tests
 {
@@ -12,5 +14,13 @@ public class Tests
     [Fact]
     public void TestReferenceSample()
     {
+        Builder().Of<int>().For("name");
+        Builder().Int().For("name");
+
+    }
+
+    public ITypelyBuilder Builder()
+    {
+        throw new NotImplementedException();
     }
 }
