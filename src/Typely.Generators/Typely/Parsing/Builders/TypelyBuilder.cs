@@ -24,7 +24,14 @@ internal class TypelyBuilder : ITypelyBuilder
 
     public ITypelyBuilderOfString String()
     {
-        throw new NotImplementedException();
+        var emittableType = new EmittableType(
+            syntaxTree: _syntaxTree,
+            underlyingType: typeof(string),
+            @namespace: _configurationType.Namespace);
+
+        _emittableTypes.Add(emittableType);
+
+        return new RuleBuilderOfString(emittableType, _emittableTypes);
     }
 
     public ITypelyBuilder<T> Of<T>()

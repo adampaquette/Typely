@@ -1,28 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Linq.Expressions;
 using Typely.Core.Builders;
 
 namespace Typely.Generators.Typely.Parsing.Builders;
-internal class RuleBuilderOfString : IRuleBuilderOfString
+
+internal class RuleBuilderOfString : TypelyBuilderOfString, IRuleBuilderOfString
 {
-    public IRuleBuilderOfString For(string typeName)
+    private List<EmittableType> _emittableTypes;
+
+    public RuleBuilderOfString(EmittableType emittableType, List<EmittableType> emittableTypes)
+        : base(emittableType)
     {
-        throw new NotImplementedException();
+        _emittableTypes = emittableTypes;
     }
 
-    public IRuleBuilderOfString NotEmpty()
+    public IRuleBuilderOfString WithErrorCode(string errorCode)
     {
-        throw new NotImplementedException();
+        _emittableType.CurrentRule!.ErrorCode = errorCode;
+        return this;
     }
 
-    public IRuleBuilder<int, IRuleBuilderOfString> WithErrorCode(string errorCode)
+    public IRuleBuilderOfString WithMessage(string message)
     {
-        throw new NotImplementedException();
+        _emittableType.CurrentRule!.Message = Expression.Lambda<Func<string>>(Expression.Constant(message));
+        return this;
     }
 
-    ITypelyBuilderOfString ITypelyBuilder<int, IRuleBuilderOfString, ITypelyBuilderOfString>.For(string typeName)
+    public IRuleBuilderOfString WithMessage(Expression<Func<string>> expression)
     {
-        throw new NotImplementedException();
+        _emittableType.CurrentRule!.Message = expression;
+        return this;
     }
+
+    public IReadOnlyList<EmittableType> GetEmittableTypes() => _emittableTypes.AsReadOnly();
 }

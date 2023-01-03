@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace Typely.Core.Builders;
+﻿namespace Typely.Core.Builders;
 
 public interface ITypelyBuilder
 {
@@ -9,37 +7,8 @@ public interface ITypelyBuilder
     ITypelyBuilderOfString String();
 }
 
-public interface ITypelyBuilder<T> : ITypelyBuilder<T, IRuleBuilder, ITypelyBuilder<T>>
+public interface ITypelyBuilder<T> 
 {
-}
-
-public interface IRuleBuilder :
-    IRuleBuilder<int, IRuleBuilderOfInt>,
-    ITypelyBuilder<int, IRuleBuilderOfInt, ITypelyBuilderOfInt>
-{
-}
-
-public interface ITypelyBuilder<TValue, TRuleBuilder, TThis> 
-    where TThis : ITypelyBuilder<TValue, TRuleBuilder, TThis>
-{
-    TThis For(string typeName);
-    //TThis Namespace(string value);
-    //TThis AsStruct();
-    ////TThis AsClass();
-    //TThis Name(string name);
-    //TThis Name(Expression<Func<string>> expression);
-
-    TRuleBuilder NotEmpty(); //T
-    //TRuleBuilder NotEqual(TValue value); //T
-    //IRuleBuilder<T, TThis> Must(Expression<Func<T, bool>> predicate); //T
-}
-
-public interface IRuleBuilder<T, TThis> : ITypelyBuilder<T, TThis, TThis> 
-    where TThis : IRuleBuilder<T, TThis>
-{
-    IRuleBuilder<T, TThis> WithErrorCode(string errorCode);
-    //IRuleBuilder<T, TThis> WithMessage(string message);
-    //IRuleBuilder<T, TThis> WithMessage(Expression<Func<string>> expression);
 }
 
 

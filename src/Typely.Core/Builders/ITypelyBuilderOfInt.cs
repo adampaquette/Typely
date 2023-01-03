@@ -1,23 +1,24 @@
-﻿namespace Typely.Core.Builders;
+﻿using System.Linq.Expressions;
 
-public interface ITypelyBuilderOfInt : ITypelyBuilder<int, IRuleBuilderOfInt, ITypelyBuilderOfInt>
+namespace Typely.Core.Builders;
+
+public interface ITypelyBuilderOfInt 
 {
-    IRuleBuilderOfInt Length(int min, int max); //string
-    IRuleBuilderOfInt Length(int exactLength); //string
-    IRuleBuilderOfInt MinLength(int minLength); //string
-    IRuleBuilderOfInt MaxLength(int maxLength); //string
-    //IRuleBuilderOfInt Matches(string regex); //string
+    ITypelyBuilderOfString For(string typeName);
+    ITypelyBuilderOfString Namespace(string value);
+    ITypelyBuilderOfString AsStruct();
+    //ITypelyBuilderOfString AsClass();
+    ITypelyBuilderOfString Name(string name);
+    ITypelyBuilderOfString Name(Expression<Func<string>> expression);
+
     IRuleBuilderOfInt LessThan(int value); //IComparable
     IRuleBuilderOfInt LessThanOrEqual(int value); //IComparable
     IRuleBuilderOfInt GreaterThan(int value); //IComparable
     IRuleBuilderOfInt GreaterThanOrEqual(int value); //IComparable    
     IRuleBuilderOfInt InclusiveBetween(int min, int max); //INumber
     IRuleBuilderOfInt ExclusiveBetween(int min, int max); //INumber
-    //IRuleBuilderOfInt PrecisionScale(int precision, int scale); //INumber
 }
 
-public interface IRuleBuilderOfInt : 
-    IRuleBuilder<int, IRuleBuilderOfInt>, 
-    ITypelyBuilder<int, IRuleBuilderOfInt, ITypelyBuilderOfInt>
+public interface IRuleBuilderOfInt : ITypelyBuilderOfInt
 {   
 }

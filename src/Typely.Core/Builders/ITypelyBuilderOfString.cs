@@ -1,7 +1,19 @@
-﻿namespace Typely.Core.Builders;
+﻿using System.Linq.Expressions;
 
-public interface ITypelyBuilderOfString : ITypelyBuilder<string, IRuleBuilderOfString, ITypelyBuilderOfString>
+namespace Typely.Core.Builders;
+
+public interface ITypelyBuilderOfString
 {
+    ITypelyBuilderOfString For(string typeName);
+    ITypelyBuilderOfString Namespace(string value);
+    ITypelyBuilderOfString AsStruct();
+    //ITypelyBuilderOfString AsClass();
+    ITypelyBuilderOfString Name(string name);
+    ITypelyBuilderOfString Name(Expression<Func<string>> expression);
+
+    IRuleBuilderOfString NotEmpty(); //T
+    IRuleBuilderOfString NotEqual(string value); //T
+    IRuleBuilderOfString Must(Expression<Func<string, bool>> predicate); //T
     IRuleBuilderOfString Length(int min, int max); //string
     IRuleBuilderOfString Length(int exactLength); //string
     IRuleBuilderOfString MinLength(int minLength); //string
@@ -13,8 +25,9 @@ public interface ITypelyBuilderOfString : ITypelyBuilder<string, IRuleBuilderOfS
     IRuleBuilderOfString GreaterThanOrEqual(string value); //IComparable
 }
 
-public interface IRuleBuilderOfString :
-    IRuleBuilder<string, IRuleBuilderOfString>,
-    ITypelyBuilder<string, IRuleBuilderOfString, ITypelyBuilderOfString>
+public interface IRuleBuilderOfString : ITypelyBuilderOfString
 {
+    IRuleBuilderOfString WithErrorCode(string errorCode);
+    IRuleBuilderOfString WithMessage(string message);
+    IRuleBuilderOfString WithMessage(Expression<Func<string>> expression);
 }

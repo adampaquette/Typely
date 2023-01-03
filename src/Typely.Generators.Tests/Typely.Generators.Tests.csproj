@@ -52,4 +52,8 @@
       </EmbeddedResource>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Typely\Parsing\Snapshots\" />
+    </ItemGroup>
+
 </Project>
