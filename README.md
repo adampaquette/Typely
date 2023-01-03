@@ -12,12 +12,24 @@ public class TypesConfiguration : ITypelyConfiguration
         builder.For<int>("Likes");
 
         builder
-            .For<int>("UserId")
+            .Of<int>()
+            .For("UserId")
             .Namespace("UserAggregate")
             .Name("Owner identifier")
             .AsStruct()
             .NotEmpty().WithMessage("'{Name}' cannot be empty.").WithErrorCode("ERR001")
             .NotEqual(1);
+
+        builder.String()
+            .For("UserId");
+        
+        builder.Int()
+            .For("UserId");
+        
+        builder.Guid()
+            .For("UserId");
+
+        
 
         builder.For<string>("Planet")
             .Name(() => Names.Planet)
@@ -363,6 +375,31 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 - IRuleBuilder<T> IRuleBuilder<T> Matches(string regex); //string
 - Must(Expression<Func<T, bool>> predicate); //T
 
+// Strings
+Contain("is a");
+StartWith("This");
+NotStartWith("This");
+EndWith("a String");
+NotEndWith("a String");
+
+// Numbers
+Positive()
+Negative()
+
+// Dates
+After()
+Before()
+OnOrAfter()
+OnOrBefore()
+NotAfter()
+NotBefore()
+NotOnOrAfter()
+NotOnOrBefore()
+
+//Enums
+InEnum()
+Defined()
+
 // Complex examples
 builder
     .For<int>("UserId")
@@ -417,6 +454,9 @@ public class DefaultTypelyConfiguration : ITypelyConfiguration
 
 // Type kinds
 - AsClass();
+
+// Integrate with IOptions
+//https://andrewlock.net/adding-validation-to-strongly-typed-configuration-objects-using-flentvalidation/
 
 // Enums
 builder.For<string>("Sexe")

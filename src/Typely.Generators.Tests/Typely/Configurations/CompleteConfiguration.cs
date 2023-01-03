@@ -7,17 +7,20 @@ internal class CompleteConfiguration : ITypelyConfiguration
     public void Configure(ITypelyBuilder builder)
     {
         builder
-            .For<int>("UserId")
+            .Of<int>()
+            .For("UserId")
             .Namespace("UserAggregate")
             .Name("Owner identifier")
             .AsStruct()
             .NotEmpty()
             .NotEqual(100).WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001");
 
-        builder.For<int>("UPC")
+        builder
+            .Of<int>()
+            .For("UPC")
             //.Name(() => Names.UniversalProductCode) 
             .NotEmpty().WithMessage(() => ErrorMessages.NotEqual);
 
-        builder.For<string>("Title").NotEmpty().MaxLength(100);
+        builder.Of<string>().For("Title").NotEmpty().MaxLength(100);
     }
 }

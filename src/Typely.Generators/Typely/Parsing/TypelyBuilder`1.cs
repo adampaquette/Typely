@@ -12,6 +12,16 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         _emittableType = emittableType;
     }
 
+    public ITypelyBuilder<TValue> For(string typeName)
+    {
+        _emittableType.TypeName = typeName;
+        if (_emittableType.Name == null)
+        {
+            _emittableType.Name = Expression.Lambda<Func<string>>(Expression.Constant(typeName));
+        }
+        return this;
+    }
+
     public ITypelyBuilder<TValue> AsClass()
     {
         _emittableType.ConstructTypeKind = ConstructTypeKind.Class;

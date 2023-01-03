@@ -4,11 +4,14 @@ namespace Typely.Core;
 
 public interface ITypelyBuilder
 {
-    ITypelyBuilder<T> For<T>(string typeName);
+    //public string String { get; }
+
+    ITypelyBuilder<T> Of<T>();
 }
 
 public interface ITypelyBuilder<T>
 {
+    ITypelyBuilder<T> For(string typeName);
     ITypelyBuilder<T> Namespace(string value);
     ITypelyBuilder<T> AsStruct();
     //ITypelyBuilder<T> AsClass();

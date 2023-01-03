@@ -6,19 +6,20 @@ public class CompleteConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.For<string>("FirstName");
+        builder.Of<string>().For("FirstName");
 
         builder
-            .For<int>("UserId")
+            .Of<int>()
+            .For("UserId")
             .Namespace("UserAggregate")
             .Name("Owner identifier")
             .AsStruct()
             .NotEmpty().WithMessage("'Name' cannot be empty.").WithErrorCode("ERR001")
             .NotEqual(1);
 
-        builder.For<int>("EqualityTest");
+        builder.Of<int>().For("EqualityTest");
 
-        builder.For<int>("ValueType");
-        builder.For<string>("ReferenceType");
+        builder.Of<int>().For("ValueType");
+        builder.Of<string>().For("ReferenceType");
     }
 }

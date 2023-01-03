@@ -15,12 +15,11 @@ internal class TypelyBuilder : ITypelyBuilder
         _configurationType = configurationType;
     }
 
-    public ITypelyBuilder<T> For<T>(string typeName)
+    public ITypelyBuilder<T> Of<T>()
     {
         var emittableType = new EmittableType(
             syntaxTree: _syntaxTree,
             underlyingType: typeof(T),
-            typeName: typeName,
             @namespace: _configurationType.Namespace);
 
         _emittableTypes.Add(emittableType);

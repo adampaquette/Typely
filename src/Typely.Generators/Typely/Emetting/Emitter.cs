@@ -19,6 +19,18 @@ internal class Emitter
 
     public string Emit(EmittableType t)
     {
+        if (t.Name == null)
+        {
+            //TODO DIAGNOSTIC
+            return string.Empty;
+        }
+
+        if (t.TypeName == null)
+        {
+            //TODO DIAGNOSTIC
+            return string.Empty;
+        }
+
         var typeName = t.TypeName;
         var underlyingType = t.UnderlyingType!.Name;
         var constructType = GetConstructType(t.ConstructTypeKind);

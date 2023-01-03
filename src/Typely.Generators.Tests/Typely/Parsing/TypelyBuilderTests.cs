@@ -9,7 +9,7 @@ public class TypelyBuilderTests
         var expectedTypeName = "UserId";
 
         var builder = new TypelyBuilderFixture().Create();
-        builder.For<int>(expectedTypeName);
+        builder.Of<int>().For(expectedTypeName);
 
         var emittableTypes = builder.GetEmittableTypes();
 
@@ -25,7 +25,8 @@ public class TypelyBuilderTests
 
         var builder = new TypelyBuilderFixture().Create();
 
-        builder.For<int>(expectedTypeName)
+        builder.Of<int>()
+            .For(expectedTypeName)
             .Namespace(expectedNamespace);
 
         var emittableTypes = builder.GetEmittableTypes();
@@ -42,7 +43,8 @@ public class TypelyBuilderTests
 
         var builder = new TypelyBuilderFixture().Create();
 
-        builder.For<int>(expectedTypeName)
+        builder.Of<int>()
+            .For(expectedTypeName)
             .NotEmpty()
             .WithErrorCode(expectedErrorCode);
 
@@ -61,7 +63,8 @@ public class TypelyBuilderTests
 
         var builder = new TypelyBuilderFixture().Create();
 
-        builder.For<int>(expectedTypeName)
+        builder.Of<int>()
+            .For(expectedTypeName)
             .NotEmpty()
             .WithMessage(expectedMessage);
 
@@ -80,7 +83,8 @@ public class TypelyBuilderTests
 
         var builder = new TypelyBuilderFixture().Create();
 
-        builder.For<int>(expectedTypeName)
+        builder.Of<int>()
+            .For(expectedTypeName)
             .NotEmpty()
             .WithMessage(() => expectedMessage);
 
@@ -99,13 +103,14 @@ public class TypelyBuilderTests
 
         var builder = new TypelyBuilderFixture().Create();
 
-        builder.For<int>(expectedTypeName)
+        builder.Of<int>()
+            .For(expectedTypeName)
             .Name(expectedName);
 
         var emittableTypes = builder.GetEmittableTypes();
 
         var emittableType = Assert.Single(emittableTypes);
-        Assert.Equal(expectedName, emittableType.Name.Compile().Invoke());
+        Assert.Equal(expectedName, emittableType.Name!.Compile().Invoke());
     }
 
     [Fact]
@@ -116,13 +121,14 @@ public class TypelyBuilderTests
 
         var builder = new TypelyBuilderFixture().Create();
 
-        builder.For<int>(expectedTypeName)
+        builder.Of<int>()
+            .For(expectedTypeName)
             .Name(() => expectedName);
 
         var emittableTypes = builder.GetEmittableTypes();
 
         var emittableType = Assert.Single(emittableTypes);
-        Assert.Equal(expectedName, emittableType.Name.Compile().Invoke());
+        Assert.Equal(expectedName, emittableType.Name!.Compile().Invoke());
     }
 
 
