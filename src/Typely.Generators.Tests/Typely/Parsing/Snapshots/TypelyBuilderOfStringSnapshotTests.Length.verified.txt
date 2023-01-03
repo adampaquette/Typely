@@ -1,0 +1,11 @@
+﻿[
+  {
+    ErrorCode: Length,
+    Rule: x => ((x.Length < 1) OrElse (x.Length > 10)),
+    Message: () => ErrorMessages.Length,
+    PlaceholderValues: {
+      MaxLength: 10,
+      MinLength: 1
+    }
+  }
+]

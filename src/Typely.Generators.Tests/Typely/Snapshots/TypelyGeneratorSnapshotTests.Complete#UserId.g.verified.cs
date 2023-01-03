@@ -9,41 +9,52 @@ using System.Text.Json.Serialization;
 
 namespace UserAggregate
 {
-    [JsonConverter(typeof(TypelyJsonConverter<Int32, UserId>))]
-    public partial struct UserId : ITypelyValue<Int32, UserId>, IEquatable<UserId>, IComparable<UserId>, IComparable
+    [JsonConverter(typeof(TypelyJsonConverter<String, UserId>))]
+    public partial struct UserId : ITypelyValue<String, UserId>, IEquatable<UserId>, IComparable<UserId>, IComparable
     {
-        public Int32 Value { get; private set; }
+        public String Value { get; private set; }
 
         public UserId() => throw new Exception("Parameterless constructor is not allowed.");
 
-        public UserId(Int32 value)
+        public UserId(String value)
         {
-            TypelyValue.ValidateAndThrow<Int32, UserId>(value);
+            TypelyValue.ValidateAndThrow<String, UserId>(value);
             Value = value;
         }
 
-        public static ValidationError? Validate(Int32 value)
+        public static ValidationError? Validate(String value)
         {
-            if (EqualityComparer<int>.Default.Equals(value, 0))
+            if (value == null) throw new ArgumentNullException(nameof(UserId));
+
+            if (string.IsNullOrWhiteSpace(value))
             {
                 return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, "Owner identifier");
             }
 
-            if (!EqualityComparer<int>.Default.Equals(value, 100))
+            if (value.Equals("100"))
             {
                 return ValidationErrorFactory.Create(value, "ERR001", "{Name} cannot be equal to {ComparisonValue}.", "Owner identifier",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", 100 },
+                        { "ComparisonValue", "100" },
+                    });
+            }
+
+            if (value.Length > 100)
+            {
+                return ValidationErrorFactory.Create(value, "MaxLength", ErrorMessages.MaxLength, "Owner identifier",
+                    new Dictionary<string, object?>
+                    {
+                        { "MaxLength", 100 },
                     });
             }
 
             return null;
         }
 
-        public static UserId From(Int32 value) => new(value);
+        public static UserId From(String value) => new(value);
 
-        public static bool TryFrom(Int32 value, [MaybeNullWhen(false)] out UserId typelyType, out ValidationError? validationError)
+        public static bool TryFrom(String value, [MaybeNullWhen(false)] out UserId typelyType, out ValidationError? validationError)
         {
             validationError = Validate(value);
             var isValid = validationError == null;
@@ -71,6 +82,6 @@ namespace UserAggregate
 
         public int CompareTo(object? obj) => obj is not UserId ? 1 : CompareTo((UserId)obj!);
 
-        public static explicit operator Int32(UserId value) => value.Value;
+        public static explicit operator String(UserId value) => value.Value;
     }
 }

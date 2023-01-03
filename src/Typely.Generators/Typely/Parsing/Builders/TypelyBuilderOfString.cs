@@ -59,15 +59,15 @@ internal class TypelyBuilderOfString : ITypelyBuilderOfString
         placeholders: (ValidationPlaceholders.ComparisonValue, value));
 
     public IRuleBuilderOfString Length(int min, int max) => AddRule(
-        errorCode: ErrorCodes.ExactLength,
+        errorCode: ErrorCodes.Length,
         rule: (string x) => x.Length < min || x.Length > max,
-        message: () => ErrorMessages.LessThan,
+        message: () => ErrorMessages.Length,
         (ValidationPlaceholders.MinLength, min), (ValidationPlaceholders.MaxLength, max));
 
     public IRuleBuilderOfString Length(int exactLength) => AddRule(
-        errorCode: ErrorCodes.Length,
+        errorCode: ErrorCodes.ExactLength,
         rule: (string x) => x.Length != exactLength,
-        message: () => ErrorMessages.LessThan,
+        message: () => ErrorMessages.ExactLength,
         placeholders: (ValidationPlaceholders.ExactLength, exactLength));
 
     public IRuleBuilderOfString MaxLength(int maxLength) => AddRule(

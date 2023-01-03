@@ -1,0 +1,7 @@
+﻿[
+  {
+    ErrorCode: NotEmpty,
+    Rule: x => IsNullOrWhiteSpace(x),
+    Message: () => ErrorMessages.NotEmpty
+  }
+]
