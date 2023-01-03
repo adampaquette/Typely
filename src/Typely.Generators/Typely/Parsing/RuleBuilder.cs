@@ -14,19 +14,19 @@ internal class RuleBuilder<TValue> : TypelyBuilder<TValue>,
         _emittableTypes = emittableTypes;
     }
 
-    public RuleBuilder<TValue> WithErrorCode(string errorCode)
+    public IRuleBuilder<TValue, RuleBuilder<TValue>> WithErrorCode(string errorCode)
     {
         _emittableType.CurrentValidation!.ErrorCode = errorCode;
         return this;
     }
 
-    public RuleBuilder<TValue> WithMessage(string message)
+    public IRuleBuilder<TValue, RuleBuilder<TValue>> WithMessage(string message)
     {
         _emittableType.CurrentValidation!.ValidationMessage = Expression.Lambda<Func<string>>(Expression.Constant(message));
         return this;
     }
 
-    public RuleBuilder<TValue> WithMessage(Expression<Func<string>> expression)
+    public IRuleBuilder<TValue, RuleBuilder<TValue>> WithMessage(Expression<Func<string>> expression)
     {
         _emittableType.CurrentValidation!.ValidationMessage = expression;
         return this;
