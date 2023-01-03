@@ -15,18 +15,6 @@ internal class TypelyBuilder : ITypelyBuilder
         _configurationType = configurationType;
     }
 
-    public ITypelyBuilder<T> Of<T>()
-    {
-        var emittableType = new EmittableType(
-            syntaxTree: _syntaxTree,
-            underlyingType: typeof(T),
-            @namespace: _configurationType.Namespace);
-
-        _emittableTypes.Add(emittableType);
-
-        return new RuleBuilder<T>(emittableType, _emittableTypes);
-    }
-
     public IReadOnlyList<EmittableType> GetEmittableTypes() => _emittableTypes.AsReadOnly();
 
     public ITypelyBuilderOfInt Int()
@@ -37,6 +25,19 @@ internal class TypelyBuilder : ITypelyBuilder
     public ITypelyBuilderOfString String()
     {
         throw new NotImplementedException();
+    }
+
+    public ITypelyBuilder<T> Of<T>()
+    {
+        throw new NotImplementedException();
+        //    var emittableType = new EmittableType(
+        //        syntaxTree: _syntaxTree,
+        //        underlyingType: typeof(TValue),
+        //        @namespace: _configurationType.Namespace);
+
+        //    _emittableTypes.Add(emittableType);
+
+        //    return new RuleBuilder<T>(emittableType, _emittableTypes);
     }
 }
 

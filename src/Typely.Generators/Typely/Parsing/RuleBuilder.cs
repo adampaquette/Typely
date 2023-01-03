@@ -4,8 +4,7 @@ using Typely.Core.Builders;
 namespace Typely.Generators.Typely.Parsing;
 
 internal class RuleBuilder<TValue> : TypelyBuilder<TValue>,
-    ITypelyBuilder<TValue, RuleBuilder<TValue>, TypelyBuilder<TValue>>,
-    IRuleBuilder<TValue, RuleBuilder<TValue>>
+    ITypelyBuilder<TValue, RuleBuilder<TValue>, TypelyBuilder<TValue>>
 {
     private List<EmittableType> _emittableTypes;
 
@@ -14,19 +13,19 @@ internal class RuleBuilder<TValue> : TypelyBuilder<TValue>,
         _emittableTypes = emittableTypes;
     }
 
-    public IRuleBuilder<TValue, RuleBuilder<TValue>> WithErrorCode(string errorCode)
+    public RuleBuilder<TValue> WithErrorCode(string errorCode)
     {
         _emittableType.CurrentValidation!.ErrorCode = errorCode;
         return this;
     }
 
-    public IRuleBuilder<TValue, RuleBuilder<TValue>> WithMessage(string message)
+    public RuleBuilder<TValue> WithMessage(string message)
     {
         _emittableType.CurrentValidation!.ValidationMessage = Expression.Lambda<Func<string>>(Expression.Constant(message));
         return this;
     }
 
-    public IRuleBuilder<TValue, RuleBuilder<TValue>> WithMessage(Expression<Func<string>> expression)
+    public RuleBuilder<TValue> WithMessage(Expression<Func<string>> expression)
     {
         _emittableType.CurrentValidation!.ValidationMessage = expression;
         return this;
