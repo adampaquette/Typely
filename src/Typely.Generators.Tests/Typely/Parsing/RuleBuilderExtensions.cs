@@ -1,5 +1,5 @@
 ﻿using Typely.Core.Builders;
-using Typely.Generators.Typely.Parsing.Builders;
+using Typely.Generators.Typely.Parsing.String;
 
 namespace Typely.Generators.Tests.Typely.Parsing;
 

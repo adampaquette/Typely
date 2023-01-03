@@ -1,4 +1,4 @@
-namespace Typely.Generators.Tests.Typely.Parsing;
+namespace Typely.Generators.Tests.Typely.Parsing.String;
 
 [UsesVerify]
 public class TypelyBuilderOfStringTests

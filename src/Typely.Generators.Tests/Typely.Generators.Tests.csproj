@@ -54,6 +54,7 @@
 
     <ItemGroup>
       <Folder Include="Typely\Parsing\Snapshots\" />
+      <Folder Include="Typely\Parsing\String\Snapshots\" />
       <Folder Include="Typely\Snapshots\" />
     </ItemGroup>
 

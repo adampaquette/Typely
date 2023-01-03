@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Typely.Core.Builders;
 
-namespace Typely.Generators.Typely.Parsing.Builders;
+namespace Typely.Generators.Typely.Parsing.String;
 
 internal class RuleBuilderOfString : TypelyBuilderOfString, IRuleBuilderOfString
 {

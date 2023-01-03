@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 using Typely.Core;
 using Typely.Core.Converters;
 
-namespace Typely.Tests;
+namespace Typely.POC;
 
 #nullable enable
 
@@ -63,13 +63,13 @@ public partial struct ReferenceSample : ITypelyValue<int, ReferenceSample>, IEqu
     public static bool operator ==(ReferenceSample left, ReferenceSample right) => left.Equals(right);
 
     public override int GetHashCode() => Value.GetHashCode();
-    
+
     public bool Equals(ReferenceSample other) => other.Value.Equals(Value);
 
-    public override bool Equals([NotNullWhen(true)] object? obj) => obj is ReferenceSample && Equals((ReferenceSample)obj);    
+    public override bool Equals([NotNullWhen(true)] object? obj) => obj is ReferenceSample && Equals((ReferenceSample)obj);
 
     public int CompareTo(ReferenceSample other) => other.Value.CompareTo(Value);
-        
+
     public int CompareTo(object? obj) => obj is not ReferenceSample ? 1 : CompareTo((ReferenceSample)obj!);
 
     public static explicit operator int(ReferenceSample value) => value.Value;

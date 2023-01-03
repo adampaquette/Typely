@@ -1,7 +1,7 @@
 ﻿[
   {
     ErrorCode: GreaterThan,
-    Rule: x => (x.CompareTo("20") > 0),
+    Rule: x => (x.CompareTo("20") <= 0),
     Message: () => ErrorMessages.GreaterThan,
     PlaceholderValues: {
       ComparisonValue: 20

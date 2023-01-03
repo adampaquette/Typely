@@ -1,7 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
 using Typely.Core.Builders;
+using Typely.Generators.Typely.Parsing.String;
 
-namespace Typely.Generators.Typely.Parsing.Builders;
+namespace Typely.Generators.Typely.Parsing;
 
 internal class TypelyBuilder : ITypelyBuilder
 {

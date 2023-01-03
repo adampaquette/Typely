@@ -1,6 +1,6 @@
 ﻿using Typely.Core.Builders;
 
-namespace Typely.Tests;
+namespace Typely.POC;
 
 public class Tests
 {
@@ -13,7 +13,7 @@ public class Tests
 
     [Fact]
     public void TestReferenceSample()
-    {        
+    {
 
     }
 
