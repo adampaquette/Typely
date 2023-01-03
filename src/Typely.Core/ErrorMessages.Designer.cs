@@ -70,11 +70,47 @@ namespace Typely.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{Name}&apos; must be greater than &apos;{ComparisonValue}&apos;..
+        /// </summary>
+        public static string GreaterThan {
+            get {
+                return ResourceManager.GetString("GreaterThan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{Name}&apos; must be greater than or equal to &apos;{ComparisonValue}&apos;..
+        /// </summary>
+        public static string GreaterThanOrEqualTo {
+            get {
+                return ResourceManager.GetString("GreaterThanOrEqualTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;{Name}&apos; must be between {MinLength} and {MaxLength} characters but currently has {ActualLength}..
         /// </summary>
         public static string Length {
             get {
                 return ResourceManager.GetString("Length", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{Name}&apos; must be less than &apos;{ComparisonValue}&apos;..
+        /// </summary>
+        public static string LessThan {
+            get {
+                return ResourceManager.GetString("LessThan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{Name}&apos; must be less than or equal to &apos;{ComparisonValue}&apos;..
+        /// </summary>
+        public static string LessThanOrEqualTo {
+            get {
+                return ResourceManager.GetString("LessThanOrEqualTo", resourceCulture);
             }
         }
         

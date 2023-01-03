@@ -1,0 +1,7 @@
+﻿[
+  {
+    ErrorCode: NotEmpty,
+    Validation: x => IsNullOrWhiteSpace(x),
+    ValidationMessage: () => ErrorMessages.NotEmpty
+  }
+]

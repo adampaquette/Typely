@@ -1,0 +1,10 @@
+﻿[
+  {
+    ErrorCode: GreaterThan,
+    Validation: x => (x.CompareTo(20) > 0),
+    ValidationMessage: () => ErrorMessages.GreaterThan,
+    PlaceholderValues: {
+      ComparisonValue: 20
+    }
+  }
+]

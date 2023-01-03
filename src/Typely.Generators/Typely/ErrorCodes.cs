@@ -7,4 +7,8 @@ internal static class ErrorCodes
     public const string Length = "Length";
     public const string MinLength = "MinLength";
     public const string MaxLength = "MaxLength";
+    public const string LessThan = "LessThan";
+    public const string LessThanOrEqualTo = "LessThanOrEqualTo";
+    public const string GreaterThan = "GreaterThan";
+    public const string GreaterThanOrEqualTo = "GreaterThanOrEqualTo";
 }

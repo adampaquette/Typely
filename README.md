@@ -148,7 +148,7 @@ Ensures that the length of a string is less than or equal to the specified value
 Example:
 
 ```c#
-builder.For<string>("Name").MaxLength(50);
+builder.String().For("Name").MaxLength(50);
 ```
 Example error: 'Name' must be 50 characters or less but currently has 51.
 
@@ -160,19 +160,75 @@ String format args:
 
 <br>
 
-## LessThan Validator  (Max?)
+## LessThan Validator
+
+Ensures that the value is less than the specified value.
+
+Example:
+
+```c#
+builder.Int().For("Age").LessThan(120);
+```
+Example error: 'Age' must be less than 120.
+
+String format args:
+- `Name`: Name of the type being validated
+- `Value`: Current value of the property
+- `ComparisonValue`: Value compared to.
 
 <br>
 
 ## LessThanOrEqual Validator
 
+Ensures that the value is less than or equal to the specified value.
+
+Example:
+
+```c#
+builder.Int().For("Age").LessThanOrEqualTo(120);
+```
+Example error: 'Age' must be less than or equal to 120.
+
+String format args:
+- `Name`: Name of the type being validated
+- `Value`: Current value of the property
+- `ComparisonValue`: Value compared to.
+
 <br>
 
-## GreaterThan Validator (Min?)
+## GreaterThan Validator
+
+Ensures that the value is greater than the specified value.
+
+Example:
+
+```c#
+builder.Int().For("Age").GreaterThan(120);
+```
+Example error: 'Age' must be greater than 120.
+
+String format args:
+- `Name`: Name of the type being validated
+- `Value`: Current value of the property
+- `ComparisonValue`: Value compared to.
 
 <br>
 
 ## GreaterThanOrEqual Validator
+
+Ensures that the value is greater than or equal to the specified value.
+
+Example:
+
+```c#
+builder.Int().For("Age").GreaterThanOrEqualTo(120);
+```
+Example error: 'Age' must be greater than or equal to 120.
+
+String format args:
+- `Name`: Name of the type being validated
+- `Value`: Current value of the property
+- `ComparisonValue`: Value compared to.
 
 <br>
 

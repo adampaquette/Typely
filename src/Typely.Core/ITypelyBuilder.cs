@@ -24,10 +24,10 @@ public interface ITypelyBuilder<T>
     IRuleBuilder<T> MinLength(int minLength); //string
     IRuleBuilder<T> MaxLength(int maxLength); //string
     //IRuleBuilder<T> Matches(string regex); //string
-    //IRuleBuilder<T> LessThan(T value); //IComparable
-    //IRuleBuilder<T> LessThanOrEqual(T value); //IComparable
-    //IRuleBuilder<T> GreaterThan(T value); //IComparable
-    //IRuleBuilder<T> GreaterThanOrEqual(T value); //IComparable    
+    IRuleBuilder<T> LessThan(T value); //IComparable
+    IRuleBuilder<T> LessThanOrEqual(T value); //IComparable
+    IRuleBuilder<T> GreaterThan(T value); //IComparable
+    IRuleBuilder<T> GreaterThanOrEqual(T value); //IComparable    
     //IRuleBuilder<T> InclusiveBetween(T min, T max); //INumber
     //IRuleBuilder<T> ExclusiveBetween(T min, T max); //INumber
     //IRuleBuilder<T> PrecisionScale(int precision, int scale); //INumber

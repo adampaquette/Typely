@@ -57,14 +57,44 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
         throw new NotImplementedException();
     }
 
+    public IRuleBuilder<TValue> LessThan(TValue value)
+    {
+        Expression<Func<IComparable<TValue>, bool>> validation = (IComparable<TValue> x) => x.CompareTo(value) < 0;
+
+        var emittableValidation = EmittableValidation.From(ErrorCodes.LessThan, validation, () => ErrorMessages.LessThan);
+        emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.ComparisonValue, value);
+
+        return AddValidation(emittableValidation);
+    }
+
+    public IRuleBuilder<TValue> LessThanOrEqual(TValue value)
+    {
+        Expression<Func<IComparable<TValue>, bool>> validation = (IComparable<TValue> x) => x.CompareTo(value) <= 0;
+
+        var emittableValidation = EmittableValidation.From(ErrorCodes.LessThanOrEqualTo, validation, () => ErrorMessages.LessThanOrEqualTo);
+        emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.ComparisonValue, value);
+
+        return AddValidation(emittableValidation);
+    }
+
     public IRuleBuilder<TValue> GreaterThan(TValue value)
     {
-        throw new NotImplementedException();
+        Expression<Func<IComparable<TValue>, bool>> validation = (IComparable<TValue> x) => x.CompareTo(value) > 0;
+
+        var emittableValidation = EmittableValidation.From(ErrorCodes.GreaterThan, validation, () => ErrorMessages.GreaterThan);
+        emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.ComparisonValue, value);
+
+        return AddValidation(emittableValidation);
     }
 
     public IRuleBuilder<TValue> GreaterThanOrEqual(TValue value)
     {
-        throw new NotImplementedException();
+        Expression<Func<IComparable<TValue>, bool>> validation = (IComparable<TValue> x) => x.CompareTo(value) >= 0;
+
+        var emittableValidation = EmittableValidation.From(ErrorCodes.GreaterThanOrEqualTo, validation, () => ErrorMessages.GreaterThanOrEqualTo);
+        emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.ComparisonValue, value);
+
+        return AddValidation(emittableValidation);
     }
 
     public IRuleBuilder<TValue> InclusiveBetween(TValue min, TValue max)
@@ -74,11 +104,6 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
 
     public IRuleBuilder<TValue> Length(int min, int max)
     {
-        if (typeof(TValue) != typeof(string))
-        {
-            //TODO error diagnostic
-        }
-
         Expression<Func<string, bool>> validation = (string x) => x.Length < min || x.Length > max;
 
         var emittableValidation = EmittableValidation.From(ErrorCodes.Length, validation, () => ErrorMessages.Length);
@@ -90,11 +115,6 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
 
     public IRuleBuilder<TValue> Length(int exactLength)
     {
-        if (typeof(TValue) != typeof(string))
-        {
-            //TODO error diagnostic
-        }
-
         Expression<Func<string, bool>> validation = (string x) => x.Length != exactLength;
 
         var emittableValidation = EmittableValidation.From(ErrorCodes.Length, validation, () => ErrorMessages.Length);
@@ -105,11 +125,6 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
 
     public IRuleBuilder<TValue> MinLength(int minLength)
     {
-        if (typeof(TValue) != typeof(string))
-        {
-            //TODO error diagnostic
-        }
-
         Expression<Func<string, bool>> validation = (string x) => x.Length < minLength;
 
         var emittableValidation = EmittableValidation.From(ErrorCodes.MinLength, validation, () => ErrorMessages.MinLength);
@@ -120,27 +135,12 @@ internal class TypelyBuilder<TValue> : ITypelyBuilder<TValue>
 
     public IRuleBuilder<TValue> MaxLength(int maxLength)
     {
-        if (typeof(TValue) != typeof(string))
-        { 
-            //TODO error diagnostic
-        }
-
         Expression<Func<string, bool>> validation = (string x) => x.Length > maxLength;
 
         var emittableValidation = EmittableValidation.From(ErrorCodes.MaxLength, validation, () => ErrorMessages.MaxLength);
         emittableValidation.PlaceholderValues.Add(ValidationPlaceholders.MaxLength, maxLength);
 
         return AddValidation(emittableValidation);
-    }
-
-    public IRuleBuilder<TValue> LessThan(TValue value)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IRuleBuilder<TValue> LessThanOrEqual(TValue value)
-    {
-        throw new NotImplementedException();
     }
 
     public IRuleBuilder<TValue> Matches(string regex)
