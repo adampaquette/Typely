@@ -8,7 +8,7 @@ public static class TypelyValue
         var validationError = TThis.Validate(value);
         if (validationError != null)
         {
-            throw new ArgumentException(validationError.ToString()); //Comment la désérialisation Json va fonctionner?
+            throw new ValidationException(validationError.ToString()); //Comment la désérialisation Json va fonctionner?
         }
 #else
         throw new NotImplementedException();
