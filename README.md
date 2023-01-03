@@ -9,10 +9,9 @@ public class TypesConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.For<int>("Likes");
+        builder.Of<int>().For("Likes");
 
-        builder
-            .Of<int>()
+        builder.Of<int>()
             .For("UserId")
             .Namespace("UserAggregate")
             .Name("Owner identifier")
@@ -20,18 +19,8 @@ public class TypesConfiguration : ITypelyConfiguration
             .NotEmpty().WithMessage("'{Name}' cannot be empty.").WithErrorCode("ERR001")
             .NotEqual(1);
 
-        builder.String()
-            .For("UserId");
-        
-        builder.Int()
-            .For("UserId");
-        
-        builder.Guid()
-            .For("UserId");
-
-        
-
-        builder.For<string>("Planet")
+        builder.Of<string>()
+            .For("Planet")
             .Name(() => Names.Planet)
             .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual)
     }
@@ -375,60 +364,13 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 - IRuleBuilder<T> IRuleBuilder<T> Matches(string regex); //string
 - Must(Expression<Func<T, bool>> predicate); //T
 
-// Strings
-Contain("is a");
-StartWith("This");
-NotStartWith("This");
-EndWith("a String");
-NotEndWith("a String");
+// Builders constrained per type
+builder.String().For("UserId");
+builder.Int().For("UserId");
+builder.Guid().For("UserId");
 
-// Numbers
-Positive()
-Negative()
-
-// Dates
-After()
-Before()
-OnOrAfter()
-OnOrBefore()
-NotAfter()
-NotBefore()
-NotOnOrAfter()
-NotOnOrBefore()
-
-//Enums
-InEnum()
-Defined()
-
-// Complex examples
-builder
-    .For<int>("UserId")
-    .Namespace("MyDomain")
-    .AsStruct()
-    .Length(20).WithMessage("Please specify a user id with a length of 20.")
-    .Matches("[0-9]{5}[a-Z]{15}").WithMessage(x => LocalizedResx.MyMessage)
-    .Name("user identifier");
-
-builder
-    .For<string>("Title")
-    .Normalize(x => x.Replace(" ", "").Trim())            
-    .NotEmpty().WithErrorCode("T0001")
-    .MaxLength(20).WithMessage(c => $"Please specify a {c.Name} with a max length of {c.MaxLength}.")
-    .Must(x => !x.contains("custom"));
-
-// Localization
-builder.Localization
-    .ForceCultureTo(new CultureInfo("fr-CA"))
-    .WithResourceManager<MyLocalizedMessages>();
-
-// Logging
-builder.Logging.Fields
-    .Clear()
-    .AddErrorCode()
-    .AddErrorMessage()
-    .AddErrorMessageWithPlaceHolders()
-    .AddSource()
-    .AddPlaceholderValues();
+// Type kinds
+- AsClass();
 
 // Converters
 // Requires to load dependencies of the SyntaxTree
@@ -452,16 +394,60 @@ public class DefaultTypelyConfiguration : ITypelyConfiguration
     }
 }
 
-// Type kinds
-- AsClass();
+// Localization
+builder.Localization
+    .ForceCulture(new CultureInfo("fr-CA"))
+    .WithResourceManager<MyLocalizedMessages>();
+
+// Normalize
+builder
+    .For<string>("Title")
+    .Normalize(x => x.Replace(" ", ""))
+    .Trim();
+
+// Strings validations
+Contain("is a");
+StartWith("This");
+NotStartWith("This");
+EndWith("a String");
+NotEndWith("a String");
+
+// Numbers validations
+Positive()
+Negative()
+
+// Dates validations
+After()
+Before()
+OnOrAfter()
+OnOrBefore()
+NotAfter()
+NotBefore()
+NotOnOrAfter()
+NotOnOrBefore()
+
+// Message builder with context
+builder
+    .For<string>("Title")
+    .MaxLength(20).WithMessage(c => $"Please specify a {c.Name} with a max length of {c.MaxLength}.");    
+
+// Logging
+builder.Logging.Fields
+    .Clear()
+    .AddErrorCode()
+    .AddErrorMessage()
+    .AddErrorMessageWithPlaceHolders()
+    .AddSource()
+    .AddPlaceholderValues();
 
 // Integrate with IOptions
-//https://andrewlock.net/adding-validation-to-strongly-typed-configuration-objects-using-flentvalidation/
+// https://andrewlock.net/adding-validation-to-strongly-typed-configuration-objects-using-flentvalidation/
 
 // Enums
 builder.For<string>("Sexe")
     .In("Male", "Female")
-    .Comparer(StringComparer.OrdinalIgnoreCase);
+    .Comparer(StringComparer.OrdinalIgnoreCase)
+    .IsInEnum() or Defined();
 
 builder.For<string>("Sexe")
     .In((1, "Male"), (2, "Female"));

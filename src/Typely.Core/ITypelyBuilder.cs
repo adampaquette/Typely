@@ -4,8 +4,6 @@ namespace Typely.Core;
 
 public interface ITypelyBuilder
 {
-    //public string String { get; }
-
     ITypelyBuilder<T> Of<T>();
 }
 
