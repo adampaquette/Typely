@@ -32,7 +32,7 @@ internal class Emitter
         }
 
         var typeName = t.TypeName;
-        var underlyingType = t.UnderlyingType!.Name;
+        var underlyingType = t.UnderlyingType!.Name.ToLower();
         var constructType = GetConstructType(t.ConstructTypeKind);
         var validationBlock = GenerateValidations(t.Rules, t.Name, t.UnderlyingType, typeName);
 

@@ -1,176 +1,97 @@
+﻿using Typely.Generators.Typely.Parsing;
+using Typely.Generators.Typely.Parsing.String;
+
 namespace Typely.Generators.Tests.Typely.Parsing.String;
 
 [UsesVerify]
 public class TypelyBuilderOfStringTests
 {
+    [Fact] public Task NotEmpty() => Builder.NotEmpty().VerifyRules();
+
+    [Fact] public Task Length() => Builder.Length(1, 10).VerifyRules();
+
+    [Fact] public Task ExactLength() => Builder.Length(10).VerifyRules();
+
+    [Fact] public Task MinLength() => Builder.MinLength(10).VerifyRules();
+
+    [Fact] public Task MaxLength() => Builder.MaxLength(10).VerifyRules();
+
+    [Fact] public Task LessThan() => Builder.LessThan("20").VerifyRules();
+
+    [Fact] public Task LessThanOrEqualTo() => Builder.LessThanOrEqual("20").VerifyRules();
+
+    [Fact] public Task GreaterThan() => Builder.GreaterThan("20").VerifyRules();
+
+    [Fact] public Task GreaterThanOrEqualTo() => Builder.GreaterThanOrEqual("20").VerifyRules();
+
     [Fact]
-    public void Type_Should_Match()
-    {
-        var expectedTypeName = "UserId";
-
-        var builder = new TypelyBuilderFixture().Create();
-        builder.String().For(expectedTypeName);
-
-        var emittableTypes = builder.GetEmittableTypes();
-
-        var emittableType = Assert.Single(emittableTypes);
-        Assert.Equal(expectedTypeName, emittableType.TypeName);
-    }
+    public void Type_Should_Match() => Assert.Equal("Name", GetSingleEmittableType().TypeName);
 
     [Fact]
     public void Namespace_Should_Match()
     {
-        var expectedTypeName = "UserId";
         var expectedNamespace = "My";
+        Builder.Namespace(expectedNamespace);
 
-        var builder = new TypelyBuilderFixture().Create();
-
-        builder.String()
-            .For(expectedTypeName)
-            .Namespace(expectedNamespace);
-
-        var emittableTypes = builder.GetEmittableTypes();
-
-        var emittableType = Assert.Single(emittableTypes);
-        Assert.Equal(expectedNamespace, emittableType.Namespace);
+        Assert.Equal(expectedNamespace, GetSingleEmittableType().Namespace);
     }
 
     [Fact]
-    public void ErrorCode_Should_Match()
+    public void ConstructTypeKind_ShouldBe_Struct()
     {
-        var expectedTypeName = "UserId";
-        var expectedErrorCode = "ERR001";
+        Builder.AsStruct();
 
-        var builder = new TypelyBuilderFixture().Create();
-
-        builder.String()
-            .For(expectedTypeName)
-            .NotEmpty()
-            .WithErrorCode(expectedErrorCode);
-
-        var emittableTypes = builder.GetEmittableTypes();
-
-        var emittableType = Assert.Single(emittableTypes);
-        var validation = Assert.Single(emittableType.Rules);
-        Assert.Equal(expectedErrorCode, validation.ErrorCode);
-    }
-
-    [Fact]
-    public void Message_Should_Match()
-    {
-        var expectedTypeName = "UserId";
-        var expectedMessage = "Error message";
-
-        var builder = new TypelyBuilderFixture().Create();
-
-        builder.String()
-            .For(expectedTypeName)
-            .NotEmpty()
-            .WithMessage(expectedMessage);
-
-        var emittableTypes = builder.GetEmittableTypes();
-
-        var emittableType = Assert.Single(emittableTypes);
-        var validation = Assert.Single(emittableType.Rules);
-        Assert.Equal(expectedMessage, validation.Message.Compile().Invoke());
-    }
-
-    [Fact]
-    public void MessageLambda_Should_Match()
-    {
-        var expectedTypeName = "UserId";
-        var expectedMessage = "Error message";
-
-        var builder = new TypelyBuilderFixture().Create();
-
-        builder.String()
-            .For(expectedTypeName)
-            .NotEmpty()
-            .WithMessage(() => expectedMessage);
-
-        var emittableTypes = builder.GetEmittableTypes();
-
-        var emittableType = Assert.Single(emittableTypes);
-        var validation = Assert.Single(emittableType.Rules);
-        Assert.Equal(expectedMessage, validation.Message.Compile().Invoke());
+        Assert.Equal(ConstructTypeKind.Struct, GetSingleEmittableType().ConstructTypeKind);
     }
 
     [Fact]
     public void Name_Should_Match()
     {
-        var expectedTypeName = "UserId";
         var expectedName = "Owner identifier";
+        Builder.Name(expectedName);
 
-        var builder = new TypelyBuilderFixture().Create();
-
-        builder.String()
-            .For(expectedTypeName)
-            .Name(expectedName);
-
-        var emittableTypes = builder.GetEmittableTypes();
-
-        var emittableType = Assert.Single(emittableTypes);
-        Assert.Equal(expectedName, emittableType.Name!.Compile().Invoke());
+        Assert.Equal(expectedName, GetSingleEmittableType().Name!.Compile().Invoke());
     }
 
     [Fact]
     public void NameLambda_Should_Match()
     {
-        var expectedTypeName = "UserId";
         var expectedName = "Owner identifier";
+        Builder.Name(() => expectedName);
 
-        var builder = new TypelyBuilderFixture().Create();
-
-        builder.String()
-            .For(expectedTypeName)
-            .Name(() => expectedName);
-
-        var emittableTypes = builder.GetEmittableTypes();
-
-        var emittableType = Assert.Single(emittableTypes);
-        Assert.Equal(expectedName, emittableType.Name!.Compile().Invoke());
+        Assert.Equal(expectedName, GetSingleEmittableType().Name!.Compile().Invoke());
     }
 
+    [Fact]
+    public void ErrorCode_Should_Match()
+    {
+        var expectedErrorCode = "ERR001";
+        Builder.NotEmpty().WithErrorCode(expectedErrorCode);
 
-    //[Fact]
-    //public void ObjectType_ShouldBe_Class()
-    //{
-    //    var builder = new TypelyBuilderFixture().Create();
+        Assert.Equal(expectedErrorCode, GetSingleEmittableRule().ErrorCode);
+    }
 
-    //    builder.For<int>("UserId")
-    //        .AsClass();
+    [Fact]
+    public void Message_Should_Match()
+    {
+        var expectedMessage = "Error message";
+        Builder.NotEmpty().WithMessage(expectedMessage);
 
-    //    var emittableTypes = builder.GetEmittableTypes();
+        Assert.Equal(expectedMessage, GetSingleEmittableRule().Message.Compile().Invoke());
+    }
 
-    //    var emittableType = Assert.Single(emittableTypes);
-    //    Assert.Equal(TypeKind.Class, emittableType.TypeKind);
-    //}
+    [Fact]
+    public void MessageLambda_Should_Match()
+    {
+        var expectedMessage = "Error message";
+        Builder.NotEmpty().WithMessage(() => expectedMessage);
 
-    //[Fact]
-    //public void ObjectType_ShouldBe_Struct()
-    //{
-    //    var builder = new TypelyBuilderFixture().Create();
+        Assert.Equal(expectedMessage, GetSingleEmittableRule().Message.Compile().Invoke());
+    }
 
-    //    builder.For<int>("UserId")
-    //        .AsStruct();
+    private RuleBuilderOfString Builder { get; } = (RuleBuilderOfString)new TypelyBuilderFixture().Create().String().For("Name");
 
-    //    var emittableTypes = builder.GetEmittableTypes();
+    private EmittableType GetSingleEmittableType() => Assert.Single(Builder.GetEmittableTypes());
 
-    //    var emittableType = Assert.Single(emittableTypes);
-    //    Assert.Equal(TypeKind.Struct, emittableType.TypeKind);
-    //}
-
-    //[Fact]
-    //public void ObjectType_ShouldBe_Record()
-    //{
-    //    var builder = new TypelyBuilderFixture().Create();
-
-    //    builder.For<int>("UserId")
-    //        .AsRecord();
-
-    //    var emittableTypes = builder.GetEmittableTypes();
-
-    //    var emittableType = Assert.Single(emittableTypes);
-    //    Assert.Equal(TypeKind.Record, emittableType.TypeKind);
-    //}
+    private EmittableRule GetSingleEmittableRule() => Assert.Single(GetSingleEmittableType().Rules);
 }

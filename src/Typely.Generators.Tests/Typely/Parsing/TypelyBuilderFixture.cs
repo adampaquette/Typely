@@ -2,6 +2,4 @@
 
 namespace Typely.Generators.Tests.Typely.Parsing;
 
-internal class TypelyBuilderFixture : BaseFixture<TypelyBuilder>
-{
-}
+internal class TypelyBuilderFixture : BaseFixture<TypelyBuilder> { }

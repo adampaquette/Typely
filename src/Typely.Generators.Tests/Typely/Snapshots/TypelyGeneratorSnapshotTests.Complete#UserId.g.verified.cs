@@ -9,20 +9,20 @@ using System.Text.Json.Serialization;
 
 namespace UserAggregate
 {
-    [JsonConverter(typeof(TypelyJsonConverter<String, UserId>))]
-    public partial struct UserId : ITypelyValue<String, UserId>, IEquatable<UserId>, IComparable<UserId>, IComparable
+    [JsonConverter(typeof(TypelyJsonConverter<string, UserId>))]
+    public partial struct UserId : ITypelyValue<string, UserId>, IEquatable<UserId>, IComparable<UserId>, IComparable
     {
-        public String Value { get; private set; }
+        public string Value { get; private set; }
 
         public UserId() => throw new Exception("Parameterless constructor is not allowed.");
 
-        public UserId(String value)
+        public UserId(string value)
         {
-            TypelyValue.ValidateAndThrow<String, UserId>(value);
+            TypelyValue.ValidateAndThrow<string, UserId>(value);
             Value = value;
         }
 
-        public static ValidationError? Validate(String value)
+        public static ValidationError? Validate(string value)
         {
             if (value == null) throw new ArgumentNullException(nameof(UserId));
 
@@ -52,9 +52,9 @@ namespace UserAggregate
             return null;
         }
 
-        public static UserId From(String value) => new(value);
+        public static UserId From(string value) => new(value);
 
-        public static bool TryFrom(String value, [MaybeNullWhen(false)] out UserId typelyType, out ValidationError? validationError)
+        public static bool TryFrom(string value, [MaybeNullWhen(false)] out UserId typelyType, out ValidationError? validationError)
         {
             validationError = Validate(value);
             var isValid = validationError == null;
@@ -82,6 +82,6 @@ namespace UserAggregate
 
         public int CompareTo(object? obj) => obj is not UserId ? 1 : CompareTo((UserId)obj!);
 
-        public static explicit operator String(UserId value) => value.Value;
+        public static explicit operator string(UserId value) => value.Value;
     }
 }
