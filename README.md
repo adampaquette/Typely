@@ -9,30 +9,21 @@ public class TypesConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.Int().For("Likes");
-        builder.Decimal().For("Rating").InclusiveBetween(0, 5);
+        builder.OfInt.For("Likes");
+        builder.OfDecimal.For("Rating").InclusiveBetween(0, 5);
 
-        builder.Int()
-            .For("UserId")
-            .Namespace("UserAggregate")
-            .Name("Owner identifier")
-            .AsStruct()
-            .NotEmpty().WithMessage("'{Name}' cannot be empty.").WithErrorCode("ERR001")
-            .NotEqual(1);
-
-        builder.String()
-            .For("Planet")
-            .Name(() => Names.Planet)
-            .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual)
-
-        builder.OfString()
+        builder.OfInt
             .For("UserId")
             .WithNamespace("UserAggregate")
             .WithName("Owner identifier")
             .AsStruct()
-            .NotEmpty()
-            .NotEqual("100").WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001")
-            .MaxLength(100);            
+            .NotEmpty().WithMessage("'{Name}' cannot be empty.").WithErrorCode("ERR001")
+            .NotEqual(1);
+
+        builder.OfString
+            .For("Planet")
+            .WithName(() => Names.Planet)
+            .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual)   
     }
 }
 
@@ -305,7 +296,7 @@ String format args:
 
 # Supported frameworks
 
-- .NET 7.0 or greater are first class citizens frameworks
+- .NET 7.0 or greater are first class citizens
 - Backward compatible with .NET Standard 2.0 (`Planned but currently not supported`)
 
 Because I wanted the code base to be as simple as possible and extensible, I needed the value objects to be created generically for exemple in the converters. As the requierd feature for static methods on interfaces without implementation came with C# 11, it could not be part of .NET Standard 2.0. The trade off here is that projects targeting .NET 7.0 or greater will be optimal and projects using .NET Standard 2.0 will benefits from all the same features but using reflexion where generic static method could not be used.
@@ -459,6 +450,25 @@ builder.String().For("UserId");
 builder.Int().For("UserId");
 builder.Guid().For("UserId");
 
+// Typed factory
+var factory = builder.Factory.OfString()
+    .Namespace("MyDomain")
+    .AsStruct()
+    .Length(3, 50)
+    .Build();
+    
+factory.For("FirstName");
+factory.For("LastName");
+
+// Untyped factory
+var factory2 = builder.Factory()
+    .Namespace("MyDomain")
+    .NotEmpty()
+    .Build();
+    
+factory2.OfInt().For("Days");
+factory2.OfLong().For("Timespan");
+
 - PrecisionScale(int precision, int scale); //INumber
 - IRuleBuilder<T> IRuleBuilder<T> Matches(string regex); //string
 - Must(Expression<Func<T, bool>> predicate); //T
@@ -546,27 +556,93 @@ builder.For<string>("Sexe")
 builder.For<string>("Sexe")
     .In((1, "Male"), (2, "Female"));
 
-// Typed factory
-var factory = builder.Factory<string>()
-    .Namespace("MyDomain")
-    .AsStruct()
-    .Length(3, 50)
-    .Build();
-    
-factory.For("FirstName");
-factory.For("LastName");
-
-// Untyped factory
-var factory2 = builder.Factory()
-    .Namespace("MyDomain")
-    .NotEmpty()
-    .Build();
-    
-factory2.For<int>("Days");
-factory2.For<long>("Timespan");
-
 // Attributes
 builder.Attributes
     .Clear()
     .Add(new JsonConverterAttribute(typeof(TypelyJsonConverter<LastName, string>)));
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+namespace TypeBuilderPOC;
+
+public interface ITypelyBuilder
+{
+    ITypelyBuilderOfString OfString { get; }
+}
+
+public interface ITypelyBuilderBase<T, R>
+    where T : ITypelyBuilderBase<T, R>
+    where R : IRuleBuilderBase<T, R>
+{
+    T WithNamespace(string value);
+    R NotEmpty();
+}
+
+public interface IRuleBuilderBase<T, R>
+    where T : ITypelyBuilderBase<T, R>
+    where R : IRuleBuilderBase<T, R>
+{
+    T WithMessage(string message);
+}
+
+public interface ITypelyBuilderOfString : ITypelyBuilderBase<ITypelyBuilderOfString, IRuleBuilderOfString>
+{
+    ITypelyBuilderOfString Contains(string value);
+}
+
+public interface IRuleBuilderOfString : IRuleBuilderBase<ITypelyBuilderOfString, IRuleBuilderOfString>
+{
+}
+
+public class TypelyBuilderBase<T, R> : ITypelyBuilderBase<T, R>
+    where T : ITypelyBuilderBase<T, R>
+    where R : IRuleBuilderBase<T, R>
+{
+    public R NotEmpty()
+    {
+        throw new NotImplementedException();
+    }
+
+    public T WithNamespace(string value)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class RuleBuilderBase<T, R> : IRuleBuilderBase<T, R>
+    where T : ITypelyBuilderBase<T, R>
+    where R : IRuleBuilderBase<T, R>
+{
+    public T WithMessage(string message)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+
+
+public class TypelyBuilderOfString : TypelyBuilderBase<TypelyBuilderOfString, RuleBuilderOfString>
+{
+    private RuleBuilderOfString ruleBuilder;
+
+    public TypelyBuilderOfString(RuleBuilderOfString ruleBuilder)
+    {
+        this.ruleBuilder = ruleBuilder;
+    }
+}
+
+public class RuleBuilderOfString : RuleBuilderBase<TypelyBuilderOfString, RuleBuilderOfString>
+{
+
+}
