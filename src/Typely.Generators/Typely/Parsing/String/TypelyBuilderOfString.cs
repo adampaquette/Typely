@@ -135,3 +135,40 @@ internal class TypelyBuilderOfString : ITypelyBuilderOfString
         throw new NotImplementedException();
     }
 }
+
+internal class FactoryOfString : IFactoryOfString
+{
+    private readonly EmittableType EmittableType;
+    private readonly List<EmittableType> EmittableTypes;
+
+    public FactoryOfString(EmittableType emittableType, List<EmittableType> emittableTypes)
+    {
+        EmittableType = emittableType;
+        EmittableTypes = emittableTypes;
+    }
+
+    public IFactoryOfString AsClass()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IFactoryOfString AsStruct()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IFactoryOfString WithName(string name)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IFactoryOfString WithName(Expression<Func<string>> expression)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IFactoryOfString WithNamespace(string value)
+    {
+        throw new NotImplementedException();
+    }
+}
