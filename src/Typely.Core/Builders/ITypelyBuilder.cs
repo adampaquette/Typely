@@ -1,14 +1,37 @@
-﻿namespace Typely.Core.Builders;
+﻿using System.Linq.Expressions;
+
+namespace Typely.Core.Builders;
 
 public interface ITypelyBuilder
 {
-    ITypelyBuilder<T> Of<T>();
+    //ITypelyBuilder<T> Of<T>();
     ITypelyBuilderOfInt Int();
     ITypelyBuilderOfString OfString();
 }
 
-public interface ITypelyBuilder<T> 
+public interface ITypelyBuilderBase<T, R, V>
+    where T : ITypelyBuilderBase<T, R, V>
+    where R : IRuleBuilderBase<T, R, V>
 {
+    T For(string typeName);
+    T AsStruct();
+    T AsClass();
+    T WithNamespace(string value);
+    T WithName(string name);
+    T WithName(Expression<Func<string>> expression);
+    
+    R NotEmpty();
+    R NotEqual(V value);
+    R Must(Expression<Func<V, bool>> predicate);
+}
+
+public interface IRuleBuilderBase<T, R, V>
+    where T : ITypelyBuilderBase<T, R, V>
+    where R : IRuleBuilderBase<T, R, V>
+{
+    R WithMessage(string message);
+    R WithMessage(Expression<Func<string>> expression);
+    R WithErrorCode(string errorCode);    
 }
 
 

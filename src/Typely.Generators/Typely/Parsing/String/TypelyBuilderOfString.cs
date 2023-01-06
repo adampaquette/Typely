@@ -32,7 +32,7 @@ internal class TypelyBuilderOfString : ITypelyBuilderOfString
         return this;
     }
 
-    public ITypelyBuilderOfString Name(Expression<Func<string>> expression)
+    public ITypelyBuilderOfString WithName(Expression<Func<string>> expression)
     {
         EmittableType.Name = expression;
         return this;
@@ -47,6 +47,12 @@ internal class TypelyBuilderOfString : ITypelyBuilderOfString
     public ITypelyBuilderOfString AsStruct()
     {
         EmittableType.ConstructTypeKind = ConstructTypeKind.Struct;
+        return this;
+    }
+
+    public ITypelyBuilderOfString AsClass()
+    {
+        EmittableType.ConstructTypeKind = ConstructTypeKind.Class;
         return this;
     }
 
@@ -87,25 +93,25 @@ internal class TypelyBuilderOfString : ITypelyBuilderOfString
 
     public IRuleBuilderOfString LessThan(string value) => AddRule(
         errorCode: ErrorCodes.LessThan,
-        rule: (x) => x.CompareTo(value) >= 0,
+        rule: (x) => string.Compare(x, value, StringComparison.Ordinal) >= 0,
         message: () => ErrorMessages.LessThan,
         placeholders: (ValidationPlaceholders.ComparisonValue, value));
 
     public IRuleBuilderOfString LessThanOrEqual(string value) => AddRule(
         errorCode: ErrorCodes.LessThanOrEqualTo,
-        rule: (x) => x.CompareTo(value) > 0,
+        rule: (x) => string.Compare(x, value, StringComparison.Ordinal) > 0,
         message: () => ErrorMessages.LessThanOrEqualTo,
         placeholders: (ValidationPlaceholders.ComparisonValue, value));
 
     public IRuleBuilderOfString GreaterThan(string value) => AddRule(
         errorCode: ErrorCodes.GreaterThan,
-        rule: (x) => x.CompareTo(value) <= 0,
+        rule: (x) => string.Compare(x, value, StringComparison.Ordinal) <= 0,
         message: () => ErrorMessages.GreaterThan,
         placeholders: (ValidationPlaceholders.ComparisonValue, value));
 
     public IRuleBuilderOfString GreaterThanOrEqual(string value) => AddRule(
         errorCode: ErrorCodes.GreaterThanOrEqualTo,
-        rule: (x) => System.String.Compare(x, value, StringComparison.Ordinal) < 0,
+        rule: (x) => string.Compare(x, value, StringComparison.Ordinal) < 0,
         message: () => ErrorMessages.GreaterThanOrEqualTo,
         placeholders: (ValidationPlaceholders.ComparisonValue, value));
 

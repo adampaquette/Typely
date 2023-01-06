@@ -1,33 +1,18 @@
-﻿using System.Linq.Expressions;
+﻿namespace Typely.Core.Builders;
 
-namespace Typely.Core.Builders;
-
-public interface ITypelyBuilderOfString
+public interface ITypelyBuilderOfString : ITypelyBuilderBase<ITypelyBuilderOfString, IRuleBuilderOfString, string>
 {
-    ITypelyBuilderOfString For(string typeName);
-    ITypelyBuilderOfString WithNamespace(string value);
-    ITypelyBuilderOfString AsStruct();
-    //ITypelyBuilderOfString AsClass();
-    ITypelyBuilderOfString WithName(string name);
-    ITypelyBuilderOfString Name(Expression<Func<string>> expression);
-
-    IRuleBuilderOfString NotEmpty(); //T
-    IRuleBuilderOfString NotEqual(string value); //T
-    IRuleBuilderOfString Must(Expression<Func<string, bool>> predicate); //T
-    IRuleBuilderOfString Length(int min, int max); //string
-    IRuleBuilderOfString Length(int exactLength); //string
-    IRuleBuilderOfString MinLength(int minLength); //string
-    IRuleBuilderOfString MaxLength(int maxLength); //string
-    //IRuleBuilderOfString Matches(string regex); //string
+    IRuleBuilderOfString Length(int min, int max);
+    IRuleBuilderOfString Length(int exactLength);
+    IRuleBuilderOfString MinLength(int minLength);
+    IRuleBuilderOfString MaxLength(int maxLength);
+    //IRuleBuilderOfString Matches(string regex);
     IRuleBuilderOfString LessThan(string value); //IComparable
     IRuleBuilderOfString LessThanOrEqual(string value); //IComparable
     IRuleBuilderOfString GreaterThan(string value); //IComparable
     IRuleBuilderOfString GreaterThanOrEqual(string value); //IComparable
 }
 
-public interface IRuleBuilderOfString : ITypelyBuilderOfString
+public interface IRuleBuilderOfString : IRuleBuilderBase<ITypelyBuilderOfString, IRuleBuilderOfString, string>
 {
-    IRuleBuilderOfString WithErrorCode(string errorCode);
-    IRuleBuilderOfString WithMessage(string message);
-    IRuleBuilderOfString WithMessage(Expression<Func<string>> expression);
 }

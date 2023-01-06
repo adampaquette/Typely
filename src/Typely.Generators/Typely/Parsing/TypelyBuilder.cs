@@ -35,17 +35,17 @@ internal class TypelyBuilder : ITypelyBuilder
         return new RuleBuilderOfString(emittableType, _emittableTypes);
     }
 
-    public ITypelyBuilder<T> Of<T>()
-    {
-        throw new NotImplementedException();
-        //    var emittableType = new EmittableType(
-        //        syntaxTree: _syntaxTree,
-        //        underlyingType: typeof(TValue),
-        //        @namespace: _configurationType.Namespace);
+    //public ITypelyBuilder<T> Of<T>()
+    //{
+    //    throw new NotImplementedException();
+    //    //    var emittableType = new EmittableType(
+    //    //        syntaxTree: _syntaxTree,
+    //    //        underlyingType: typeof(TValue),
+    //    //        @namespace: _configurationType.Namespace);
 
-        //    _emittableTypes.Add(emittableType);
+    //    //    _emittableTypes.Add(emittableType);
 
-        //    return new RuleBuilder<T>(emittableType, _emittableTypes);
-    }
+    //    //    return new RuleBuilder<T>(emittableType, _emittableTypes);
+    //}
 }
 
