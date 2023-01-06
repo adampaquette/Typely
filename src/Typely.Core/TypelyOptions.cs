@@ -2,7 +2,7 @@
 
 public class TypelyOptions
 {
-    private static TypelyOptions? _instance = null;
+    private static readonly TypelyOptions? _instance = null;
 
     public static TypelyOptions Instance => _instance ?? new TypelyOptions();
 
@@ -12,5 +12,5 @@ public class TypelyOptions
         return Instance;
     }
     
-    public bool IsSensitiveDataLoggingEnabled { get; private set; } = false;
+    public bool IsSensitiveDataLoggingEnabled { get; private set; }
 }

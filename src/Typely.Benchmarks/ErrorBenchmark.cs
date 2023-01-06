@@ -5,14 +5,14 @@ namespace Typely.Benchmarks;
 [MemoryDiagnoser]
 public class ErrorBenchmark
 {
-    readonly string val = new Random().Next().ToString();
+    readonly string _val = new Random().Next().ToString();
 
     [Benchmark]
     public void ReturnException()
     {
         try
         {
-            throw new ArgumentOutOfRangeException("Param", val, "Parameter must not be empty.");
+            throw new ArgumentOutOfRangeException("Param", _val, "Parameter must not be empty.");
         }
         catch (Exception)
         {
@@ -20,7 +20,7 @@ public class ErrorBenchmark
     }
 
     [Benchmark]
-    public void ReturnValidationError() => new ValidationError("ERR001", "Parameter must not be empty.", val, "Param");
+    public void ReturnValidationError() => new ValidationError("ERR001", "Parameter must not be empty.", _val, "Param");
 }
 
 public class ValidationError

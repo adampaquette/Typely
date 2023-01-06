@@ -6,7 +6,7 @@ namespace Typely.Generators.Tests.Typely;
 
 internal class TypelyGeneratorDriver
 {
-    private Compilation _compilation;
+    private readonly Compilation _compilation;
 
     public TypelyGeneratorDriver(Compilation compilation)
     {

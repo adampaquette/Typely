@@ -25,7 +25,7 @@ internal class EmittableRule
     /// <summary>
     /// Contains the list of variables and values that can be formatted into the error message.
     /// </summary>
-    public Dictionary<string, object?> PlaceholderValues { get; set; } = new Dictionary<string, object?>();
+    public Dictionary<string, object?> PlaceholderValues { get; set; } = new();
 
     /// <summary>
     /// Private constructor.
@@ -48,7 +48,7 @@ internal class EmittableRule
     /// <param name="message">A message to be converted to C# code.</param>
     /// <returns>A <see cref="EmittableRule"/></returns>
     public static EmittableRule From(string errorCode, Expression rule, Expression<Func<string>> message) =>
-        new EmittableRule(errorCode, rule, message);
+        new(errorCode, rule, message);
 
     /// <summary>
     /// Creates a <see cref="EmittableRule"/> with the default values that can be overridden.

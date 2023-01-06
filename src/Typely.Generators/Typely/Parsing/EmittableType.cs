@@ -11,7 +11,7 @@ internal class EmittableType
     public Expression<Func<string>>? Name { get; set; }
     public string Namespace { get; set; }
     public ConstructTypeKind ConstructTypeKind { get; set; } = ConstructTypeKind.Struct;
-    public List<EmittableRule> Rules { get; } = new List<EmittableRule>();
+    public List<EmittableRule> Rules { get; } = new();
     public EmittableRule? CurrentRule { get; set; } = null;
 
     public EmittableType(SyntaxTree syntaxTree, Type underlyingType, string @namespace)

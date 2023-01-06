@@ -7,11 +7,10 @@ internal class CompleteConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder
-            .String()
+        builder.OfString()
             .For("UserId")
-            .Namespace("UserAggregate")
-            .Name("Owner identifier")
+            .WithNamespace("UserAggregate")
+            .WithName("Owner identifier")
             .AsStruct()
             .NotEmpty()
             .NotEqual("100").WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001")

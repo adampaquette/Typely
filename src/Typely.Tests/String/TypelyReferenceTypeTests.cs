@@ -14,9 +14,9 @@ public class TypelyReferenceTypeTests
     [Fact] public void CompareToObject() => GenComparable.Sample((x) => x.primitive.CompareTo((object)x.randomObj.Value) == x.valueObject.CompareTo((object)x.randomObj));
 
     [Fact]
-    public void aa()
+    public void Aa()
     { 
-        Gen.String.
+     
     }
 
     private Gen<(StringType, StringType)> GenTrueEquals => Gen.String.Select(x => (StringType.From(x), StringType.From(x)));

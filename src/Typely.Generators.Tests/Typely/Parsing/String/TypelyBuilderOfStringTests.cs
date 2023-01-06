@@ -31,7 +31,7 @@ public class TypelyBuilderOfStringTests
     public void Namespace_Should_Match()
     {
         var expectedNamespace = "My";
-        Builder.Namespace(expectedNamespace);
+        Builder.WithNamespace(expectedNamespace);
 
         Assert.Equal(expectedNamespace, GetSingleEmittableType().Namespace);
     }
@@ -48,7 +48,7 @@ public class TypelyBuilderOfStringTests
     public void Name_Should_Match()
     {
         var expectedName = "Owner identifier";
-        Builder.Name(expectedName);
+        Builder.WithName(expectedName);
 
         Assert.Equal(expectedName, GetSingleEmittableType().Name!.Compile().Invoke());
     }
@@ -89,7 +89,7 @@ public class TypelyBuilderOfStringTests
         Assert.Equal(expectedMessage, GetSingleEmittableRule().Message.Compile().Invoke());
     }
 
-    private RuleBuilderOfString Builder { get; } = (RuleBuilderOfString)new TypelyBuilderFixture().Create().String().For("Name");
+    private RuleBuilderOfString Builder { get; } = (RuleBuilderOfString)new TypelyBuilderFixture().Create().OfString().For("Name");
 
     private EmittableType GetSingleEmittableType() => Assert.Single(Builder.GetEmittableTypes());
 

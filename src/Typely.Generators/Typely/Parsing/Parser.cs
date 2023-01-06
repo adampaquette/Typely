@@ -42,8 +42,10 @@ internal sealed class Parser : IDisposable
         {
             return null;
         }
-        return classSymbol.AllInterfaces.Any(x => x.ToString() == typeof(ITypelyConfiguration).FullName) ?
-            classDeclarationSyntax : null;
+
+        return classSymbol.AllInterfaces.Any(x => x.ToString() == typeof(ITypelyConfiguration).FullName)
+            ? classDeclarationSyntax
+            : null;
     }
 
     /// <summary>
@@ -119,6 +121,7 @@ internal sealed class Parser : IDisposable
             {
                 _reportDiagnostic(diagnostic); //TODO Add a prefix to inform that it came from Typely
             }
+
             return null;
         }
 
@@ -145,13 +148,13 @@ internal sealed class Parser : IDisposable
             .Where(supportedUsing => !root.Usings.Any(x => x.Name.ToString() == supportedUsing));
 
         foreach (var missingUsing in missingUsings)
-        { 
+        {
             builder
                 .Append(Environment.NewLine)
                 .Append("global using global::")
                 .Append(missingUsing)
                 .Append(";");
-        };
+        }
 
         var globalUsings = builder.ToString();
         return CSharpSyntaxTree.ParseText(globalUsings);
@@ -168,4 +171,3 @@ internal sealed class Parser : IDisposable
         GC.SuppressFinalize(this);
     }
 }
-

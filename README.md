@@ -24,6 +24,15 @@ public class TypesConfiguration : ITypelyConfiguration
             .For("Planet")
             .Name(() => Names.Planet)
             .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual)
+
+        builder.OfString()
+            .For("UserId")
+            .WithNamespace("UserAggregate")
+            .WithName("Owner identifier")
+            .AsStruct()
+            .NotEmpty()
+            .NotEqual("100").WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001")
+            .MaxLength(100);            
     }
 }
 

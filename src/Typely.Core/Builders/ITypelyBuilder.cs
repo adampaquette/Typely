@@ -4,7 +4,7 @@ public interface ITypelyBuilder
 {
     ITypelyBuilder<T> Of<T>();
     ITypelyBuilderOfInt Int();
-    ITypelyBuilderOfString String();
+    ITypelyBuilderOfString OfString();
 }
 
 public interface ITypelyBuilder<T> 

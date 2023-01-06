@@ -1,49 +1,52 @@
 ﻿using System.Linq.Expressions;
 using Typely.Core;
 using Typely.Core.Builders;
+// ReSharper disable HeapView.ObjectAllocation
+// ReSharper disable HeapView.BoxingAllocation
+// ReSharper disable HeapView.ClosureAllocation
 
 namespace Typely.Generators.Typely.Parsing.String;
 
 internal class TypelyBuilderOfString : ITypelyBuilderOfString
 {
-    protected EmittableType _emittableType;
+    protected EmittableType EmittableType;
 
     public TypelyBuilderOfString(EmittableType emittableType)
     {
-        _emittableType = emittableType;
+        EmittableType = emittableType;
     }
 
     public ITypelyBuilderOfString For(string typeName)
     {
-        _emittableType.TypeName = typeName;
-        if (_emittableType.Name == null)
+        EmittableType.TypeName = typeName;
+        if (EmittableType.Name == null)
         {
-            _emittableType.Name = Expression.Lambda<Func<string>>(Expression.Constant(typeName));
+            EmittableType.Name = Expression.Lambda<Func<string>>(Expression.Constant(typeName));
         }
         return this;
     }
 
-    public ITypelyBuilderOfString Name(string name)
+    public ITypelyBuilderOfString WithName(string name)
     {
-        _emittableType.Name = Expression.Lambda<Func<string>>(Expression.Constant(name));
+        EmittableType.Name = Expression.Lambda<Func<string>>(Expression.Constant(name));
         return this;
     }
 
     public ITypelyBuilderOfString Name(Expression<Func<string>> expression)
     {
-        _emittableType.Name = expression;
+        EmittableType.Name = expression;
         return this;
     }
 
-    public ITypelyBuilderOfString Namespace(string value)
+    public ITypelyBuilderOfString WithNamespace(string value)
     {
-        _emittableType.Namespace = value;
+        EmittableType.Namespace = value;
         return this;
     }
 
     public ITypelyBuilderOfString AsStruct()
     {
-        _emittableType.ConstructTypeKind = ConstructTypeKind.Struct;
+        EmittableType.ConstructTypeKind = ConstructTypeKind.Struct;
         return this;
     }
 
@@ -102,7 +105,7 @@ internal class TypelyBuilderOfString : ITypelyBuilderOfString
 
     public IRuleBuilderOfString GreaterThanOrEqual(string value) => AddRule(
         errorCode: ErrorCodes.GreaterThanOrEqualTo,
-        rule: (x) => x.CompareTo(value) < 0,
+        rule: (x) => System.String.Compare(x, value, StringComparison.Ordinal) < 0,
         message: () => ErrorMessages.GreaterThanOrEqualTo,
         placeholders: (ValidationPlaceholders.ComparisonValue, value));
 
@@ -116,8 +119,8 @@ internal class TypelyBuilderOfString : ITypelyBuilderOfString
 
     private IRuleBuilderOfString AddRule(EmittableRule emittableValidation)
     {
-        _emittableType.CurrentRule = emittableValidation;
-        _emittableType.Rules.Add(emittableValidation);
+        EmittableType.CurrentRule = emittableValidation;
+        EmittableType.Rules.Add(emittableValidation);
         return (IRuleBuilderOfString)this;
     }
 }

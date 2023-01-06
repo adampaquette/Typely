@@ -41,7 +41,10 @@ public class ValidationError
     /// </summary>
     /// <param name="errorCode">A unique identifier for the error.</param>
     /// <param name="errorMessage">The error message.</param>
+    /// <param name="errorMessageWithPlaceholders">The error message with placeholders in braces.</param>
     /// <param name="attemptedValue">The value that caused the error.</param>
+    /// <param name="typeName">The name of the calss or struct to create.</param>
+    /// <param name="placeholderValues">List of the placeholders with their values.</param>
     public ValidationError(string errorCode, string errorMessage, string errorMessageWithPlaceholders, object? attemptedValue, string typeName, Dictionary<string, object?> placeholderValues)
     {
         ErrorCode = errorCode;

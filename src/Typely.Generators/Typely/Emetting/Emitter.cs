@@ -117,9 +117,7 @@ internal class Emitter
 
         if(!underlyingType.IsValueType)
         {
-            builder.AppendLine($$"""
-                            if (value == null) throw new ArgumentNullException(nameof({{typeName}}));
-                """)
+            builder.AppendLine($"            if (value == null) throw new ArgumentNullException(nameof({typeName}));")
                 .AppendLine();
         }
 

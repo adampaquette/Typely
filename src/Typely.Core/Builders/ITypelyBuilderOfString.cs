@@ -5,10 +5,10 @@ namespace Typely.Core.Builders;
 public interface ITypelyBuilderOfString
 {
     ITypelyBuilderOfString For(string typeName);
-    ITypelyBuilderOfString Namespace(string value);
+    ITypelyBuilderOfString WithNamespace(string value);
     ITypelyBuilderOfString AsStruct();
     //ITypelyBuilderOfString AsClass();
-    ITypelyBuilderOfString Name(string name);
+    ITypelyBuilderOfString WithName(string name);
     ITypelyBuilderOfString Name(Expression<Func<string>> expression);
 
     IRuleBuilderOfString NotEmpty(); //T

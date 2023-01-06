@@ -8,11 +8,11 @@ namespace Typely.Generators.Typely.Emetting;
 /// </summary>
 internal class ValidationParameterModifier : ExpressionVisitor
 {
-    private ParameterExpression _parameterExp { get; }
-    
+    private ParameterExpression ParameterExp { get; }
+
     public ValidationParameterModifier(ParameterExpression parameterExp)
     {
-        _parameterExp = parameterExp;
+        ParameterExp = parameterExp;
     }
 
     /// <summary>
@@ -20,18 +20,10 @@ internal class ValidationParameterModifier : ExpressionVisitor
     /// </summary>
     /// <param name="expression">Expression to modify.</param>
     /// <returns>The modified expression.</returns>
-    public Expression Modify(LambdaExpression expression)
-    {
-        return Visit(expression);
-    }
+    public Expression Modify(LambdaExpression expression) => Visit(expression)!;
 
-    protected override Expression VisitParameter(ParameterExpression node)
-    {
-        if (node == _parameterExp)
-        {
-            return Expression.Parameter(node.Type, Consts.ValidateParameterName);
-        }
-        
-        return base.VisitParameter(node);
-    }
+    protected override Expression VisitParameter(ParameterExpression node) =>
+        node == ParameterExp
+            ? Expression.Parameter(node.Type, Consts.ValidateParameterName)
+            : base.VisitParameter(node);
 }

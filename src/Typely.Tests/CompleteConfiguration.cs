@@ -7,20 +7,20 @@ public class CompleteConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.String().For("FirstName");
+        builder.OfString().For("FirstName");
 
         builder
-            .String()
+            .OfString()
             .For("UserId")
-            .Namespace("UserAggregate")
-            .Name("Owner identifier")
+            .WithNamespace("UserAggregate")
+            .WithName("Owner identifier")
             .AsStruct()
             .NotEmpty().WithMessage("'Name' cannot be empty.").WithErrorCode("ERR001")
             .NotEqual("1");
 
-        builder.String().For("EqualityTest");
+        builder.OfString().For("EqualityTest");
 
-        builder.String().For("ValueType");
-        builder.String().For("ReferenceType");
+        builder.OfString().For("ValueType");
+        builder.OfString().For("ReferenceType");
     }
 }
