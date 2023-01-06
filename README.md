@@ -450,6 +450,14 @@ builder.String().For("UserId");
 builder.Int().For("UserId");
 builder.Guid().For("UserId");
 
+var moment = builder.String();
+    .AsStruct()
+    .Length(3, 50)
+    .AsFactory();
+
+moment.For("Monday");
+moment.For("Sunday");
+
 // Typed factory
 var factory = builder.Factory.OfString()
     .Namespace("MyDomain")
@@ -561,88 +569,3 @@ builder.Attributes
     .Clear()
     .Add(new JsonConverterAttribute(typeof(TypelyJsonConverter<LastName, string>)));
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-namespace TypeBuilderPOC;
-
-public interface ITypelyBuilder
-{
-    ITypelyBuilderOfString OfString { get; }
-}
-
-public interface ITypelyBuilderBase<T, R>
-    where T : ITypelyBuilderBase<T, R>
-    where R : IRuleBuilderBase<T, R>
-{
-    T WithNamespace(string value);
-    R NotEmpty();
-}
-
-public interface IRuleBuilderBase<T, R>
-    where T : ITypelyBuilderBase<T, R>
-    where R : IRuleBuilderBase<T, R>
-{
-    T WithMessage(string message);
-}
-
-public interface ITypelyBuilderOfString : ITypelyBuilderBase<ITypelyBuilderOfString, IRuleBuilderOfString>
-{
-    ITypelyBuilderOfString Contains(string value);
-}
-
-public interface IRuleBuilderOfString : IRuleBuilderBase<ITypelyBuilderOfString, IRuleBuilderOfString>
-{
-}
-
-public class TypelyBuilderBase<T, R> : ITypelyBuilderBase<T, R>
-    where T : ITypelyBuilderBase<T, R>
-    where R : IRuleBuilderBase<T, R>
-{
-    public R NotEmpty()
-    {
-        throw new NotImplementedException();
-    }
-
-    public T WithNamespace(string value)
-    {
-        throw new NotImplementedException();
-    }
-}
-
-public class RuleBuilderBase<T, R> : IRuleBuilderBase<T, R>
-    where T : ITypelyBuilderBase<T, R>
-    where R : IRuleBuilderBase<T, R>
-{
-    public T WithMessage(string message)
-    {
-        throw new NotImplementedException();
-    }
-}
-
-
-
-public class TypelyBuilderOfString : TypelyBuilderBase<TypelyBuilderOfString, RuleBuilderOfString>
-{
-    private RuleBuilderOfString ruleBuilder;
-
-    public TypelyBuilderOfString(RuleBuilderOfString ruleBuilder)
-    {
-        this.ruleBuilder = ruleBuilder;
-    }
-}
-
-public class RuleBuilderOfString : RuleBuilderBase<TypelyBuilderOfString, RuleBuilderOfString>
-{
-
-}

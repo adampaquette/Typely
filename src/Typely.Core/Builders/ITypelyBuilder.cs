@@ -9,31 +9,48 @@ public interface ITypelyBuilder
     ITypelyBuilderOfString OfString();
 }
 
-public interface ITypelyBuilderBase<T, R, V>
-    where T : ITypelyBuilderBase<T, R, V>
-    where R : IRuleBuilderBase<T, R, V>
+public interface ITypelyBuilderBase<TBuilder, TRuleBuilder, TValue, TFactory>
+    where TBuilder : ITypelyBuilderBase<TBuilder, TRuleBuilder, TValue, TFactory>
+    where TRuleBuilder : IRuleBuilderBase<TBuilder, TRuleBuilder, TValue, TFactory>
 {
-    T For(string typeName);
-    T AsStruct();
-    T AsClass();
-    T WithNamespace(string value);
-    T WithName(string name);
-    T WithName(Expression<Func<string>> expression);
-    
-    R NotEmpty();
-    R NotEqual(V value);
-    R Must(Expression<Func<V, bool>> predicate);
+    TBuilder For(string typeName);
+    TBuilder AsStruct();
+    TBuilder AsClass();
+    TBuilder WithNamespace(string value);
+    TBuilder WithName(string name);
+    TBuilder WithName(Expression<Func<string>> expression);
+    TFactory AsFactory();
+
+    TRuleBuilder NotEmpty();
+    TRuleBuilder NotEqual(TValue value);
+    TRuleBuilder Must(Expression<Func<TValue, bool>> predicate);
 }
 
-public interface IRuleBuilderBase<T, R, V>
-    where T : ITypelyBuilderBase<T, R, V>
-    where R : IRuleBuilderBase<T, R, V>
+public interface IRuleBuilderBase<TBuilder, TRuleBuilder, TValue, TFactory>
+    where TBuilder : ITypelyBuilderBase<TBuilder, TRuleBuilder, TValue, TFactory>
+    where TRuleBuilder : IRuleBuilderBase<TBuilder, TRuleBuilder, TValue, TFactory>
 {
-    R WithMessage(string message);
-    R WithMessage(Expression<Func<string>> expression);
-    R WithErrorCode(string errorCode);    
+    TRuleBuilder WithMessage(string message);
+    TRuleBuilder WithMessage(Expression<Func<string>> expression);
+    TRuleBuilder WithErrorCode(string errorCode);
 }
 
+public interface IFactoryBase<TFactory> where TFactory : IFactoryBase<TFactory>
+{
+    TFactory AsStruct();
+    TFactory AsClass();
+    TFactory WithNamespace(string value);
+    TFactory WithName(string name);
+    TFactory WithName(Expression<Func<string>> expression);
+}
+
+public interface IComparableBuilder<TRuleBuilder, TValue>
+{
+    TRuleBuilder LessThan(TValue value);
+    TRuleBuilder LessThanOrEqual(TValue value);
+    TRuleBuilder GreaterThan(TValue value);
+    TRuleBuilder GreaterThanOrEqual(TValue value);
+}
 
 //public interface ITypelyBuilder<T>
 //{

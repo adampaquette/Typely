@@ -129,4 +129,9 @@ internal class TypelyBuilderOfString : ITypelyBuilderOfString
         EmittableType.Rules.Add(emittableValidation);
         return (IRuleBuilderOfString)this;
     }
+
+    public IFactoryOfString AsFactory()
+    {
+        throw new NotImplementedException();
+    }
 }
