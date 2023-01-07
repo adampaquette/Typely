@@ -7,6 +7,8 @@ internal class CompleteConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
+        builder.OfString().For("Username");
+
         builder.OfString()
             .For("UserId")
             .WithNamespace("UserAggregate")
@@ -15,5 +17,18 @@ internal class CompleteConfiguration : ITypelyConfiguration
             .NotEmpty()
             .NotEqual("100").WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001")
             .MaxLength(100);
+
+        // Factory of string type
+        var str = builder.OfString().AsFactory();
+
+        // Combine factories
+        var moment = str.AsClass()
+            .MinLength(1)
+            .MaxLength(20)
+            .AsFactory();
+
+        // Generate similar types
+        moment.For("Monday");
+        moment.For("Sunday");
     }
 }

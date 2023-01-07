@@ -43,6 +43,12 @@ internal class EmittableType
         Rules.Add(emittableRule);
     }
 
+    public void SetCurrentErrorCode(string errorCode) => CurrentRule!.ErrorCode = errorCode;
+
+    public void SetCurrentMessage(string message) => CurrentRule!.Message = Expression.Lambda<Func<string>>(Expression.Constant(message));
+
+    public void SetCurrentMessage(Expression<Func<string>> expression) => CurrentRule!.Message = expression;
+
     public EmittableType Clone()
     {
         var emittableType = new EmittableType(SyntaxTree, UnderlyingType, Namespace)
@@ -52,10 +58,12 @@ internal class EmittableType
             CurrentRule = CurrentRule,
             Name = Name
         };
+
         foreach (var rule in Rules)
         {
             emittableType.Rules.Add(rule);
         }
+
         return emittableType;
     }
 }

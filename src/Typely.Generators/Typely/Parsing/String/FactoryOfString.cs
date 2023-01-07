@@ -14,6 +14,8 @@ internal class FactoryOfString : IFactoryOfString
         _emittableTypes = emittableTypes;
     }
 
+    public ITypelyBuilderOfString For(string typeName) => CreateRuleBuilder().For(typeName);
+
     public ITypelyBuilderOfString AsClass() => CreateRuleBuilder().AsClass();
 
     public ITypelyBuilderOfString AsStruct() => CreateRuleBuilder().AsStruct();

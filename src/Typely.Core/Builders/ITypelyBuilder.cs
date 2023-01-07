@@ -37,6 +37,7 @@ public interface IRuleBuilder<TBuilder, TRuleBuilder, TValue, TFactory>
 
 public interface ITypelyFactory<TBuilder> 
 {
+    TBuilder For(string typeName);
     TBuilder AsStruct();
     TBuilder AsClass();
     TBuilder WithNamespace(string value);

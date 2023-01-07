@@ -9,21 +9,45 @@ public class TypesConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfInt.For("Likes");
-        builder.OfDecimal.For("Rating").InclusiveBetween(0, 5);
+        builder.OfString().For("Username");
 
-        builder.OfInt
+        builder.OfString()
             .For("UserId")
             .WithNamespace("UserAggregate")
             .WithName("Owner identifier")
             .AsStruct()
-            .NotEmpty().WithMessage("'{Name}' cannot be empty.").WithErrorCode("ERR001")
-            .NotEqual(1);
+            .NotEmpty()
+            .NotEqual("100").WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001")
+            .MaxLength(100);
 
-        builder.OfString
-            .For("Planet")
-            .WithName(() => Names.Planet)
-            .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual)   
+        // Factory of string type
+        var str = builder.OfString().AsFactory();
+
+        // Combine factories
+        var moment = str.AsClass()
+            .MinLength(1)
+            .MaxLength(20)
+            .AsFactory();
+
+        // Generate similar types
+        moment.For("Monday");
+        moment.For("Sunday");
+
+        // builder.OfInt.For("Likes");
+        // builder.OfDecimal.For("Rating").InclusiveBetween(0, 5);
+
+        // builder.OfInt
+        //     .For("UserId")
+        //     .WithNamespace("UserAggregate")
+        //     .WithName("Owner identifier")
+        //     .AsStruct()
+        //     .NotEmpty().WithMessage("'{Name}' cannot be empty.").WithErrorCode("ERR001")
+        //     .NotEqual(1);
+
+        // builder.OfString
+        //     .For("Planet")
+        //     .WithName(() => Names.Planet)
+        //     .NotEqual("sun").WithMessage(() => ErrorMessages.NotEqual)   
     }
 }
 
@@ -446,36 +470,8 @@ public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 # VNext
 ```c#
 // Builders constrained per type
-builder.String().For("UserId");
 builder.Int().For("UserId");
 builder.Guid().For("UserId");
-
-var moment = builder.String();
-    .AsStruct()
-    .Length(3, 50)
-    .AsFactory();
-
-moment.For("Monday");
-moment.For("Sunday");
-
-// Typed factory
-var factory = builder.Factory.OfString()
-    .Namespace("MyDomain")
-    .AsStruct()
-    .Length(3, 50)
-    .Build();
-    
-factory.For("FirstName");
-factory.For("LastName");
-
-// Untyped factory
-var factory2 = builder.Factory()
-    .Namespace("MyDomain")
-    .NotEmpty()
-    .Build();
-    
-factory2.OfInt().For("Days");
-factory2.OfLong().For("Timespan");
 
 - PrecisionScale(int precision, int scale); //INumber
 - IRuleBuilder<T> IRuleBuilder<T> Matches(string regex); //string
