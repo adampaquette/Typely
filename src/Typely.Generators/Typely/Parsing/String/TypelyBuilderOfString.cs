@@ -10,49 +10,47 @@ namespace Typely.Generators.Typely.Parsing.String;
 internal class TypelyBuilderOfString : ITypelyBuilderOfString
 {
     protected EmittableType EmittableType;
+    protected readonly List<EmittableType> EmittableTypes;
 
-    public TypelyBuilderOfString(EmittableType emittableType)
+    public TypelyBuilderOfString(EmittableType emittableType, List<EmittableType> emittableTypes)
     {
         EmittableType = emittableType;
+        EmittableTypes = emittableTypes;
     }
 
     public ITypelyBuilderOfString For(string typeName)
     {
-        EmittableType.TypeName = typeName;
-        if (EmittableType.Name == null)
-        {
-            EmittableType.Name = Expression.Lambda<Func<string>>(Expression.Constant(typeName));
-        }
+        EmittableType.SetTypeName(typeName);
         return this;
     }
 
     public ITypelyBuilderOfString WithName(string name)
     {
-        EmittableType.Name = Expression.Lambda<Func<string>>(Expression.Constant(name));
+        EmittableType.SetName(name);
         return this;
     }
 
     public ITypelyBuilderOfString WithName(Expression<Func<string>> expression)
     {
-        EmittableType.Name = expression;
+        EmittableType.WithName(expression);
         return this;
     }
 
     public ITypelyBuilderOfString WithNamespace(string value)
     {
-        EmittableType.Namespace = value;
+        EmittableType.SetNamespace(value);
         return this;
     }
 
     public ITypelyBuilderOfString AsStruct()
     {
-        EmittableType.ConstructTypeKind = ConstructTypeKind.Struct;
+        EmittableType.AsStruct();
         return this;
     }
 
     public ITypelyBuilderOfString AsClass()
     {
-        EmittableType.ConstructTypeKind = ConstructTypeKind.Class;
+        EmittableType.AsClass();
         return this;
     }
 
@@ -120,55 +118,19 @@ internal class TypelyBuilderOfString : ITypelyBuilderOfString
         throw new NotImplementedException();
     }
 
-    private IRuleBuilderOfString AddRule(string errorCode, Expression<Func<string, bool>> rule, Expression<Func<string>> message, params (string Key, object Value)[] placeholders) =>
+    private IRuleBuilderOfString AddRule(string errorCode, Expression<Func<string, bool>> rule, 
+        Expression<Func<string>> message, params (string Key, object Value)[] placeholders) =>
         AddRule(EmittableRule.From(errorCode, rule, message, placeholders));
 
-    private IRuleBuilderOfString AddRule(EmittableRule emittableValidation)
+    private IRuleBuilderOfString AddRule(EmittableRule emittableRule)
     {
-        EmittableType.CurrentRule = emittableValidation;
-        EmittableType.Rules.Add(emittableValidation);
+        EmittableType.AddRule(emittableRule);
         return (IRuleBuilderOfString)this;
     }
 
     public IFactoryOfString AsFactory()
     {
-        throw new NotImplementedException();
-    }
-}
-
-internal class FactoryOfString : IFactoryOfString
-{
-    private readonly EmittableType EmittableType;
-    private readonly List<EmittableType> EmittableTypes;
-
-    public FactoryOfString(EmittableType emittableType, List<EmittableType> emittableTypes)
-    {
-        EmittableType = emittableType;
-        EmittableTypes = emittableTypes;
-    }
-
-    public IFactoryOfString AsClass()
-    {
-        throw new NotImplementedException();
-    }
-
-    public IFactoryOfString AsStruct()
-    {
-        throw new NotImplementedException();
-    }
-
-    public IFactoryOfString WithName(string name)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IFactoryOfString WithName(Expression<Func<string>> expression)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IFactoryOfString WithNamespace(string value)
-    {
-        throw new NotImplementedException();
+        EmittableTypes.Remove(EmittableType);
+        return new FactoryOfString(EmittableType, EmittableTypes);
     }
 }

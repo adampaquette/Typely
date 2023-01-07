@@ -9,9 +9,9 @@ public interface ITypelyBuilder
     ITypelyBuilderOfString OfString();
 }
 
-public interface ITypelyBuilderBase<TBuilder, TRuleBuilder, TValue, TFactory>
-    where TBuilder : ITypelyBuilderBase<TBuilder, TRuleBuilder, TValue, TFactory>
-    where TRuleBuilder : IRuleBuilderBase<TBuilder, TRuleBuilder, TValue, TFactory>
+public interface ITypelyBuilder<TBuilder, TRuleBuilder, TValue, TFactory>
+    where TBuilder : ITypelyBuilder<TBuilder, TRuleBuilder, TValue, TFactory>
+    where TRuleBuilder : IRuleBuilder<TBuilder, TRuleBuilder, TValue, TFactory>
 {
     TBuilder For(string typeName);
     TBuilder AsStruct();
@@ -26,25 +26,25 @@ public interface ITypelyBuilderBase<TBuilder, TRuleBuilder, TValue, TFactory>
     TRuleBuilder Must(Expression<Func<TValue, bool>> predicate);
 }
 
-public interface IRuleBuilderBase<TBuilder, TRuleBuilder, TValue, TFactory>
-    where TBuilder : ITypelyBuilderBase<TBuilder, TRuleBuilder, TValue, TFactory>
-    where TRuleBuilder : IRuleBuilderBase<TBuilder, TRuleBuilder, TValue, TFactory>
+public interface IRuleBuilder<TBuilder, TRuleBuilder, TValue, TFactory>
+    where TBuilder : ITypelyBuilder<TBuilder, TRuleBuilder, TValue, TFactory>
+    where TRuleBuilder : IRuleBuilder<TBuilder, TRuleBuilder, TValue, TFactory>
 {
     TRuleBuilder WithMessage(string message);
     TRuleBuilder WithMessage(Expression<Func<string>> expression);
     TRuleBuilder WithErrorCode(string errorCode);
 }
 
-public interface IFactoryBase<TFactory> where TFactory : IFactoryBase<TFactory>
+public interface ITypelyFactory<TBuilder> 
 {
-    TFactory AsStruct();
-    TFactory AsClass();
-    TFactory WithNamespace(string value);
-    TFactory WithName(string name);
-    TFactory WithName(Expression<Func<string>> expression);
+    TBuilder AsStruct();
+    TBuilder AsClass();
+    TBuilder WithNamespace(string value);
+    TBuilder WithName(string name);
+    TBuilder WithName(Expression<Func<string>> expression);
 }
 
-public interface IComparableBuilder<TRuleBuilder, TValue>
+public interface IComparableRuleBuilder<TRuleBuilder, TValue>
 {
     TRuleBuilder LessThan(TValue value);
     TRuleBuilder LessThanOrEqual(TValue value);

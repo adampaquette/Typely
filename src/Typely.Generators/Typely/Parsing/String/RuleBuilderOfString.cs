@@ -5,12 +5,9 @@ namespace Typely.Generators.Typely.Parsing.String;
 
 internal class RuleBuilderOfString : TypelyBuilderOfString, IRuleBuilderOfString
 {
-    private readonly List<EmittableType> _emittableTypes;
-
     public RuleBuilderOfString(EmittableType emittableType, List<EmittableType> emittableTypes)
-        : base(emittableType)
-    {
-        _emittableTypes = emittableTypes;
+        : base(emittableType, emittableTypes)
+    {        
     }
 
     public IRuleBuilderOfString WithErrorCode(string errorCode)
@@ -31,5 +28,5 @@ internal class RuleBuilderOfString : TypelyBuilderOfString, IRuleBuilderOfString
         return this;
     }
 
-    public IReadOnlyList<EmittableType> GetEmittableTypes() => _emittableTypes.AsReadOnly();
+    public IReadOnlyList<EmittableType> GetEmittableTypes() => EmittableTypes.AsReadOnly();
 }

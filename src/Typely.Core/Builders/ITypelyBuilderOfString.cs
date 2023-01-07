@@ -1,7 +1,7 @@
 ﻿namespace Typely.Core.Builders;
 
-public interface ITypelyBuilderOfString : ITypelyBuilderBase<ITypelyBuilderOfString, IRuleBuilderOfString, string, IFactoryOfString>,
-    IComparableBuilder<IRuleBuilderOfString, string>
+public interface ITypelyBuilderOfString : ITypelyBuilder<ITypelyBuilderOfString, IRuleBuilderOfString, string, IFactoryOfString>,
+    IComparableRuleBuilder<IRuleBuilderOfString, string>
 {
     IRuleBuilderOfString Length(int min, int max);
     IRuleBuilderOfString Length(int exactLength);
@@ -10,10 +10,10 @@ public interface ITypelyBuilderOfString : ITypelyBuilderBase<ITypelyBuilderOfStr
     //IRuleBuilderOfString Matches(string regex);
 }
 
-public interface IRuleBuilderOfString : IRuleBuilderBase<ITypelyBuilderOfString, IRuleBuilderOfString, string, IFactoryOfString>
+public interface IRuleBuilderOfString : IRuleBuilder<ITypelyBuilderOfString, IRuleBuilderOfString, string, IFactoryOfString>
 {
 }
 
-public interface IFactoryOfString : IFactoryBase<IFactoryOfString> 
+public interface IFactoryOfString : ITypelyFactory<ITypelyBuilderOfString> 
 {
 }
