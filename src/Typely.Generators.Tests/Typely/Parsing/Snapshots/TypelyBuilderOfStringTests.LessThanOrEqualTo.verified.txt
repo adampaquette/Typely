@@ -1,7 +1,7 @@
 ﻿[
   {
     ErrorCode: LessThanOrEqualTo,
-    Rule: x => (x.CompareTo("20") > 0),
+    Rule: x => (Compare(x, "20", Ordinal) > 0),
     Message: () => ErrorMessages.LessThanOrEqualTo,
     PlaceholderValues: {
       ComparisonValue: 20

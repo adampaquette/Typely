@@ -10,7 +10,9 @@ public interface ITypelyBuilderOfString : ITypelyBuilder<ITypelyBuilderOfString,
     //IRuleBuilderOfString Matches(string regex);
 }
 
-public interface IRuleBuilderOfString : IRuleBuilder<ITypelyBuilderOfString, IRuleBuilderOfString, string, IFactoryOfString>
+public interface IRuleBuilderOfString : 
+    IRuleBuilder<ITypelyBuilderOfString, IRuleBuilderOfString, string, IFactoryOfString>,
+    ITypelyBuilderOfString
 {
 }
 

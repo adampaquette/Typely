@@ -57,7 +57,7 @@ public class TypelyBuilderOfStringTests
     public void NameLambda_Should_Match()
     {
         var expectedName = "Owner identifier";
-        Builder.Name(() => expectedName);
+        Builder.WithName(() => expectedName);
 
         Assert.Equal(expectedName, GetSingleEmittableType().Name!.Compile().Invoke());
     }
