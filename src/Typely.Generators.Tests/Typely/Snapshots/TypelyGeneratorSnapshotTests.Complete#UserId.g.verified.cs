@@ -31,21 +31,21 @@ namespace UserAggregate
                 return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, "Owner identifier");
             }
 
-            if (value.Equals("100"))
+            if (value.Equals("0"))
             {
                 return ValidationErrorFactory.Create(value, "ERR001", "{Name} cannot be equal to {ComparisonValue}.", "Owner identifier",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", "100" },
+                        { "ComparisonValue", "0" },
                     });
             }
 
-            if (value.Length > 100)
+            if (value.Length > 20)
             {
                 return ValidationErrorFactory.Create(value, "MaxLength", ErrorMessages.MaxLength, "Owner identifier",
                     new Dictionary<string, object?>
                     {
-                        { "MaxLength", 100 },
+                        { "MaxLength", 20 },
                     });
             }
 

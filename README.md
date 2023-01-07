@@ -10,18 +10,18 @@ public class TypesConfiguration : ITypelyConfiguration
     public void Configure(ITypelyBuilder builder)
     {
         builder.OfString().For("Username");
+        builder.OfString().For("Code").Length(4).NotEmpty().NotEqual("0000");
 
-        builder.OfString()
-            .For("UserId")
+        // Factory of string type
+        var str = builder.OfString().AsFactory();
+        
+        str.For("UserId")
             .WithNamespace("UserAggregate")
             .WithName("Owner identifier")
             .AsStruct()
             .NotEmpty()
             .NotEqual("100").WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001")
             .MaxLength(100);
-
-        // Factory of string type
-        var str = builder.OfString().AsFactory();
 
         // Combine factories
         var moment = str.AsClass()
