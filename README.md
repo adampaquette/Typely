@@ -15,6 +15,7 @@ public class TypesConfiguration : ITypelyConfiguration
         // Create a factory of string type.
         var sf = builder.OfString().AsFactory();
 
+        sf.For("Description");
         sf.For("UserId")
             .WithNamespace("UserAggregate")
             .WithName("Owner identifier")
