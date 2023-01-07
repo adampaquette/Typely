@@ -1,7 +1,7 @@
 ﻿using Typely.Core.Builders;
 using Typely.Generators.Typely.Parsing.String;
 
-namespace Typely.Generators.Tests.Typely.Parsing;
+namespace Typely.Generators.Tests.Typely.Parsing.String;
 
 internal static class RuleBuilderExtensions
 {
