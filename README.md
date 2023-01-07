@@ -10,21 +10,20 @@ public class TypesConfiguration : ITypelyConfiguration
     public void Configure(ITypelyBuilder builder)
     {
         builder.OfString().For("Username");
-        builder.OfString().For("Code").Length(4).NotEmpty().NotEqual("0000");
+        builder.OfString().For("Code").Length(4).NotEqual("0000");
 
-        // Factory of string type
-        var str = builder.OfString().AsFactory();
-        
-        str.For("UserId")
+        // Create a factory of string type.
+        var sf = builder.OfString().AsFactory();
+
+        sf.For("UserId")
             .WithNamespace("UserAggregate")
             .WithName("Owner identifier")
-            .AsStruct()
             .NotEmpty()
-            .NotEqual("100").WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001")
-            .MaxLength(100);
+            .NotEqual("0").WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001")
+            .MaxLength(20);
 
-        // Combine factories
-        var moment = str.AsClass()
+        // Insure the integrity of similar type's definition with a factory or simplify configurations.
+        var moment = sf.AsClass()
             .MinLength(1)
             .MaxLength(20)
             .AsFactory();
@@ -35,14 +34,6 @@ public class TypesConfiguration : ITypelyConfiguration
 
         // builder.OfInt.For("Likes");
         // builder.OfDecimal.For("Rating").InclusiveBetween(0, 5);
-
-        // builder.OfInt
-        //     .For("UserId")
-        //     .WithNamespace("UserAggregate")
-        //     .WithName("Owner identifier")
-        //     .AsStruct()
-        //     .NotEmpty().WithMessage("'{Name}' cannot be empty.").WithErrorCode("ERR001")
-        //     .NotEqual(1);
 
         // builder.OfString
         //     .For("Planet")
