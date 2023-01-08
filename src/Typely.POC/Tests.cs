@@ -1,4 +1,5 @@
-﻿using Typely.Core.Builders;
+﻿using Buildalyzer;
+using Typely.Core.Builders;
 
 namespace Typely.POC;
 
@@ -12,9 +13,13 @@ public class Tests
     }
 
     [Fact]
-    public void TestReferenceSample()
+    public void BuildSolution()
     {
-
+        var manager = new AnalyzerManager(@"C:\Users\nfs12\source\repos\Typely\src\Typely.sln");
+        foreach(var project in manager.Projects)
+        {
+            var result = project.Value.Build();
+        }
     }
 
     public ITypelyBuilder Builder()
