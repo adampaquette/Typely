@@ -22,14 +22,14 @@ namespace Typely.Generators.Tests.Typely.Configurations {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Names {
+    internal class LocalizedMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Names() {
+        internal LocalizedMessages() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Typely.Generators.Tests.Typely.Configurations {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Typely.Generators.Tests.Typely.Configurations.Names", typeof(Names).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Typely.Generators.Tests.Typely.Configurations.LocalizedMessages", typeof(LocalizedMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,29 @@ namespace Typely.Generators.Tests.Typely.Configurations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Universal Product Code.
+        ///   Looks up a localized string similar to Max length error..
         /// </summary>
-        internal static string UniversalProductCode {
+        internal static string MaxLengthCustom {
             get {
-                return ResourceManager.GetString("UniversalProductCode", resourceCulture);
+                return ResourceManager.GetString("MaxLengthCustom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Min length error..
+        /// </summary>
+        internal static string MinLengthCustom {
+            get {
+                return ResourceManager.GetString("MinLengthCustom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value is not allowed to be equal to {ComparisonValue}!.
+        /// </summary>
+        internal static string NotEqualCustom {
+            get {
+                return ResourceManager.GetString("NotEqualCustom", resourceCulture);
             }
         }
     }

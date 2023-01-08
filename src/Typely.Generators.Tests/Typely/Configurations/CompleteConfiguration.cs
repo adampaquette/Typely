@@ -22,8 +22,9 @@ internal class CompleteConfiguration : ITypelyConfiguration
 
         // Insure the integrity of similar type's definition with a factory or simplify configurations.
         var moment = sf.AsClass()
-            .MinLength(1)
-            .MaxLength(20)
+            .WithName(() => LocalizedNames.Moment)
+            .MinLength(1).WithMessage(() => LocalizedMessages.MinLengthCustom)
+            .MaxLength(20).WithMessage(() => LocalizedMessages.MaxLengthCustom)
             .AsFactory();
 
         // Generate similar types

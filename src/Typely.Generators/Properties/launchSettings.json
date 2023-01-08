@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Generator": {
-        "commandName": "DebugRoslynComponent",
-        "targetProject": "..\\Typely.Generators.Tester\\Typely.Generators.Tester.csproj"
-    }
-  }
-}

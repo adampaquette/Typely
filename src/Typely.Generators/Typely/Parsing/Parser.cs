@@ -6,6 +6,7 @@ using System.Reflection;
 using Typely.Core;
 using Typely.Generators.Extensions;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Typely.Generators.Typely.Parsing;
 
@@ -104,6 +105,7 @@ internal sealed class Parser : IDisposable
     private Assembly? CreateConfigurationAssembly(SyntaxTree syntaxTree)
     {
         var implicitUsings = CreateImplicitUsingsTree(syntaxTree);
+        syntaxTree = ReplaceUnsupportedFeaturesWithTemplates(syntaxTree);
         var compilation = CSharpCompilation.Create(assemblyName: $"{nameof(Typely)}_{Path.GetRandomFileName()}")
             .AddReferences(NetStandard20.References.All)
             .AddReferences(typeof(ITypelyConfiguration))
@@ -158,6 +160,20 @@ internal sealed class Parser : IDisposable
 
         var globalUsings = builder.ToString();
         return CSharpSyntaxTree.ParseText(globalUsings);
+    }
+
+    private SyntaxTree ReplaceUnsupportedFeaturesWithTemplates(SyntaxTree syntaxTree)
+    {
+        //External class, .resx are not supported for now
+        var modifiedSyntaxTree = Regex.Replace(syntaxTree.ToString(), 
+            "\\.WithName\\(\\(\\) =>.*?(\\S+?)\\s*?\\);", 
+            $".WithName({Consts.BypassExecution}$1\");");
+
+        modifiedSyntaxTree = Regex.Replace(modifiedSyntaxTree,
+            "\\.WithMessage\\(\\(\\) =>.*?(\\S+?)\\s*?\\);",
+            $".WithMessage({Consts.BypassExecution}$1\");");
+
+        return CSharpSyntaxTree.ParseText(modifiedSyntaxTree);
     }
 
     private void Diag(DiagnosticDescriptor desc, Location? location, params object?[]? messageArgs)

@@ -29,26 +29,26 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Typely\Configurations\ErrorMessages.Designer.cs">
+      <Compile Update="Typely\Configurations\LocalizedMessages.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>ErrorMessages.resx</DependentUpon>
+        <DependentUpon>LocalizedMessages.resx</DependentUpon>
       </Compile>
-      <Compile Update="Typely\Configurations\Names.Designer.cs">
+      <Compile Update="Typely\Configurations\LocalizedNames.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>Names.resx</DependentUpon>
+        <DependentUpon>LocalizedNames.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Typely\Configurations\ErrorMessages.resx">
+      <EmbeddedResource Update="Typely\Configurations\LocalizedMessages.resx">
         <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
+        <LastGenOutput>LocalizedMessages.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Typely\Configurations\Names.resx">
+      <EmbeddedResource Update="Typely\Configurations\LocalizedNames.resx">
         <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Names.Designer.cs</LastGenOutput>
+        <LastGenOutput>LocalizedNames.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 

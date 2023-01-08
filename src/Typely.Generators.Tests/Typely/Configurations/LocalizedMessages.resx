@@ -117,7 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="UniversalProductCode" xml:space="preserve">
-    <value>Universal Product Code</value>
+  <data name="MaxLengthCustom" xml:space="preserve">
+    <value>Max length error.</value>
+  </data>
+  <data name="MinLengthCustom" xml:space="preserve">
+    <value>Min length error.</value>
+  </data>
+  <data name="NotEqualCustom" xml:space="preserve">
+    <value>The value is not allowed to be equal to {ComparisonValue}!</value>
   </data>
 </root>

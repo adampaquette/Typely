@@ -22,14 +22,14 @@ namespace Typely.Generators.Tests.Typely.Configurations {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ErrorMessages {
+    internal class LocalizedNames {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ErrorMessages() {
+        internal LocalizedNames() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Typely.Generators.Tests.Typely.Configurations {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Typely.Generators.Tests.Typely.Configurations.ErrorMessages", typeof(ErrorMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Typely.Generators.Tests.Typely.Configurations.LocalizedNames", typeof(LocalizedNames).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,11 @@ namespace Typely.Generators.Tests.Typely.Configurations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value is not allowed to be equal to {ComparisonValue}!.
+        ///   Looks up a localized string similar to Moment.
         /// </summary>
-        internal static string NotEqual {
+        internal static string Moment {
             get {
-                return ResourceManager.GetString("NotEqual", resourceCulture);
+                return ResourceManager.GetString("Moment", resourceCulture);
             }
         }
     }
