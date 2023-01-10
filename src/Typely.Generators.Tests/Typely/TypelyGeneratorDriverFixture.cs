@@ -18,9 +18,7 @@ internal class TypelyGeneratorDriverFixture : BaseFixture<TypelyGeneratorDriver>
                 throw new ArgumentNullException(nameof(_sourceFilePath));
             }
 
-            // Create the 'input' compilation that the generator will act on
-            var source = File.ReadAllText(_sourceFilePath);
-            return CreateCompilation(source);
+            return CreateCompilation(_sourceFilePath);
         });
     }
 
@@ -36,13 +34,17 @@ internal class TypelyGeneratorDriverFixture : BaseFixture<TypelyGeneratorDriver>
         return WithConfigurationFileFromFileName(fileName);
     }
 
-    private static Compilation CreateCompilation(string source) => 
-        CSharpCompilation.Create(
+    private static Compilation CreateCompilation(string filePath)
+    {
+        var source = File.ReadAllText(filePath);
+
+        return CSharpCompilation.Create(
             assemblyName: "tests",
-            syntaxTrees: new[] { CSharpSyntaxTree.ParseText(source) },
-            references: new[] 
-            { 
+            syntaxTrees: new[] { CSharpSyntaxTree.ParseText(source, path: filePath) },
+            references: new[]
+            {
                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(ITypelyConfiguration).Assembly.Location),
             });
+    }
 }

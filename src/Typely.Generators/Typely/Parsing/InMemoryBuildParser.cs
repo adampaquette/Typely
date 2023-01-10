@@ -7,16 +7,18 @@ using Typely.Core;
 using Typely.Generators.Extensions;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
+using System.IO;
 
 namespace Typely.Generators.Typely.Parsing;
 
-internal sealed class Parser : IDisposable
+internal sealed class InMemoryBuildParser : IDisposable
 {
     private readonly CancellationToken _cancellationToken;
     private readonly Compilation _compilation;
     private readonly Action<Diagnostic> _reportDiagnostic;
 
-    public Parser(Compilation compilation, Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
+    public InMemoryBuildParser(Compilation compilation, Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
     {
         _compilation = compilation;
         _cancellationToken = cancellationToken;
@@ -103,6 +105,14 @@ internal sealed class Parser : IDisposable
     /// Compiles the user's code.
     /// </summary>
     private Assembly? CreateConfigurationAssembly(SyntaxTree syntaxTree)
+    {        
+        return CreateInMemoryConfigurationAssembly(syntaxTree);
+    }
+
+    /// <summary>
+    /// Compiles the user's code.
+    /// </summary>
+    private Assembly? CreateInMemoryConfigurationAssembly(SyntaxTree syntaxTree)
     {
         var implicitUsings = CreateImplicitUsingsTree(syntaxTree);
         syntaxTree = ReplaceUnsupportedFeaturesWithTemplates(syntaxTree);

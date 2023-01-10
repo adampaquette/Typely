@@ -1,4 +1,7 @@
-﻿using Typely.Generators.Tests.Typely.Configurations;
+﻿using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis;
+using Typely.Generators.Tests.Typely.Configurations;
+using Typely.Generators.Typely;
 
 namespace Typely.Generators.Tests.Typely;
 
