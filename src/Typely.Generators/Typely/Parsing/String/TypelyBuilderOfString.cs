@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using Typely.Core;
 using Typely.Core.Builders;
 // ReSharper disable HeapView.ObjectAllocation
@@ -113,10 +114,16 @@ internal class TypelyBuilderOfString : ITypelyBuilderOfString
         message: () => ErrorMessages.GreaterThanOrEqualTo,
         placeholders: (ValidationPlaceholders.ComparisonValue, value));
 
-    public IRuleBuilderOfString Must(Expression<Func<string, bool>> predicate)
-    {
-        throw new NotImplementedException();
-    }
+    public IRuleBuilderOfString Must(Expression<Func<string, bool>> predicate) => AddRule(
+        errorCode: ErrorCodes.Must,
+        rule: predicate,
+        message: () => ErrorMessages.Must);
+
+    public IRuleBuilderOfString Matches(Regex regex) => AddRule(
+        errorCode: ErrorCodes.Matches,
+        rule: (x) => !regex.IsMatch(x),
+        message: () => ErrorMessages.Matches,
+        placeholders: (ValidationPlaceholders.RegularExpression, regex.ToString()));
 
     private IRuleBuilderOfString AddRule(string errorCode, Expression<Func<string, bool>> rule, 
         Expression<Func<string>> message, params (string Key, object Value)[] placeholders) =>

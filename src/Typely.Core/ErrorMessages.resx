@@ -141,11 +141,17 @@
   <data name="LessThanOrEqualTo" xml:space="preserve">
     <value>'{Name}' must be less than or equal to '{ComparisonValue}'.</value>
   </data>
+  <data name="Matches" xml:space="preserve">
+    <value>'{Name}' is not in the correct format. Expected format {RegularExpression}.</value>
+  </data>
   <data name="MaxLength" xml:space="preserve">
     <value>'{Name}' must be {MaxLength} characters or less but currently has {ActualLength}.</value>
   </data>
   <data name="MinLength" xml:space="preserve">
     <value>'{Name}' must be at least {MinLength} characters but currently has {ActualLength}.</value>
+  </data>
+  <data name="Must" xml:space="preserve">
+    <value>The specified condition was not met for '{Name}'.</value>
   </data>
   <data name="NotEmpty" xml:space="preserve">
     <value>'{Name}' must not be empty.</value>

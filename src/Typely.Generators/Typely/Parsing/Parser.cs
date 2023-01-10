@@ -10,13 +10,13 @@ using System.Text.RegularExpressions;
 
 namespace Typely.Generators.Typely.Parsing;
 
-internal sealed class InMemoryBuildParser : IDisposable
+internal sealed class Parser : IDisposable
 {
     private readonly CancellationToken _cancellationToken;
     private readonly Compilation _compilation;
     private readonly Action<Diagnostic> _reportDiagnostic;
 
-    public InMemoryBuildParser(Compilation compilation, Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
+    public Parser(Compilation compilation, Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
     {
         _compilation = compilation;
         _cancellationToken = cancellationToken;

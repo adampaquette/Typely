@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Typely.Core.Builders;
 
-namespace Typely.Core.Builders;
 internal interface ITypelyBuilderOfBool
 {
 }

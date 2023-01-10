@@ -133,6 +133,15 @@ namespace Typely.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{Name}&apos; is not in the correct format. Expected format {RegularExpression}..
+        /// </summary>
+        public static string Matches {
+            get {
+                return ResourceManager.GetString("Matches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;{Name}&apos; must be {MaxLength} characters or less but currently has {ActualLength}..
         /// </summary>
         public static string MaxLength {
@@ -147,6 +156,15 @@ namespace Typely.Core {
         public static string MinLength {
             get {
                 return ResourceManager.GetString("MinLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified condition was not met for &apos;{Name}&apos;..
+        /// </summary>
+        public static string Must {
+            get {
+                return ResourceManager.GetString("Must", resourceCulture);
             }
         }
         

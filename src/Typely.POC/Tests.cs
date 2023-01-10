@@ -1,5 +1,4 @@
 ﻿using Buildalyzer;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
 using System.Diagnostics;
 using Typely.Core.Builders;
 

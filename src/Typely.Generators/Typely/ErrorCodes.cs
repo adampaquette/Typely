@@ -1,5 +1,8 @@
 ﻿namespace Typely.Generators.Typely;
 
+/// <summary>
+/// Unique error codes.
+/// </summary>
 internal static class ErrorCodes
 {
     public const string NotEmpty = nameof(NotEmpty);
@@ -14,4 +17,6 @@ internal static class ErrorCodes
     public const string GreaterThanOrEqualTo = nameof(GreaterThanOrEqualTo);
     public const string InclusiveBetween = nameof(InclusiveBetween);
     public const string ExclusiveBetween = nameof(ExclusiveBetween);
+    public const string Must = nameof(Must);
+    public const string Matches = nameof(Matches);
 }

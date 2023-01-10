@@ -15,8 +15,8 @@ public partial class TypelyGenerator : IIncrementalGenerator
     {
         var classDeclarations = context.SyntaxProvider
             .CreateSyntaxProvider(
-                predicate: static (x, _) => InMemoryBuildParser.IsSyntaxTargetForGeneration(x),
-                transform: static (ctx, _) => InMemoryBuildParser.GetSemanticTargetForGeneration(ctx))
+                predicate: static (x, _) => Parser.IsSyntaxTargetForGeneration(x),
+                transform: static (ctx, _) => Parser.GetSemanticTargetForGeneration(ctx))
             .Where(x => x is not null);
 
         var compilationAndClasses = context.CompilationProvider.Combine(classDeclarations.Collect());
@@ -32,7 +32,7 @@ public partial class TypelyGenerator : IIncrementalGenerator
         }
 
         var distinctClasses = classes.Distinct();
-        var parser = new InMemoryBuildParser(compilation, context.ReportDiagnostic, context.CancellationToken);
+        var parser = new Parser(compilation, context.ReportDiagnostic, context.CancellationToken);
         var emittableTypes = parser.GetEmittableTypes(distinctClasses);
 
         if (emittableTypes.Count == 0)

@@ -1,5 +1,3 @@
-using FluentAssertions;
-
 namespace Typely.Tests;
 
 public class SerializationTests

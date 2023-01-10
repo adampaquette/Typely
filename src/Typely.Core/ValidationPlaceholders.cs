@@ -1,5 +1,8 @@
 ﻿namespace Typely.Core;
 
+/// <summary>
+/// Keywords used in validation messages.
+/// </summary>
 public class ValidationPlaceholders
 {
     public const string Name = nameof(Name);
@@ -11,4 +14,5 @@ public class ValidationPlaceholders
     public const string ActualLength = nameof(ActualLength);
     public const string Min = nameof(Min);
     public const string Max = nameof(Max);
+    public const string RegularExpression = nameof(RegularExpression);
 }
