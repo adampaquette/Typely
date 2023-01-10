@@ -7,8 +7,6 @@ using Typely.Core;
 using Typely.Generators.Extensions;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Diagnostics;
-using System.IO;
 
 namespace Typely.Generators.Typely.Parsing;
 
