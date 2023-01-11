@@ -3,6 +3,9 @@ using Typely.Core.Builders;
 
 namespace Typely.Generators.Typely.Parsing.String;
 
+/// <summary>
+/// Rule builder of string.
+/// </summary>
 internal class RuleBuilderOfString : TypelyBuilderOfString, IRuleBuilderOfString
 {
     public RuleBuilderOfString(EmittableType emittableType, List<EmittableType> emittableTypes)

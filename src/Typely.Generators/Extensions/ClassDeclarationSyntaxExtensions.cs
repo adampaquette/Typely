@@ -2,6 +2,9 @@
 
 namespace Typely.Generators.Extensions;
 
+/// <summary>
+/// Extensions over <see cref="ClassDeclarationSyntax"/>.
+/// </summary>
 internal static class ClassDeclarationSyntaxExtensions
 {
     /// <summary>

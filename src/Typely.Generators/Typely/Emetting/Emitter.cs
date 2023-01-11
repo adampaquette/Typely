@@ -6,6 +6,9 @@ using Typely.Generators.Typely.Parsing;
 
 namespace Typely.Generators.Typely.Emetting;
 
+/// <summary>
+/// Generate the C# code for a value object.
+/// </summary>
 internal class Emitter
 {
     private readonly Action<Diagnostic> _reportDiagnostic;

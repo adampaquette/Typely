@@ -8,6 +8,9 @@ using Typely.Core.Builders;
 
 namespace Typely.Generators.Typely.Parsing.String;
 
+/// <summary>
+/// Builder dedicated to creating a value object with the underlying string type.
+/// </summary>
 internal class TypelyBuilderOfString : ITypelyBuilderOfString
 {
     protected EmittableType EmittableType;

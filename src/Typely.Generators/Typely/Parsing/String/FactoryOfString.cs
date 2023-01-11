@@ -3,6 +3,9 @@ using Typely.Core.Builders;
 
 namespace Typely.Generators.Typely.Parsing.String;
 
+/// <summary>
+/// Factory for creating similar value objects of string.
+/// </summary>
 internal class FactoryOfString : IFactoryOfString
 {
     private readonly EmittableType _emittableType;
