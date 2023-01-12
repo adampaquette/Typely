@@ -13,18 +13,21 @@ internal class RuleBuilderOfString : TypelyBuilderOfString, IRuleBuilderOfString
     {
     }
 
+    /// <inheritdoc/>
     public IRuleBuilderOfString WithErrorCode(string errorCode)
     {
         EmittableType.SetCurrentErrorCode(errorCode);
         return this;
     }
 
+    /// <inheritdoc/>
     public IRuleBuilderOfString WithMessage(string message)
     {
         EmittableType.SetCurrentMessage(message);
         return this;
     }
 
+    /// <inheritdoc/>
     public IRuleBuilderOfString WithMessage(Expression<Func<string>> expression)
     {
         EmittableType.SetCurrentMessage(expression);

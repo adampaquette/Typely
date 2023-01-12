@@ -17,16 +17,22 @@ internal class FactoryOfString : IFactoryOfString
         _emittableTypes = emittableTypes;
     }
 
+    /// <inheritdoc/>
     public ITypelyBuilderOfString For(string typeName) => CreateRuleBuilder().For(typeName);
 
+    /// <inheritdoc/>
     public ITypelyBuilderOfString AsClass() => CreateRuleBuilder().AsClass();
 
+    /// <inheritdoc/>
     public ITypelyBuilderOfString AsStruct() => CreateRuleBuilder().AsStruct();
 
+    /// <inheritdoc/>
     public ITypelyBuilderOfString WithName(string name) => CreateRuleBuilder().WithName(name);
 
+    /// <inheritdoc/>
     public ITypelyBuilderOfString WithName(Expression<Func<string>> expression) => CreateRuleBuilder().WithName(expression);
 
+    /// <inheritdoc/>
     public ITypelyBuilderOfString WithNamespace(string value) => CreateRuleBuilder().WithNamespace(value);
 
     private ITypelyBuilderOfString CreateRuleBuilder()
