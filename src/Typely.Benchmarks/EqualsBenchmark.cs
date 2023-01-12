@@ -67,7 +67,7 @@ public class EqualsBenchmark
         public record struct FirstNameEquals(int Value)
         {
             public bool Equals(FirstNameEquals other) => Value.Equals(other.Value);
-            public override int GetHashCode() => Value.GetHashCode();            
+            public override int GetHashCode() => Value.GetHashCode();
         }
 
         readonly FirstNameEqualityComparer _val1 = new(new Random().Next());

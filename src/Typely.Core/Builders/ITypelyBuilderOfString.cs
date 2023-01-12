@@ -18,7 +18,7 @@ public interface ITypelyBuilderOfString : ITypelyBuilder<ITypelyBuilderOfString,
 /// <summary>
 /// Rule builder of string.
 /// </summary>
-public interface IRuleBuilderOfString : 
+public interface IRuleBuilderOfString :
     IRuleBuilder<ITypelyBuilderOfString, IRuleBuilderOfString, string, IFactoryOfString>,
     ITypelyBuilderOfString
 {
@@ -27,6 +27,6 @@ public interface IRuleBuilderOfString :
 /// <summary>
 /// Factory for creating similar value objects of string.
 /// </summary>
-public interface IFactoryOfString : ITypelyFactory<ITypelyBuilderOfString> 
+public interface IFactoryOfString : ITypelyFactory<ITypelyBuilderOfString>
 {
 }

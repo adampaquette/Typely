@@ -20,7 +20,7 @@ internal class TypelyGeneratorDriver
         var generator = new TypelyGenerator();
         // Create the driver that will control the generation, passing in our generator
         GeneratorDriver driver = CSharpGeneratorDriver.Create(generator);
-        
+
         // Run the generation pass
         // (Note: the generator driver itself is immutable, and all calls return an updated version of the driver that you should use for subsequent calls)
         return driver.RunGenerators(_compilation);

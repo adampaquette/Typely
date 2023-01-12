@@ -1,15 +1,18 @@
 ﻿using Basic.Reference.Assemblies;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Reflection;
-using Typely.Core;
-using Typely.Generators.Extensions;
 using System.Text;
 using System.Text.RegularExpressions;
+using Typely.Core;
+using Typely.Generators.Extensions;
 
 namespace Typely.Generators.Typely.Parsing;
 
+/// <summary>
+/// Parse a <see cref="ClassDeclarationSyntax"/> and generates a list of <see cref="EmittableType"/>.
+/// </summary>
 internal sealed class Parser : IDisposable
 {
     private readonly CancellationToken _cancellationToken;
@@ -103,7 +106,7 @@ internal sealed class Parser : IDisposable
     /// Compiles the user's code.
     /// </summary>
     private Assembly? CreateConfigurationAssembly(SyntaxTree syntaxTree)
-    {        
+    {
         return CreateInMemoryConfigurationAssembly(syntaxTree);
     }
 
@@ -173,8 +176,8 @@ internal sealed class Parser : IDisposable
     private SyntaxTree ReplaceUnsupportedFeaturesWithTemplates(SyntaxTree syntaxTree)
     {
         //External class, .resx are not supported for now
-        var modifiedSyntaxTree = Regex.Replace(syntaxTree.ToString(), 
-            "\\.WithName\\(\\(\\) =>.*?(\\S+?)\\s*?\\);", 
+        var modifiedSyntaxTree = Regex.Replace(syntaxTree.ToString(),
+            "\\.WithName\\(\\(\\) =>.*?(\\S+?)\\s*?\\);",
             $".WithName({Consts.BypassExecution}$1\");");
 
         modifiedSyntaxTree = Regex.Replace(modifiedSyntaxTree,

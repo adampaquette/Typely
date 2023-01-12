@@ -14,7 +14,7 @@ internal class TypelyGeneratorDriverFixture : BaseFixture<TypelyGeneratorDriver>
         Fixture.Register(() =>
         {
             if (_sourceFilePath == null)
-            { 
+            {
                 throw new ArgumentNullException(nameof(_sourceFilePath));
             }
 

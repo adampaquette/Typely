@@ -1,4 +1,5 @@
 ﻿namespace Typely.Generators;
+
 internal static class DiagnosticDescriptors
 {
     //public static DiagnosticDescriptor InvalidLoggingMethodName { get; } = new DiagnosticDescriptor(

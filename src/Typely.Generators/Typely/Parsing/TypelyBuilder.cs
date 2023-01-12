@@ -4,6 +4,9 @@ using Typely.Generators.Typely.Parsing.String;
 
 namespace Typely.Generators.Typely.Parsing;
 
+/// <summary>
+/// Implementation of the <see cref="ITypelyBuilder"/> to create metadata about types to be generated.
+/// </summary>
 internal class TypelyBuilder : ITypelyBuilder
 {
     private readonly List<EmittableType> _emittableTypes = new();
@@ -48,4 +51,3 @@ internal class TypelyBuilder : ITypelyBuilder
     //    //    return new RuleBuilder<T>(emittableType, _emittableTypes);
     //}
 }
-

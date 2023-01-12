@@ -54,8 +54,8 @@ public class Tests
 
         var startInfo = new ProcessStartInfo
         {
-            FileName = "dotnet",            
-            Arguments = $"publish {folder} -property:OutDir={output} -verbosity:normal",            
+            FileName = "dotnet",
+            Arguments = $"publish {folder} -property:OutDir={output} -verbosity:normal",
             WindowStyle = ProcessWindowStyle.Hidden,
             UseShellExecute = false,
             CreateNoWindow = true,

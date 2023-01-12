@@ -1,13 +1,16 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Diagnostics;
 using System.Reflection;
 using Typely.Core;
 using Typely.Generators.Extensions;
-using System.Diagnostics;
 
 namespace Typely.Generators.Typely.Parsing;
 
+/// <summary>
+/// Proof of concept to have fully compiled and fonctional ITypelyConfiguration.
+/// </summary>
 internal sealed class FullBuildParser
 {
     private readonly CancellationToken _cancellationToken;
@@ -153,7 +156,7 @@ internal sealed class FullBuildParser
     }
 
     public bool IsSuccess(string buildOutput) => buildOutput.Contains("0 Error(s)") && buildOutput.Contains("Build succeeded.");
-    
+
     private void Diag(DiagnosticDescriptor desc, Location? location, params object?[]? messageArgs)
     {
         _reportDiagnostic(Diagnostic.Create(desc, location, messageArgs));

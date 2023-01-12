@@ -8,6 +8,9 @@ using Typely.Generators.Typely.Parsing;
 
 namespace Typely.Generators.Typely;
 
+/// <summary>
+/// Generates value object types.
+/// </summary>
 [Generator]
 public partial class TypelyGenerator : IIncrementalGenerator
 {

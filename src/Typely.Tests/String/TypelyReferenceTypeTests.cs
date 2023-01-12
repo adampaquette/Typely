@@ -15,8 +15,8 @@ public class TypelyReferenceTypeTests
 
     [Fact]
     public void Aa()
-    { 
-     
+    {
+
     }
 
     private Gen<(StringType, StringType)> GenTrueEquals => Gen.String.Select(x => (StringType.From(x), StringType.From(x)));

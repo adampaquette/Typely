@@ -3,6 +3,9 @@ using System.Reflection;
 
 namespace Typely.Generators.Typely.Parsing;
 
+/// <summary>
+/// Expression visitor used to replace variables by constants.
+/// </summary>
 internal class ReplaceVariablesWithConstantsVisitor : ExpressionVisitor
 {
     protected override Expression VisitMember(MemberExpression node)
@@ -14,7 +17,7 @@ internal class ReplaceVariablesWithConstantsVisitor : ExpressionVisitor
             var value = node.Member is FieldInfo info ?
                 info.GetValue(variable) :
                 ((PropertyInfo)node.Member).GetValue(variable);
-            
+
             return Expression.Constant(value, node.Type);
         }
         return node.Update(expression);

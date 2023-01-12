@@ -15,7 +15,7 @@ public static class ValidationErrorFactory
     /// <param name="typeName">The name of the calss or struct to create.</param>
     /// <param name="placeholderValues">List of the placeholders with their values.</param>
     /// <returns>A <see cref="ValidationError"/>.</returns>
-    public static ValidationError Create<TValue>(TValue value, string errorCode, 
+    public static ValidationError Create<TValue>(TValue value, string errorCode,
         string errorMessageWithPlaceholders, string typeName, Dictionary<string, object?>? placeholderValues = null)
     {
         object? attemptedValue = null;
@@ -30,7 +30,7 @@ public static class ValidationErrorFactory
             placeholderValues.Add(ValidationPlaceholders.Name, typeName);
         }
 
-        if(typeof(TValue) == typeof(string))
+        if (typeof(TValue) == typeof(string))
         {
             var actualLength = (value as string)?.Length ?? 0;
             placeholderValues.Add(ValidationPlaceholders.ActualLength, actualLength);

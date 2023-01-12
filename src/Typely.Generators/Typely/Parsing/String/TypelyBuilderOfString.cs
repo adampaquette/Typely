@@ -128,7 +128,7 @@ internal class TypelyBuilderOfString : ITypelyBuilderOfString
         message: () => ErrorMessages.Matches,
         placeholders: (ValidationPlaceholders.RegularExpression, regex.ToString()));
 
-    private IRuleBuilderOfString AddRule(string errorCode, Expression<Func<string, bool>> rule, 
+    private IRuleBuilderOfString AddRule(string errorCode, Expression<Func<string, bool>> rule,
         Expression<Func<string>> message, params (string Key, object Value)[] placeholders) =>
         AddRule(EmittableRule.From(errorCode, rule, message, placeholders));
 
