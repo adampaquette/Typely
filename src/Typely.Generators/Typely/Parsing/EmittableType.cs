@@ -58,15 +58,15 @@ internal class EmittableType
     /// <param name="typeName">Name of the type.</param>
     public void SetTypeName(string typeName)
     {
-        TypeName = typeName;
-        Name ??= Expression.Lambda<Func<string>>(Expression.Constant(typeName));
+        TypeName = typeName.Trim();
+        Name ??= Expression.Lambda<Func<string>>(Expression.Constant(TypeName));
     }
 
     /// <summary>
     /// Sets the name of the type used in error messages.
     /// </summary>
     /// <param name="name">Name.</param>
-    public void SetName(string name) => Name = Expression.Lambda<Func<string>>(Expression.Constant(name));
+    public void SetName(string name) => Name = Expression.Lambda<Func<string>>(Expression.Constant(name.Trim()));
 
     /// <summary>
     /// Sets the name of the type used in error messages. Supports localization.
@@ -78,7 +78,7 @@ internal class EmittableType
     /// Sets the namespace in witch to associate the value object.
     /// </summary>
     /// <param name="value">Namespace.</param>
-    public void SetNamespace(string value) => Namespace = value;
+    public void SetNamespace(string value) => Namespace = value.Trim();
 
     /// <summary>
     /// Sets the type as a class.
@@ -104,13 +104,13 @@ internal class EmittableType
     /// Sets the error code for the last rule added.
     /// </summary>
     /// <param name="errorCode">Unique error code.</param>
-    public void SetCurrentErrorCode(string errorCode) => CurrentRule!.ErrorCode = errorCode;
+    public void SetCurrentErrorCode(string errorCode) => CurrentRule!.ErrorCode = errorCode.Trim();
 
     /// <summary>
     /// Sets the error message for the last rule added.
     /// </summary>
     /// <param name="message">Error message.</param>
-    public void SetCurrentMessage(string message) => CurrentRule!.Message = Expression.Lambda<Func<string>>(Expression.Constant(message));
+    public void SetCurrentMessage(string message) => CurrentRule!.Message = Expression.Lambda<Func<string>>(Expression.Constant(message.Trim()));
 
     /// <summary>
     /// Sets the error message for the last rule added. Supports localization.
