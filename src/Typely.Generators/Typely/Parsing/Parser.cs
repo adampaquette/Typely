@@ -107,14 +107,6 @@ internal sealed class Parser : IDisposable
     /// </summary>
     private Assembly? CreateConfigurationAssembly(SyntaxTree syntaxTree)
     {
-        return CreateInMemoryConfigurationAssembly(syntaxTree);
-    }
-
-    /// <summary>
-    /// Compiles the user's code.
-    /// </summary>
-    private Assembly? CreateInMemoryConfigurationAssembly(SyntaxTree syntaxTree)
-    {
         var implicitUsings = CreateImplicitUsingsTree(syntaxTree);
         syntaxTree = ReplaceUnsupportedFeaturesWithTemplates(syntaxTree);
         var compilation = CSharpCompilation.Create(assemblyName: $"{nameof(Typely)}_{Path.GetRandomFileName()}")
@@ -177,12 +169,12 @@ internal sealed class Parser : IDisposable
     {
         //External class, .resx are not supported for now
         var modifiedSyntaxTree = Regex.Replace(syntaxTree.ToString(),
-            "\\.WithName\\(\\(\\) =>.*?(\\S+?)\\s*?\\);",
-            $".WithName({Consts.BypassExecution}$1\");");
+            @"\.\s*?WithName\s*?\(\s*?\(\s*?\)\s*?=>\s*((?>.|\n)*?)\)",
+            $".WithName({Consts.BypassExecution}$1\")");
 
         modifiedSyntaxTree = Regex.Replace(modifiedSyntaxTree,
-            "\\.WithMessage\\(\\(\\) =>.*?(\\S+?)\\s*?\\);",
-            $".WithMessage({Consts.BypassExecution}$1\");");
+            @"\.\s*?WithMessage\s*?\(\s*?\(\s*?\)\s*?=>\s*((?>.|\n)*?)\)",
+            $".WithMessage({Consts.BypassExecution}$1\")");
 
         return CSharpSyntaxTree.ParseText(modifiedSyntaxTree);
     }

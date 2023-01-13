@@ -21,11 +21,13 @@ internal class TypelyBuilder : ITypelyBuilder
 
     public IReadOnlyList<EmittableType> GetEmittableTypes() => _emittableTypes.AsReadOnly();
 
+    /// <inheritdoc/>
     public ITypelyBuilderOfInt Int()
     {
         throw new NotImplementedException();
     }
 
+    /// <inheritdoc/>
     public ITypelyBuilderOfString OfString()
     {
         var emittableType = new EmittableType(

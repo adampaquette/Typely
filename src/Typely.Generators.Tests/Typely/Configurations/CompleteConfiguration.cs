@@ -22,7 +22,13 @@ internal class CompleteConfiguration : ITypelyConfiguration
 
         // Insure the integrity of similar type's definition with a factory or simplify configurations.
         var moment = sf.AsClass()
-            .WithName(() => LocalizedNames.Moment)
+            .
+            WithName(
+            (
+                ) =>
+            LocalizedNames.Moment
+            )
+
             .MinLength(1).WithMessage(() => LocalizedMessages.MinLengthCustom)
             .MaxLength(20).WithMessage(() => LocalizedMessages.MaxLengthCustom)
             .AsFactory();

@@ -6,13 +6,6 @@ namespace Typely.POC;
 
 public class Tests
 {
-    [Fact(Skip = "debug")]
-    public void BadLanguageConstructs()
-    {
-        var a = new ReferenceSample();
-        var c = default(ReferenceSample);
-    }
-
     [Fact]
     public void BuildSolution()
     {
@@ -42,7 +35,7 @@ public class Tests
             RedirectStandardError = true
         };
         var proc = Process.Start(startInfo);
-        var output2 = proc.StandardOutput.ReadToEnd();
+        var output2 = proc!.StandardOutput.ReadToEnd();
         proc.WaitForExit(30000);
     }
 
@@ -63,7 +56,7 @@ public class Tests
             RedirectStandardError = true
         };
         var proc = Process.Start(startInfo);
-        var output2 = proc.StandardOutput.ReadToEnd();
+        var output2 = proc!.StandardOutput.ReadToEnd();
         proc.WaitForExit(30000);
     }
 
