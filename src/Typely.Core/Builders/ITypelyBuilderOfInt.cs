@@ -20,6 +20,6 @@ public interface IRuleBuilderOfInt :
 /// <summary>
 /// Factory for creating similar value objects of int.
 /// </summary>
-public interface IFactoryOfInt : ITypelyFactory<ITypelyBuilderOfInt>
+public interface IFactoryOfInt : ITypelyBuilder<ITypelyBuilderOfInt>
 {
 }

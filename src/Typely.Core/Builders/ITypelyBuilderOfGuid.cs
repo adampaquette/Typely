@@ -20,6 +20,6 @@ public interface IRuleBuilderOfGuid :
 /// <summary>
 /// Factory for creating similar value objects of Guid.
 /// </summary>
-public interface IFactoryOfGuid : ITypelyFactory<ITypelyBuilderOfGuid>
+public interface IFactoryOfGuid : ITypelyBuilder<ITypelyBuilderOfGuid>
 {
 }

@@ -20,6 +20,6 @@ public interface IRuleBuilderOfDateTimeOffset :
 /// <summary>
 /// Factory for creating similar value objects of DateTimeOffset.
 /// </summary>
-public interface IFactoryOfDateTimeOffset : ITypelyFactory<ITypelyBuilderOfDateTimeOffset>
+public interface IFactoryOfDateTimeOffset : ITypelyBuilder<ITypelyBuilderOfDateTimeOffset>
 {
 }

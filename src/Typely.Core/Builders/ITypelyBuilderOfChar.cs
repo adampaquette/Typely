@@ -20,6 +20,6 @@ public interface IRuleBuilderOfChar :
 /// <summary>
 /// Factory for creating similar value objects of char.
 /// </summary>
-public interface IFactoryOfChar : ITypelyFactory<ITypelyBuilderOfChar>
+public interface IFactoryOfChar : ITypelyBuilder<ITypelyBuilderOfChar>
 {
 }

@@ -27,6 +27,6 @@ public interface IRuleBuilderOfString :
 /// <summary>
 /// Factory for creating similar value objects of string.
 /// </summary>
-public interface IFactoryOfString : ITypelyFactory<ITypelyBuilderOfString>
+public interface IFactoryOfString : ITypelyBuilder<ITypelyBuilderOfString>
 {
 }

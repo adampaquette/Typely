@@ -20,6 +20,6 @@ public interface IRuleBuilderOfDouble :
 /// <summary>
 /// Factory for creating similar value objects of double.
 /// </summary>
-public interface IFactoryOfDouble : ITypelyFactory<ITypelyBuilderOfDouble>
+public interface IFactoryOfDouble : ITypelyBuilder<ITypelyBuilderOfDouble>
 {
 }

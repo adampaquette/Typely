@@ -20,6 +20,6 @@ public interface IRuleBuilderOfULong :
 /// <summary>
 /// Factory for creating similar value objects of long.
 /// </summary>
-public interface IFactoryOfULong : ITypelyFactory<ITypelyBuilderOfULong>
+public interface IFactoryOfULong : ITypelyBuilder<ITypelyBuilderOfULong>
 {
 }

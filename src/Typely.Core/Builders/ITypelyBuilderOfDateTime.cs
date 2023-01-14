@@ -20,6 +20,6 @@ public interface IRuleBuilderOfDateTime :
 /// <summary>
 /// Factory for creating similar value objects of DateTime.
 /// </summary>
-public interface IFactoryOfDateTime : ITypelyFactory<ITypelyBuilderOfDateTime>
+public interface IFactoryOfDateTime : ITypelyBuilder<ITypelyBuilderOfDateTime>
 {
 }

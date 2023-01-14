@@ -20,6 +20,6 @@ public interface IRuleBuilderOfShort :
 /// <summary>
 /// Factory for creating similar value objects of short.
 /// </summary>
-public interface IFactoryOfShort : ITypelyFactory<ITypelyBuilderOfShort>
+public interface IFactoryOfShort : ITypelyBuilder<ITypelyBuilderOfShort>
 {
 }

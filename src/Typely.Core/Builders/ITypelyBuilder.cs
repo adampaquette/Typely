@@ -21,15 +21,10 @@ public interface ITypelyBuilder
 }
 
 /// <summary>
-/// Commun interface for all builders.
+/// Base interface for all builders.
 /// </summary>
 /// <typeparam name="TBuilder">Type of the inheriting builder.</typeparam>
-/// <typeparam name="TRuleBuilder">Type of the inheriting rule builder.</typeparam>
-/// <typeparam name="TValue">Underlying value's type.</typeparam>
-/// <typeparam name="TFactory">Factory to build similar objects.</typeparam>
-public interface ITypelyBuilder<TBuilder, TRuleBuilder, TValue, TFactory>
-    where TBuilder : ITypelyBuilder<TBuilder, TRuleBuilder, TValue, TFactory>
-    where TRuleBuilder : IRuleBuilder<TBuilder, TRuleBuilder, TValue, TFactory>
+public interface ITypelyBuilder<TBuilder> 
 {
     /// <summary>
     /// Sets the type to generate.
@@ -69,8 +64,20 @@ public interface ITypelyBuilder<TBuilder, TRuleBuilder, TValue, TFactory>
     /// </summary>
     /// <param name="expression">An expression to be evaluated at runtime to get the name.</param>
     /// <returns>Fluent <see cref="TBuilder"/>.</returns>
-    TBuilder WithName(Expression<Func<string>> expression);
+    TBuilder WithName(Expression<Func<string>> expression);   
+}
 
+/// <summary>
+/// Commun interface for all builders.
+/// </summary>
+/// <typeparam name="TBuilder">Type of the inheriting builder.</typeparam>
+/// <typeparam name="TRuleBuilder">Type of the inheriting rule builder.</typeparam>
+/// <typeparam name="TValue">Underlying value's type.</typeparam>
+/// <typeparam name="TFactory">Factory to build similar objects.</typeparam>
+public interface ITypelyBuilder<TBuilder, TRuleBuilder, TValue, TFactory> : ITypelyBuilder<TBuilder>
+    where TBuilder : ITypelyBuilder<TBuilder, TRuleBuilder, TValue, TFactory>
+    where TRuleBuilder : IRuleBuilder<TBuilder, TRuleBuilder, TValue, TFactory>
+{
     /// <summary>
     /// Creates a factory to generate similar types based on the current configuration.
     /// </summary>

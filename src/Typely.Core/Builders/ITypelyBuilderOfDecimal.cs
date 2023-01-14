@@ -20,6 +20,6 @@ public interface IRuleBuilderOfDecimal :
 /// <summary>
 /// Factory for creating similar value objects of decimal.
 /// </summary>
-public interface IFactoryOfDecimal : ITypelyFactory<ITypelyBuilderOfDecimal>
+public interface IFactoryOfDecimal : ITypelyBuilder<ITypelyBuilderOfDecimal>
 {
 }

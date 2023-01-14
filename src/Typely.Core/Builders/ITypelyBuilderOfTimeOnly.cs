@@ -21,7 +21,7 @@ public interface IRuleBuilderOfTimeOnly :
 /// <summary>
 /// Factory for creating similar value objects of TimeOnly.
 /// </summary>
-public interface IFactoryOfTimeOnly : ITypelyFactory<ITypelyBuilderOfTimeOnly>
+public interface IFactoryOfTimeOnly : ITypelyBuilder<ITypelyBuilderOfTimeOnly>
 {
 }
 #endif

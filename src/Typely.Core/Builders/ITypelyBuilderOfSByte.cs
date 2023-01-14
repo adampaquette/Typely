@@ -20,6 +20,6 @@ public interface IRuleBuilderOfSByte :
 /// <summary>
 /// Factory for creating similar value objects of sbyte.
 /// </summary>
-public interface IFactoryOfSByte : ITypelyFactory<ITypelyBuilderOfSByte>
+public interface IFactoryOfSByte : ITypelyBuilder<ITypelyBuilderOfSByte>
 {
 }

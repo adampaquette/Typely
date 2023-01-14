@@ -20,6 +20,6 @@ public interface IRuleBuilderOfByte :
 /// <summary>
 /// Factory for creating similar value objects of byte.
 /// </summary>
-public interface IFactoryOfByte : ITypelyFactory<ITypelyBuilderOfByte>
+public interface IFactoryOfByte : ITypelyBuilder<ITypelyBuilderOfByte>
 {
 }

@@ -20,6 +20,6 @@ public interface IRuleBuilderOfUInt :
 /// <summary>
 /// Factory for creating similar value objects of uint.
 /// </summary>
-public interface IFactoryOfUInt : ITypelyFactory<ITypelyBuilderOfUInt>
+public interface IFactoryOfUInt : ITypelyBuilder<ITypelyBuilderOfUInt>
 {
 }

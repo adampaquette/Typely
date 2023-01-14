@@ -20,6 +20,6 @@ public interface IRuleBuilderOfTimeSpan :
 /// <summary>
 /// Factory for creating similar value objects of TimeSpan.
 /// </summary>
-public interface IFactoryOfTimeSpan : ITypelyFactory<ITypelyBuilderOfTimeSpan>
+public interface IFactoryOfTimeSpan : ITypelyBuilder<ITypelyBuilderOfTimeSpan>
 {
 }

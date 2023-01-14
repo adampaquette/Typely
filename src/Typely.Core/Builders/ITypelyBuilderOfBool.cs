@@ -20,6 +20,6 @@ public interface IRuleBuilderOfBool :
 /// <summary>
 /// Factory for creating similar value objects of bool.
 /// </summary>
-public interface IFactoryOfBool : ITypelyFactory<ITypelyBuilderOfBool>
+public interface IFactoryOfBool : ITypelyBuilder<ITypelyBuilderOfBool>
 {
 }

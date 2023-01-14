@@ -21,7 +21,7 @@ public interface IRuleBuilderOfDateOnly :
 /// <summary>
 /// Factory for creating similar value objects of DateOnly.
 /// </summary>
-public interface IFactoryOfDateOnly : ITypelyFactory<ITypelyBuilderOfDateOnly>
+public interface IFactoryOfDateOnly : ITypelyBuilder<ITypelyBuilderOfDateOnly>
 {
 }
 #endif

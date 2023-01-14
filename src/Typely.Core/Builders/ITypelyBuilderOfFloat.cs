@@ -20,6 +20,6 @@ public interface IRuleBuilderOfFloat :
 /// <summary>
 /// Factory for creating similar value objects of float.
 /// </summary>
-public interface IFactoryOfFloat : ITypelyFactory<ITypelyBuilderOfFloat>
+public interface IFactoryOfFloat : ITypelyBuilder<ITypelyBuilderOfFloat>
 {
 }
