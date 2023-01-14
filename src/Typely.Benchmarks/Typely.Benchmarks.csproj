@@ -8,5 +8,8 @@
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.3" />
   </ItemGroup>
-
+    
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage" />
+  </ItemGroup>
 </Project>

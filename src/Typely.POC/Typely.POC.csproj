@@ -23,4 +23,7 @@
         <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage" />
+    </ItemGroup>
 </Project>

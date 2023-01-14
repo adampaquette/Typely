@@ -6,7 +6,7 @@ namespace Typely.POC;
 
 public class Tests
 {
-    [Fact]
+    //[Fact]
     public void BuildSolution()
     {
         var manager = new AnalyzerManager(@"C:\Users\nfs12\source\repos\Typely\src\Typely.sln");
@@ -16,7 +16,7 @@ public class Tests
         }
     }
 
-    [Fact]
+    //[Fact]
     public void BuildSolution2()
     {
         var folder = "C:\\Users\\nfs12\\source\\repos\\Typely\\src\\Typely.Generators.Tests";
@@ -39,7 +39,7 @@ public class Tests
         proc.WaitForExit(30000);
     }
 
-    [Fact]
+    //[Fact]
     public void BuildSolution3()
     {
         var folder = "C:\\Users\\nfs12\\source\\repos\\Typely\\src\\Typely.Generators.Tests";

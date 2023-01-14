@@ -3,14 +3,14 @@
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <PackageReference Include="AutoFixture" Version="4.17.0" />
         <PackageReference Include="AutoFixture.AutoMoq" Version="4.17.0" />
         <PackageReference Include="Castle.Core" Version="5.1.0" />
         <PackageReference Include="coverlet.collector" Version="3.2.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
@@ -29,32 +29,35 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Typely\Configurations\LocalizedMessages.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>LocalizedMessages.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Typely\Configurations\LocalizedNames.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>LocalizedNames.resx</DependentUpon>
-      </Compile>
+        <Compile Update="Typely\Configurations\LocalizedMessages.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>LocalizedMessages.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Typely\Configurations\LocalizedNames.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>LocalizedNames.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Typely\Configurations\LocalizedMessages.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>LocalizedMessages.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Typely\Configurations\LocalizedNames.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>LocalizedNames.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
+        <EmbeddedResource Update="Typely\Configurations\LocalizedMessages.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>LocalizedMessages.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Typely\Configurations\LocalizedNames.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>LocalizedNames.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Typely\Parsing\String\Snapshots\" />
-      <Folder Include="Typely\Snapshots\" />
+        <Folder Include="Typely\Parsing\String\Snapshots\" />
+        <Folder Include="Typely\Snapshots\" />
     </ItemGroup>
 
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage" />
+    </ItemGroup>
 </Project>

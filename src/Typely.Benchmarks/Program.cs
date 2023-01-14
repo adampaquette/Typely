@@ -1,5 +1,4 @@
-﻿
-using BenchmarkDotNet.Running;
+﻿using BenchmarkDotNet.Running;
 using Typely.Benchmarks;
 
 BenchmarkRunner.Run<ErrorBenchmark>();
