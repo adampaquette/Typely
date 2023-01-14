@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Typely.Core;
 using Typely.Generators.Extensions;
@@ -11,6 +12,7 @@ namespace Typely.Generators.Typely.Parsing;
 /// <summary>
 /// Proof of concept to have fully compiled and fonctional ITypelyConfiguration.
 /// </summary>
+[ExcludeFromCodeCoverage]
 internal sealed class FullBuildParser
 {
     private readonly CancellationToken _cancellationToken;
