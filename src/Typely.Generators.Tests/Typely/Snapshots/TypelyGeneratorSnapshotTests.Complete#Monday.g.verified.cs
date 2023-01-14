@@ -28,7 +28,7 @@ namespace Typely.Generators.Tests.Typely.Configurations
 
             if (value.Length < 1)
             {
-                return ValidationErrorFactory.Create(value, "MinLength", ErrorMessages.MinLength, "Monday",
+                return ValidationErrorFactory.Create(value, "MinLength", LocalizedMessages.MinLengthCustom, LocalizedNames.Moment,
                     new Dictionary<string, object?>
                     {
                         { "MinLength", 1 },
@@ -37,7 +37,7 @@ namespace Typely.Generators.Tests.Typely.Configurations
 
             if (value.Length > 20)
             {
-                return ValidationErrorFactory.Create(value, "MaxLength", ErrorMessages.MaxLength, "Monday",
+                return ValidationErrorFactory.Create(value, "MaxLength", LocalizedMessages.MaxLengthCustom, LocalizedNames.Moment,
                     new Dictionary<string, object?>
                     {
                         { "MaxLength", 20 },

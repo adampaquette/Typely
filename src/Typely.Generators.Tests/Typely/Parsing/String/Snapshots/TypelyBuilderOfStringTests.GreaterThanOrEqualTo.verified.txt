@@ -1,1 +1,10 @@
-﻿
+﻿[
+  {
+    ErrorCode: GreaterThanOrEqualTo,
+    Rule: x => (Compare(x, "20", Ordinal) < 0),
+    Message: () => ErrorMessages.GreaterThanOrEqualTo,
+    PlaceholderValues: {
+      ComparisonValue: 20
+    }
+  }
+]

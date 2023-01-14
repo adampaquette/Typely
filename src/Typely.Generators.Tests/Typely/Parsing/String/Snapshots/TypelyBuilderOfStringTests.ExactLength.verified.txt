@@ -1,1 +1,10 @@
-﻿
+﻿[
+  {
+    ErrorCode: ExactLength,
+    Rule: x => (x.Length != 10),
+    Message: () => ErrorMessages.ExactLength,
+    PlaceholderValues: {
+      ExactLength: 10
+    }
+  }
+]
