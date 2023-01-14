@@ -64,7 +64,7 @@ public interface ITypelyBuilder<TBuilder>
     /// </summary>
     /// <param name="expression">An expression to be evaluated at runtime to get the name.</param>
     /// <returns>Fluent <see cref="TBuilder"/>.</returns>
-    TBuilder WithName(Expression<Func<string>> expression);   
+    TBuilder WithName(Expression<Func<string>> expression);
 }
 
 /// <summary>
