@@ -12,7 +12,7 @@ public class StringConfiguration : ITypelyConfiguration
         builder.OfString().For("NotEmptyType").NotEmpty();
         builder.OfString().For("NotEqualType").NotEqual("value");
         builder.OfString().For("GreaterThanType").GreaterThan("value");
-        builder.OfString().For("GreaterThanOrEqualType").GreaterThan("value");
+        builder.OfString().For("GreaterThanOrEqualType").GreaterThanOrEqual("value");
         builder.OfString().For("LessThanType").LessThan("value");
         builder.OfString().For("LessThanOrEqualType").LessThanOrEqual("value");
         builder.OfString().For("MinLengthType").MinLength(5);

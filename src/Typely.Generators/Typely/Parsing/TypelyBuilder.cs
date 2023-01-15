@@ -22,11 +22,11 @@ internal class TypelyBuilder : ITypelyBuilder
 
     public IReadOnlyList<EmittableType> GetEmittableTypes() => _emittableTypes.AsReadOnly();
 
-    public ITypelyBuilderOfInt Int()
+    public ITypelyBuilderOfInt OfInt()
     {
         var emittableType = new EmittableType(
             syntaxTree: _syntaxTree,
-            underlyingType: typeof(string),
+            underlyingType: typeof(int),
             @namespace: _configurationType.Namespace);
 
         _emittableTypes.Add(emittableType);

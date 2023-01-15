@@ -1,35 +1,24 @@
-﻿using System.Text.RegularExpressions;
-using Typely.Generators.Typely.Parsing;
-using Typely.Generators.Typely.Parsing.String;
+﻿using Typely.Generators.Typely.Parsing;
+using Typely.Generators.Typely.Parsing.Int;
 
 namespace Typely.Generators.Tests.Typely.Parsing.String;
 
 [UsesVerify]
-public class TypelyBuilderOfStringTests
+public class TypelyBuilderOfIntTests
 {
-    [Fact] public Task NotEqual() => Builder.NotEqual("10").VerifyRules();
+    [Fact] public Task NotEqual() => Builder.NotEqual(10).VerifyRules();
 
     [Fact] public Task NotEmpty() => Builder.NotEmpty().VerifyRules();
 
-    [Fact] public Task Length() => Builder.Length(1, 10).VerifyRules();
+    [Fact] public Task LessThan() => Builder.LessThan(20).VerifyRules();
 
-    [Fact] public Task ExactLength() => Builder.Length(10).VerifyRules();
+    [Fact] public Task LessThanOrEqualTo() => Builder.LessThanOrEqual(20).VerifyRules();
 
-    [Fact] public Task MinLength() => Builder.MinLength(10).VerifyRules();
+    [Fact] public Task GreaterThan() => Builder.GreaterThan(20).VerifyRules();
 
-    [Fact] public Task MaxLength() => Builder.MaxLength(10).VerifyRules();
+    [Fact] public Task GreaterThanOrEqualTo() => Builder.GreaterThanOrEqual(20).VerifyRules();
 
-    [Fact] public Task LessThan() => Builder.LessThan("20").VerifyRules();
-
-    [Fact] public Task LessThanOrEqualTo() => Builder.LessThanOrEqual("20").VerifyRules();
-
-    [Fact] public Task GreaterThan() => Builder.GreaterThan("20").VerifyRules();
-
-    [Fact] public Task GreaterThanOrEqualTo() => Builder.GreaterThanOrEqual("20").VerifyRules();
-
-    [Fact] public Task Must() => Builder.Must((x) => x != "").VerifyRules();
-
-    [Fact] public Task Matches() => Builder.Matches(new Regex("[0-9]*")).VerifyRules();
+    [Fact] public Task Must() => Builder.Must((x) => x != 0).VerifyRules();
 
     [Fact] public void Type_Should_Match() => Assert.Equal("Name", GetSingleEmittableType().TypeName);
 
@@ -49,7 +38,6 @@ public class TypelyBuilderOfStringTests
 
         Assert.Equal(ConstructTypeKind.Struct, GetSingleEmittableType().ConstructTypeKind);
     }
-
 
     [Fact]
     public void ConstructTypeKind_ShouldBe_Class()
@@ -104,7 +92,7 @@ public class TypelyBuilderOfStringTests
         Assert.Equal(expectedMessage, GetSingleEmittableRule().Message.Compile().Invoke());
     }
 
-    private RuleBuilderOfString Builder { get; } = (RuleBuilderOfString)new TypelyBuilderFixture().Create().OfString().For("Name");
+    private RuleBuilderOfInt Builder { get; } = (RuleBuilderOfInt)new TypelyBuilderFixture().Create().OfInt().For("Name");
 
     private EmittableType GetSingleEmittableType() => Assert.Single(Builder.GetEmittableTypes());
 

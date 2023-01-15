@@ -1,0 +1,10 @@
+﻿[
+  {
+    ErrorCode: GreaterThan,
+    Rule: x => (x <= 20),
+    Message: () => ErrorMessages.GreaterThan,
+    PlaceholderValues: {
+      ComparisonValue: 20
+    }
+  }
+]

@@ -146,8 +146,7 @@ internal class Emitter
     public string GetConstructType(ConstructTypeKind objectType) => objectType switch
     {
         ConstructTypeKind.Struct => "struct",
-        ConstructTypeKind.Class => "class",
-        _ => throw new ArgumentOutOfRangeException(nameof(objectType), $"Unexpected value {objectType}"),
+        _ => "class"
     };
 
     public string GenerateValidations(List<EmittableRule> emittableValidations, Expression<Func<string>> nameExpression, Type underlyingType, string typeName)
@@ -176,11 +175,6 @@ internal class Emitter
         {
             _cancellationToken.ThrowIfCancellationRequested();
             var validation = GenerateValidation(emittableValidation);
-            if (validation == null)
-            {
-                continue;
-            }
-
             var errorCode = emittableValidation.ErrorCode;
             var validationMessage = emittableValidation.Message.Body.ToReadableString();
             if (validationMessage.Contains(Consts.BypassExecution))
@@ -206,7 +200,7 @@ internal class Emitter
         return builder.ToString();
     }
 
-    private static string? GenerateValidation(EmittableRule emittableValidation)
+    private static string GenerateValidation(EmittableRule emittableValidation)
     {
         var validationExpression = emittableValidation.Rule as LambdaExpression;
         var parameterModifier = new ValidationParameterModifier(validationExpression!.Parameters[0]);

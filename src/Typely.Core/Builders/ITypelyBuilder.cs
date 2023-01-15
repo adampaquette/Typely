@@ -11,7 +11,7 @@ public interface ITypelyBuilder
     /// Returns a builder dedicated to creating a value object with the underlying int type.
     /// </summary>
     /// <returns>Builder of int.</returns>
-    ITypelyBuilderOfInt Int();
+    ITypelyBuilderOfInt OfInt();
 
     /// <summary>
     /// Returns a builder dedicated to creating a value object with the underlying string type.

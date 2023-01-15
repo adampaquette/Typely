@@ -1,10 +1,10 @@
-﻿using Typely.Generators.Typely.Parsing.String;
-using Typely.Generators.Typely.Parsing;
+﻿using Typely.Generators.Typely.Parsing;
+using Typely.Generators.Typely.Parsing.Int;
 
 namespace Typely.Generators.Tests.Typely.Parsing.String;
 
 [UsesVerify]
-public class FactoryOfStringTests
+public class FactoryOfIntTests
 {
     [Fact]
     public void Type_Should_Match()
@@ -58,7 +58,7 @@ public class FactoryOfStringTests
         Assert.Equal(expectedName, GetSingleEmittableType().Name!.Compile().Invoke());
     }
 
-    private FactoryOfString Factory { get; } = (FactoryOfString)new TypelyBuilderFixture().Create().OfString().AsFactory();
+    private FactoryOfInt Factory { get; } = (FactoryOfInt)new TypelyBuilderFixture().Create().OfInt().AsFactory();
 
     private EmittableType GetSingleEmittableType() => Assert.Single(Factory.GetEmittableTypes());
 }

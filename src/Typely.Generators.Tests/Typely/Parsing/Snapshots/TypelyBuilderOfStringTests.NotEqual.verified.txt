@@ -1,0 +1,10 @@
+﻿[
+  {
+    ErrorCode: NotEqual,
+    Rule: x => x.Equals("10"),
+    Message: () => ErrorMessages.NotEqual,
+    PlaceholderValues: {
+      ComparisonValue: 10
+    }
+  }
+]
