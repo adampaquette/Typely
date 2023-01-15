@@ -18,7 +18,7 @@ public static class TypelyValue
         var validationError = TThis.Validate(value);
         if (validationError != null)
         {
-            throw new ValidationException(validationError.ToString());
+            throw new ValidationException(validationError);
         }
 #else
         throw new NotImplementedException();

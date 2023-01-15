@@ -7,7 +7,7 @@ public class StringConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfString().For("TypelyString");
+        builder.OfString().For("StringType");
         builder.OfString().For("NotEmptyType").NotEmpty();
     }
 }

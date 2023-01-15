@@ -5,19 +5,17 @@
 /// </summary>
 public class TypelyOptions
 {
-    private static readonly TypelyOptions? _instance = null;
-
-    public static TypelyOptions Instance => _instance ?? new TypelyOptions();
+    public static TypelyOptions Instance { get; } = new TypelyOptions();
 
     /// <summary>
     /// Add the actual value to the exceptions when thrown. 
     /// </summary>
     /// <param name="enabled">Output the actual value when set to <see langword="true" />.</param>
     /// <returns>Fluent <see cref="TypelyOptions"/></returns>
-    public TypelyOptions EnableSensitiveDataLogging(bool enabled)
+    public TypelyOptions EnableSensitiveDataLogging(bool enabled = true)
     {
         IsSensitiveDataLoggingEnabled = enabled;
-        return Instance;
+        return this;
     }
 
     /// <summary>

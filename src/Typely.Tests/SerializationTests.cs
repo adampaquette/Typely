@@ -4,7 +4,7 @@ public class SerializationTests
 {
     internal class BasicClass
     {
-        public FirstName FirstName { get; set; }
+        public SerializationTestsType SerializationTestsType { get; set; }
     }
 
     [Fact]
@@ -12,12 +12,12 @@ public class SerializationTests
     {
         var obj = new BasicClass
         {
-            FirstName = FirstName.From("Adam")
+            SerializationTestsType = SerializationTestsType.From("Adam")
         };
 
         var actual = System.Text.Json.JsonSerializer.Serialize(obj);
 
-        Assert.Equal("{\"FirstName\":\"Adam\"}", actual);
+        Assert.Equal("{\"SerializationTestsType\":\"Adam\"}", actual);
     }
 
     [Fact]
@@ -25,14 +25,14 @@ public class SerializationTests
     {
         var expected = new BasicClass
         {
-            FirstName = FirstName.From("Adam")
+            SerializationTestsType = SerializationTestsType.From("Adam")
         };
 
-        var obj = "{\"FirstName\":\"Adam\"}";
+        var obj = "{\"SerializationTestsType\":\"Adam\"}";
 
         var actual = System.Text.Json.JsonSerializer.Deserialize<BasicClass>(obj);
 
-        Assert.Equal(expected.FirstName, actual!.FirstName);
+        Assert.Equal(expected.SerializationTestsType, actual!.SerializationTestsType);
     }
 
     //[Fact]
@@ -40,12 +40,12 @@ public class SerializationTests
     //{
     //    var obj = new BasicClass
     //    {
-    //        FirstName = FirstName.From("Adam")
+    //        SerializationTestsType = SerializationTestsType.From("Adam")
     //    };
 
     //    var actual = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
 
-    //    Assert.Equal("{\"FirstName\":\"Adam\"}", actual);
+    //    Assert.Equal("{\"SerializationTestsType\":\"Adam\"}", actual);
     //}
 
     //[Fact]
@@ -53,10 +53,10 @@ public class SerializationTests
     //{
     //    var expected = new BasicClass
     //    {
-    //        FirstName = FirstName.From("Adam")
+    //        SerializationTestsType = SerializationTestsType.From("Adam")
     //    };
 
-    //    var obj = "{\"FirstName\":\"Adam\"}";
+    //    var obj = "{\"SerializationTestsType\":\"Adam\"}";
 
     //    var actual = Newtonsoft.Json.JsonConvert.DeserializeObject<BasicClass>(obj);
 

@@ -45,8 +45,6 @@ public static class ValidationErrorFactory
             attemptedValue = value;
         }
 
-        var errorMessage = string.Format(errorMessageWithPlaceholders, placeholderValues.Values);
-
-        return new ValidationError(errorCode, errorMessage, errorMessageWithPlaceholders, attemptedValue, typeName, placeholderValues);
+        return new ValidationError(errorCode, errorMessageWithPlaceholders, attemptedValue, typeName, placeholderValues);
     }
 }

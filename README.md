@@ -466,8 +466,6 @@ builder.Int().For("UserId");
 builder.Guid().For("UserId");
 
 - PrecisionScale(int precision, int scale); //INumber
-- IRuleBuilder<T> IRuleBuilder<T> Matches(string regex); //string
-- Must(Expression<Func<T, bool>> predicate); //T
 
 // Type kinds
 - AsClass();

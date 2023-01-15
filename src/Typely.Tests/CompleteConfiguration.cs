@@ -7,7 +7,9 @@ public class CompleteConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfString().For("FirstName");
+        builder.OfString().For("SerializationTestsType");
+        builder.OfString().For("TypelyOptionTestsType").NotEmpty();
+        builder.OfString().For("ValidationErrorTestsType").NotEmpty();
 
         builder
             .OfString()

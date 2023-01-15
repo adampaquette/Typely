@@ -1,0 +1,10 @@
+﻿{
+  ErrorCode: NotEmpty,
+  ErrorMessage: 'ValidationErrorTestsType' must not be empty.,
+  ErrorMessageWithPlaceholders: '{Name}' must not be empty.,
+  TypeName: ValidationErrorTestsType,
+  PlaceholderValues: {
+    ActualLength: 0,
+    Name: ValidationErrorTestsType
+  }
+}

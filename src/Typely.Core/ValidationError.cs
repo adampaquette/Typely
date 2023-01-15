@@ -45,13 +45,23 @@ public class ValidationError
     /// <param name="attemptedValue">The value that caused the error.</param>
     /// <param name="typeName">The name of the calss or struct to create.</param>
     /// <param name="placeholderValues">List of the placeholders with their values.</param>
-    public ValidationError(string errorCode, string errorMessage, string errorMessageWithPlaceholders, object? attemptedValue, string typeName, Dictionary<string, object?> placeholderValues)
+    public ValidationError(string errorCode, string errorMessageWithPlaceholders, object? attemptedValue, string typeName, Dictionary<string, object?> placeholderValues)
     {
         ErrorCode = errorCode;
-        ErrorMessage = errorMessage;
         ErrorMessageWithPlaceholders = errorMessageWithPlaceholders;
         AttemptedValue = attemptedValue;
         TypeName = typeName;
         PlaceholderValues = placeholderValues;
+        ErrorMessage = FormatErrorMessage(errorMessageWithPlaceholders, placeholderValues);
+    }
+
+    private string FormatErrorMessage(string errorMessageWithPlaceholders, Dictionary<string, object?> placeholderValues)
+    {
+        var errorMessage = errorMessageWithPlaceholders;
+        foreach (var placeholder in placeholderValues)
+        {
+            errorMessage = errorMessage.Replace("{" + placeholder.Key + "}", placeholder.Value?.ToString());
+        }
+        return errorMessage;
     }
 }
