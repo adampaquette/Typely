@@ -2,9 +2,9 @@
 using Typely.Core;
 using Typely.Core.Builders;
 
-namespace Typely.Tests.String;
+namespace Typely.Tests.Int;
 
-public class StringConfiguration : ITypelyConfiguration
+public class IntConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {

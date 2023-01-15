@@ -26,7 +26,7 @@ public class TypelyStringTests
     [Fact] public void MaxLength() => Asserts.ValidationMatchPredicate<MaxLengthType, string>(Gen.String, (s) => s.Length > 5, "ABCDEF");
     [Fact] public void Length() => Asserts.ValidationMatchPredicate<LengthType, string>(Gen.String, (s) => s.Length < 5 || s.Length > 10, "A");
 
-    private Gen<(StringType, StringType)> GenTrueEquals => Gen.String.Select(x => (StringType.From(x), StringType.From(x)));
-    private Gen<(StringType, StringType)> GenFalseEquals => Gen.String.Select(x => (StringType.From(x), StringType.From(x + "1")));
-    private Gen<(string primitive, StringType valueObject, StringType randomObj)> GenComparable => Gen.Select(Gen.String, Gen.String, (x, y) => (x, StringType.From(x), StringType.From(y)));
+    private Gen<(BasicType, BasicType)> GenTrueEquals => Gen.String.Select(x => (BasicType.From(x), BasicType.From(x)));
+    private Gen<(BasicType, BasicType)> GenFalseEquals => Gen.String.Select(x => (BasicType.From(x), BasicType.From(x + "1")));
+    private Gen<(string primitive, BasicType valueObject, BasicType randomObj)> GenComparable => Gen.Select(Gen.String, Gen.String, (x, y) => (x, BasicType.From(x), BasicType.From(y)));
 }

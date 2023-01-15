@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Typely.Core.Builders;
+using Typely.Generators.Typely.Parsing.Int;
 using Typely.Generators.Typely.Parsing.String;
 
 namespace Typely.Generators.Typely.Parsing;
@@ -21,7 +22,18 @@ internal class TypelyBuilder : ITypelyBuilder
 
     public IReadOnlyList<EmittableType> GetEmittableTypes() => _emittableTypes.AsReadOnly();
 
-    /// <inheritdoc/>
+    public ITypelyBuilderOfInt Int()
+    {
+        var emittableType = new EmittableType(
+            syntaxTree: _syntaxTree,
+            underlyingType: typeof(string),
+            @namespace: _configurationType.Namespace);
+
+        _emittableTypes.Add(emittableType);
+
+        return new RuleBuilderOfInt(emittableType, _emittableTypes);
+    }
+
     public ITypelyBuilderOfString OfString()
     {
         var emittableType = new EmittableType(
@@ -33,17 +45,4 @@ internal class TypelyBuilder : ITypelyBuilder
 
         return new RuleBuilderOfString(emittableType, _emittableTypes);
     }
-
-    //public ITypelyBuilder<T> Of<T>()
-    //{
-    //    throw new NotImplementedException();
-    //    //    var emittableType = new EmittableType(
-    //    //        syntaxTree: _syntaxTree,
-    //    //        underlyingType: typeof(TValue),
-    //    //        @namespace: _configurationType.Namespace);
-
-    //    //    _emittableTypes.Add(emittableType);
-
-    //    //    return new RuleBuilder<T>(emittableType, _emittableTypes);
-    //}
 }
