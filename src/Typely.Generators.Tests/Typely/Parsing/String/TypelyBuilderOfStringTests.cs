@@ -1,4 +1,5 @@
-﻿using Typely.Generators.Typely.Parsing;
+﻿using System.Text.RegularExpressions;
+using Typely.Generators.Typely.Parsing;
 using Typely.Generators.Typely.Parsing.String;
 
 namespace Typely.Generators.Tests.Typely.Parsing.String;
@@ -23,6 +24,10 @@ public class TypelyBuilderOfStringTests
     [Fact] public Task GreaterThan() => Builder.GreaterThan("20").VerifyRules();
 
     [Fact] public Task GreaterThanOrEqualTo() => Builder.GreaterThanOrEqual("20").VerifyRules();
+
+    [Fact] public Task Must() => Builder.Must((x) => x != "").VerifyRules();
+
+    [Fact] public Task Matches() => Builder.Matches(new Regex("[0-9]*")).VerifyRules();
 
     [Fact]
     public void Type_Should_Match() => Assert.Equal("Name", GetSingleEmittableType().TypeName);

@@ -41,4 +41,6 @@ internal class FactoryOfString : IFactoryOfString
         _emittableTypes.Add(emittableType);
         return new RuleBuilderOfString(emittableType, _emittableTypes);
     }
+
+    public IReadOnlyList<EmittableType> GetEmittableTypes() => _emittableTypes.AsReadOnly();
 }

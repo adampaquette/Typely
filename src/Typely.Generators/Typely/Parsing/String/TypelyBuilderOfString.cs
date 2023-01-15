@@ -136,7 +136,7 @@ internal class TypelyBuilderOfString : ITypelyBuilderOfString
     /// <inheritdoc/>
     public IRuleBuilderOfString Must(Expression<Func<string, bool>> predicate) => AddRule(
         errorCode: ErrorCodes.Must,
-        rule: predicate,
+        rule: predicate.Negate(),
         message: () => ErrorMessages.Must);
 
     /// <inheritdoc/>
