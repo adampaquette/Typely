@@ -17,10 +17,5 @@ public class CompleteConfiguration : ITypelyConfiguration
             .AsStruct()
             .NotEmpty().WithMessage("'Name' cannot be empty.").WithErrorCode("ERR001")
             .NotEqual("1");
-
-        builder.OfString().For("EqualityTest");
-
-        builder.OfString().For("ValueType");
-        builder.OfString().For("ReferenceType");
     }
 }
