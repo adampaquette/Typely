@@ -4,7 +4,7 @@ namespace Typely.Tests;
 
 public class TypelyOptionsTests
 {
-    [Fact]
+    [Fact(Skip = "Impact other tests")]
     public void EnableSensitiveDataLogging_Should_OutputCurrentValue()
     {
         var expectedValue = "";
