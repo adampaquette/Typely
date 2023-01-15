@@ -7,6 +7,7 @@ internal class CompleteConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
+        builder.OfInt().For("Votes");
         builder.OfString().For("Username");
         builder.OfString().For("Code").Length(4).NotEqual("0000");
 

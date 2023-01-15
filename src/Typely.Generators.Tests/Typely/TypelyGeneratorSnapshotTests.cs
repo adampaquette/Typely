@@ -1,4 +1,6 @@
 ﻿using Typely.Generators.Tests.Typely.Configurations;
+using Typely.Generators.Tests.Typely.Configurations.A;
+using Typely.Generators.Tests.Typely.Configurations.B;
 
 namespace Typely.Generators.Tests.Typely;
 
@@ -9,7 +11,18 @@ public class TypelyGeneratorSnapshotTests
     public Task Complete()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithClassConfigurationFile(nameof(CompleteConfiguration))
+            .WithConfigurations(typeof(CompleteConfiguration))
+            .Create()
+            .Run();
+
+        return Verify(driver);
+    }
+
+    [Fact]
+    public Task MultipleConfigurations_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(MultipleConfigurationA), typeof(MultipleConfigurationB))
             .Create()
             .Run();
 
@@ -20,7 +33,7 @@ public class TypelyGeneratorSnapshotTests
     public Task UnsupportedConfiguration_Should_OutputErrors()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithClassConfigurationFile(nameof(UnsupportedConfiguration))
+            .WithConfigurations(typeof(UnsupportedConfiguration))
             .Create()
             .Run();
 
@@ -31,7 +44,7 @@ public class TypelyGeneratorSnapshotTests
     public Task EmptyConfiguration_Should_NotThrow()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithClassConfigurationFile(nameof(EmptyConfiguration))
+            .WithConfigurations(typeof(EmptyConfiguration))
             .Create()
             .Run();
 

@@ -48,7 +48,7 @@ public partial class TypelyGenerator : IIncrementalGenerator
         foreach (var emittableType in emittableTypes)
         {
             var source = emitter.Emit(emittableType);
-            context.AddSource($"{emittableType.TypeName}.g.cs", SourceText.From(source, Encoding.UTF8));
+            context.AddSource($"{emittableType.Namespace}.{emittableType.TypeName}.g.cs", SourceText.From(source, Encoding.UTF8));
         }
     }
 }

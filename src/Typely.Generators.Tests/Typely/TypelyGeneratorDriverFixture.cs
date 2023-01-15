@@ -7,45 +7,50 @@ namespace Typely.Generators.Tests.Typely;
 
 internal class TypelyGeneratorDriverFixture : BaseFixture<TypelyGeneratorDriver>
 {
-    private Compilation? _compilation;
+    private IEnumerable<SyntaxTree> _syntaxTrees = new List<SyntaxTree>();
 
     public TypelyGeneratorDriverFixture()
     {
-        Fixture.Register(() => _compilation);
+        Fixture.Register(() => CreateCompilation(_syntaxTrees));
     }
 
-    public TypelyGeneratorDriverFixture WithConfigurationFileFromFileName(string fileName)
+    public TypelyGeneratorDriverFixture WithConfigurations(params Type[] configClasses)
     {
-        var sourceFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"..\\..\\..\\{nameof(Typely)}\\{nameof(Configurations)}\\{fileName}");
-        _compilation = CreateTypelyCompilation(sourceFilePath);
+        _syntaxTrees = configClasses.Select(CreateSyntaxTree);
         return this;
-    }
-
-    public TypelyGeneratorDriverFixture WithClassConfigurationFile(string className)
-    {
-        var fileName = className + ".cs";
-        return WithConfigurationFileFromFileName(fileName);
     }
 
     public TypelyGeneratorDriverFixture WithNoConfiguration()
     {
-        _compilation = CSharpCompilation.Create(
-            assemblyName: "tests",
-            syntaxTrees: new[] { CSharpSyntaxTree.ParseText("public class EmptyClass {}") });
+        _syntaxTrees = new List<SyntaxTree> { CSharpSyntaxTree.ParseText("public class EmptyClass {}") };
         return this;
     }
 
-    private static Compilation CreateTypelyCompilation(string filePath)
+    private static SyntaxTree CreateSyntaxTree(string filePath)
     {
         var source = File.ReadAllText(filePath);
+        return CSharpSyntaxTree.ParseText(source, path: filePath);
+    }
 
-        return CSharpCompilation.Create(
+    public static SyntaxTree CreateSyntaxTree(Type configClass)
+    {
+        string sourceFilePath = GetFilePath(configClass);
+        return CreateSyntaxTree(sourceFilePath);
+    }
+
+    private static string GetFilePath(Type configClass)
+    {
+        var pathFromNamespace = configClass.FullName!.Replace("Typely.Generators.Tests", "").Replace(".", "\\");
+        return  Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"..\\..\\..\\{pathFromNamespace}.cs");
+    }
+
+    private static Compilation CreateCompilation(IEnumerable<SyntaxTree> syntaxTrees) =>
+        CSharpCompilation.Create(
             assemblyName: "tests",
-            syntaxTrees: new[] { CSharpSyntaxTree.ParseText(source, path: filePath) },
+            syntaxTrees: syntaxTrees,
             references: new[]
             {
                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
                 MetadataReference.CreateFromFile(typeof(ITypelyConfiguration).Assembly.Location),
             });
-    }
 }
