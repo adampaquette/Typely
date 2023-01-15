@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using CsCheck;
+using System.Text.Json;
 
 namespace Typely.Tests.Converters;
 
@@ -10,32 +11,13 @@ public class TypelyJsonConverterTests
     }
 
     [Fact]
-    public void SystemTextJson_Should_Serialize()
-    {
-        var obj = new BasicClass
-        {
-            Prop = SerializationTestsType.From("Adam")
-        };
-
-        var actual = JsonSerializer.Serialize(obj);
-
-        Assert.Equal("{\"Prop\":\"Adam\"}", actual);
-    }
-
-    [Fact]
-    public void SystemTextJson_Should_Deserialize()
-    {
-        var expected = new BasicClass
-        {
-            Prop = SerializationTestsType.From("Adam")
-        };
-
-        var obj = "{\"Prop\":\"Adam\"}";
-
-        var actual = JsonSerializer.Deserialize<BasicClass>(obj);
-
-        Assert.Equal(expected.Prop, actual!.Prop);
-    }
+    public void SystemTextJson_Serialize_RoundTrip() =>
+        Gen.String.Sample(x =>
+        {           
+            var obj = SerializationTestsType.From(x);
+            var serialized = JsonSerializer.Serialize(obj);
+            return JsonSerializer.Deserialize<SerializationTestsType>(serialized).Equals(obj);
+        });
 
     [Fact]
     public void SystemTextJson_Should_DeserializeEmpty()
