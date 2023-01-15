@@ -167,19 +167,7 @@ internal class Emitter
     private static string? GenerateValidation(EmittableRule emittableValidation)
     {
         var validationExpression = emittableValidation.Rule as LambdaExpression;
-        if (validationExpression == null)
-        {
-            //TODO diagnostic unsupported expression
-            return null;
-        }
-
-        if (validationExpression.Parameters.Count != 1)
-        {
-            //TODO new diagnostic
-            return null;
-        }
-
-        var parameterModifier = new ValidationParameterModifier(validationExpression.Parameters[0]);
+        var parameterModifier = new ValidationParameterModifier(validationExpression!.Parameters[0]);
         var modifiedValidationExpression = (LambdaExpression)parameterModifier.Modify(validationExpression);
         return modifiedValidationExpression.Body.ToReadableString();
     }

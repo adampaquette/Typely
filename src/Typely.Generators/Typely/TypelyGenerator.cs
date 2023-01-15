@@ -35,7 +35,7 @@ public partial class TypelyGenerator : IIncrementalGenerator
         }
 
         var distinctClasses = classes.Distinct();
-        var parser = new Parser(compilation, context.ReportDiagnostic, context.CancellationToken);
+        using var parser = new Parser(compilation, context.ReportDiagnostic, context.CancellationToken);
         var emittableTypes = parser.GetEmittableTypes(distinctClasses);
 
         if (emittableTypes.Count == 0)

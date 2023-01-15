@@ -41,11 +41,7 @@ internal sealed class Parser : IDisposable
     internal static ClassDeclarationSyntax? GetSemanticTargetForGeneration(GeneratorSyntaxContext context)
     {
         var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
-        var classSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax);
-        if (classSymbol == null)
-        {
-            return null;
-        }
+        var classSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax)!;
 
         return classSymbol.AllInterfaces.Any(x => x.ToString() == typeof(ITypelyConfiguration).FullName)
             ? classDeclarationSyntax
@@ -179,10 +175,10 @@ internal sealed class Parser : IDisposable
         return CSharpSyntaxTree.ParseText(modifiedSyntaxTree);
     }
 
-    private void Diag(DiagnosticDescriptor desc, Location? location, params object?[]? messageArgs)
-    {
-        _reportDiagnostic(Diagnostic.Create(desc, location, messageArgs));
-    }
+    //private void Diag(DiagnosticDescriptor desc, Location? location, params object?[]? messageArgs)
+    //{
+    //    _reportDiagnostic(Diagnostic.Create(desc, location, messageArgs));
+    //}
 
     public void Dispose()
     {
