@@ -7,24 +7,17 @@ namespace Typely.Generators.Tests.Typely;
 
 internal class TypelyGeneratorDriverFixture : BaseFixture<TypelyGeneratorDriver>
 {
-    private string? _sourceFilePath;
+    private Compilation? _compilation;
 
     public TypelyGeneratorDriverFixture()
     {
-        Fixture.Register(() =>
-        {
-            if (_sourceFilePath == null)
-            {
-                throw new ArgumentNullException(nameof(_sourceFilePath));
-            }
-
-            return CreateCompilation(_sourceFilePath);
-        });
+        Fixture.Register(() => _compilation);
     }
 
     public TypelyGeneratorDriverFixture WithConfigurationFileFromFileName(string fileName)
     {
-        _sourceFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"..\\..\\..\\{nameof(Typely)}\\{nameof(Configurations)}\\{fileName}");
+        var sourceFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"..\\..\\..\\{nameof(Typely)}\\{nameof(Configurations)}\\{fileName}");
+        _compilation = CreateTypelyCompilation(sourceFilePath);
         return this;
     }
 
@@ -34,7 +27,15 @@ internal class TypelyGeneratorDriverFixture : BaseFixture<TypelyGeneratorDriver>
         return WithConfigurationFileFromFileName(fileName);
     }
 
-    private static Compilation CreateCompilation(string filePath)
+    public TypelyGeneratorDriverFixture WithNoConfiguration()
+    {
+        _compilation = CSharpCompilation.Create(
+            assemblyName: "tests",
+            syntaxTrees: new[] { CSharpSyntaxTree.ParseText("public class EmptyClass {}") });
+        return this;
+    }
+
+    private static Compilation CreateTypelyCompilation(string filePath)
     {
         var source = File.ReadAllText(filePath);
 
