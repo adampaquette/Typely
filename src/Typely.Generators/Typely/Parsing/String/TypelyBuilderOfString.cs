@@ -144,7 +144,7 @@ internal class TypelyBuilderOfString : ITypelyBuilderOfString
         errorCode: ErrorCodes.Matches,
         rule: (x) => !regex.IsMatch(x),
         message: () => ErrorMessages.Matches,
-        placeholders: (ValidationPlaceholders.RegularExpression, regex.ToString()));
+        placeholders: (ValidationPlaceholders.ComparisonValue, regex.ToString()));
 
     private IRuleBuilderOfString AddRule(string errorCode, Expression<Func<string, bool>> rule,
         Expression<Func<string>> message, params (string Key, object Value)[] placeholders) =>

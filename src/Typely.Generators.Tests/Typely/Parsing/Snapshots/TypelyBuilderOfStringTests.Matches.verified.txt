@@ -4,7 +4,7 @@
     Rule: x => Not([0-9]*.IsMatch(x)),
     Message: () => ErrorMessages.Matches,
     PlaceholderValues: {
-      RegularExpression: [0-9]*
+      ComparisonValue: [0-9]*
     }
   }
 ]

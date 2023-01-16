@@ -133,7 +133,7 @@ namespace Typely.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;{Name}&apos; is not in the correct format. Expected format {RegularExpression}..
+        ///   Looks up a localized string similar to &apos;{Name}&apos; is not in the correct format. Expected format &apos;{RegularExpression}&apos;..
         /// </summary>
         public static string Matches {
             get {
