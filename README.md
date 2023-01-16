@@ -1,6 +1,6 @@
-![Typely](assets/logo-300.png)
+![Typely](https://github.com/adampaquette/Typely/blob/main/assets/logo-300.png)
 
-Typely let you create types easily with a fluent API to embrace Domain-driven design and value objects.
+Typerly lets you create types easily with a fluent API to embrace Domain-driven design and value objects.
 
 ## Example
 

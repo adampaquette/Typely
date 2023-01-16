@@ -15,13 +15,17 @@
 		<Authors>Adam Paquette</Authors>
         <Product>Typely</Product>
 		<RepositoryUrl>https://github.com/adampaquette/Typely</RepositoryUrl>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://docs.typely.net/</PackageProjectUrl>        
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RespositoryType>git</RespositoryType>
         <PackageIcon>logo-300.png</PackageIcon>
         <PackageTags>Typerly Value Object Fluent Primitive Source Generator Validation C# .NET</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
     
     <ItemGroup>
         <None Include="$(SourceRoot)../assets/logo-300.png" Pack="true" Visible="false" PackagePath="/" />
+        <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
         <InternalsVisibleTo Include="$(AssemblyName).Tests" />
     </ItemGroup>
 
@@ -34,7 +38,7 @@
     <!-- Versioning properties -->
     <PropertyGroup>
         <AssemblyVersion>0.0.1</AssemblyVersion>
-        <VersionPrefix Condition=" '$(VersionPrefix)'=='' ">0.0.8</VersionPrefix>
+        <VersionPrefix Condition=" '$(VersionPrefix)'=='' ">0.0.1</VersionPrefix>
     </PropertyGroup>
 
     <!-- For Debug builds -->

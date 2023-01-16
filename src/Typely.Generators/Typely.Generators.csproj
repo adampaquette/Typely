@@ -3,8 +3,9 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <IsRoslynComponent>true</IsRoslynComponent>
-        <Description>Typerly let you create types easyly with a fluent API to embrace Domain-driven design and value objects. This package contains type generators.</Description>
-        <VersionPrefix>0.0.9</VersionPrefix>
+        <Description>Typerly lets you create types easily with a fluent API to embrace Domain-driven design and value objects. This package contains type generators.</Description>
+        <VersionPrefix>0.1.0</VersionPrefix>
+        <VersionSuffix>alpha</VersionSuffix>
     </PropertyGroup>
 
     <ItemGroup>        
