@@ -2,8 +2,10 @@
   <img src="https://github.com/adampaquette/Typely/blob/main/assets/logo-300.png" />
 </p>
 
-[![Nuget version](https://img.shields.io/nuget/v/Typely?label=nuget%20version&logo=nuget&style=flat-square)](https://www.nuget.org/packages/Typely/)
-[![GitHub last commit](https://img.shields.io/github/last-commit/adampaquette/Typely?logo=github)](https://github.com/adampaquette/Typely)
+[![Nuget version](https://img.shields.io/nuget/vpre/Typely.Core?label=Typely.Core)](https://www.nuget.org/packages/Typely.Core/)
+[![Nuget version](https://img.shields.io/nuget/vpre/Typely.Core?label=Typely.Generators)](https://www.nuget.org/packages/Typely.Generators/)
+[![GitHub last commit](https://img.shields.io/github/last-commit/adampaquette/Typely)](https://github.com/adampaquette/Typely)
+
 
 Typerly lets you create types easily with a fluent API to embrace Domain-driven design and value objects.
 
@@ -53,7 +55,7 @@ dotnet add package Typely.Generators
 ```
 
 Create a class inheriting from `ÌTypelyConfiguration`
-```
+```csharp
 public class TypesConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
@@ -64,7 +66,7 @@ public class TypesConfiguration : ITypelyConfiguration
 ```
 
 Usage
-```
+```csharp
 var firstName = FirstName.From("Adam");
 FirstName.From(""); //Throws ValidationException
 
