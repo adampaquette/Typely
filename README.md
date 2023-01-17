@@ -6,7 +6,6 @@
 [![Nuget version](https://img.shields.io/nuget/vpre/Typely.Core?label=Typely.Generators)](https://www.nuget.org/packages/Typely.Generators/)
 [![GitHub last commit](https://img.shields.io/github/last-commit/adampaquette/Typely)](https://github.com/adampaquette/Typely)
 
-
 Typerly lets you create types easily with a fluent API to embrace Domain-driven design and value objects.
 
 ## Example
@@ -54,13 +53,13 @@ dotnet add package Typely.Core
 dotnet add package Typely.Generators
 ```
 
-Create a class inheriting from `ÌTypelyConfiguration`
+Create a class inheriting from `ITypelyConfiguration`
 ```csharp
 public class TypesConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfInt().For("FirstName").NotEmpty();    
+        builder.OfString().For("FirstName").NotEmpty();    
     }
 }
 ```
