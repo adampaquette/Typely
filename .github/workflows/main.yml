@@ -23,12 +23,12 @@ jobs:
       - name: Test
         run: dotnet test --no-restore --verbosity normal
       - name: Upload dotnet test results
-          uses: actions/upload-artifact@v3
-          with:
-            name: dotnet-results-${{ matrix.dotnet-version }}
-            path: TestResults-${{ matrix.dotnet-version }}
-          # Use always() to always run this step to publish test results when there are test failures
-          if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: dotnet-results-${{ matrix.dotnet-version }}
+          path: TestResults-${{ matrix.dotnet-version }}
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
       - name: Create nuget packages
         run: |
           dotnet pack --configuration Release ./src/Typely.Core/Typely.Core.csproj
