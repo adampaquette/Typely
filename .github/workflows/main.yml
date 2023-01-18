@@ -17,11 +17,11 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore ./src/Typely.sln
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build --configuration Release --no-restore ./src/Typely.sln
       - name: Test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test --no-restore --verbosity normal ./src/Typely.sln
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v3
         with:
