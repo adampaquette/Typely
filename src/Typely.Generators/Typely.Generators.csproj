@@ -31,7 +31,7 @@
     </ItemGroup>
     
     <ItemGroup Condition="'$(Configuration)'!='Debug'">        
-        <PackageReference Include="Typely.Core" Version="0.1.0-alpha" GeneratePathProperty="true" ReferenceOutputAssembly="false" />
+        <PackageReference Include="Typely.Core" Version="0.1.1-alpha" GeneratePathProperty="true" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'=='Debug'">
