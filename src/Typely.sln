@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
+		nuget-readme.md = nuget-readme.md
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
@@ -20,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Generators.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Tests", "Typely.Tests\Typely.Tests.csproj", "{C7EE56E0-CEA8-4619-9530-52A8CFC8EFF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.POC", "Typely.POC\Typely.POC.csproj", "{7B8DE8B4-5852-4C00-A564-ED9AC68B9E2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.POC", "Typely.POC\Typely.POC.csproj", "{7B8DE8B4-5852-4C00-A564-ED9AC68B9E2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

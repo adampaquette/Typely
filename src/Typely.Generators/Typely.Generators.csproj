@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <IsRoslynComponent>true</IsRoslynComponent>
-        <Description>Typerly lets you create types easily with a fluent API to embrace Domain-driven design and value objects. This package contains type generators.</Description>
+        <Description>Typely lets you create types easily with a fluent API to embrace Domain-driven design and value objects. This package contains type generators.</Description>
         <VersionPrefix>0.1.0</VersionPrefix>
         <VersionSuffix>alpha</VersionSuffix>
     </PropertyGroup>
@@ -30,8 +30,8 @@
         <PackageReference Include="AgileObjects.NetStandardPolyfills" Version="1.6.0" GeneratePathProperty="true" PrivateAssets="all" />
     </ItemGroup>
     
-    <ItemGroup Condition="'$(Configuration)'!='Debug'">        
-        <PackageReference Include="Typely.Core" Version="0.1.1-alpha" GeneratePathProperty="true" />
+    <ItemGroup Condition="'$(Configuration)'!='Debug'">
+        <PackageReference Include="Typely.Core" Version="0.1.2-alpha" GeneratePathProperty="true" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'=='Debug'">
