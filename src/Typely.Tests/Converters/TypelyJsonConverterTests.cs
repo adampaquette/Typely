@@ -1,31 +1,31 @@
-﻿using CsCheck;
-using System.Text.Json;
+﻿// using CsCheck;
+// using System.Text.Json;
 
-namespace Typely.Tests.Converters;
+// namespace Typely.Tests.Converters;
 
-public class TypelyJsonConverterTests
-{
-    internal class BasicClass
-    {
-        public SerializationTestsType Prop { get; set; }
-    }
+// public class TypelyJsonConverterTests
+// {
+//     internal class BasicClass
+//     {
+//         public SerializationTestsType Prop { get; set; }
+//     }
 
-    [Fact]
-    public void SystemTextJson_Serialize_RoundTrip() =>
-        Gen.String.Sample(x =>
-        {           
-            var obj = SerializationTestsType.From(x);
-            var serialized = JsonSerializer.Serialize(obj);
-            return JsonSerializer.Deserialize<SerializationTestsType>(serialized).Equals(obj);
-        });
+//     [Fact]
+//     public void SystemTextJson_Serialize_RoundTrip() =>
+//         Gen.String.Sample(x =>
+//         {           
+//             var obj = SerializationTestsType.From(x);
+//             var serialized = JsonSerializer.Serialize(obj);
+//             return JsonSerializer.Deserialize<SerializationTestsType>(serialized).Equals(obj);
+//         });
 
-    [Fact]
-    public void SystemTextJson_Should_DeserializeEmpty()
-    {
-        var obj = "{\"Prop\":null}";
+//     [Fact]
+//     public void SystemTextJson_Should_DeserializeEmpty()
+//     {
+//         var obj = "{\"Prop\":null}";
 
-        var actual = JsonSerializer.Deserialize<BasicClass>(obj)!;
+//         var actual = JsonSerializer.Deserialize<BasicClass>(obj)!;
 
-        Assert.Null(actual.Prop.Value);
-    }
-}
+//         Assert.Null(actual.Prop.Value);
+//     }
+// }

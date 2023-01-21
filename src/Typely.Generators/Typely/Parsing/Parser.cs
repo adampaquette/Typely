@@ -13,7 +13,7 @@ namespace Typely.Generators.Typely.Parsing;
 /// <summary>
 /// Parse a <see cref="ClassDeclarationSyntax"/> and generates a list of <see cref="EmittableType"/>.
 /// </summary>
-internal sealed class Parser : IDisposable
+internal sealed class Parser
 {
     private readonly CancellationToken _cancellationToken;
     private readonly Compilation _compilation;
@@ -24,15 +24,16 @@ internal sealed class Parser : IDisposable
         _compilation = compilation;
         _cancellationToken = cancellationToken;
         _reportDiagnostic = reportDiagnostic;
-
-        AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
     }
 
     /// <summary>
     /// Filter classes having an interface name <see cref="ITypelyConfiguration"/>.
     /// </summary>
-    internal static bool IsSyntaxTargetForGeneration(SyntaxNode syntaxNode) =>
+    internal static bool IsTypelyConfigurationClass(SyntaxNode syntaxNode) =>
         syntaxNode is ClassDeclarationSyntax c && c.HasInterface(nameof(ITypelyConfiguration));
+
+    internal static bool IsConfigureMethod(SyntaxNode syntaxNode) =>
+        syntaxNode is MethodDeclarationSyntax c && c.Identifier.Text == nameof(ITypelyConfiguration.Configure);
 
     /// <summary>
     /// Filter classes having an interface <see cref="ITypelyConfiguration"/> that matches the 
@@ -68,97 +69,55 @@ internal sealed class Parser : IDisposable
     {
         _cancellationToken.ThrowIfCancellationRequested();
 
-        var configurationAssembly = CreateConfigurationAssembly(syntaxTree);
-        if (configurationAssembly == null)
+        var root = syntaxTree.GetRoot();
+        var classSyntaxes = root.DescendantNodes().Where(IsTypelyConfigurationClass).ToList();
+        foreach (var classSyntax in classSyntaxes)
         {
-            return Array.Empty<EmittableType>();
+            var methodSyntax = classSyntax.DescendantNodes()
+                .OfType<MethodDeclarationSyntax>()
+                .FirstOrDefault(IsConfigureMethod);
+
+            if (methodSyntax == null || methodSyntax.Body == null)
+            {
+                continue;
+            }
+            var expressionStatements = methodSyntax.Body.DescendantNodes().OfType<ExpressionStatementSyntax>();
+            foreach (var expressionStatement in expressionStatements)
+            {
+                var invocation = expressionStatement.DescendantNodes().OfType<InvocationExpressionSyntax>().FirstOrDefault();
+                if (invocation.Expression is MemberAccessExpressionSyntax)
+                {
+                    var memberSyntax = (MemberAccessExpressionSyntax)invocation.Expression;
+                    var methodName = memberSyntax.Name.Identifier.ValueText;
+                }
+                
+               // var methodName = invocation.Expression.ToString();
+                var arguments = invocation.ArgumentList.Arguments;
+                var target = arguments.First().ToString();           
+            }
         }
 
-        var configurationTypes = configurationAssembly.GetTypes()
-            .Where(x => x.GetInterfaces().Select(x => x.FullName).Contains(typeof(ITypelyConfiguration).FullName))
-            .ToList();
+
+
+        //var configurationTypes = configurationAssembly.GetTypes()
+        //    .Where(x => x.GetInterfaces().Select(x => x.FullName).Contains(typeof(ITypelyConfiguration).FullName))
+        //    .ToList();
 
         var emittableTypes = new List<EmittableType>();
-        foreach (var configurationType in configurationTypes)
-        {
-            var configuration = (ITypelyConfiguration)configurationAssembly.CreateInstance(configurationType.FullName);
-            var builder = new TypelyBuilder(syntaxTree, configurationType);
-            configuration.Configure(builder);
-            emittableTypes.AddRange(builder.GetEmittableTypes());
-        }
+        //foreach (var configurationType in configurationTypes)
+        //{
+        //    var configuration = (ITypelyConfiguration)configurationAssembly.CreateInstance(configurationType.FullName);
+        //    var builder = new TypelyBuilder(syntaxTree, configurationType);
+        //    configuration.Configure(builder);
+        //    emittableTypes.AddRange(builder.GetEmittableTypes());
+        //}
 
         return emittableTypes;
     }
 
-    /// <summary>
-    /// Only resolve known assemblies. 
-    /// </summary>
-    private Assembly? CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args) =>
-        args.Name.Contains($"{nameof(Typely)}.{nameof(Core)}")
-            ? AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName == args.Name)
-            : null;
-
-    /// <summary>
-    /// Compiles the user's code.
-    /// </summary>
-    private Assembly? CreateConfigurationAssembly(SyntaxTree syntaxTree)
+    private string GetMethodName(ExpressionSyntax syntax)
     {
-        var implicitUsings = CreateImplicitUsingsTree(syntaxTree);
-        syntaxTree = ReplaceUnsupportedFeaturesWithTemplates(syntaxTree);
-        var compilation = CSharpCompilation.Create(assemblyName: $"{nameof(Typely)}_{Path.GetRandomFileName()}")
-            .AddReferences(NetStandard20.References.All)
-            .AddReferences(typeof(ITypelyConfiguration))
-            //.AddReferences(_compilation.References) //Swap with thoses for optimisation
-            .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
-            .AddSyntaxTrees(syntaxTree)
-            .AddSyntaxTrees(implicitUsings);
-
-        using var ms = new MemoryStream();
-        var result = compilation.Emit(ms);
-
-        if (!result.Success)
-        {
-            foreach (var diagnostic in result.Diagnostics)
-            {
-                _reportDiagnostic(diagnostic); //TODO Add a prefix to inform that it came from Typely
-            }
-
-            return null;
-        }
-
-        ms.Seek(0, SeekOrigin.Begin);
-        return Assembly.Load(ms.ToArray());
-    }
-
-    private SyntaxTree CreateImplicitUsingsTree(SyntaxTree syntaxTree)
-    {
-        var supportedImplicitUsings = new HashSet<string>
-        {
-            "System",
-            "System.Collections.Generic",
-            "System.IO",
-            "System.Linq",
-            "System.Net.Http",
-            "System.Threading",
-            "System.Threading.Tasks",
-        };
-
-        var root = syntaxTree.GetCompilationUnitRoot();
-        var builder = new StringBuilder("// <auto-generated/>");
-        var missingUsings = supportedImplicitUsings
-            .Where(supportedUsing => !root.Usings.Any(x => x.Name.ToString() == supportedUsing));
-
-        foreach (var missingUsing in missingUsings)
-        {
-            builder
-                .Append(Environment.NewLine)
-                .Append("global using global::")
-                .Append(missingUsing)
-                .Append(";");
-        }
-
-        var globalUsings = builder.ToString();
-        return CSharpSyntaxTree.ParseText(globalUsings);
+        return "";
     }
 
     private SyntaxTree ReplaceUnsupportedFeaturesWithTemplates(SyntaxTree syntaxTree)
@@ -175,14 +134,8 @@ internal sealed class Parser : IDisposable
         return CSharpSyntaxTree.ParseText(modifiedSyntaxTree);
     }
 
-    //private void Diag(DiagnosticDescriptor desc, Location? location, params object?[]? messageArgs)
-    //{
-    //    _reportDiagnostic(Diagnostic.Create(desc, location, messageArgs));
-    //}
-
-    public void Dispose()
+    private void Diag(DiagnosticDescriptor desc, Location? location, params object?[]? messageArgs)
     {
-        AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
-        GC.SuppressFinalize(this);
+        _reportDiagnostic(Diagnostic.Create(desc, location, messageArgs));
     }
 }

@@ -7,9 +7,12 @@ public class CompleteConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfString().For("SerializationTestsType");
+        builder.OfString().For("SerializationTestsType");    
         builder.OfString().For("TypelyOptionTestsType").NotEmpty();
         builder.OfString().For("ValidationErrorTestsType").NotEmpty();
+        var factory = builder.OfString().AsFactory();
+        factory.For("BasicType");
+        factory.For("BasicType2");
 
         builder
             .OfString()
@@ -18,6 +21,6 @@ public class CompleteConfiguration : ITypelyConfiguration
             .WithName("Owner identifier")
             .AsStruct()
             .NotEmpty().WithMessage("'Name' cannot be empty.").WithErrorCode("ERR001")
-            .NotEqual("1");
+            .NotEqual("1"); 
     }
 }

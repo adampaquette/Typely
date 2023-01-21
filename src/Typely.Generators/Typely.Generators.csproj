@@ -8,8 +8,7 @@
         <VersionSuffix>alpha</VersionSuffix>
     </PropertyGroup>
 
-    <ItemGroup>        
-     
+    <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" PrivateAssets="all" />
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
             <PrivateAssets>all</PrivateAssets>
@@ -29,15 +28,11 @@
         <PackageReference Include="AgileObjects.ReadableExpressions" Version="4.0.0" GeneratePathProperty="true" PrivateAssets="all" />
         <PackageReference Include="AgileObjects.NetStandardPolyfills" Version="1.6.0" GeneratePathProperty="true" PrivateAssets="all" />
     </ItemGroup>
-    
-    <ItemGroup Condition="'$(Configuration)'!='Debug'">
-        <PackageReference Include="Typely.Core" Version="0.1.2-alpha" GeneratePathProperty="true" />
-    </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <ItemGroup>
         <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
     </ItemGroup>
-    
+
     <PropertyGroup>
         <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
         <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -45,19 +40,15 @@
     </PropertyGroup>
 
     <Target Name="GetDependencyTargetPaths">
-        <ItemGroup>           
+        <ItemGroup>
             <TargetPathWithTargetPlatformMoniker Include="$(PKGBasic_Reference_Assemblies_NetStandard20)\lib\netstandard2.0\Basic.Reference.Assemblies.NetStandard20.dll" IncludeRuntimeDependency="false" />
             <TargetPathWithTargetPlatformMoniker Include="$(PKGAgileObjects_ReadableExpressions)\lib\netstandard2.0\AgileObjects.ReadableExpressions.dll" IncludeRuntimeDependency="false" />
             <TargetPathWithTargetPlatformMoniker Include="$(PKGAgileObjects_NetStandardPolyfills)\lib\netstandard2.0\AgileObjects.NetStandardPolyfills.dll" IncludeRuntimeDependency="false" />
-        </ItemGroup>
-        <ItemGroup Condition="'$(Configuration)'=='Debug'">
             <TargetPathWithTargetPlatformMoniker Include="..\Typely.Core\$(OutputPath)Typely.Core.dll" IncludeRuntimeDependency="false" />
-        </ItemGroup>
-        <ItemGroup Condition="'$(Configuration)'!='Debug'">
-            <TargetPathWithTargetPlatformMoniker Include="$(PKGTypely_Core)\lib\netstandard2.0\Typely.Core.dll" IncludeRuntimeDependency="false" />
             <!-- Pack both the generator and the dependencies into the generated Nuget Package -->
             <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-            <None Include="$(PKGTypely_Core)\lib\netstandard2.0\Typely.Core.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+            <None Include="..\Typely.Core\bin\Release\net7.0\Typely.Core.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+            <!--<None Include="..\Typely.Core\bin\Release\netstandard2.0\Typely.Core.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />-->
             <None Include="$(PKGBasic_Reference_Assemblies_NetStandard20)\lib\netstandard2.0\Basic.Reference.Assemblies.NetStandard20.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
             <None Include="$(PKGAgileObjects_ReadableExpressions)\lib\netstandard2.0\AgileObjects.ReadableExpressions.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
             <None Include="$(PKGAgileObjects_NetStandardPolyfills)\lib\netstandard2.0\AgileObjects.NetStandardPolyfills.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
