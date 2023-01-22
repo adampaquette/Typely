@@ -2,12 +2,24 @@
 
 namespace Typely.Generators.Typely.Parsing;
 
-internal class SyntaxInvocationResult
+internal class InvocationResult
 {
     /// <summary>
     /// Builder or local variable
     /// </summary>
     public string? Root { get; set; }
 
-    public List<(string MemberName, ArgumentListSyntax ArgumentListSyntax)> MemberAccess { get; } = new();
+    public List<MemberAccess> MembersAccess { get; set; } = new();
+}
+
+internal class MemberAccess
+{
+    public string MemberName { get; set; }
+    public ArgumentListSyntax ArgumentListSyntax { get; set; }
+
+    public MemberAccess(ArgumentListSyntax argumentListSyntax, string memberName)
+    {
+        ArgumentListSyntax = argumentListSyntax;
+        MemberName = memberName;
+    }
 }

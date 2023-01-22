@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
-using Typely.Core.Builders;
+﻿using Typely.Core.Builders;
 using Typely.Generators.Typely.Parsing.Int;
 using Typely.Generators.Typely.Parsing.String;
 
@@ -11,13 +10,11 @@ namespace Typely.Generators.Typely.Parsing;
 internal class TypelyBuilder : ITypelyBuilder
 {
     private readonly List<EmittableType> _emittableTypes = new();
-    private readonly SyntaxTree _syntaxTree;
-    private readonly Type _configurationType;
+    private readonly string _defaultNamespace;
 
-    public TypelyBuilder(SyntaxTree syntaxTree, Type configurationType)
+    public TypelyBuilder(string defaultNamespace)
     {
-        _syntaxTree = syntaxTree;
-        _configurationType = configurationType;
+        _defaultNamespace = defaultNamespace;
     }
 
     public IReadOnlyList<EmittableType> GetEmittableTypes() => _emittableTypes.AsReadOnly();
@@ -26,7 +23,7 @@ internal class TypelyBuilder : ITypelyBuilder
     {
         var emittableType = new EmittableType(
             underlyingType: typeof(int),
-            defaultNamespace: _configurationType.Namespace);
+            defaultNamespace: _defaultNamespace);
 
         _emittableTypes.Add(emittableType);
 
@@ -37,7 +34,7 @@ internal class TypelyBuilder : ITypelyBuilder
     {
         var emittableType = new EmittableType(
             underlyingType: typeof(string),
-            defaultNamespace: _configurationType.Namespace);
+            defaultNamespace: _defaultNamespace);
 
         _emittableTypes.Add(emittableType);
 

@@ -66,7 +66,7 @@ internal sealed class Parser
     private IEnumerable<EmittableType> GetEmittableTypes(SyntaxTree syntaxTree)
     {
         _cancellationToken.ThrowIfCancellationRequested();
-        
+
         var emittableTypes = new List<EmittableType>();
         var root = syntaxTree.GetRoot();
         var classSyntaxes = root.DescendantNodes().Where(IsTypelyConfigurationClass).ToList();
@@ -82,16 +82,16 @@ internal sealed class Parser
             }
 
             //Phase 1 : Parse C# and get the operations
-            var syntaxInvocationResults = new List<SyntaxInvocationResult>();
-            var syntaxInvocationResultVariables = new Dictionary<string, SyntaxInvocationResult>();
+            var invocationResults = new List<InvocationResult>();
+            var invocationResultVariables = new Dictionary<string, InvocationResult>();
             var bodySyntaxNodes = methodSyntax.Body.DescendantNodes();
             foreach (var bodySyntaxNode in bodySyntaxNodes)
             {
                 if (bodySyntaxNode is ExpressionStatementSyntax expressionStatementSyntax)
                 {
-                    var syntaxInvocationResult = new SyntaxInvocationResult();
-                    syntaxInvocationResults.Add(syntaxInvocationResult);
-                    ParseInvocationExpression(expressionStatementSyntax.Expression, syntaxInvocationResult);
+                    var invocationResult = new InvocationResult();
+                    invocationResults.Add(invocationResult);
+                    ParseInvocationExpression(expressionStatementSyntax.Expression, invocationResult);
                 }
                 else if (bodySyntaxNode is LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
                 {
@@ -101,77 +101,62 @@ internal sealed class Parser
                         throw new NotSupportedException("Local declaration without variable");
                     }
 
-                    var syntaxInvocationResult = new SyntaxInvocationResult();
-                    syntaxInvocationResultVariables.Add(variable.Identifier.Text, syntaxInvocationResult);
+                    var invocationResult = new InvocationResult();
+                    invocationResultVariables.Add(variable.Identifier.Text, invocationResult);
                     if (variable.Initializer == null)
                     {
                         throw new NotSupportedException("Initializer null for LocalDeclarationStatementSyntax");
                     }
 
-                    ParseInvocationExpression(variable.Initializer.Value, syntaxInvocationResult);
+                    ParseInvocationExpression(variable.Initializer.Value, invocationResult);
                 }
             }
 
-            //Phase 2 : Create EmittableTypes
-            var configureParameter = methodSyntax.ParameterList.Parameters.First();
-            var typelyBuilderParameterName = configureParameter.Identifier.Text;
-            var normalSyntaxInvocationResults = syntaxInvocationResults.Where(x => x.Root == typelyBuilderParameterName);
+            //Phase 2 : Convert all variable syntaxes to flattened declaration syntaxes
+            var typelyBuilderParameterName = methodSyntax.ParameterList.Parameters.First().Identifier.Text;
+            invocationResults = invocationResults.Where(x => x.Root == typelyBuilderParameterName).ToList();
 
-            foreach (var normalSyntaxInvocationResult in normalSyntaxInvocationResults)
+            //Phase 3 : Create EmittableTypes
+            var defaultNamespace = GetNamespace(classSyntax);
+
+            foreach (var invocationResult in invocationResults)
             {
-                var defaultNamespace = "";
-                Type? type = null;
-                string typeName = "";
-                foreach (var memberAccess in normalSyntaxInvocationResult.MemberAccess)
-                {
-                    switch (memberAccess.MemberName)
-                    {
-                        case nameof(ITypelyBuilder.OfString):
-                            type = typeof(string);
-                            break;
-                        case nameof(ITypelyBuilder.OfInt):
-                            type = typeof(int);
-                            break;
-                        case nameof(ITypelyBuilder<int>.For):
-                            typeName = memberAccess.ArgumentListSyntax.Arguments.First().ToString();
-                            typeName = typeName.Substring(1, typeName.Length - 2);
-                            break;
-                        default: throw new NotSupportedException(memberAccess.MemberName);
-                    }
-                }
-
-                if (type == null)
-                {
-                    throw new Exception("Missing type");
-                }
-
-                var emittableType = new EmittableType(type, defaultNamespace);
-                emittableType.SetTypeName(typeName);
-                emittableTypes.Add(emittableType);
+                var invocationEmittableTypes = InvocationResultParserFactory.Create(defaultNamespace, invocationResult).Parse();
+                emittableTypes.AddRange(invocationEmittableTypes);
             }
         }
-        
-        //foreach (var configurationType in configurationTypes)
-        //{
-        //    var configuration = (ITypelyConfiguration)configurationAssembly.CreateInstance(configurationType.FullName);
-        //    var builder = new TypelyBuilder(syntaxTree, configurationType);
-        //    configuration.Configure(builder);
-        //    emittableTypes.AddRange(builder.GetEmittableTypes());
-        //}
 
         return emittableTypes;
     }
 
-    public void ParseInvocationExpression(CSharpSyntaxNode syntaxNode, SyntaxInvocationResult syntaxInvocationResult)
+    private string GetNamespace(SyntaxNode classSyntax)
+    {
+        while (classSyntax.Parent != null)
+        {
+            if (classSyntax.Parent is NamespaceDeclarationSyntax namespaceDeclarationSyntax)
+            {
+                return namespaceDeclarationSyntax.Name.ToString();
+            }
+            else if (classSyntax.Parent is FileScopedNamespaceDeclarationSyntax fileScopedNamespaceDeclarationSyntax)
+            {
+                return fileScopedNamespaceDeclarationSyntax.Name.ToString();
+            }
+
+            classSyntax = classSyntax.Parent;
+        }
+        return string.Empty;
+    }
+
+    public void ParseInvocationExpression(CSharpSyntaxNode syntaxNode, InvocationResult syntaxInvocationResult)
     {
         if (syntaxNode is InvocationExpressionSyntax invocationExpressionSyntax)
         {
             if (invocationExpressionSyntax.Expression is MemberAccessExpressionSyntax memberAccessExpressionSyntax)
             {
                 var memberName = memberAccessExpressionSyntax.Name.Identifier.Text;
-                var arguments = invocationExpressionSyntax.ArgumentList;
+                var argumentList = invocationExpressionSyntax.ArgumentList;
 
-                syntaxInvocationResult.MemberAccess.Add((memberName, arguments));
+                syntaxInvocationResult.MembersAccess.Insert(0, new MemberAccess(argumentList, memberName));
 
                 ParseInvocationExpression(memberAccessExpressionSyntax.Expression, syntaxInvocationResult);
             }
