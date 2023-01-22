@@ -204,7 +204,7 @@ internal class Emitter
     {
         var validationExpression = emittableValidation.Rule as LambdaExpression;
         var parameterModifier = new ValidationParameterModifier(validationExpression!.Parameters[0]);
-        var modifiedValidationExpression = (LambdaExpression)parameterModifier.Modify(validationExpression);
+        var modifiedValidationExpression = parameterModifier.Modify(validationExpression);
         return modifiedValidationExpression.Body.ToReadableString();
     }
 

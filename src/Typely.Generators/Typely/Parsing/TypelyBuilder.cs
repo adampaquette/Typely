@@ -25,9 +25,8 @@ internal class TypelyBuilder : ITypelyBuilder
     public ITypelyBuilderOfInt OfInt()
     {
         var emittableType = new EmittableType(
-            syntaxTree: _syntaxTree,
             underlyingType: typeof(int),
-            @namespace: _configurationType.Namespace);
+            defaultNamespace: _configurationType.Namespace);
 
         _emittableTypes.Add(emittableType);
 
@@ -37,9 +36,8 @@ internal class TypelyBuilder : ITypelyBuilder
     public ITypelyBuilderOfString OfString()
     {
         var emittableType = new EmittableType(
-            syntaxTree: _syntaxTree,
             underlyingType: typeof(string),
-            @namespace: _configurationType.Namespace);
+            defaultNamespace: _configurationType.Namespace);
 
         _emittableTypes.Add(emittableType);
 

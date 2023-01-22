@@ -8,8 +8,6 @@ namespace Typely.Generators.Typely.Parsing;
 /// </summary>
 internal class EmittableType
 {
-    public SyntaxTree SyntaxTree { get; }
-
     /// <summary>
     /// Type wrapped by the value object.
     /// </summary>
@@ -45,11 +43,10 @@ internal class EmittableType
     /// </summary>
     public EmittableRule? CurrentRule { get; set; } = null;
 
-    public EmittableType(SyntaxTree syntaxTree, Type underlyingType, string @namespace)
+    public EmittableType(Type underlyingType, string defaultNamespace)
     {
-        SyntaxTree = syntaxTree;
         UnderlyingType = underlyingType;
-        Namespace = @namespace;
+        Namespace = defaultNamespace;
     }
 
     /// <summary>
@@ -124,7 +121,7 @@ internal class EmittableType
     /// <returns>The copied rule.</returns>
     public EmittableType Clone()
     {
-        var emittableType = new EmittableType(SyntaxTree, UnderlyingType, Namespace)
+        var emittableType = new EmittableType(UnderlyingType, Namespace)
         {
             TypeName = TypeName,
             ConstructTypeKind = ConstructTypeKind,

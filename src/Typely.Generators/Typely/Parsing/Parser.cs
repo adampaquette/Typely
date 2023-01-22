@@ -1,11 +1,9 @@
-﻿using Basic.Reference.Assemblies;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
+using System.Linq.Expressions;
 using Typely.Core;
+using Typely.Core.Builders;
 using Typely.Generators.Extensions;
 
 namespace Typely.Generators.Typely.Parsing;
@@ -68,7 +66,8 @@ internal sealed class Parser
     private IEnumerable<EmittableType> GetEmittableTypes(SyntaxTree syntaxTree)
     {
         _cancellationToken.ThrowIfCancellationRequested();
-
+        
+        var emittableTypes = new List<EmittableType>();
         var root = syntaxTree.GetRoot();
         var classSyntaxes = root.DescendantNodes().Where(IsTypelyConfigurationClass).ToList();
         foreach (var classSyntax in classSyntaxes)
@@ -81,29 +80,77 @@ internal sealed class Parser
             {
                 continue;
             }
-            var expressionStatements = methodSyntax.Body.DescendantNodes().OfType<ExpressionStatementSyntax>();
-            foreach (var expressionStatement in expressionStatements)
+
+            //Phase 1 : Parse C# and get the operations
+            var syntaxInvocationResults = new List<SyntaxInvocationResult>();
+            var syntaxInvocationResultVariables = new Dictionary<string, SyntaxInvocationResult>();
+            var bodySyntaxNodes = methodSyntax.Body.DescendantNodes();
+            foreach (var bodySyntaxNode in bodySyntaxNodes)
             {
-                var invocation = expressionStatement.DescendantNodes().OfType<InvocationExpressionSyntax>().FirstOrDefault();
-                if (invocation.Expression is MemberAccessExpressionSyntax)
+                if (bodySyntaxNode is ExpressionStatementSyntax expressionStatementSyntax)
                 {
-                    var memberSyntax = (MemberAccessExpressionSyntax)invocation.Expression;
-                    var methodName = memberSyntax.Name.Identifier.ValueText;
+                    var syntaxInvocationResult = new SyntaxInvocationResult();
+                    syntaxInvocationResults.Add(syntaxInvocationResult);
+                    ParseInvocationExpression(expressionStatementSyntax.Expression, syntaxInvocationResult);
                 }
-                
-               // var methodName = invocation.Expression.ToString();
-                var arguments = invocation.ArgumentList.Arguments;
-                var target = arguments.First().ToString();           
+                else if (bodySyntaxNode is LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
+                {
+                    var variable = localDeclarationStatementSyntax.Declaration.Variables.FirstOrDefault();
+                    if (variable == null)
+                    {
+                        throw new NotSupportedException("Local declaration without variable");
+                    }
+
+                    var syntaxInvocationResult = new SyntaxInvocationResult();
+                    syntaxInvocationResultVariables.Add(variable.Identifier.Text, syntaxInvocationResult);
+                    if (variable.Initializer == null)
+                    {
+                        throw new NotSupportedException("Initializer null for LocalDeclarationStatementSyntax");
+                    }
+
+                    ParseInvocationExpression(variable.Initializer.Value, syntaxInvocationResult);
+                }
+            }
+
+            //Phase 2 : Create EmittableTypes
+            var configureParameter = methodSyntax.ParameterList.Parameters.First();
+            var typelyBuilderParameterName = configureParameter.Identifier.Text;
+            var normalSyntaxInvocationResults = syntaxInvocationResults.Where(x => x.Root == typelyBuilderParameterName);
+
+            foreach (var normalSyntaxInvocationResult in normalSyntaxInvocationResults)
+            {
+                var defaultNamespace = "";
+                Type? type = null;
+                string typeName = "";
+                foreach (var memberAccess in normalSyntaxInvocationResult.MemberAccess)
+                {
+                    switch (memberAccess.MemberName)
+                    {
+                        case nameof(ITypelyBuilder.OfString):
+                            type = typeof(string);
+                            break;
+                        case nameof(ITypelyBuilder.OfInt):
+                            type = typeof(int);
+                            break;
+                        case nameof(ITypelyBuilder<int>.For):
+                            typeName = memberAccess.ArgumentListSyntax.Arguments.First().ToString();
+                            typeName = typeName.Substring(1, typeName.Length - 2);
+                            break;
+                        default: throw new NotSupportedException(memberAccess.MemberName);
+                    }
+                }
+
+                if (type == null)
+                {
+                    throw new Exception("Missing type");
+                }
+
+                var emittableType = new EmittableType(type, defaultNamespace);
+                emittableType.SetTypeName(typeName);
+                emittableTypes.Add(emittableType);
             }
         }
-
-
-
-        //var configurationTypes = configurationAssembly.GetTypes()
-        //    .Where(x => x.GetInterfaces().Select(x => x.FullName).Contains(typeof(ITypelyConfiguration).FullName))
-        //    .ToList();
-
-        var emittableTypes = new List<EmittableType>();
+        
         //foreach (var configurationType in configurationTypes)
         //{
         //    var configuration = (ITypelyConfiguration)configurationAssembly.CreateInstance(configurationType.FullName);
@@ -115,23 +162,28 @@ internal sealed class Parser
         return emittableTypes;
     }
 
-    private string GetMethodName(ExpressionSyntax syntax)
+    public void ParseInvocationExpression(CSharpSyntaxNode syntaxNode, SyntaxInvocationResult syntaxInvocationResult)
     {
-        return "";
-    }
+        if (syntaxNode is InvocationExpressionSyntax invocationExpressionSyntax)
+        {
+            if (invocationExpressionSyntax.Expression is MemberAccessExpressionSyntax memberAccessExpressionSyntax)
+            {
+                var memberName = memberAccessExpressionSyntax.Name.Identifier.Text;
+                var arguments = invocationExpressionSyntax.ArgumentList;
 
-    private SyntaxTree ReplaceUnsupportedFeaturesWithTemplates(SyntaxTree syntaxTree)
-    {
-        //External class, .resx are not supported for now
-        var modifiedSyntaxTree = Regex.Replace(syntaxTree.ToString(),
-            @"\.\s*?WithName\s*?\(\s*?\(\s*?\)\s*?=>\s*((?>.|\n)*?)\)",
-            $".WithName({Consts.BypassExecution}$1\")");
+                syntaxInvocationResult.MemberAccess.Add((memberName, arguments));
 
-        modifiedSyntaxTree = Regex.Replace(modifiedSyntaxTree,
-            @"\.\s*?WithMessage\s*?\(\s*?\(\s*?\)\s*?=>\s*((?>.|\n)*?)\)",
-            $".WithMessage({Consts.BypassExecution}$1\")");
-
-        return CSharpSyntaxTree.ParseText(modifiedSyntaxTree);
+                ParseInvocationExpression(memberAccessExpressionSyntax.Expression, syntaxInvocationResult);
+            }
+        }
+        else if (syntaxNode is IdentifierNameSyntax nameSyntax)
+        {
+            syntaxInvocationResult.Root = nameSyntax.Identifier.Text;
+        }
+        else
+        {
+            throw new NotSupportedException(syntaxNode.ToString());
+        }
     }
 
     private void Diag(DiagnosticDescriptor desc, Location? location, params object?[]? messageArgs)

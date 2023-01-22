@@ -20,7 +20,7 @@ internal class ValidationParameterModifier : ExpressionVisitor
     /// </summary>
     /// <param name="expression">Expression to modify.</param>
     /// <returns>The modified expression.</returns>
-    public Expression Modify(LambdaExpression expression) => Visit(expression)!;
+    public LambdaExpression Modify(LambdaExpression expression) => (LambdaExpression)Visit(expression)!;
 
     protected override Expression VisitParameter(ParameterExpression node) =>
         node == ParameterExp
