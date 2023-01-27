@@ -16,6 +16,8 @@ internal sealed class Parser
     private readonly CancellationToken _cancellationToken;
     private readonly Compilation _compilation;
     private readonly Action<Diagnostic> _reportDiagnostic;
+    
+    private const string AsFactory = "AsFactory";
 
     public Parser(Compilation compilation, Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
     {
@@ -84,12 +86,16 @@ internal sealed class Parser
             //Phase 1 : Parse C# and get the operations
             var invocationResults = new List<InvocationResult>();
             var invocationResultVariables = new Dictionary<string, InvocationResult>();
-            var bodySyntaxNodes = methodSyntax.Body.DescendantNodes();
+            var bodySyntaxNodes = methodSyntax.Body.DescendantNodes().Where(x => x is ExpressionStatementSyntax || x is LocalDeclarationStatementSyntax);
+            var typelyBuilderParameterName = methodSyntax.ParameterList.Parameters.First().Identifier.Text;
+
             foreach (var bodySyntaxNode in bodySyntaxNodes)
             {
+                var invocationResult = new InvocationResult();
+
                 if (bodySyntaxNode is ExpressionStatementSyntax expressionStatementSyntax)
                 {
-                    var invocationResult = new InvocationResult();
+
                     invocationResults.Add(invocationResult);
                     ParseInvocationExpression(expressionStatementSyntax.Expression, invocationResult);
                 }
@@ -101,7 +107,6 @@ internal sealed class Parser
                         throw new NotSupportedException("Local declaration without variable");
                     }
 
-                    var invocationResult = new InvocationResult();
                     invocationResultVariables.Add(variable.Identifier.Text, invocationResult);
                     if (variable.Initializer == null)
                     {
@@ -110,11 +115,21 @@ internal sealed class Parser
 
                     ParseInvocationExpression(variable.Initializer.Value, invocationResult);
                 }
-            }
 
-            //Phase 2 : Convert all variable syntaxes to flattened declaration syntaxes
-            var typelyBuilderParameterName = methodSyntax.ParameterList.Parameters.First().Identifier.Text;
-            invocationResults = invocationResults.Where(x => x.Root == typelyBuilderParameterName).ToList();
+                //Build the actual members access of the invocation
+                if (IsBuiltFromVariable(invocationResult))
+                {
+                    var invocationResultVariable = invocationResultVariables[invocationResult.Root];
+                    var members = invocationResultVariable.MembersAccess;
+                    //if (members.Count > 0 && members[members.Count - 1].MemberName == AsFactory)
+                    //{
+                    //    members.RemoveAt(members.Count - 1);
+                    //}
+
+                    invocationResult.MembersAccess.InsertRange(0, members);
+                    invocationResult.Root = invocationResultVariable.Root;
+                }
+            }
 
             //Phase 3 : Create EmittableTypes
             var defaultNamespace = GetNamespace(classSyntax);
@@ -124,6 +139,8 @@ internal sealed class Parser
                 var invocationEmittableTypes = InvocationResultParserFactory.Create(defaultNamespace, invocationResult).Parse();
                 emittableTypes.AddRange(invocationEmittableTypes);
             }
+
+            bool IsBuiltFromVariable(InvocationResult invocationResult) => invocationResult.Root != typelyBuilderParameterName;
         }
 
         return emittableTypes;

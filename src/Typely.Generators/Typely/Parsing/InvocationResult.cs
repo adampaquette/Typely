@@ -7,7 +7,7 @@ internal class InvocationResult
     /// <summary>
     /// Builder or local variable
     /// </summary>
-    public string? Root { get; set; }
+    public string Root { get; set; } = string.Empty;
 
     public List<MemberAccess> MembersAccess { get; set; } = new();
 }

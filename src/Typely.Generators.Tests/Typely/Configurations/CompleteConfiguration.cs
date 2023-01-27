@@ -7,14 +7,18 @@ internal class CompleteConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder) 
     {
-        builder.OfInt().For("Votes");
+        var boi = builder.OfInt().For("Votes");
+        boi.For("aaa");
+
         //builder.OfString().For("Username");
-        builder.OfString().For("Code").Length(4).NotEqual("0000");
+        //builder.OfString().For("Code").Length(4).NotEqual("0000");
 
         //// Create a reusable factory
         var sf = builder.OfString().AsFactory();
 
-        sf.For("UserId")
+        var sf2 = sf.WithName("Username").AsFactory();
+
+        sf2.For("UserId")
             .WithNamespace("UserAggregate")
             .WithName("Owner identifier")
             .NotEmpty()
