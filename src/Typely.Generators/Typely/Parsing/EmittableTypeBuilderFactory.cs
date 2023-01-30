@@ -2,42 +2,42 @@
 
 namespace Typely.Generators.Typely.Parsing;
 
-internal class InvocationResultParserFactory
+internal class EmittableTypeBuilderFactory
 {
-    public static IInvocationResultParser Create(string defaultNamespace, InvocationResult invocationResult)
+    public static IEmittableTypeBuilder Create(string defaultNamespace, ParsedExpressionStatement invocationResult)
     {
-        if (invocationResult.MembersAccess.Count == 0)
+        if (invocationResult.Invocations.Count == 0)
         {
             throw new InvalidOperationException("MemberAccess cannot be empty");
         }
 
-        var builderType = invocationResult.MembersAccess.First().MemberName;
-        var membersAccess = invocationResult.MembersAccess.Skip(1);
+        var builderType = invocationResult.Invocations.First().MemberName;
+        var membersAccess = invocationResult.Invocations.Skip(1);
         var typelyBuilder = new TypelyBuilder(defaultNamespace);
 
         switch (builderType)
         {
             case nameof(ITypelyBuilder.OfString):
-                return new InvocationResultParserOfString(typelyBuilder, membersAccess);
+                return new EmittableTypeBuilderOfString(typelyBuilder, membersAccess);
             case nameof(ITypelyBuilder.OfInt):
-                return new InvocationResultParserOfInt(typelyBuilder, membersAccess);
+                return new EmittableTypeBuilderOfInt(typelyBuilder, membersAccess);
             default: throw new InvalidOperationException($"Unknown builder type: {builderType}");
         }
     }
 }
 
-internal interface IInvocationResultParser
+internal interface IEmittableTypeBuilder
 {
     IReadOnlyList<EmittableType> Parse();
 }
 
-internal class InvocationResultParserOfInt : IInvocationResultParser
+internal class EmittableTypeBuilderOfInt : IEmittableTypeBuilder
 {
     private readonly TypelyBuilder _containerBuilder;
     private readonly ITypelyBuilderOfInt _builder;
-    private IEnumerable<MemberAccess> _membersAccess;
+    private IEnumerable<ParsedInvocation> _membersAccess;
 
-    public InvocationResultParserOfInt(TypelyBuilder containerBuilder, IEnumerable<MemberAccess> membersAccess)
+    public EmittableTypeBuilderOfInt(TypelyBuilder containerBuilder, IEnumerable<ParsedInvocation> membersAccess)
     {
         _containerBuilder = containerBuilder;
         _builder = containerBuilder.OfInt();
@@ -63,13 +63,13 @@ internal class InvocationResultParserOfInt : IInvocationResultParser
     }
 }
 
-internal class InvocationResultParserOfString : IInvocationResultParser
+internal class EmittableTypeBuilderOfString : IEmittableTypeBuilder
 {
     private readonly TypelyBuilder _containerBuilder;
     private readonly ITypelyBuilderOfString _builder;
-    private IEnumerable<MemberAccess> _membersAccess;
+    private IEnumerable<ParsedInvocation> _membersAccess;
 
-    public InvocationResultParserOfString(TypelyBuilder containerBuilder, IEnumerable<MemberAccess> membersAccess)
+    public EmittableTypeBuilderOfString(TypelyBuilder containerBuilder, IEnumerable<ParsedInvocation> membersAccess)
     {
         _containerBuilder = containerBuilder;
         _builder = containerBuilder.OfString();

@@ -16,7 +16,7 @@ internal sealed class Parser
     private readonly CancellationToken _cancellationToken;
     private readonly Compilation _compilation;
     private readonly Action<Diagnostic> _reportDiagnostic;
-    
+
     private const string AsFactory = "AsFactory";
 
     public Parser(Compilation compilation, Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
@@ -78,72 +78,79 @@ internal sealed class Parser
                 .OfType<MethodDeclarationSyntax>()
                 .FirstOrDefault(IsConfigureMethod);
 
-            if (methodSyntax == null || methodSyntax.Body == null)
-            {
-                continue;
-            }
-
-            //Phase 1 : Parse C# and get the operations
-            var invocationResults = new List<InvocationResult>();
-            var invocationResultVariables = new Dictionary<string, InvocationResult>();
-            var bodySyntaxNodes = methodSyntax.Body.DescendantNodes().Where(x => x is ExpressionStatementSyntax || x is LocalDeclarationStatementSyntax);
             var typelyBuilderParameterName = methodSyntax.ParameterList.Parameters.First().Identifier.Text;
-
-            foreach (var bodySyntaxNode in bodySyntaxNodes)
-            {
-                var invocationResult = new InvocationResult();
-
-                if (bodySyntaxNode is ExpressionStatementSyntax expressionStatementSyntax)
-                {
-
-                    invocationResults.Add(invocationResult);
-                    ParseInvocationExpression(expressionStatementSyntax.Expression, invocationResult);
-                }
-                else if (bodySyntaxNode is LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
-                {
-                    var variable = localDeclarationStatementSyntax.Declaration.Variables.FirstOrDefault();
-                    if (variable == null)
-                    {
-                        throw new NotSupportedException("Local declaration without variable");
-                    }
-
-                    invocationResultVariables.Add(variable.Identifier.Text, invocationResult);
-                    if (variable.Initializer == null)
-                    {
-                        throw new NotSupportedException("Initializer null for LocalDeclarationStatementSyntax");
-                    }
-
-                    ParseInvocationExpression(variable.Initializer.Value, invocationResult);
-                }
-
-                //Build the actual members access of the invocation
-                if (IsBuiltFromVariable(invocationResult))
-                {
-                    var invocationResultVariable = invocationResultVariables[invocationResult.Root];
-                    var members = invocationResultVariable.MembersAccess;
-                    //if (members.Count > 0 && members[members.Count - 1].MemberName == AsFactory)
-                    //{
-                    //    members.RemoveAt(members.Count - 1);
-                    //}
-
-                    invocationResult.MembersAccess.InsertRange(0, members);
-                    invocationResult.Root = invocationResultVariable.Root;
-                }
-            }
-
-            //Phase 3 : Create EmittableTypes
+            var parsedExpressionStatements = ParseStatements(methodSyntax, typelyBuilderParameterName);
             var defaultNamespace = GetNamespace(classSyntax);
 
-            foreach (var invocationResult in invocationResults)
+            foreach (var parsedExpressionStatement in parsedExpressionStatements)
             {
-                var invocationEmittableTypes = InvocationResultParserFactory.Create(defaultNamespace, invocationResult).Parse();
+                var invocationEmittableTypes = EmittableTypeBuilderFactory.Create(defaultNamespace, parsedExpressionStatement).Parse();
                 emittableTypes.AddRange(invocationEmittableTypes);
             }
-
-            bool IsBuiltFromVariable(InvocationResult invocationResult) => invocationResult.Root != typelyBuilderParameterName;
         }
 
         return emittableTypes;
+    }
+
+    private static List<ParsedExpressionStatement> ParseStatements(MethodDeclarationSyntax methodDeclarationSyntax, string typelyBuilderParameterName)
+    {
+        if (methodDeclarationSyntax == null || methodDeclarationSyntax.Body == null)
+        {
+            return Enumerable.Empty<ParsedExpressionStatement>().ToList();
+        }
+
+        var bodySyntaxNodes = methodDeclarationSyntax.Body.DescendantNodes().Where(x => x is ExpressionStatementSyntax || x is LocalDeclarationStatementSyntax);
+        var parsedExpressions = new List<ParsedExpressionStatement>();
+        var parsedExpressionVariables = new Dictionary<string, ParsedExpressionStatement>();
+
+        foreach (var bodySyntaxNode in bodySyntaxNodes)
+        {
+            var parsedExpression = new ParsedExpressionStatement();
+
+            if (bodySyntaxNode is ExpressionStatementSyntax expressionStatementSyntax)
+            {
+                parsedExpressions.Add(parsedExpression);
+                ParseInvocationExpression(expressionStatementSyntax.Expression, parsedExpression);
+            }
+            else if (bodySyntaxNode is LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
+            {
+                ParseDeclarationStatement(parsedExpressionVariables, parsedExpression, localDeclarationStatementSyntax);
+            }
+
+            if (DoesNotUseBuilderParameter(parsedExpression))
+            {
+                MergeVariableInvocations(parsedExpressionVariables, parsedExpression);
+            }
+        }
+
+        return parsedExpressions;
+
+        bool DoesNotUseBuilderParameter(ParsedExpressionStatement invocationResult) => invocationResult.Root != typelyBuilderParameterName;
+    }
+    
+    static void ParseDeclarationStatement(Dictionary<string, ParsedExpressionStatement> parsedExpressionVariables, ParsedExpressionStatement parsedExpression, LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
+        {
+            var variable = localDeclarationStatementSyntax.Declaration.Variables.FirstOrDefault();
+            if (variable == null)
+            {
+                throw new NotSupportedException("Local declaration without variable");
+            }
+
+            parsedExpressionVariables.Add(variable.Identifier.Text, parsedExpression);
+            if (variable.Initializer == null)
+            {
+                throw new NotSupportedException("Initializer null for LocalDeclarationStatementSyntax");
+            }
+
+            ParseInvocationExpression(variable.Initializer.Value, parsedExpression);
+        }
+
+    private static void MergeVariableInvocations(Dictionary<string, ParsedExpressionStatement> parsedExpressionVariables, ParsedExpressionStatement parsedExpression)
+    {
+        var parsedExpressionVariable = parsedExpressionVariables[parsedExpression.Root];
+
+        parsedExpression.Invocations.InsertRange(0, parsedExpressionVariable.Invocations);
+        parsedExpression.Root = parsedExpressionVariable.Root;
     }
 
     private string GetNamespace(SyntaxNode classSyntax)
@@ -164,7 +171,7 @@ internal sealed class Parser
         return string.Empty;
     }
 
-    public void ParseInvocationExpression(CSharpSyntaxNode syntaxNode, InvocationResult syntaxInvocationResult)
+    private static void ParseInvocationExpression(CSharpSyntaxNode syntaxNode, ParsedExpressionStatement parsedExpression)
     {
         if (syntaxNode is InvocationExpressionSyntax invocationExpressionSyntax)
         {
@@ -173,14 +180,14 @@ internal sealed class Parser
                 var memberName = memberAccessExpressionSyntax.Name.Identifier.Text;
                 var argumentList = invocationExpressionSyntax.ArgumentList;
 
-                syntaxInvocationResult.MembersAccess.Insert(0, new MemberAccess(argumentList, memberName));
+                parsedExpression.Invocations.Insert(0, new ParsedInvocation(argumentList, memberName));
 
-                ParseInvocationExpression(memberAccessExpressionSyntax.Expression, syntaxInvocationResult);
+                ParseInvocationExpression(memberAccessExpressionSyntax.Expression, parsedExpression);
             }
         }
         else if (syntaxNode is IdentifierNameSyntax nameSyntax)
         {
-            syntaxInvocationResult.Root = nameSyntax.Identifier.Text;
+            parsedExpression.Root = nameSyntax.Identifier.Text;
         }
         else
         {
