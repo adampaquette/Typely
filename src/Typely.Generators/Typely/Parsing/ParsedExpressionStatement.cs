@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-namespace Typely.Generators.Typely.Parsing;
+﻿namespace Typely.Generators.Typely.Parsing;
 
 internal class ParsedExpressionStatement
 {

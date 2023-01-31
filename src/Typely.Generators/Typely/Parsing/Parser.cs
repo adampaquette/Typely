@@ -74,22 +74,27 @@ internal sealed class Parser
         var classSyntaxes = root.DescendantNodes().Where(IsTypelyConfigurationClass).ToList();
         foreach (var classSyntax in classSyntaxes)
         {
-            var methodSyntax = classSyntax.DescendantNodes()
-                .OfType<MethodDeclarationSyntax>()
-                .FirstOrDefault(IsConfigureMethod);
-
-            var typelyBuilderParameterName = methodSyntax.ParameterList.Parameters.First().Identifier.Text;
-            var parsedExpressionStatements = ParseStatements(methodSyntax, typelyBuilderParameterName);
-            var defaultNamespace = GetNamespace(classSyntax);
-
-            foreach (var parsedExpressionStatement in parsedExpressionStatements)
-            {
-                var invocationEmittableTypes = EmittableTypeBuilderFactory.Create(defaultNamespace, parsedExpressionStatement).Parse();
-                emittableTypes.AddRange(invocationEmittableTypes);
-            }
+            ParseClass(emittableTypes, classSyntax);
         }
 
         return emittableTypes;
+    }
+
+    private void ParseClass(List<EmittableType> emittableTypes, SyntaxNode? classSyntax)
+    {
+        var methodSyntax = classSyntax.DescendantNodes()
+            .OfType<MethodDeclarationSyntax>()
+            .FirstOrDefault(IsConfigureMethod);
+
+        var typelyBuilderParameterName = methodSyntax.ParameterList.Parameters.First().Identifier.Text;
+        var parsedExpressionStatements = ParseStatements(methodSyntax, typelyBuilderParameterName);
+        var defaultNamespace = GetNamespace(classSyntax);
+
+        foreach (var parsedExpressionStatement in parsedExpressionStatements)
+        {
+            var invocationEmittableTypes = EmittableTypeBuilderFactory.Create(defaultNamespace, parsedExpressionStatement).Parse();
+            emittableTypes.AddRange(invocationEmittableTypes);
+        }
     }
 
     private static List<ParsedExpressionStatement> ParseStatements(MethodDeclarationSyntax methodDeclarationSyntax, string typelyBuilderParameterName)
