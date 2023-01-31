@@ -74,18 +74,25 @@ internal sealed class Parser
         var classSyntaxes = root.DescendantNodes().Where(IsTypelyConfigurationClass).ToList();
         foreach (var classSyntax in classSyntaxes)
         {
-            ParseClass(emittableTypes, classSyntax);
+            var classEmittableTypes = ParseClass(classSyntax);
+            emittableTypes.AddRange(classEmittableTypes);
         }
 
         return emittableTypes;
     }
 
-    private void ParseClass(List<EmittableType> emittableTypes, SyntaxNode? classSyntax)
+    private IEnumerable<EmittableType> ParseClass(SyntaxNode classSyntax)
     {
         var methodSyntax = classSyntax.DescendantNodes()
             .OfType<MethodDeclarationSyntax>()
             .FirstOrDefault(IsConfigureMethod);
 
+        if (methodSyntax == null)
+        {
+            return Enumerable.Empty<EmittableType>();
+        }
+
+        var emittableTypes = new List<EmittableType>();
         var typelyBuilderParameterName = methodSyntax.ParameterList.Parameters.First().Identifier.Text;
         var parsedExpressionStatements = ParseStatements(methodSyntax, typelyBuilderParameterName);
         var defaultNamespace = GetNamespace(classSyntax);
@@ -95,6 +102,8 @@ internal sealed class Parser
             var invocationEmittableTypes = EmittableTypeBuilderFactory.Create(defaultNamespace, parsedExpressionStatement).Parse();
             emittableTypes.AddRange(invocationEmittableTypes);
         }
+
+        return emittableTypes;
     }
 
     private static List<ParsedExpressionStatement> ParseStatements(MethodDeclarationSyntax methodDeclarationSyntax, string typelyBuilderParameterName)
@@ -132,23 +141,23 @@ internal sealed class Parser
 
         bool DoesNotUseBuilderParameter(ParsedExpressionStatement invocationResult) => invocationResult.Root != typelyBuilderParameterName;
     }
-    
+
     static void ParseDeclarationStatement(Dictionary<string, ParsedExpressionStatement> parsedExpressionVariables, ParsedExpressionStatement parsedExpression, LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
+    {
+        var variable = localDeclarationStatementSyntax.Declaration.Variables.FirstOrDefault();
+        if (variable == null)
         {
-            var variable = localDeclarationStatementSyntax.Declaration.Variables.FirstOrDefault();
-            if (variable == null)
-            {
-                throw new NotSupportedException("Local declaration without variable");
-            }
-
-            parsedExpressionVariables.Add(variable.Identifier.Text, parsedExpression);
-            if (variable.Initializer == null)
-            {
-                throw new NotSupportedException("Initializer null for LocalDeclarationStatementSyntax");
-            }
-
-            ParseInvocationExpression(variable.Initializer.Value, parsedExpression);
+            throw new NotSupportedException("Local declaration without variable");
         }
+
+        parsedExpressionVariables.Add(variable.Identifier.Text, parsedExpression);
+        if (variable.Initializer == null)
+        {
+            throw new NotSupportedException("Initializer null for LocalDeclarationStatementSyntax");
+        }
+
+        ParseInvocationExpression(variable.Initializer.Value, parsedExpression);
+    }
 
     private static void MergeVariableInvocations(Dictionary<string, ParsedExpressionStatement> parsedExpressionVariables, ParsedExpressionStatement parsedExpression)
     {
