@@ -72,16 +72,23 @@ internal sealed class Parser
         var emittableTypes = new List<EmittableType>();
         var root = syntaxTree.GetRoot();
         var classSyntaxes = root.DescendantNodes().Where(IsTypelyConfigurationClass).ToList();
+        var model = _compilation.GetSemanticModel(syntaxTree);
         foreach (var classSyntax in classSyntaxes)
         {
-            var classEmittableTypes = ParseClass(classSyntax);
+            var classEmittableTypes = ParseClass(classSyntax, model);
             emittableTypes.AddRange(classEmittableTypes);
         }
 
         return emittableTypes;
     }
 
-    private IEnumerable<EmittableType> ParseClass(SyntaxNode classSyntax)
+    /// <summary>
+    /// Parse a <see cref="ClassDeclarationSyntax"/> and generate a list of <see cref="EmittableType"/>.
+    /// </summary>
+    /// <param name="classSyntax">The class to parse.</param>
+    /// <param name="model">The <see cref="SemanticModel"/>.</param>
+    /// <returns>A list of <see cref="EmittableType"/>.</returns>
+    private IEnumerable<EmittableType> ParseClass(SyntaxNode classSyntax, SemanticModel model)
     {
         var methodSyntax = classSyntax.DescendantNodes()
             .OfType<MethodDeclarationSyntax>()
@@ -94,41 +101,52 @@ internal sealed class Parser
 
         var emittableTypes = new List<EmittableType>();
         var typelyBuilderParameterName = methodSyntax.ParameterList.Parameters.First().Identifier.Text;
-        var parsedExpressionStatements = ParseStatements(methodSyntax, typelyBuilderParameterName);
+        var parsedExpressionStatements = ParseStatements(methodSyntax, typelyBuilderParameterName, model);
         var defaultNamespace = GetNamespace(classSyntax);
 
         foreach (var parsedExpressionStatement in parsedExpressionStatements)
         {
-            var invocationEmittableTypes = EmittableTypeBuilderFactory.Create(defaultNamespace, parsedExpressionStatement).Parse();
-            emittableTypes.AddRange(invocationEmittableTypes);
+            var invocationEmittableTypes =
+                EmittableTypeBuilderFactory.Create(defaultNamespace, parsedExpressionStatement).Build();
+            emittableTypes.Add(invocationEmittableTypes);
         }
 
         return emittableTypes;
     }
 
-    private static List<ParsedExpressionStatement> ParseStatements(MethodDeclarationSyntax methodDeclarationSyntax, string typelyBuilderParameterName)
+    /// <summary>
+    /// Parse each line of code of a method.
+    /// </summary>
+    /// <param name="methodDeclarationSyntax">The <see cref="MethodDeclarationSyntax"/>.</param>
+    /// <param name="typelyBuilderParameterName">The builder parameter name used in <see cref="ITypelyConfiguration.Configure"/>.</param>
+    /// <param name="model">The <see cref="SemanticModel"/>.</param>
+    /// <returns>Return a list of <see cref="ParseDeclarationStatement"/>.</returns>
+    private static List<ParsedExpressionStatement> ParseStatements(MethodDeclarationSyntax methodDeclarationSyntax,
+        string typelyBuilderParameterName, SemanticModel model)
     {
         if (methodDeclarationSyntax == null || methodDeclarationSyntax.Body == null)
         {
             return Enumerable.Empty<ParsedExpressionStatement>().ToList();
         }
 
-        var bodySyntaxNodes = methodDeclarationSyntax.Body.DescendantNodes().Where(x => x is ExpressionStatementSyntax || x is LocalDeclarationStatementSyntax);
+        var bodySyntaxNodes = methodDeclarationSyntax.Body.DescendantNodes()
+            .Where(x => x is ExpressionStatementSyntax || x is LocalDeclarationStatementSyntax);
         var parsedExpressions = new List<ParsedExpressionStatement>();
         var parsedExpressionVariables = new Dictionary<string, ParsedExpressionStatement>();
 
         foreach (var bodySyntaxNode in bodySyntaxNodes)
         {
-            var parsedExpression = new ParsedExpressionStatement();
+            var parsedExpression = new ParsedExpressionStatement(model);
 
             if (bodySyntaxNode is ExpressionStatementSyntax expressionStatementSyntax)
             {
                 parsedExpressions.Add(parsedExpression);
-                ParseInvocationExpression(expressionStatementSyntax.Expression, parsedExpression);
+                ParseInvocationExpression(expressionStatementSyntax.Expression, parsedExpression, model);
             }
             else if (bodySyntaxNode is LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
             {
-                ParseDeclarationStatement(parsedExpressionVariables, parsedExpression, localDeclarationStatementSyntax);
+                ParseDeclarationStatement(parsedExpressionVariables, parsedExpression, localDeclarationStatementSyntax,
+                    model);
             }
 
             if (DoesNotUseBuilderParameter(parsedExpression))
@@ -139,10 +157,18 @@ internal sealed class Parser
 
         return parsedExpressions;
 
-        bool DoesNotUseBuilderParameter(ParsedExpressionStatement invocationResult) => invocationResult.Root != typelyBuilderParameterName;
+        bool DoesNotUseBuilderParameter(ParsedExpressionStatement invocationResult) =>
+            invocationResult.Root != typelyBuilderParameterName;
     }
 
-    static void ParseDeclarationStatement(Dictionary<string, ParsedExpressionStatement> parsedExpressionVariables, ParsedExpressionStatement parsedExpression, LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
+    /// <summary>
+    /// Parse a <see cref="LocalDeclarationStatementSyntax"/>.
+    /// ex: var vote = builder.OfInt().For("Vote");
+    /// </summary>
+    private static void ParseDeclarationStatement(
+        Dictionary<string, ParsedExpressionStatement> parsedExpressionVariables,
+        ParsedExpressionStatement parsedExpression, LocalDeclarationStatementSyntax localDeclarationStatementSyntax,
+        SemanticModel model)
     {
         var variable = localDeclarationStatementSyntax.Declaration.Variables.FirstOrDefault();
         if (variable == null)
@@ -156,10 +182,12 @@ internal sealed class Parser
             throw new NotSupportedException("Initializer null for LocalDeclarationStatementSyntax");
         }
 
-        ParseInvocationExpression(variable.Initializer.Value, parsedExpression);
+        ParseInvocationExpression(variable.Initializer.Value, parsedExpression, model);
     }
 
-    private static void MergeVariableInvocations(Dictionary<string, ParsedExpressionStatement> parsedExpressionVariables, ParsedExpressionStatement parsedExpression)
+    private static void MergeVariableInvocations(
+        Dictionary<string, ParsedExpressionStatement> parsedExpressionVariables,
+        ParsedExpressionStatement parsedExpression)
     {
         var parsedExpressionVariable = parsedExpressionVariables[parsedExpression.Root];
 
@@ -167,7 +195,7 @@ internal sealed class Parser
         parsedExpression.Root = parsedExpressionVariable.Root;
     }
 
-    private string GetNamespace(SyntaxNode classSyntax)
+    private static string GetNamespace(SyntaxNode classSyntax)
     {
         while (classSyntax.Parent != null)
         {
@@ -175,18 +203,25 @@ internal sealed class Parser
             {
                 return namespaceDeclarationSyntax.Name.ToString();
             }
-            else if (classSyntax.Parent is FileScopedNamespaceDeclarationSyntax fileScopedNamespaceDeclarationSyntax)
+
+            if (classSyntax.Parent is FileScopedNamespaceDeclarationSyntax fileScopedNamespaceDeclarationSyntax)
             {
                 return fileScopedNamespaceDeclarationSyntax.Name.ToString();
             }
 
             classSyntax = classSyntax.Parent;
         }
+
         return string.Empty;
     }
 
-    private static void ParseInvocationExpression(CSharpSyntaxNode syntaxNode, ParsedExpressionStatement parsedExpression)
+    /// <summary>
+    /// Analyse un énoncé d'invocation.
+    /// </summary>
+    private static void ParseInvocationExpression(CSharpSyntaxNode syntaxNode,
+        ParsedExpressionStatement parsedExpression, SemanticModel model)
     {
+        // ex: builder.OfInt().For("Vote").WithNamespace("UserAggregate").WithName("Vote")
         if (syntaxNode is InvocationExpressionSyntax invocationExpressionSyntax)
         {
             if (invocationExpressionSyntax.Expression is MemberAccessExpressionSyntax memberAccessExpressionSyntax)
@@ -196,9 +231,11 @@ internal sealed class Parser
 
                 parsedExpression.Invocations.Insert(0, new ParsedInvocation(argumentList, memberName));
 
-                ParseInvocationExpression(memberAccessExpressionSyntax.Expression, parsedExpression);
+                //ex: ex: builder.OfInt().For("Vote").WithNamespace("UserAggregate").WithName()
+                ParseInvocationExpression(memberAccessExpressionSyntax.Expression, parsedExpression, model);
             }
         }
+        // ex: builder
         else if (syntaxNode is IdentifierNameSyntax nameSyntax)
         {
             parsedExpression.Root = nameSyntax.Identifier.Text;

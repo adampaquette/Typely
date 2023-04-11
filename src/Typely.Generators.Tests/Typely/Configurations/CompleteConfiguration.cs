@@ -7,13 +7,13 @@ internal class CompleteConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder) 
     {
-        var boi = builder.OfInt().For("Votes");
-        boi.For("aaa");
+        var vote = builder.OfInt().For("Votes");
+        vote.For("Vote");
 
-        //builder.OfString().For("Username");
-        //builder.OfString().For("Code").Length(4).NotEqual("0000");
+        builder.OfString().For("Username");
+        builder.OfString().For("Code").Length(4).NotEqual("0000");
 
-        //// Create a reusable factory
+        // Create a reusable factory
         var sf = builder.OfString().AsFactory();
 
         var sf2 = sf.WithName("Username").AsFactory();
@@ -23,16 +23,17 @@ internal class CompleteConfiguration : ITypelyConfiguration
             .WithName("Owner identifier")
             .NotEmpty()
             .NotEqual("0").WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001")
-            .MaxLength(20);
+            .MaxLength(20)
+            .Must(x => x != "1" && x.ToLower() == "12");
 
-        //// Simplify configurations of similar types.
-        //var moment = sf.AsClass()
-        //    .WithName(() => LocalizedNames.Moment)
-        //    .MinLength(1).WithMessage(() => LocalizedMessages.MinLengthCustom)
-        //    .MaxLength(20).WithMessage(() => LocalizedMessages.MaxLengthCustom)
-        //    .AsFactory();
+        // Simplify configurations of similar types.
+        var moment = sf.AsClass()
+            .WithName(() => LocalizedNames.Moment)
+            .MinLength(1).WithMessage(() => LocalizedMessages.MinLengthCustom)
+            .MaxLength(20).WithMessage(() => LocalizedMessages.MaxLengthCustom)
+            .AsFactory();
 
-        //moment.For("Monday");
-        //moment.For("Sunday");
+        moment.For("Monday");
+        moment.For("Sunday");
     }
 }

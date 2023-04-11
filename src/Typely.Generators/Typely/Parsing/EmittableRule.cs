@@ -15,12 +15,12 @@ internal class EmittableRule
     /// <summary>
     /// A rule over the underlying value to emit.
     /// </summary>
-    public Expression Rule { get; }
+    public string Rule { get; }
 
     /// <summary>
     /// An error message to return when the rule fails.
     /// </summary>
-    public Expression<Func<string>> Message { get; set; }
+    public string Message { get; set; }
 
     /// <summary>
     /// Contains the list of variables and values that can be formatted into the error message.
@@ -33,7 +33,7 @@ internal class EmittableRule
     /// <param name="errorCode">The error code of the message.</param>
     /// <param name="rule">The rule to be converted to C# code.</param>
     /// <param name="message">A message to be converted to C# code.</param>
-    private EmittableRule(string errorCode, Expression rule, Expression<Func<string>> message)
+    public EmittableRule(string errorCode, string rule, string message)
     {
         ErrorCode = errorCode;
         Rule = rule;
@@ -48,9 +48,9 @@ internal class EmittableRule
     /// <param name="message">A message to be converted to C# code.</param>
     /// <returns>A <see cref="EmittableRule"/></returns>
     /// <remarks>It replaces variable with constants inside the rule.</remarks>
-    public static EmittableRule From<TDelegate>(string errorCode, Expression<TDelegate> rule, Expression<Func<string>> message, params (string Key, object Value)[] placeholders)
+    public static EmittableRule From(string errorCode, string rule, string message, params (string Key, object Value)[] placeholders)
     {
-        var emittableRule = new EmittableRule(errorCode, rule.ReplaceVariablesWithConstants(), message);
+        var emittableRule = new EmittableRule(errorCode, rule, message);
         foreach (var placeholder in placeholders)
         {
             emittableRule.PlaceholderValues.Add(placeholder.Key, placeholder.Value);

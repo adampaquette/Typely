@@ -11,15 +11,16 @@ internal class ReplaceVariablesWithConstantsVisitor : ExpressionVisitor
     protected override Expression VisitMember(MemberExpression node)
     {
         var expression = Visit(node.Expression);
-        if (expression is ConstantExpression constantExpression)
+        if (expression is not ConstantExpression constantExpression)
         {
-            var variable = constantExpression.Value;
-            var value = node.Member is FieldInfo info ?
-                info.GetValue(variable) :
-                ((PropertyInfo)node.Member).GetValue(variable);
-
-            return Expression.Constant(value, node.Type);
+            return node.Update(expression);
         }
-        return node.Update(expression);
+
+        var variable = constantExpression.Value;
+        var value = node.Member is FieldInfo info
+            ? info.GetValue(variable)
+            : ((PropertyInfo)node.Member).GetValue(variable);
+
+        return Expression.Constant(value, node.Type);
     }
 }

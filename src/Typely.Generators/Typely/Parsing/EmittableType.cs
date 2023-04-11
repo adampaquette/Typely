@@ -21,7 +21,7 @@ internal class EmittableType
     /// <summary>
     /// Name of the type used in error messages.
     /// </summary>
-    public Expression<Func<string>>? Name { get; private set; }
+    public string? Name { get; private set; }
 
     /// <summary>
     /// Namespace in witch to associate the value object.
@@ -41,7 +41,7 @@ internal class EmittableType
     /// <summary>
     /// Used internally to change the rule smoothly.
     /// </summary>
-    public EmittableRule? CurrentRule { get; set; } = null;
+    public EmittableRule? CurrentRule { get; set; }
 
     public EmittableType(Type underlyingType, string defaultNamespace)
     {
@@ -56,20 +56,14 @@ internal class EmittableType
     public void SetTypeName(string typeName)
     {
         TypeName = typeName.Trim();
-        Name ??= Expression.Lambda<Func<string>>(Expression.Constant(TypeName));
+        Name ??= TypeName;
     }
 
     /// <summary>
     /// Sets the name of the type used in error messages.
     /// </summary>
     /// <param name="name">Name.</param>
-    public void SetName(string name) => Name = Expression.Lambda<Func<string>>(Expression.Constant(name.Trim()));
-
-    /// <summary>
-    /// Sets the name of the type used in error messages. Supports localization.
-    /// </summary>
-    /// <param name="expression">Expression to be evaluated at runtime.</param>
-    public void WithName(Expression<Func<string>> expression) => Name = expression;
+    public void SetName(string name) => Name = name.Trim();
 
     /// <summary>
     /// Sets the namespace in witch to associate the value object.
@@ -101,19 +95,13 @@ internal class EmittableType
     /// Sets the error code for the last rule added.
     /// </summary>
     /// <param name="errorCode">Unique error code.</param>
-    public void SetCurrentErrorCode(string errorCode) => CurrentRule!.ErrorCode = errorCode.Trim();
+    public void SetCurrentErrorCode(string errorCode) => CurrentRule!.ErrorCode = errorCode;
 
     /// <summary>
     /// Sets the error message for the last rule added.
     /// </summary>
     /// <param name="message">Error message.</param>
-    public void SetCurrentMessage(string message) => CurrentRule!.Message = Expression.Lambda<Func<string>>(Expression.Constant(message.Trim()));
-
-    /// <summary>
-    /// Sets the error message for the last rule added. Supports localization.
-    /// </summary>
-    /// <param name="expression">Expression to be evaluated at runtime.</param>
-    public void SetCurrentMessage(Expression<Func<string>> expression) => CurrentRule!.Message = expression;
+    public void SetCurrentMessage(string message) => CurrentRule!.Message = message;
 
     /// <summary>
     /// Clone the rule to make similar types.

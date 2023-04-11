@@ -1,26 +1,30 @@
-﻿using Typely.Core.Builders;
+﻿using System.Collections.Immutable;
+using Typely.Core;
+using Typely.Core.Builders;
+using Typely.Generators.Typely.Emetting;
+using Typely.Generators.Typely.Parsing;
 
 namespace Typely.Generators.Typely.Parsing;
 
 internal class EmittableTypeBuilderFactory
 {
-    public static IEmittableTypeBuilder Create(string defaultNamespace, ParsedExpressionStatement invocationResult)
+    public static IEmittableTypeBuilder Create(string defaultNamespace,
+        ParsedExpressionStatement parsedExpressionStatement)
     {
-        if (invocationResult.Invocations.Count == 0)
+        if (parsedExpressionStatement.Invocations.Count == 0)
         {
             throw new InvalidOperationException("MemberAccess cannot be empty");
         }
 
-        var builderType = invocationResult.Invocations.First().MemberName;
-        var membersAccess = invocationResult.Invocations.Skip(1);
-        var typelyBuilder = new TypelyBuilder(defaultNamespace);
+        var builderType = parsedExpressionStatement.Invocations.First().MemberName;
+        var invocations = parsedExpressionStatement.Invocations.Skip(1);
 
         switch (builderType)
         {
             case nameof(ITypelyBuilder.OfString):
-                return new EmittableTypeBuilderOfString(typelyBuilder, membersAccess);
+                return new EmittableTypeBuilderOfString(defaultNamespace, invocations);
             case nameof(ITypelyBuilder.OfInt):
-                return new EmittableTypeBuilderOfInt(typelyBuilder, membersAccess);
+                return new EmittableTypeBuilderOfInt(defaultNamespace, invocations);
             default: throw new InvalidOperationException($"Unknown builder type: {builderType}");
         }
     }
@@ -28,73 +32,122 @@ internal class EmittableTypeBuilderFactory
 
 internal interface IEmittableTypeBuilder
 {
-    IReadOnlyList<EmittableType> Parse();
+    EmittableType Build();
 }
 
-internal class EmittableTypeBuilderOfInt : IEmittableTypeBuilder
+internal class EmittableTypeBuilderBase
 {
-    private readonly TypelyBuilder _containerBuilder;
-    private readonly ITypelyBuilderOfInt _builder;
-    private IEnumerable<ParsedInvocation> _membersAccess;
+    protected readonly IEnumerable<ParsedInvocation> Invocations;
+    protected readonly EmittableType EmittableType;
 
-    public EmittableTypeBuilderOfInt(TypelyBuilder containerBuilder, IEnumerable<ParsedInvocation> membersAccess)
+    protected EmittableTypeBuilderBase(IEnumerable<ParsedInvocation> invocations, EmittableType emittableType)
     {
-        _containerBuilder = containerBuilder;
-        _builder = containerBuilder.OfInt();
-        _membersAccess = membersAccess;
+        Invocations = invocations;
+        EmittableType = emittableType;
     }
 
-    public IReadOnlyList<EmittableType> Parse()
+    public void SetBaseProperties()
     {
-        foreach (var memberAccess in _membersAccess)
+        foreach (var memberAccess in Invocations)
         {
             switch (memberAccess.MemberName)
             {
-                case nameof(ITypelyBuilder<string>.For):
+                case nameof(ITypelyBuilder<int>.For):
                     var typeName = memberAccess.ArgumentListSyntax.Arguments.First().ToString();
                     typeName = typeName.Substring(1, typeName.Length - 2);
-                    _builder.For(typeName);
+                    EmittableType.SetTypeName(typeName);
                     break;
-                default: throw new NotSupportedException(memberAccess.MemberName);
+                case nameof(ITypelyBuilder<int>.AsClass):
+                    EmittableType.AsClass();
+                    break;
+                case nameof(ITypelyBuilder<int>.AsStruct):
+                    EmittableType.AsStruct();
+                    break;
+                case nameof(ITypelyBuilder<int>.WithName):
+                    var name = memberAccess.ArgumentListSyntax.Arguments.First().ToString();
+                    name = name.Substring(1, name.Length - 2);
+                    EmittableType.SetName(name);
+                    break;
+                case nameof(ITypelyBuilder<int>.WithNamespace):
+                    var @namespace = memberAccess.ArgumentListSyntax.Arguments.First().ToString();
+                    @namespace = @namespace.Substring(1, @namespace.Length - 2);
+                    EmittableType.SetNamespace(@namespace);
+                    break;
+            }
+        }
+    }
+    
+    protected void AddRule(string errorCode, string rule,
+        string message, params (string Key, object Value)[] placeholders) =>
+        EmittableType.AddRule(EmittableRule.From(errorCode, rule, message, placeholders));
+}
+
+internal class EmittableTypeBuilderOfInt : EmittableTypeBuilderBase, IEmittableTypeBuilder
+{
+    public EmittableTypeBuilderOfInt(string defaultNamespace, IEnumerable<ParsedInvocation> invocations)
+        : base(invocations, new EmittableType(typeof(int), defaultNamespace))
+    {
+    }
+
+    public EmittableType Build()
+    {
+        SetBaseProperties();
+        
+        foreach (var invocation in Invocations)
+        {
+            switch (invocation.MemberName)
+            {
+                case nameof(ITypelyBuilderOfInt.Must):
+                    var must = invocation.ArgumentListSyntax.Arguments.First().ToString();
+                    must = must.Substring(1, must.Length - 2);
+                    AddRule(
+                        errorCode: ErrorCodes.Must,
+                        rule: $"!({must})",
+                        message: nameof(ErrorMessages.Must));
+                    break;
+                case nameof(ITypelyBuilderOfInt.GreaterThan):
+                    var value = invocation.ArgumentListSyntax.Arguments.First().ToString();
+                    value = value.Substring(1, value.Length - 2);
+                    AddRule(
+                        errorCode: ErrorCodes.GreaterThan,
+                        rule: $"{Emitter.ValueParameterName} <= {value}",
+                        message: nameof(ErrorMessages.GreaterThan),
+                        placeholders: (ValidationPlaceholders.ComparisonValue, value));
+                    break;
+                default: throw new NotSupportedException(invocation.MemberName);
             }
         }
 
-        return _containerBuilder.GetEmittableTypes();
+        return EmittableType;
     }
 }
 
-internal class EmittableTypeBuilderOfString : IEmittableTypeBuilder
+internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittableTypeBuilder
 {
-    private readonly TypelyBuilder _containerBuilder;
-    private readonly ITypelyBuilderOfString _builder;
-    private IEnumerable<ParsedInvocation> _membersAccess;
-
-    public EmittableTypeBuilderOfString(TypelyBuilder containerBuilder, IEnumerable<ParsedInvocation> membersAccess)
+    public EmittableTypeBuilderOfString(string defaultNamespace, IEnumerable<ParsedInvocation> invocations)
+        : base(invocations, new EmittableType(typeof(string), defaultNamespace))
     {
-        _containerBuilder = containerBuilder;
-        _builder = containerBuilder.OfString();
-        _membersAccess = membersAccess;
     }
 
-    public IReadOnlyList<EmittableType> Parse()
+    public EmittableType Build()
     {
-        foreach (var memberAccess in _membersAccess)
+        foreach (var invocation in Invocations)
         {
-            switch (memberAccess.MemberName)
+            switch (invocation.MemberName)
             {
-                case nameof(ITypelyBuilder<string>.For):
-                    var typeName = memberAccess.ArgumentListSyntax.Arguments.First().ToString();
-                    typeName = typeName.Substring(1, typeName.Length - 2);
-                    _builder.For(typeName);
-                    break;
-                case nameof(ITypelyBuilderOfString.Length):
-                    var length = int.Parse(memberAccess.ArgumentListSyntax.Arguments.First().ToString());
-                    _builder.Length(length);
-                    break;
-                default: throw new NotSupportedException(memberAccess.MemberName);
+                // case nameof(ITypelyBuilder<string>.For):
+                //     var typeName = invocation.ArgumentListSyntax.Arguments.First().ToString();
+                //     typeName = typeName.Substring(1, typeName.Length - 2);
+                //     _builder.For(typeName);
+                //     break;
+                // case nameof(ITypelyBuilderOfString.Length):
+                //     var length = int.Parse(invocation.ArgumentListSyntax.Arguments.First().ToString());
+                //     _builder.Length(length);
+                //     break;
+                default: throw new NotSupportedException(invocation.MemberName);
             }
         }
 
-        return _containerBuilder.GetEmittableTypes();
+        return EmittableType;
     }
 }

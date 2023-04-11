@@ -5,7 +5,7 @@
 /// </summary>
 public class TypelyOptions
 {
-    public static TypelyOptions Instance { get; } = new TypelyOptions();
+    public static TypelyOptions Instance { get; } = new();
 
     /// <summary>
     /// Add the actual value to the exceptions when thrown. 

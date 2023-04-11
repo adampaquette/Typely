@@ -52,7 +52,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Typely\Parsing\Int\" />
         <Folder Include="Typely\Parsing\Snapshots\" />
+        <Folder Include="Typely\Parsing\String\" />
         <Folder Include="Typely\Snapshots\" />
     </ItemGroup>
 
