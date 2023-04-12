@@ -74,13 +74,3 @@ if(!FirstName.TryFrom("value", out FirstName instance, out ValidationError? vali
     // Handle error
 }
 ```
-
-
-
-
-TypelyGenerator : Emit types ->
-Parser : GetEmittableTypes
-    - Récupère les classes syntaxes
-    - Parse les classes
-    - Parse la méthode configure
-    - Parse les statements
