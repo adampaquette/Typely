@@ -1,7 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
-using System.Linq.Expressions;
-
-namespace Typely.Generators.Typely.Parsing;
+﻿namespace Typely.Generators.Typely.Parsing;
 
 /// <summary>
 /// Contains metadata of a type to generate.

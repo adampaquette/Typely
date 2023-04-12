@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace Typely.Generators.Typely.Parsing;
+﻿namespace Typely.Generators.Typely.Parsing;
 
 /// <summary>
 /// Contains the metadata of a rule to be emitted.

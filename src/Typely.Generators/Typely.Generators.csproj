@@ -33,10 +33,6 @@
         <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Typely\Parsing\Int\" />
-    </ItemGroup>
-
     <PropertyGroup>
         <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
         <IncludeBuildOutput>false</IncludeBuildOutput>

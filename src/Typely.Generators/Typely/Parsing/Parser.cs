@@ -1,10 +1,9 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Linq.Expressions;
 using Typely.Core;
-using Typely.Core.Builders;
 using Typely.Generators.Extensions;
+using Typely.Generators.Typely.Parsing.TypeBuilders;
 
 namespace Typely.Generators.Typely.Parsing;
 
