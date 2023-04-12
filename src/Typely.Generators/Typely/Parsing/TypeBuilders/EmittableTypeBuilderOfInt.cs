@@ -1,6 +1,6 @@
 ﻿using Typely.Core;
 using Typely.Core.Builders;
-using Typely.Generators.Typely.Emetting;
+using Typely.Generators.Typely.Emitting;
 
 namespace Typely.Generators.Typely.Parsing.TypeBuilders;
 

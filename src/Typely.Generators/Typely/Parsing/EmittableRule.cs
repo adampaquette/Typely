@@ -31,7 +31,7 @@ internal class EmittableRule
     /// <param name="errorCode">The error code of the message.</param>
     /// <param name="rule">The rule to be converted to C# code.</param>
     /// <param name="message">A message to be converted to C# code.</param>
-    public EmittableRule(string errorCode, string rule, string message)
+    private EmittableRule(string errorCode, string rule, string message)
     {
         ErrorCode = errorCode;
         Rule = rule;
@@ -44,6 +44,7 @@ internal class EmittableRule
     /// <param name="errorCode">The error code of the message.</param>
     /// <param name="rule">The rule to be converted to C# code.</param>
     /// <param name="message">A message to be converted to C# code.</param>
+    /// <param name="placeholders">Key values used to format a custom message e.g. in the frontend.</param>
     /// <returns>A <see cref="EmittableRule"/></returns>
     /// <remarks>It replaces variable with constants inside the rule.</remarks>
     public static EmittableRule From(string errorCode, string rule, string message, params (string Key, object Value)[] placeholders)

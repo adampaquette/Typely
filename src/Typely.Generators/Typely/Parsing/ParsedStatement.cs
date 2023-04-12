@@ -2,9 +2,9 @@
 
 namespace Typely.Generators.Typely.Parsing;
 
-internal class ParsedExpressionStatement
+internal class ParsedStatement
 {
-    public ParsedExpressionStatement(SemanticModel semanticModel)
+    public ParsedStatement(SemanticModel semanticModel)
     {
         SemanticModel = semanticModel;
     }

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Text;
 using Typely.Generators.Typely.Parsing;
 
-namespace Typely.Generators.Typely.Emetting;
+namespace Typely.Generators.Typely.Emitting;
 
 /// <summary>
 /// Generate the C# code for a value object.

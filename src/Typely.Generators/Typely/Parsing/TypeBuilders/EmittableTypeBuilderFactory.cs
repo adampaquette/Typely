@@ -5,15 +5,15 @@ namespace Typely.Generators.Typely.Parsing.TypeBuilders;
 internal static class EmittableTypeBuilderFactory
 {
     public static IEmittableTypeBuilder Create(string defaultNamespace,
-        ParsedExpressionStatement parsedExpressionStatement)
+        ParsedStatement parsedStatement)
     {
-        if (parsedExpressionStatement.Invocations.Count == 0)
+        if (parsedStatement.Invocations.Count == 0)
         {
             throw new InvalidOperationException("MemberAccess cannot be empty");
         }
 
-        var builderType = parsedExpressionStatement.Invocations.First().MemberName;
-        var invocations = parsedExpressionStatement.Invocations.Skip(1);
+        var builderType = parsedStatement.Invocations.First().MemberName;
+        var invocations = parsedStatement.Invocations.Skip(1);
 
         switch (builderType)
         {
