@@ -53,7 +53,7 @@ internal class EmittableType
     public void SetTypeName(string typeName)
     {
         TypeName = typeName.Trim();
-        Name ??= TypeName;
+        Name ??= $"\"{TypeName}\"";
     }
 
     /// <summary>

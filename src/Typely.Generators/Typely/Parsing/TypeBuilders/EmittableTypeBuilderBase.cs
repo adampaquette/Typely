@@ -27,10 +27,21 @@ internal class EmittableTypeBuilderBase
                 EmittableType.AsStruct();
                 return true;
             case nameof(ITypelyBuilder<int>.WithName):
-                EmittableType.SetName(invocation.GetFirstStringArgument());
+                //TODO : IS lambda expression
+                //else
+                EmittableType.SetName($"\"{invocation.GetFirstStringArgument()}\"");
                 return true;
             case nameof(ITypelyBuilder<int>.WithNamespace):
                 EmittableType.SetNamespace(invocation.GetFirstStringArgument());
+                return true;
+            case nameof(IRuleBuilderOfInt.WithMessage):
+                EmittableType.SetCurrentMessage($"\"{invocation.GetFirstStringArgument()}\"");
+                return true;
+            case nameof(IRuleBuilderOfInt.WithErrorCode):
+                EmittableType.SetCurrentErrorCode(invocation.GetFirstStringArgument());
+                return true;
+            case nameof(IRuleBuilderOfInt.AsFactory):
+                //TODO : Support as factory to reflet code
                 return true;
         }
 
