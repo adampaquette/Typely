@@ -1,7 +1,0 @@
-﻿[
-  {
-    ErrorCode: NotEmpty,
-    Rule: x => (x == 0),
-    Message: () => ErrorMessages.NotEmpty
-  }
-]

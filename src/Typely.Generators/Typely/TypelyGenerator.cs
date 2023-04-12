@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
 using System.Text;
-using Typely.Generators.Typely.Emetting;
+using Typely.Generators.Typely.Emitting;
 using Typely.Generators.Typely.Parsing;
 
 namespace Typely.Generators.Typely;
@@ -12,7 +12,7 @@ namespace Typely.Generators.Typely;
 /// Generates value object types.
 /// </summary>
 [Generator]
-public partial class TypelyGenerator : IIncrementalGenerator
+public class TypelyGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {

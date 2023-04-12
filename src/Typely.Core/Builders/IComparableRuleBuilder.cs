@@ -19,7 +19,7 @@ public interface IComparableRuleBuilder<TRuleBuilder, TValue>
     /// </summary>
     /// <param name="value">Value to be compared to.</param>
     /// <returns>Fluent <see cref="TRuleBuilder"/>.</returns>
-    TRuleBuilder LessThanOrEqual(TValue value);
+    TRuleBuilder LessThanOrEqualTo(TValue value);
 
     /// <summary>
     /// Ensure the value object's value is greater than the specified one.
@@ -33,5 +33,5 @@ public interface IComparableRuleBuilder<TRuleBuilder, TValue>
     /// </summary>
     /// <param name="value">Value to be compared to.</param>
     /// <returns>Fluent <see cref="TRuleBuilder"/>.</returns>
-    TRuleBuilder GreaterThanOrEqual(TValue value);
+    TRuleBuilder GreaterThanOrEqualTo(TValue value);
 }

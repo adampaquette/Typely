@@ -4,13 +4,15 @@ using System.Linq.Expressions;
 using System.Text;
 using Typely.Generators.Typely.Parsing;
 
-namespace Typely.Generators.Typely.Emetting;
+namespace Typely.Generators.Typely.Emitting;
 
 /// <summary>
 /// Generate the C# code for a value object.
 /// </summary>
 internal class Emitter
 {
+    public const string ValueParameterName = "value";
+    
     private readonly Action<Diagnostic> _reportDiagnostic;
     private readonly CancellationToken _cancellationToken;
 
@@ -135,7 +137,7 @@ internal class Emitter
         }
 
         string regexNamespace = "System.Text.RegularExpressions";
-        if (rules.Any((x) => x.ErrorCode == ErrorCodes.Matches) && !namespaces.Contains(regexNamespace))
+        if (rules.Any((x) => x.ErrorCode == ErrorCodes.Matches))
         {
             namespaces.Add(regexNamespace);
         }
@@ -149,7 +151,7 @@ internal class Emitter
         _ => "class"
     };
 
-    public string GenerateValidations(List<EmittableRule> emittableValidations, Expression<Func<string>> nameExpression, Type underlyingType, string typeName)
+    public string GenerateValidations(List<EmittableRule> emittableValidations, string name, Type underlyingType, string typeName)
     {
         if (!emittableValidations.Any() && underlyingType.IsValueType)
         {
@@ -164,30 +166,17 @@ internal class Emitter
             builder.AppendLine($"            if (value == null) throw new ArgumentNullException(nameof({typeName}));")
                 .AppendLine();
         }
-
-        var name = nameExpression.Body.ToReadableString();
-        if (name.Contains(Consts.BypassExecution))
-        {
-            name = name.Substring(Consts.BypassExecution.Length, name.Length - Consts.BypassExecution.Length - 1);
-        }
-
+        
         foreach (var emittableValidation in emittableValidations)
         {
             _cancellationToken.ThrowIfCancellationRequested();
-            var validation = GenerateValidation(emittableValidation);
             var errorCode = emittableValidation.ErrorCode;
-            var validationMessage = emittableValidation.Message.Body.ToReadableString();
-            if (validationMessage.Contains(Consts.BypassExecution))
-            {
-                validationMessage = validationMessage.Substring(Consts.BypassExecution.Length, validationMessage.Length - Consts.BypassExecution.Length - 1);
-            }
-
             var placeholders = GenerateValidationPlaceholders(emittableValidation.PlaceholderValues);
 
             builder.AppendLine($$"""
-                            if ({{validation}})
+                            if ({{emittableValidation.Rule}})
                             {
-                                return ValidationErrorFactory.Create(value, "{{errorCode}}", {{validationMessage}}, {{name}}{{placeholders}}
+                                return ValidationErrorFactory.Create(value, "{{errorCode}}", {{emittableValidation.Message}}, {{name}}{{placeholders}}
                             }
                 """)
                 .AppendLine();
@@ -198,14 +187,6 @@ internal class Emitter
             .Append("        }");
 
         return builder.ToString();
-    }
-
-    private static string GenerateValidation(EmittableRule emittableValidation)
-    {
-        var validationExpression = emittableValidation.Rule as LambdaExpression;
-        var parameterModifier = new ValidationParameterModifier(validationExpression!.Parameters[0]);
-        var modifiedValidationExpression = parameterModifier.Modify(validationExpression);
-        return modifiedValidationExpression.Body.ToReadableString();
     }
 
     private static string GenerateValidationPlaceholders(Dictionary<string, object?> placeholders)

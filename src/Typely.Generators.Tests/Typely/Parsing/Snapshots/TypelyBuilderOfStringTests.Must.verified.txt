@@ -1,7 +1,0 @@
-﻿[
-  {
-    ErrorCode: Must,
-    Rule: x => Not((x != "")),
-    Message: () => ErrorMessages.Must
-  }
-]
