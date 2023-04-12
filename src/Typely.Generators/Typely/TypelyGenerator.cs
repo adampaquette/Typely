@@ -12,7 +12,7 @@ namespace Typely.Generators.Typely;
 /// Generates value object types.
 /// </summary>
 [Generator]
-public partial class TypelyGenerator : IIncrementalGenerator
+public class TypelyGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
