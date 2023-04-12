@@ -137,7 +137,7 @@ internal class Emitter
         }
 
         string regexNamespace = "System.Text.RegularExpressions";
-        if (rules.Any((x) => x.ErrorCode == ErrorCodes.Matches) && !namespaces.Contains(regexNamespace))
+        if (rules.Any((x) => x.ErrorCode == ErrorCodes.Matches))
         {
             namespaces.Add(regexNamespace);
         }
