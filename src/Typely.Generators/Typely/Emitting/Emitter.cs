@@ -12,7 +12,7 @@ namespace Typely.Generators.Typely.Emitting;
 internal class Emitter
 {
     public const string ValueParameterName = "value";
-    
+
     private readonly Action<Diagnostic> _reportDiagnostic;
     private readonly CancellationToken _cancellationToken;
 
@@ -37,7 +37,7 @@ internal class Emitter
         }
 
         var typeName = t.TypeName;
-        var namespaces = BuildNamespaces(t.Rules);
+        var namespaces = BuildNamespaces(t.Rules, t.AdditionalNamespaces);
         var underlyingType = GetUnderlyingType(t.UnderlyingType);
         var constructType = GetConstructType(t.ConstructTypeKind);
         var validationBlock = GenerateValidations(t.Rules, t.Name, t.UnderlyingType, typeName);
@@ -120,9 +120,9 @@ internal class Emitter
         return type.Name;
     }
 
-    private string BuildNamespaces(List<EmittableRule> rules)
+    private string BuildNamespaces(IList<EmittableRule> rules, IEnumerable<string> additionalNamespaces)
     {
-        var namespaces = new HashSet<string>
+        var namespaces = new List<string>
         {
             "System",
             "Typely.Core",
@@ -131,27 +131,29 @@ internal class Emitter
             "System.Text.Json.Serialization"
         };
 
+        namespaces.AddRange(additionalNamespaces);
+
         if (rules.Any())
         {
             namespaces.Add("System.Collections.Generic");
         }
 
-        string regexNamespace = "System.Text.RegularExpressions";
         if (rules.Any((x) => x.ErrorCode == ErrorCodes.Matches))
         {
-            namespaces.Add(regexNamespace);
+            namespaces.Add("System.Text.RegularExpressions");
         }
 
-        return string.Join(Environment.NewLine, namespaces.OrderBy(x => x).Select(x => $"using {x};"));
+        return string.Join(Environment.NewLine, namespaces.Distinct().OrderBy(x => x).Select(x => $"using {x};"));
     }
 
-    public string GetConstructType(ConstructTypeKind objectType) => objectType switch
+    private string GetConstructType(ConstructTypeKind objectType) => objectType switch
     {
         ConstructTypeKind.Struct => "struct",
         _ => "class"
     };
 
-    public string GenerateValidations(List<EmittableRule> emittableValidations, string name, Type underlyingType, string typeName)
+    private string GenerateValidations(List<EmittableRule> emittableValidations, string name, Type underlyingType,
+        string typeName)
     {
         if (!emittableValidations.Any() && underlyingType.IsValueType)
         {
@@ -166,7 +168,7 @@ internal class Emitter
             builder.AppendLine($"            if (value == null) throw new ArgumentNullException(nameof({typeName}));")
                 .AppendLine();
         }
-        
+
         foreach (var emittableValidation in emittableValidations)
         {
             _cancellationToken.ThrowIfCancellationRequested();

@@ -1,4 +1,5 @@
-﻿using Typely.Core;
+﻿using Microsoft.CodeAnalysis;
+using Typely.Core;
 using Typely.Core.Builders;
 using Typely.Generators.Typely.Emitting;
 
@@ -6,8 +7,8 @@ namespace Typely.Generators.Typely.Parsing.TypeBuilders;
 
 internal class EmittableTypeBuilderOfInt : EmittableTypeBuilderBase, IEmittableTypeBuilder
 {
-    public EmittableTypeBuilderOfInt(string defaultNamespace, IEnumerable<ParsedInvocation> invocations)
-        : base(invocations, new EmittableType(typeof(int), defaultNamespace))
+    public EmittableTypeBuilderOfInt(string defaultNamespace, IEnumerable<ParsedInvocation> invocations, SemanticModel model)
+        : base(invocations, new EmittableType(typeof(int), defaultNamespace), model)
     {
     }
 

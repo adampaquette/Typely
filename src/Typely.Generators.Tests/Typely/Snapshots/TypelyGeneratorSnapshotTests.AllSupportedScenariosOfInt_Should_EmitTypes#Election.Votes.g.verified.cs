@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using Typely.Core;
 using Typely.Core.Converters;
+using Typely.Generators.Tests.Typely.Configurations;
 
 #nullable enable
 
@@ -47,7 +48,7 @@ namespace Election
 
             if (value <= 10)
             {
-                return ValidationErrorFactory.Create(value, "GreaterThan", ErrorMessages.GreaterThan, "Presidency vote",
+                return ValidationErrorFactory.Create(value, "GreaterThan", LocalizedMessages.CustomMessage, "Presidency vote",
                     new Dictionary<string, object?>
                     {
                         { "ComparisonValue", "10" },
@@ -56,7 +57,7 @@ namespace Election
 
             if (value < 10)
             {
-                return ValidationErrorFactory.Create(value, "GreaterThanOrEqualTo", ErrorMessages.GreaterThanOrEqualTo, "Presidency vote",
+                return ValidationErrorFactory.Create(value, "GreaterThanOrEqualTo", A.CustomLocalization.Value, "Presidency vote",
                     new Dictionary<string, object?>
                     {
                         { "ComparisonValue", "10" },

@@ -12,6 +12,9 @@ internal static class ParsedInvocationExtensions
     
     public static string GetFirstNumberArgument(this ParsedInvocation parsedInvocation) =>
         parsedInvocation.ArgumentListSyntax.Arguments.First().Expression.ToString();
+    
+    public static ExpressionSyntax GetFirstExpressionArgument(this ParsedInvocation parsedInvocation) =>
+        parsedInvocation.ArgumentListSyntax.Arguments.First().Expression;
 
     public static string GetLambdaBodyOfFirstArgument(this ParsedInvocation parsedInvocation)
     {

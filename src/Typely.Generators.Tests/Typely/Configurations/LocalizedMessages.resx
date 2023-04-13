@@ -126,4 +126,7 @@
   <data name="NotEqualCustom" xml:space="preserve">
     <value>The value is not allowed to be equal to {ComparisonValue}!</value>
   </data>
+  <data name="CustomMessage" xml:space="preserve">
+    <value>Custom message.</value>
+  </data>
 </root>

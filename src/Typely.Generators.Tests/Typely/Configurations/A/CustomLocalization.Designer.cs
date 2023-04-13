@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Typely.Generators.Tests.Typely.Configurations {
+namespace Typely.Generators.Tests.Typely.Configurations.A {
     using System;
     
     
@@ -18,17 +18,17 @@ namespace Typely.Generators.Tests.Typely.Configurations {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class LocalizedMessages {
+    internal class CustomLocalization {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal LocalizedMessages() {
+        internal CustomLocalization() {
         }
         
         /// <summary>
@@ -38,7 +38,7 @@ namespace Typely.Generators.Tests.Typely.Configurations {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Typely.Generators.Tests.Typely.Configurations.LocalizedMessages", typeof(LocalizedMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Typely.Generators.Tests.Typely.Configurations.A.CustomLocalization", typeof(CustomLocalization).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -60,38 +60,11 @@ namespace Typely.Generators.Tests.Typely.Configurations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Custom message..
+        ///   Looks up a localized string similar to Value.
         /// </summary>
-        internal static string CustomMessage {
+        internal static string Value {
             get {
-                return ResourceManager.GetString("CustomMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Max length error..
-        /// </summary>
-        internal static string MaxLengthCustom {
-            get {
-                return ResourceManager.GetString("MaxLengthCustom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Min length error..
-        /// </summary>
-        internal static string MinLengthCustom {
-            get {
-                return ResourceManager.GetString("MinLengthCustom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The value is not allowed to be equal to {ComparisonValue}!.
-        /// </summary>
-        internal static string NotEqualCustom {
-            get {
-                return ResourceManager.GetString("NotEqualCustom", resourceCulture);
+                return ResourceManager.GetString("Value", resourceCulture);
             }
         }
     }

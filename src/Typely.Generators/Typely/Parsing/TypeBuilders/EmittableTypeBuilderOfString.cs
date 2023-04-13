@@ -1,9 +1,11 @@
-﻿namespace Typely.Generators.Typely.Parsing.TypeBuilders;
+﻿using Microsoft.CodeAnalysis;
+
+namespace Typely.Generators.Typely.Parsing.TypeBuilders;
 
 internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittableTypeBuilder
 {
-    public EmittableTypeBuilderOfString(string defaultNamespace, IEnumerable<ParsedInvocation> invocations)
-        : base(invocations, new EmittableType(typeof(string), defaultNamespace))
+    public EmittableTypeBuilderOfString(string defaultNamespace, IEnumerable<ParsedInvocation> invocations, SemanticModel model)
+        : base(invocations, new EmittableType(typeof(string), defaultNamespace), model)
     {
     }
 

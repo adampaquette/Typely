@@ -7,7 +7,7 @@ internal class IntConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfInt().For("Id");
+        builder.OfInt().For("Id").WithName(() => LocalizedNames.CustomName);
         
         var factory = builder.OfInt()
             .WithNamespace("Election")
@@ -20,8 +20,8 @@ internal class IntConfiguration : ITypelyConfiguration
             .NotEqual(-1);
 
         vote.Must(x => x == 122)
-            .GreaterThan(10)
-            .GreaterThanOrEqualTo(10)
+            .GreaterThan(10).WithMessage(() => LocalizedMessages.CustomMessage)
+            .GreaterThanOrEqualTo(10).WithMessage(() => A.CustomLocalization.Value)
             .LessThan(20)
             .LessThanOrEqualTo(20);
     }

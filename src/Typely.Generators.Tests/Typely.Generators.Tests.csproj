@@ -38,6 +38,11 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>LocalizedNames.resx</DependentUpon>
         </Compile>
+        <Compile Update="Typely\Configurations\A\CustomLocalization.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>CustomLocalization.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -48,6 +53,10 @@
         <EmbeddedResource Update="Typely\Configurations\LocalizedNames.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>LocalizedNames.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Typely\Configurations\A\CustomLocalization.resx">
+          <Generator>ResXFileCodeGenerator</Generator>
+          <LastGenOutput>CustomLocalization.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
 

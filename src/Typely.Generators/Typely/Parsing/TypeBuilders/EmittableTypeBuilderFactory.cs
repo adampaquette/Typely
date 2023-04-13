@@ -14,13 +14,14 @@ internal static class EmittableTypeBuilderFactory
 
         var builderType = parsedStatement.Invocations.First().MemberName;
         var invocations = parsedStatement.Invocations.Skip(1);
-
+        var model = parsedStatement.SemanticModel;
+        
         switch (builderType)
         {
             case nameof(ITypelyBuilder.OfString):
-                return new EmittableTypeBuilderOfString(defaultNamespace, invocations);
+                return new EmittableTypeBuilderOfString(defaultNamespace, invocations, model);
             case nameof(ITypelyBuilder.OfInt):
-                return new EmittableTypeBuilderOfInt(defaultNamespace, invocations);
+                return new EmittableTypeBuilderOfInt(defaultNamespace, invocations, model);
             default: throw new InvalidOperationException($"Unknown builder type: {builderType}");
         }
     }

@@ -40,6 +40,11 @@ internal class EmittableType
     /// </summary>
     public EmittableRule? CurrentRule { get; set; }
 
+    /// <summary>
+    /// Additional namespaces to import.
+    /// </summary>
+    public IList<string> AdditionalNamespaces { get; set; } = new List<string>();
+    
     public EmittableType(Type underlyingType, string defaultNamespace)
     {
         UnderlyingType = underlyingType;

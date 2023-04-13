@@ -100,9 +100,9 @@ internal sealed class Parser
         var parsedStatements = ParseStatements(methodSyntax, typelyBuilderParameterName, model);
         var defaultNamespace = GetNamespace(classSyntax);
 
-        foreach (var parsedExpressionStatement in parsedStatements)
+        foreach (var parsedStatement in parsedStatements)
         {
-            var emittableType = EmittableTypeBuilderFactory.Create(defaultNamespace, parsedExpressionStatement).Build();
+            var emittableType = EmittableTypeBuilderFactory.Create(defaultNamespace, parsedStatement).Build();
             emittableTypes.Add(emittableType);
         }
 
@@ -126,8 +126,8 @@ internal sealed class Parser
 
         var bodySyntaxNodes = methodDeclarationSyntax.Body.DescendantNodes()
             .Where(x => x is ExpressionStatementSyntax || x is LocalDeclarationStatementSyntax);
-        var parsedExpressions = new List<ParsedStatement>();
-        var parsedExpressionVariables = new Dictionary<string, ParsedStatement>();
+        var parsedStatements = new List<ParsedStatement>();
+        var parsedStatementVariables = new Dictionary<string, ParsedStatement>();
 
         foreach (var bodySyntaxNode in bodySyntaxNodes)
         {
@@ -135,22 +135,22 @@ internal sealed class Parser
 
             if (bodySyntaxNode is ExpressionStatementSyntax expressionStatementSyntax)
             {
-                parsedExpressions.Add(parsedExpression);
+                parsedStatements.Add(parsedExpression);
                 ParseInvocationExpression(expressionStatementSyntax.Expression, parsedExpression, model);
             }
             else if (bodySyntaxNode is LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
             {
-                ParseDeclarationStatement(parsedExpressionVariables, parsedExpression, localDeclarationStatementSyntax,
+                ParseDeclarationStatement(parsedStatementVariables, parsedExpression, localDeclarationStatementSyntax,
                     model);
             }
 
             if (DoesNotUseBuilderParameter(parsedExpression))
             {
-                MergeVariableInvocations(parsedExpressionVariables, parsedExpression);
+                MergeVariableInvocations(parsedStatementVariables, parsedExpression);
             }
         }
 
-        return parsedExpressions;
+        return parsedStatements;
 
         bool DoesNotUseBuilderParameter(ParsedStatement invocationResult) =>
             invocationResult.Root != typelyBuilderParameterName;

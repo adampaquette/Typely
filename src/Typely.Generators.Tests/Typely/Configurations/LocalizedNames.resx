@@ -120,4 +120,7 @@
   <data name="Moment" xml:space="preserve">
     <value>Moment</value>
   </data>
+  <data name="CustomName" xml:space="preserve">
+    <value>CustomName</value>
+  </data>
 </root>

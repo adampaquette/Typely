@@ -8,7 +8,7 @@ namespace Typely.Generators.Tests.Typely;
 public class TypelyGeneratorSnapshotTests
 {
     [Fact]
-    public Task AllSupportedScenarios_Should_EmitTypes()
+    public Task AllSupportedScenariosOfInt_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
             .WithConfigurations(typeof(IntConfiguration))
