@@ -41,12 +41,12 @@ namespace Election
                     });
             }
 
-            if (!(x == 122))
+            if (!(value== 122))
             {
                 return ValidationErrorFactory.Create(value, "Must", ErrorMessages.Must, "Presidency vote");
             }
 
-            if (!(!x.Equals(10)))
+            if (!(!value.Equals(10)))
             {
                 return ValidationErrorFactory.Create(value, "Must", ErrorMessages.Must, "Presidency vote");
             }
