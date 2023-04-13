@@ -1,5 +1,4 @@
-﻿using AgileObjects.ReadableExpressions;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Text;
 using Typely.Generators.Typely.Parsing;
@@ -143,7 +142,7 @@ internal class Emitter
             namespaces.Add("System.Text.RegularExpressions");
         }
 
-        return string.Join(Environment.NewLine, namespaces.Distinct().OrderBy(x => x).Select(x => $"using {x};"));
+        return string.Join("\n", namespaces.Distinct().OrderBy(x => x).Select(x => $"using {x};"));
     }
 
     private string GetConstructType(ConstructTypeKind objectType) => objectType switch
@@ -160,7 +159,7 @@ internal class Emitter
             return " => null;";
         }
 
-        var builder = new StringBuilder(Environment.NewLine);
+        var builder = new StringBuilder("\n");
         builder.AppendLine("        {");
 
         if (!underlyingType.IsValueType)
@@ -207,7 +206,19 @@ internal class Emitter
 
         foreach (var placeholder in placeholders)
         {
-            var value = Expression.Constant(placeholder.Value).ToReadableString();
+            var value = placeholder.Value;
+            if (value is string)
+            {
+                value = $"\"{value}\"";
+            }
+            else if (value is bool)
+            {
+                value = value.ToString().ToLower();
+            }
+            else if (value is null)
+            {
+                value = "null";
+            }
             builder.AppendLine($$"""                        { "{{placeholder.Key}}", {{value}} },""");
         }
 
