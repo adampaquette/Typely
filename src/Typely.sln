@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Generators.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Tests", "Typely.Tests\Typely.Tests.csproj", "{C7EE56E0-CEA8-4619-9530-52A8CFC8EFF4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.POC", "Typely.POC\Typely.POC.csproj", "{7B8DE8B4-5852-4C00-A564-ED9AC68B9E2C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,10 +47,6 @@ Global
 		{C7EE56E0-CEA8-4619-9530-52A8CFC8EFF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7EE56E0-CEA8-4619-9530-52A8CFC8EFF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7EE56E0-CEA8-4619-9530-52A8CFC8EFF4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B8DE8B4-5852-4C00-A564-ED9AC68B9E2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B8DE8B4-5852-4C00-A564-ED9AC68B9E2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B8DE8B4-5852-4C00-A564-ED9AC68B9E2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B8DE8B4-5852-4C00-A564-ED9AC68B9E2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
