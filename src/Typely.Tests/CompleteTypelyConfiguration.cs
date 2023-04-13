@@ -3,13 +3,12 @@ using Typely.Core.Builders;
 
 namespace Typely.Tests;
 
-public class CompleteConfiguration : ITypelyConfiguration
+public class CompleteTypelyConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        // builder.OfString().For("SerializationTestsType");    
-        // builder.OfString().For("TypelyOptionTestsType").NotEmpty();
-        // builder.OfString().For("ValidationErrorTestsType").NotEmpty();
+        builder.OfInt().For("TypelyOptionTestsType").NotEmpty();
+        builder.OfInt().For("ValidationErrorTestsType").NotEmpty();
         // var factory = builder.OfString().AsFactory();
         // factory.For("BasicType");
         // factory.For("BasicType2");

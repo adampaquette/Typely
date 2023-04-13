@@ -4,7 +4,6 @@
   ErrorMessageWithPlaceholders: '{Name}' must not be empty.,
   TypeName: ValidationErrorTestsType,
   PlaceholderValues: {
-    ActualLength: 0,
     Name: ValidationErrorTestsType
   }
 }

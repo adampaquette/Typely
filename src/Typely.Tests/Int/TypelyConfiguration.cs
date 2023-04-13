@@ -3,7 +3,7 @@ using Typely.Core.Builders;
 
 namespace Typely.Tests.Int;
 
-public class IntConfiguration : ITypelyConfiguration
+public class TypelyConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
