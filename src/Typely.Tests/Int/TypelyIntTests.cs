@@ -13,7 +13,7 @@ public class TypelyIntTests
     [Fact] public void OperatorNotEqual_ShouldBe_False() => GenFalseEquals.Sample((x, y) => x != y);
     [Fact] public void CompareTo() => GenComparable.Sample((x) => x.primitive.CompareTo(x.randomObj.Value) == x.valueObject.CompareTo(x.randomObj));
     [Fact] public void CompareToObject() => GenComparable.Sample((x) => x.primitive.CompareTo((object)x.randomObj.Value) == x.valueObject.CompareTo((object)x.randomObj));
-    [Fact] public void NotEmpty() => Assert.Throws<ValidationException>(() => NotEmptyType.From(0));
+    [Fact] public void NotEmpty() => Assert.Throws<ValidationException>(() => NotEmptyType.From(default));
     [Fact] public void NotEqual() => Asserts.ValidationMatchPredicate<NotEqualType, int>(Gen.Int, (s) => s.Equals(10), 10);
     [Fact] public void GreaterThan() => Asserts.ValidationMatchPredicate<GreaterThanType, int>(Gen.Int, (s) => s <= 10, 9);
     [Fact] public void GreaterThanOrEqual() => Asserts.ValidationMatchPredicate<GreaterThanOrEqualType, int>(Gen.Int, (s) => s < 10, 9);

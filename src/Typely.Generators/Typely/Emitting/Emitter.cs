@@ -1,5 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-using System.Linq.Expressions;
 using System.Text;
 using Typely.Generators.Typely.Parsing;
 
@@ -137,11 +136,6 @@ internal class Emitter
             namespaces.Add("System.Collections.Generic");
         }
 
-        if (rules.Any((x) => x.ErrorCode == ErrorCodes.Matches))
-        {
-            namespaces.Add("System.Text.RegularExpressions");
-        }
-
         return string.Join("\n", namespaces.Distinct().OrderBy(x => x).Select(x => $"using {x};"));
     }
 
@@ -210,14 +204,6 @@ internal class Emitter
             if (value is string)
             {
                 value = $"\"{value}\"";
-            }
-            else if (value is bool)
-            {
-                value = value.ToString().ToLower();
-            }
-            else if (value is null)
-            {
-                value = "null";
             }
             builder.AppendLine($$"""                        { "{{placeholder.Key}}", {{value}} },""");
         }

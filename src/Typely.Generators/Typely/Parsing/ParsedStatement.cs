@@ -10,7 +10,7 @@ internal class ParsedStatement
     }
 
     public string Root { get; set; } = string.Empty;
-    public SemanticModel SemanticModel { get; set; }
+    public SemanticModel SemanticModel { get; }
 
-    public List<ParsedInvocation> Invocations { get; set; } = new();
+    public List<ParsedInvocation> Invocations { get; } = new();
 }
