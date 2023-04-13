@@ -20,6 +20,7 @@ internal class IntConfiguration : ITypelyConfiguration
             .NotEqual(-1);
 
         vote.Must(x => x == 122)
+            .Must((x) => !x.Equals(10))
             .GreaterThan(10).WithMessage(() => LocalizedMessages.CustomMessage)
             .GreaterThanOrEqualTo(10).WithMessage(() => A.CustomLocalization.Value)
             .LessThan(20)

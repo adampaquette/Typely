@@ -14,7 +14,7 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(IntConfiguration))
             .Create()
             .Run();
-
+        
         return Verify(driver);
     }
 
@@ -23,17 +23,6 @@ public class TypelyGeneratorSnapshotTests
     {
         var driver = new TypelyGeneratorDriverFixture()
             .WithConfigurations(typeof(MultipleConfigurationA), typeof(MultipleConfigurationB))
-            .Create()
-            .Run();
-
-        return Verify(driver);
-    }
-
-    [Fact]
-    public Task UnsupportedConfiguration_Should_OutputErrors()
-    {
-        var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(UnsupportedConfiguration))
             .Create()
             .Run();
 

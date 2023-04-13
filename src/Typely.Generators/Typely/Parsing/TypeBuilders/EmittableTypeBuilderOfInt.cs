@@ -26,7 +26,7 @@ internal class EmittableTypeBuilderOfInt : EmittableTypeBuilderBase, IEmittableT
                 case nameof(ITypelyBuilderOfInt.NotEmpty):
                     AddRule(
                         errorCode: ErrorCodes.NotEmpty,
-                        rule: $"{Emitter.ValueParameterName} == 0",
+                        rule: $"{Emitter.ValueParameterName} == default",
                         message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.NotEmpty));
                     break;
                 case nameof(ITypelyBuilderOfInt.Must):

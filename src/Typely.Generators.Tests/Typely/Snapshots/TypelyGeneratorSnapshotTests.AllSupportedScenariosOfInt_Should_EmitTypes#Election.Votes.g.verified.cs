@@ -27,7 +27,7 @@ namespace Election
 
         public static ValidationError? Validate(int value)
         {
-            if (value == 0)
+            if (value == default)
             {
                 return ValidationErrorFactory.Create(value, "ERR-001", "The value cannot be empty", "Presidency vote");
             }
@@ -42,6 +42,11 @@ namespace Election
             }
 
             if (!(x == 122))
+            {
+                return ValidationErrorFactory.Create(value, "Must", ErrorMessages.Must, "Presidency vote");
+            }
+
+            if (!(!x.Equals(10)))
             {
                 return ValidationErrorFactory.Create(value, "Must", ErrorMessages.Must, "Presidency vote");
             }

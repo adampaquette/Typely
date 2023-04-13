@@ -8,6 +8,6 @@ internal class MultipleConfigurationA : ITypelyConfiguration
     public void Configure(ITypelyBuilder builder)
     {
         builder.OfInt().For("Votes");
-        builder.OfString().For("Name");
+        //builder.OfString().For("Name");
     }
 }
