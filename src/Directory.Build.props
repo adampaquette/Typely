@@ -37,8 +37,7 @@
 
     <!-- Versioning properties -->
     <PropertyGroup>
-        <AssemblyVersion>0.0.1</AssemblyVersion>
-        <VersionPrefix Condition=" '$(VersionPrefix)'=='' ">0.0.1</VersionPrefix>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
     </PropertyGroup>
 
     <!-- For Debug builds -->
