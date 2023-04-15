@@ -73,7 +73,7 @@ internal class EmittableTypeBuilderBase
                     message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.NotEmpty));
                 return true;
             case nameof(ITypelyBuilderOfInt.NotEqual):
-                var value = invocation.GetFirstNumberArgument();
+                var value = invocation.GetFirstArgument();
                 AddRule(
                     errorCode: ErrorCodes.NotEqual,
                     rule: $"{Emitter.ValueParameterName}.Equals({value})",
@@ -112,7 +112,7 @@ internal class EmittableTypeBuilderBase
         switch (invocation.MemberName)
         {
             case nameof(ITypelyBuilderOfInt.GreaterThan):
-                var value = invocation.GetFirstNumberArgument();
+                var value = invocation.GetFirstArgument();
                 AddRule(
                     errorCode: ErrorCodes.GreaterThan,
                     rule: $"{Emitter.ValueParameterName} <= {value}",
@@ -120,7 +120,7 @@ internal class EmittableTypeBuilderBase
                     placeholders: (ValidationPlaceholders.ComparisonValue, value));
                 return true;
             case nameof(ITypelyBuilderOfInt.GreaterThanOrEqualTo):
-                value = invocation.GetFirstNumberArgument();
+                value = invocation.GetFirstArgument();
                 AddRule(
                     errorCode: ErrorCodes.GreaterThanOrEqualTo,
                     rule: $"{Emitter.ValueParameterName} < {value}",
@@ -128,7 +128,7 @@ internal class EmittableTypeBuilderBase
                     placeholders: (ValidationPlaceholders.ComparisonValue, value));
                 return true;
             case nameof(ITypelyBuilderOfInt.LessThan):
-                value = invocation.GetFirstNumberArgument();
+                value = invocation.GetFirstArgument();
                 AddRule(
                     errorCode: ErrorCodes.LessThan,
                     rule: $"{Emitter.ValueParameterName} >= {value}",
@@ -136,7 +136,7 @@ internal class EmittableTypeBuilderBase
                     placeholders: (ValidationPlaceholders.ComparisonValue, value));
                 return true;
             case nameof(ITypelyBuilderOfInt.LessThanOrEqualTo):
-                value = invocation.GetFirstNumberArgument();
+                value = invocation.GetFirstArgument();
                 AddRule(
                     errorCode: ErrorCodes.LessThanOrEqualTo,
                     rule: $"{Emitter.ValueParameterName} > {value}",

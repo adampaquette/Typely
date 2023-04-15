@@ -13,8 +13,8 @@ internal static class EmittableTypeBuilderFactory
         
         switch (builderType)
         {
-            //case nameof(ITypelyBuilder.OfString):
-            //    return new EmittableTypeBuilderOfString(defaultNamespace, invocations, model);
+            case nameof(ITypelyBuilder.OfString):
+                return new EmittableTypeBuilderOfString(defaultNamespace, invocations, model);
             case nameof(ITypelyBuilder.OfInt):
                 return new EmittableTypeBuilderOfInt(defaultNamespace, invocations, model);
             default: throw new InvalidOperationException($"Unknown builder type: {builderType}");

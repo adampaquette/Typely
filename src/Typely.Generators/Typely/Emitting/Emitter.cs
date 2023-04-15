@@ -111,7 +111,7 @@ internal class Emitter
         // if (type == typeof(long)) return "long";
         // if (type == typeof(sbyte)) return "sbyte";
         // if (type == typeof(short)) return "short";
-        // if (type == typeof(string)) return "string";
+        if (type == typeof(string)) return "string";
         // if (type == typeof(uint)) return "uint";
         // if (type == typeof(ulong)) return "ulong";
         // if (type == typeof(ushort)) return "ushort";
@@ -200,12 +200,7 @@ internal class Emitter
 
         foreach (var placeholder in placeholders)
         {
-            var value = placeholder.Value;
-            if (value is string)
-            {
-                value = $"\"{value}\"";
-            }
-            builder.AppendLine($$"""                        { "{{placeholder.Key}}", {{value}} },""");
+            builder.AppendLine($$"""                        { "{{placeholder.Key}}", {{placeholder.Value}} },""");
         }
 
         return builder.Append("                    });")
