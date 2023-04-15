@@ -17,6 +17,17 @@ public class TypelyGeneratorSnapshotTests
         
         return Verify(driver);
     }
+    
+    [Fact]
+    public Task AllSupportedScenariosOfString_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(StringConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
 
     [Fact]
     public Task MultipleConfigurations_Should_EmitTypes()

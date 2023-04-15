@@ -13,9 +13,12 @@ internal static class ParsedInvocationExtensions
         return value.Substring(1, value.Length - 2);
     }
 
-    public static string GetFirstNumberArgument(this ParsedInvocation parsedInvocation) =>
+    public static string GetFirstArgument(this ParsedInvocation parsedInvocation) =>
         parsedInvocation.ArgumentListSyntax.Arguments.First().Expression.ToString();
 
+    public static string GetSecondArgument(this ParsedInvocation parsedInvocation) =>
+        parsedInvocation.ArgumentListSyntax.Arguments[1].Expression.ToString();
+    
     public static ExpressionSyntax GetFirstExpressionArgument(this ParsedInvocation parsedInvocation) =>
         parsedInvocation.ArgumentListSyntax.Arguments.First().Expression;
 

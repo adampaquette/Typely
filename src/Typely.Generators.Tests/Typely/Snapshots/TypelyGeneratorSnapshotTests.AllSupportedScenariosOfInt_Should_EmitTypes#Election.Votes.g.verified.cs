@@ -37,7 +37,7 @@ namespace Election
                 return ValidationErrorFactory.Create(value, "NotEqual", ErrorMessages.NotEqual, "Presidency vote",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", "-1" },
+                        { "ComparisonValue", -1 },
                     });
             }
 
@@ -56,7 +56,7 @@ namespace Election
                 return ValidationErrorFactory.Create(value, "GreaterThan", LocalizedMessages.CustomMessage, "Presidency vote",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", "10" },
+                        { "ComparisonValue", 10 },
                     });
             }
 
@@ -65,7 +65,7 @@ namespace Election
                 return ValidationErrorFactory.Create(value, "GreaterThanOrEqualTo", A.CustomLocalization.Value, "Presidency vote",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", "10" },
+                        { "ComparisonValue", 10 },
                     });
             }
 
@@ -74,7 +74,7 @@ namespace Election
                 return ValidationErrorFactory.Create(value, "LessThan", ErrorMessages.LessThan, "Presidency vote",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", "20" },
+                        { "ComparisonValue", 20 },
                     });
             }
 
@@ -83,7 +83,7 @@ namespace Election
                 return ValidationErrorFactory.Create(value, "LessThanOrEqualTo", ErrorMessages.LessThanOrEqualTo, "Presidency vote",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", "20" },
+                        { "ComparisonValue", 20 },
                     });
             }
 
