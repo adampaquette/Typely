@@ -26,14 +26,12 @@ jobs:
 
       - name: Test
         run: |
-         dotnet test --no-restore ./src/Typely.sln /p:CollectCoverage=true /p:CoverletOutput=./TestResults-${{ matrix.dotnet-version }}/ /p:CoverletOutputFormat=lcov
-         cd src
-         ls
+         dotnet test --no-restore ./src/Typely.sln /p:CollectCoverage=true /p:CoverletOutput=TestResults-${{ matrix.dotnet-version }}/ /p:CoverletOutputFormat=lcov
       - name: Publish coverage report
         uses: coverallsapp/github-action@master   
         with:
           github-token: ${{ secrets.COVERALLS_REPO_TOKEN }} 
-          path-to-lcov: ./TestResults-${{ matrix.dotnet-version }}/coverage.info
+          path-to-lcov: src/TestResults-${{ matrix.dotnet-version }}/coverage.info
           flag-name: run-${{ join(matrix.*, '-') }}
           parallel: true
 
