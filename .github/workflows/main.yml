@@ -31,7 +31,6 @@ jobs:
         uses: coverallsapp/github-action@master   
         with:
           github-token: ${{ secrets.COVERALLS_REPO_TOKEN }} 
-          path-to-lcov: ../Assets/Coverage/coverage.opencover.xml
 
       - name: Create nuget packages
         run: |
