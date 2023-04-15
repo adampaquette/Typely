@@ -40,8 +40,8 @@ internal class TypelyGeneratorDriverFixture : BaseFixture<TypelyGeneratorDriver>
 
     private static string GetFilePath(Type configClass)
     {
-        var pathFromNamespace = configClass.FullName!.Replace("Typely.Generators.Tests", "").Replace(".", "\\");
-        return  Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"..\\..\\..\\{pathFromNamespace}.cs");
+        var pathFromNamespace = configClass.FullName!.Replace("Typely.Generators.Tests", "").Replace(".", "/");
+        return  Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"../../../{pathFromNamespace}.cs");
     }
 
     private static Compilation CreateCompilation(IEnumerable<SyntaxTree> syntaxTrees) =>
