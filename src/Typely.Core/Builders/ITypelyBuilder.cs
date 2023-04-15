@@ -106,7 +106,7 @@ public interface ITypelyBuilder<TBuilder, TRuleBuilder, TValue, TFactory> : ITyp
 }
 
 /// <summary>
-/// Commun interface for all rule builders.
+/// Common interface for all rule builders.
 /// </summary>
 /// <typeparam name="TBuilder">Type of the inheriting builder.</typeparam>
 /// <typeparam name="TRuleBuilder">Type of the inheriting rule builder.</typeparam>
