@@ -18,6 +18,54 @@ public interface ITypelyBuilder
     /// </summary>
     /// <returns>Builder of string.</returns>
     ITypelyBuilderOfString OfString();
+    
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying decimal type.
+    /// </summary>
+    /// <returns>Builder of decimal.</returns>
+    ITypelyBuilderOfDecimal OfDecimal();
+    
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying float type.
+    /// </summary>
+    /// <returns>Builder of float.</returns>
+    ITypelyBuilderOfFloat OfFloat();
+    
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying double type.
+    /// </summary>
+    /// <returns>Builder of double.</returns>
+    ITypelyBuilderOfDouble OfDouble();
+    
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying long type.
+    /// </summary>
+    /// <returns>Builder of long.</returns>
+    ITypelyBuilderOfLong OfLong();
+    
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying short type.
+    /// </summary>
+    /// <returns>Builder of short.</returns>
+    ITypelyBuilderOfShort OfShort();
+    
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying uint type.
+    /// </summary>
+    /// <returns>Builder of uint.</returns>
+    ITypelyBuilderOfUInt OfUInt();
+    
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying ulong type.
+    /// </summary>
+    /// <returns>Builder of ulong.</returns>
+    ITypelyBuilderOfULong OfULong();
+    
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying ushort type.
+    /// </summary>
+    /// <returns>Builder of ushort.</returns>
+    ITypelyBuilderOfUShort OfUShort();
 }
 
 /// <summary>

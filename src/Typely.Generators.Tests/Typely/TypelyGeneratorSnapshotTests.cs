@@ -19,6 +19,94 @@ public class TypelyGeneratorSnapshotTests
     }
     
     [Fact]
+    public Task AllSupportedScenariosOfDecimal_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(DecimalConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task AllSupportedScenariosOfFloat_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(FloatConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task AllSupportedScenariosOfDouble_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(DoubleConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task AllSupportedScenariosOfLong_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(LongConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task AllSupportedScenariosOfUInt_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(UIntConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task AllSupportedScenariosOfULong_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(UlongConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+
+    [Fact]
+    public Task AllSupportedScenariosOfShort_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(ShortConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task AllSupportedScenariosOfUShort_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(UShortConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
     public Task AllSupportedScenariosOfString_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()

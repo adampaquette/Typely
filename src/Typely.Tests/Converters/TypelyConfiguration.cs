@@ -7,7 +7,6 @@ public class TypelyConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfInt().For("IntSerializationTestsType");   
-       
+        builder.OfString().For("StringSerializationTestsType");
     }
 }

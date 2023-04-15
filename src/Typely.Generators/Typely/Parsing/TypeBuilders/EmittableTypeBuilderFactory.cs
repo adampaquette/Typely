@@ -17,6 +17,22 @@ internal static class EmittableTypeBuilderFactory
                 return new EmittableTypeBuilderOfString(defaultNamespace, invocations, model);
             case nameof(ITypelyBuilder.OfInt):
                 return new EmittableTypeBuilderOfInt(defaultNamespace, invocations, model);
+            case nameof(ITypelyBuilder.OfDecimal):
+                return new EmittableTypeBuilderOfDecimal(defaultNamespace, invocations, model);
+            case nameof(ITypelyBuilder.OfFloat):
+                return new EmittableTypeBuilderOfFloat(defaultNamespace, invocations, model);
+            case nameof(ITypelyBuilder.OfDouble):
+                return new EmittableTypeBuilderOfDouble(defaultNamespace, invocations, model);
+            case nameof(ITypelyBuilder.OfLong):
+                return new EmittableTypeBuilderOfLong(defaultNamespace, invocations, model);
+            case nameof(ITypelyBuilder.OfShort):
+                return new EmittableTypeBuilderOfShort(defaultNamespace, invocations, model);
+            case nameof(ITypelyBuilder.OfUInt):
+                return new EmittableTypeBuilderOfUint(defaultNamespace, invocations, model);
+            case nameof(ITypelyBuilder.OfULong):
+                return new EmittableTypeBuilderOfULong(defaultNamespace, invocations, model);
+            case nameof(ITypelyBuilder.OfUShort):
+                return new EmittableTypeBuilderOfUShort(defaultNamespace, invocations, model);
             default: throw new InvalidOperationException($"Unknown builder type: {builderType}");
         }
     }
