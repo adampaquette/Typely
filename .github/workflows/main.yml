@@ -28,9 +28,7 @@ jobs:
         run: dotnet test --no-restore ./src/Typely.sln /p:CollectCoverage=true /p:CoverletOutput="../Assets/Coverage/" /p:MergeWith="../Assets/Coverage/coverage.info" /p:CoverletOutputFormat=lcov /p:CoverletOutputFormat="opencover%2cjson" /maxcpucount:1
       
       - name: Publish coverage report
-        uses: coverallsapp/github-action@master   
-        with:
-          github-token: ${{ secrets.COVERALLS_REPO_TOKEN }} 
+        uses: coverallsapp/github-action@master
 
       - name: Create nuget packages
         run: |
