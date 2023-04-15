@@ -25,7 +25,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore ./src/Typely.sln
 
       - name: Test
-        run: dotnet test --no-restore --verbosity normal ./src/Typely.sln
+        run: dotnet test --no-restore  --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}" --verbosity normal ./src/Typely.sln
 
       - name: Upload dotnet test results
         uses: actions/upload-artifact@v3
