@@ -1,4 +1,4 @@
-name: dotnet package
+name: pipeline
 
 on: [push]
 
@@ -25,15 +25,10 @@ jobs:
         run: dotnet build --configuration Release --no-restore ./src/Typely.sln
 
       - name: Test
-        run: dotnet test --no-restore --verbosity normal ./src/Typely.sln
-
-      - name: Upload dotnet test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: dotnet-results-${{ matrix.dotnet-version }}
-          path: TestResults-${{ matrix.dotnet-version }}
-        # Use always() to always run this step to publish test results when there are test failures
-        if: ${{ always() }}
+        run: dotnet test --no-restore ./src/Typely.sln /p:CollectCoverage=true /p:CoverletOutput="../Coverage/" /p:MergeWith="../Coverage/coverage.json" /p:CoverletOutputFormat=\"cobertura,json\" /maxcpucount:1
+      
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
 
       - name: Create nuget packages
         run: |
