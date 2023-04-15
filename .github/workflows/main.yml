@@ -26,7 +26,7 @@ jobs:
 
       - name: Test
         run: |
-         dotnet test --no-restore ./src/Typely.sln /p:CollectCoverage=true /p:CoverletOutput=TestResults-${{ matrix.dotnet-version }}/ /p:CoverletOutputFormat=lcov
+         dotnet test --no-restore ./src/Typely.sln /p:CollectCoverage=true /p:CoverletOutput=TestResults /p:CoverletOutputFormat=lcov
          ls
          cd src
          ls
