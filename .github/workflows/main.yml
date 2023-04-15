@@ -25,30 +25,13 @@ jobs:
         run: dotnet build --configuration Release --no-restore ./src/Typely.sln
 
       - name: Test
-        run: dotnet test --no-restore --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}" ./src/Typely.sln /p:CollectCoverage=true /p:CoverletOutput=TestResults-${{ matrix.dotnet-version }}/ /p:CoverletOutputFormat=lcov
+        run: dotnet test --no-restore ./src/Typely.sln /p:CollectCoverage=true /p:CoverletOutput=TestResults-${{ matrix.dotnet-version }}/ /p:CoverletOutputFormat=lcov
 
-      - name: Upload dotnet test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: dotnet-results-${{ matrix.dotnet-version }}
-          path: TestResults-${{ matrix.dotnet-version }}
-        # Use always() to always run this step to publish test results when there are test failures
-        if: ${{ always() }}
-
-      - name: Publish coverage report to coveralls.io   
+      - name: Publish coverage report
         uses: coverallsapp/github-action@master   
         with:
           github-token: ${{ secrets.COVERALLS_REPO_TOKEN }} 
           path-to-lcov: TestResults-${{ matrix.dotnet-version }}/coverage.info 
-
-      - name: Test Report
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Test report
-          path: "**/.trx"                            
-          reporter: dotnet-trx
-          fail-on-error: true
 
       - name: Create nuget packages
         run: |
