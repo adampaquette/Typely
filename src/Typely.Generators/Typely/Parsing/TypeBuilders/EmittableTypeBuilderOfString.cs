@@ -39,7 +39,7 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
                         var min = invocation.GetFirstArgument();
                         var max = invocation.GetSecondArgument();
                         AddRule(
-                            errorCode: ErrorCodes.MinLength,
+                            errorCode: ErrorCodes.Length,
                             rule: $"{Emitter.ValueParameterName}.Length < {min} || {Emitter.ValueParameterName}.Length > {max}",
                             message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.Length),
                             (ValidationPlaceholders.MinLength, min), (ValidationPlaceholders.MaxLength, max));

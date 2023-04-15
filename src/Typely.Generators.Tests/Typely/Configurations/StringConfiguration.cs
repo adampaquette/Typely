@@ -1,4 +1,5 @@
-﻿using Typely.Core;
+﻿using System.Text.RegularExpressions;
+using Typely.Core;
 using Typely.Core.Builders;
 
 namespace Typely.Generators.Tests.Typely.Configurations;
@@ -11,7 +12,15 @@ internal class StringConfiguration : ITypelyConfiguration
         vote.For("Vote");
 
         builder.OfString().For("Username");
-        builder.OfString().For("Code").Length(4).NotEqual("0000");
+        builder.OfString().For("Code")
+            .Length(4)
+            .Length(4, 20)
+            .NotEqual("0000")
+            .Matches(new Regex(".+"))
+            .GreaterThan("A")
+            .GreaterThanOrEqualTo("A")
+            .LessThan("A")
+            .LessThanOrEqualTo("A");
         
         // Create a reusable factory
         var sf = builder.OfString().AsFactory();
