@@ -27,6 +27,7 @@ jobs:
       - name: Test
         run: |
          dotnet test --no-restore ./src/Typely.sln /p:CollectCoverage=true /p:CoverletOutput=./TestResults-${{ matrix.dotnet-version }}/ /p:CoverletOutputFormat=lcov
+         cd src
          ls
       - name: Publish coverage report
         uses: coverallsapp/github-action@master   
