@@ -1,4 +1,4 @@
-name: dotnet package
+name: pipeline
 
 on: [push]
 
@@ -34,6 +34,15 @@ jobs:
           path: TestResults-${{ matrix.dotnet-version }}
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Test report
+          path: "**/test-results.trx"                            
+          reporter: dotnet-trx
+          fail-on-error: true
 
       - name: Create nuget packages
         run: |
