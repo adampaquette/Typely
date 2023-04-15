@@ -12,7 +12,7 @@ using Typely.Generators.Tests.Typely.Configurations;
 namespace Typely.Generators.Tests.Typely.Configurations
 {
     [JsonConverter(typeof(TypelyJsonConverter<int, Id>))]
-    public partial struct Id : ITypelyValue<int, Id>, IEquatable<Id>, IComparable<Id>, IComparable
+    public partial class Id : ITypelyValue<int, Id>, IEquatable<Id>, IComparable<Id>, IComparable
     {
         public int Value { get; private set; }
 

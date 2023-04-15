@@ -27,8 +27,14 @@ internal sealed class Parser
     /// Filter classes having an interface name <see cref="ITypelyConfiguration"/>.
     /// </summary>
     internal static bool IsTypelyConfigurationClass(SyntaxNode syntaxNode) =>
-        syntaxNode is ClassDeclarationSyntax c && c.HasInterface(nameof(ITypelyConfiguration));
+        syntaxNode is ClassDeclarationSyntax c && IsTypelyConfigurationClass(c);
 
+    /// <summary>
+    /// Filter classes having an interface name <see cref="ITypelyConfiguration"/>.
+    /// </summary>
+    internal static bool IsTypelyConfigurationClass(ClassDeclarationSyntax syntax) => 
+        syntax.HasInterface(nameof(ITypelyConfiguration));
+    
     private static bool IsConfigureMethod(SyntaxNode syntaxNode) =>
         syntaxNode is MethodDeclarationSyntax c && c.Identifier.Text == nameof(ITypelyConfiguration.Configure);
 
@@ -67,7 +73,7 @@ internal sealed class Parser
         _cancellationToken.ThrowIfCancellationRequested();
 
         var emittableTypes = new List<EmittableType>();
-        var classSyntaxes = syntaxTree.GetRoot().DescendantNodes().Where(IsTypelyConfigurationClass).ToList();
+        var classSyntaxes = syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>().Where(IsTypelyConfigurationClass).ToList();
         var model = _compilation.GetSemanticModel(syntaxTree);
         foreach (var classSyntax in classSyntaxes)
         {
@@ -84,16 +90,11 @@ internal sealed class Parser
     /// <param name="classSyntax">The class to parse.</param>
     /// <param name="model">The <see cref="SemanticModel"/>.</param>
     /// <returns>A list of <see cref="EmittableType"/>.</returns>
-    private IEnumerable<EmittableType> ParseClass(SyntaxNode classSyntax, SemanticModel model)
+    private IEnumerable<EmittableType> ParseClass(ClassDeclarationSyntax classSyntax, SemanticModel model)
     {
         var methodSyntax = classSyntax.DescendantNodes()
             .OfType<MethodDeclarationSyntax>()
-            .FirstOrDefault(IsConfigureMethod);
-
-        if (methodSyntax == null)
-        {
-            return Enumerable.Empty<EmittableType>();
-        }
+            .First(IsConfigureMethod);
 
         var emittableTypes = new List<EmittableType>();
         var typelyBuilderParameterName = methodSyntax.ParameterList.Parameters.First().Identifier.Text;
@@ -119,12 +120,7 @@ internal sealed class Parser
     private static List<ParsedStatement> ParseStatements(MethodDeclarationSyntax methodDeclarationSyntax,
         string typelyBuilderParameterName, SemanticModel model)
     {
-        if (methodDeclarationSyntax.Body == null)
-        {
-            return Enumerable.Empty<ParsedStatement>().ToList();
-        }
-
-        var bodySyntaxNodes = methodDeclarationSyntax.Body.DescendantNodes()
+        var bodySyntaxNodes = methodDeclarationSyntax.Body!.DescendantNodes()
             .Where(x => x is ExpressionStatementSyntax || x is LocalDeclarationStatementSyntax);
         var parsedStatements = new List<ParsedStatement>();
         var parsedStatementVariables = new Dictionary<string, ParsedStatement>();
@@ -136,12 +132,11 @@ internal sealed class Parser
             if (bodySyntaxNode is ExpressionStatementSyntax expressionStatementSyntax)
             {
                 parsedStatements.Add(parsedExpression);
-                ParseInvocationExpression(expressionStatementSyntax.Expression, parsedExpression, model);
+                ParseInvocationExpression(expressionStatementSyntax.Expression, parsedExpression);
             }
             else if (bodySyntaxNode is LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
             {
-                ParseDeclarationStatement(parsedStatementVariables, parsedExpression, localDeclarationStatementSyntax,
-                    model);
+                ParseDeclarationStatement(parsedStatementVariables, parsedExpression, localDeclarationStatementSyntax);
             }
 
             if (DoesNotUseBuilderParameter(parsedExpression))
@@ -162,22 +157,11 @@ internal sealed class Parser
     /// </summary>
     private static void ParseDeclarationStatement(
         Dictionary<string, ParsedStatement> parsedExpressionVariables,
-        ParsedStatement parsed, LocalDeclarationStatementSyntax localDeclarationStatementSyntax,
-        SemanticModel model)
+        ParsedStatement parsed, LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
     {
-        var variable = localDeclarationStatementSyntax.Declaration.Variables.FirstOrDefault();
-        if (variable == null)
-        {
-            throw new NotSupportedException("Local declaration without variable");
-        }
-
+        var variable = localDeclarationStatementSyntax.Declaration.Variables.First();
         parsedExpressionVariables.Add(variable.Identifier.Text, parsed);
-        if (variable.Initializer == null)
-        {
-            throw new NotSupportedException("Initializer null for LocalDeclarationStatementSyntax");
-        }
-
-        ParseInvocationExpression(variable.Initializer.Value, parsed, model);
+        ParseInvocationExpression(variable.Initializer!.Value, parsed);
     }
 
     /// <summary>
@@ -221,8 +205,8 @@ internal sealed class Parser
     /// <summary>
     /// Parse a <see cref="SyntaxNode"/> as an <see cref="InvocationExpressionSyntax"/> to get the member name and the argument list.
     /// </summary>
-    private static void ParseInvocationExpression(CSharpSyntaxNode syntaxNode,
-        ParsedStatement parsed, SemanticModel model)
+    private static void ParseInvocationExpression(ExpressionSyntax syntaxNode,
+        ParsedStatement parsed)
     {
         // ex: builder.OfInt().For("Vote").WithNamespace("UserAggregate").WithName("Vote")
         if (syntaxNode is InvocationExpressionSyntax invocationExpressionSyntax)
@@ -235,7 +219,7 @@ internal sealed class Parser
                 parsed.Invocations.Insert(0, new ParsedInvocation(argumentList, memberName));
 
                 // ex: builder.OfInt().For("Vote").WithNamespace("UserAggregate").WithName()
-                ParseInvocationExpression(memberAccessExpressionSyntax.Expression, parsed, model);
+                ParseInvocationExpression(memberAccessExpressionSyntax.Expression, parsed);
             }
         }
         // ex: builder
@@ -249,8 +233,8 @@ internal sealed class Parser
         }
     }
 
-    private void Diag(DiagnosticDescriptor desc, Location? location, params object?[]? messageArgs)
-    {
-        _reportDiagnostic(Diagnostic.Create(desc, location, messageArgs));
-    }
+    // private void Diag(DiagnosticDescriptor desc, Location? location, params object?[]? messageArgs)
+    // {
+    //     _reportDiagnostic(Diagnostic.Create(desc, location, messageArgs));
+    // }
 }

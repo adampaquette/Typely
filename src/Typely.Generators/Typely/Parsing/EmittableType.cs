@@ -43,7 +43,7 @@ internal class EmittableType
     /// <summary>
     /// Additional namespaces to import.
     /// </summary>
-    public IList<string> AdditionalNamespaces { get; set; } = new List<string>();
+    public IList<string> AdditionalNamespaces { get; } = new List<string>();
     
     public EmittableType(Type underlyingType, string defaultNamespace)
     {
@@ -109,21 +109,21 @@ internal class EmittableType
     /// Clone the rule to make similar types.
     /// </summary>
     /// <returns>The copied rule.</returns>
-    public EmittableType Clone()
-    {
-        var emittableType = new EmittableType(UnderlyingType, Namespace)
-        {
-            TypeName = TypeName,
-            ConstructTypeKind = ConstructTypeKind,
-            CurrentRule = CurrentRule,
-            Name = Name
-        };
-
-        foreach (var rule in Rules)
-        {
-            emittableType.Rules.Add(rule);
-        }
-
-        return emittableType;
-    }
+    // public EmittableType Clone()
+    // {
+    //     var emittableType = new EmittableType(UnderlyingType, Namespace)
+    //     {
+    //         TypeName = TypeName,
+    //         ConstructTypeKind = ConstructTypeKind,
+    //         CurrentRule = CurrentRule,
+    //         Name = Name
+    //     };
+    //
+    //     foreach (var rule in Rules)
+    //     {
+    //         emittableType.Rules.Add(rule);
+    //     }
+    //
+    //     return emittableType;
+    // }
 }

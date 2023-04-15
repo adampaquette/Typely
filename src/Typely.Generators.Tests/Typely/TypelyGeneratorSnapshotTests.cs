@@ -39,6 +39,39 @@ public class TypelyGeneratorSnapshotTests
 
         return Verify(driver);
     }
+    
+    [Fact]
+    public Task NamespaceConfiguration_Should_NotThrow()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(NamespaceConfiguration))
+            .Create()
+            .Run();
+
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task WrappedNamespaceConfiguration_Should_NotThrow()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(ParentClass.WrappedNamespaceConfiguration))
+            .Create()
+            .Run();
+
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task NoNamespaceConfiguration_Should_NotThrow()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(NoNamespaceConfiguration))
+            .Create()
+            .Run();
+
+        return Verify(driver);
+    }
 
     [Fact]
     public Task NoConfiguration_Should_NotThrow()
