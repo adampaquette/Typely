@@ -7,9 +7,10 @@ internal class IntConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfInt().For("Id").WithName(() => LocalizedNames.CustomName);
+        builder.OfInt().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
         
         var factory = builder.OfInt()
+            .AsStruct()
             .WithNamespace("Election")
             .NotEmpty().WithMessage("The value cannot be empty").WithErrorCode("ERR-001")
             .AsFactory();
