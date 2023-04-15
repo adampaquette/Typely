@@ -3,7 +3,7 @@ using Typely.Core.Builders;
 
 namespace Typely.Generators.Tests.Typely.Configurations;
 
-internal class UlongConfiguration : ITypelyConfiguration
+internal class ULongConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {

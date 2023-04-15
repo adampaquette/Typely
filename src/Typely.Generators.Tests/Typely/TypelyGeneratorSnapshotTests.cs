@@ -77,7 +77,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfULong_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(UlongConfiguration))
+            .WithConfigurations(typeof(ULongConfiguration))
             .Create()
             .Run();
         
