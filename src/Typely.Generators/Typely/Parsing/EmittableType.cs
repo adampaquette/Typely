@@ -8,7 +8,12 @@ internal class EmittableType
     /// <summary>
     /// Type wrapped by the value object.
     /// </summary>
-    public Type UnderlyingType { get; }
+    public string UnderlyingType { get; }
+    
+    /// <summary>
+    /// Indicates if the type is a value type.
+    /// </summary>
+    public bool IsValueType { get; }
 
     /// <summary>
     /// Name of the class of struct to generate.
@@ -45,9 +50,10 @@ internal class EmittableType
     /// </summary>
     public IList<string> AdditionalNamespaces { get; } = new List<string>();
     
-    public EmittableType(Type underlyingType, string defaultNamespace)
+    public EmittableType(string underlyingType, bool isValueType, string defaultNamespace)
     {
         UnderlyingType = underlyingType;
+        IsValueType = isValueType;
         Namespace = defaultNamespace;
     }
 

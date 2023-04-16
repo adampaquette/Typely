@@ -1,9 +1,9 @@
 ﻿using CsCheck;
 using Typely.Core;
 
-namespace Typely.Tests.Int;
+namespace Typely.Tests.TypeGeneration.UShort;
 
-public class TypelyIntTests
+public class IntTests
 {
     [Fact] public void Equals_ShouldBe_True() => GenTrueEquals.Sample((x, y) => x.Equals(y));
     [Fact] public void Equals_ShouldBe_False() => GenFalseEquals.Sample((x, y) => !x.Equals(y));

@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;net7.0</TargetFrameworks>
         <Description>Typely lets you create types easily with a fluent API to embrace Domain-driven design and value objects. This package contains interfaces that a consumer must implement.</Description>
-        <Version>1.1.0-alpha</Version>
+        <Version>1.2.0-alpha</Version>
     </PropertyGroup>
 
     <ItemGroup>

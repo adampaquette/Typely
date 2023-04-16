@@ -9,7 +9,7 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
 {
     public EmittableTypeBuilderOfString(string defaultNamespace, IEnumerable<ParsedInvocation> invocations,
         SemanticModel model)
-        : base(invocations, new EmittableType(typeof(string), defaultNamespace), model)
+        : base(invocations, new EmittableType("string", false, defaultNamespace), model)
     {
     }
 
@@ -76,7 +76,7 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
                     AddRule(
                         errorCode: ErrorCodes.Matches,
                         rule: $"!{value}.IsMatch({Emitter.ValueParameterName})",
-                        message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.MaxLength),
+                        message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.Matches),
                         placeholders: (ValidationPlaceholders.ComparisonValue, value));
                     EmittableType.AdditionalNamespaces.Add("System.Text.RegularExpressions");
                     continue;

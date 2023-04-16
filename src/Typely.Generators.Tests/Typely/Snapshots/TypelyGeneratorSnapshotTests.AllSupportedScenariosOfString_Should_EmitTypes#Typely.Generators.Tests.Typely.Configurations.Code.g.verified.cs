@@ -59,7 +59,7 @@ namespace Typely.Generators.Tests.Typely.Configurations
 
             if (!new Regex(".+").IsMatch(value))
             {
-                return ValidationErrorFactory.Create(value, "Matches", ErrorMessages.MaxLength, "Code",
+                return ValidationErrorFactory.Create(value, "Matches", ErrorMessages.Matches, "Code",
                     new Dictionary<string, object?>
                     {
                         { "ComparisonValue", new Regex(".+") },
