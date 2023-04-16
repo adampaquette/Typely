@@ -30,9 +30,6 @@
     <ItemGroup Condition="'$(Configuration)'=='Debug'"> 
         <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
     </ItemGroup> -->
-    <ItemGroup>
-        <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
-    </ItemGroup>
 
     <PropertyGroup>
         <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
@@ -40,18 +37,29 @@
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     </PropertyGroup>
 
-    <Target Name="GetDependencyTargetPaths">
+    <!-- <Target Name="GetDependencyTargetPaths">
         <ItemGroup Condition="'$(Configuration)'=='Debug'">
             <TargetPathWithTargetPlatformMoniker Include="..\Typely.Core\$(OutputPath)Typely.Core.dll" IncludeRuntimeDependency="false" />
-            <!-- Pack both the generator and the dependencies into the generated Nuget Package -->
+            Pack both the generator and the dependencies into the generated Nuget Package
             <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
             <None Include="..\Typely.Core\bin\Release\net7.0\Typely.Core.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
         </ItemGroup>
         <ItemGroup Condition="'$(Configuration)'!='Debug'">
             <TargetPathWithTargetPlatformMoniker Include="$(PKGTypely_Core)\lib\netstandard2.0\Typely.Core.dll" IncludeRuntimeDependency="false" />
-            <!-- Pack both the generator and the dependencies into the generated Nuget Package -->
+            Pack both the generator and the dependencies into the generated Nuget Package
             <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
             <None Include="$(PKGTypely_Core)\lib\netstandard2.0\Typely.Core.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
         </ItemGroup>
+    </Target> -->
+
+    <Target Name="GetDependencyTargetPaths">
+        <ItemGroup>
+            <TargetPathWithTargetPlatformMoniker Include="..\Typely.Core\$(OutputPath)Typely.Core.dll" IncludeRuntimeDependency="false" />           
+            <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+            <None Include="..\Typely.Core\bin\Release\net7.0\Typely.Core.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        </ItemGroup>       
     </Target>
+    <ItemGroup>
+        <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+    </ItemGroup>
 </Project>
