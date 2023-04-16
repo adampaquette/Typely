@@ -22,7 +22,7 @@ jobs:
         run: dotnet restore ./src/Typely.sln
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore ./src/Typely.sln
+        run: dotnet build --configuration Release ./src/Typely.sln
 
       - name: Test
         run: dotnet test --no-restore ./src/Typely.sln /p:CollectCoverage=true /p:CoverletOutput="../Coverage/" /p:MergeWith="../Coverage/coverage.json" /p:CoverletOutputFormat=\"cobertura,json\" /maxcpucount:1

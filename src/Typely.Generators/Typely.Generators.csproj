@@ -4,8 +4,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <IsRoslynComponent>true</IsRoslynComponent>
         <Description>Typely lets you create types easily with a fluent API to embrace Domain-driven design and value objects. This package contains type generators.</Description>
-        <VersionPrefix>0.1.0</VersionPrefix>
-        <VersionSuffix>alpha</VersionSuffix>
+        <Version>1.1.0-alpha</Version>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     </PropertyGroup>
 
@@ -23,7 +22,12 @@
         </PackageReference>
     </ItemGroup>
 
-    <ItemGroup>
+    <!-- Generator dependencies -->
+    <ItemGroup Condition="'$(Configuration)'!='Debug'">
+        <PackageReference Include="Typely.Core" Version="1.1.0-alpha" GeneratePathProperty="true" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)'=='Debug'">
         <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
     </ItemGroup>
 
@@ -34,13 +38,17 @@
     </PropertyGroup>
 
     <Target Name="GetDependencyTargetPaths">
-        <ItemGroup>            
+        <ItemGroup Condition="'$(Configuration)'=='Debug'">
             <TargetPathWithTargetPlatformMoniker Include="..\Typely.Core\$(OutputPath)Typely.Core.dll" IncludeRuntimeDependency="false" />
             <!-- Pack both the generator and the dependencies into the generated Nuget Package -->
             <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
             <None Include="..\Typely.Core\bin\Release\net7.0\Typely.Core.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-            <!--<None Include="..\Typely.Core\bin\Release\netstandard2.0\Typely.Core.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />-->            
+        </ItemGroup>
+        <ItemGroup Condition="'$(Configuration)'!='Debug'">
+            <TargetPathWithTargetPlatformMoniker Include="$(PKGTypely_Core)\lib\netstandard2.0\Typely.Core.dll" IncludeRuntimeDependency="false" />
+            <!-- Pack both the generator and the dependencies into the generated Nuget Package -->
+            <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+            <None Include="$(PKGTypely_Core)\lib\netstandard2.0\Typely.Core.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
         </ItemGroup>
     </Target>
-
 </Project>
