@@ -49,7 +49,6 @@
             <!-- Pack both the generator and the dependencies into the generated Nuget Package -->
             <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
             <None Include="$(PKGTypely_Core)\lib\netstandard2.0\Typely.Core.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-            <TargetPathWithTargetPlatformMoniker Include="$(PKGBasic_Reference_Assemblies_NetStandard20)\lib\netstandard2.0\Basic.Reference.Assemblies.NetStandard20.dll" IncludeRuntimeDependency="false" />
         </ItemGroup>
     </Target>
 </Project>
