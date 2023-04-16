@@ -51,7 +51,6 @@ public class TypesConfiguration : ITypelyConfiguration
 
 Install packages
 ```
-dotnet add package Typely.Core
 dotnet add package Typely.Generators
 ```
 

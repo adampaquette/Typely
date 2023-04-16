@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Description>Typely lets you create types easily with a fluent API to embrace Domain-driven design and value objects. This package contains integrations with EF Core.</Description>
+        <Version>1.0.0-alpha</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
+    </ItemGroup>
+
+</Project>
