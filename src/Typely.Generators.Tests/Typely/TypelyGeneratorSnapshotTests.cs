@@ -8,6 +8,72 @@ namespace Typely.Generators.Tests.Typely;
 public class TypelyGeneratorSnapshotTests
 {
     [Fact]
+    public Task AllSupportedScenariosOfBool_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(BoolConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task AllSupportedScenariosOfByte_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(ByteConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task AllSupportedScenariosOfChar_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(CharConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task AllSupportedScenariosOfDateOnly_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(DateOnlyConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task AllSupportedScenariosOfDateTime_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(DateTimeConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task AllSupportedScenariosOfDateTimeOffset_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(DateTimeOffsetConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
     public Task AllSupportedScenariosOfInt_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
@@ -41,6 +107,17 @@ public class TypelyGeneratorSnapshotTests
     }
     
     [Fact]
+    public Task AllSupportedScenariosOfGuid_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(GuidConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
     public Task AllSupportedScenariosOfDouble_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
@@ -63,27 +140,16 @@ public class TypelyGeneratorSnapshotTests
     }
     
     [Fact]
-    public Task AllSupportedScenariosOfUInt_Should_EmitTypes()
+    public Task AllSupportedScenariosOfSByte_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(UIntConfiguration))
+            .WithConfigurations(typeof(SByteConfiguration))
             .Create()
             .Run();
         
         return Verify(driver);
     }
     
-    [Fact]
-    public Task AllSupportedScenariosOfULong_Should_EmitTypes()
-    {
-        var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(ULongConfiguration))
-            .Create()
-            .Run();
-        
-        return Verify(driver);
-    }
-
     [Fact]
     public Task AllSupportedScenariosOfShort_Should_EmitTypes()
     {
@@ -96,10 +162,10 @@ public class TypelyGeneratorSnapshotTests
     }
     
     [Fact]
-    public Task AllSupportedScenariosOfUShort_Should_EmitTypes()
+    public Task AllSupportedScenariosOfString_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(UShortConfiguration))
+            .WithConfigurations(typeof(StringConfiguration))
             .Create()
             .Run();
         
@@ -107,10 +173,54 @@ public class TypelyGeneratorSnapshotTests
     }
     
     [Fact]
-    public Task AllSupportedScenariosOfString_Should_EmitTypes()
+    public Task AllSupportedScenariosOfTimeOnly_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(StringConfiguration))
+            .WithConfigurations(typeof(TimeOnlyConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task AllSupportedScenariosOfTimeSpan_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(TimeSpanConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+    
+    [Fact]
+    public Task AllSupportedScenariosOfUInt_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(UIntConfiguration))
+            .Create()
+            .Run();
+        
+        return Verify(driver);
+    }
+
+    [Fact]
+    public Task AllSupportedScenariosOfULong_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(ULongConfiguration))
+            .Create()
+            .Run();
+
+        return Verify(driver);
+    }
+
+    [Fact]
+    public Task AllSupportedScenariosOfUShort_Should_EmitTypes()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(UShortConfiguration))
             .Create()
             .Run();
         

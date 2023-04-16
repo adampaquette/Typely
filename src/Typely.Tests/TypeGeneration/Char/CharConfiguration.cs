@@ -1,9 +1,9 @@
 ﻿using Typely.Core;
 using Typely.Core.Builders;
 
-namespace Typely.Tests.Int;
+namespace Typely.Tests.TypeGeneration.Char;
 
-public class TypelyConfiguration : ITypelyConfiguration
+public class IntConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {

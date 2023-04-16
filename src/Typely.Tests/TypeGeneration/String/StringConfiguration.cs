@@ -2,7 +2,7 @@
 using Typely.Core;
 using Typely.Core.Builders;
 
-namespace Typely.Tests.String;
+namespace Typely.Tests.TypeGeneration.String;
 
 public class StringConfiguration : ITypelyConfiguration
 {

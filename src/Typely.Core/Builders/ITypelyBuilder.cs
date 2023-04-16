@@ -8,59 +8,123 @@ namespace Typely.Core.Builders;
 public interface ITypelyBuilder
 {
     /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying bool type.
+    /// </summary>
+    /// <returns>Builder of bool.</returns>
+    ITypelyBuilderOfBool OfBool();
+
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying byte type.
+    /// </summary>
+    /// <returns>Builder of byte.</returns>
+    ITypelyBuilderOfByte OfByte();
+
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying char type.
+    /// </summary>
+    /// <returns>Builder of char.</returns>
+    ITypelyBuilderOfChar OfChar();
+
+#if NET7_0_OR_GREATER
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying DateOnly type.
+    /// </summary>
+    /// <returns>Builder of DateOnly.</returns>
+    ITypelyBuilderOfDateOnly OfDateOnly();
+#endif
+    
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying DateTime type.
+    /// </summary>
+    /// <returns>Builder of DateTime.</returns>
+    ITypelyBuilderOfDateTime OfDateTime();
+
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying DateTimeOffset type.
+    /// </summary>
+    /// <returns>Builder of DateTimeOffset.</returns>
+    ITypelyBuilderOfDateTimeOffset OfDateTimeOffset();
+
+    /// <summary>
     /// Returns a builder dedicated to creating a value object with the underlying int type.
     /// </summary>
     /// <returns>Builder of int.</returns>
     ITypelyBuilderOfInt OfInt();
 
     /// <summary>
-    /// Returns a builder dedicated to creating a value object with the underlying string type.
-    /// </summary>
-    /// <returns>Builder of string.</returns>
-    ITypelyBuilderOfString OfString();
-    
-    /// <summary>
     /// Returns a builder dedicated to creating a value object with the underlying decimal type.
     /// </summary>
     /// <returns>Builder of decimal.</returns>
     ITypelyBuilderOfDecimal OfDecimal();
-    
+
     /// <summary>
     /// Returns a builder dedicated to creating a value object with the underlying float type.
     /// </summary>
     /// <returns>Builder of float.</returns>
     ITypelyBuilderOfFloat OfFloat();
-    
+
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying Guid type.
+    /// </summary>
+    /// <returns>Builder of Guid.</returns>
+    ITypelyBuilderOfGuid OfGuid();
+
     /// <summary>
     /// Returns a builder dedicated to creating a value object with the underlying double type.
     /// </summary>
     /// <returns>Builder of double.</returns>
     ITypelyBuilderOfDouble OfDouble();
-    
+
     /// <summary>
     /// Returns a builder dedicated to creating a value object with the underlying long type.
     /// </summary>
     /// <returns>Builder of long.</returns>
     ITypelyBuilderOfLong OfLong();
-    
+
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying sbyte type.
+    /// </summary>
+    /// <returns>Builder of sbyte.</returns>
+    ITypelyBuilderOfSByte OfSByte();
+
     /// <summary>
     /// Returns a builder dedicated to creating a value object with the underlying short type.
     /// </summary>
     /// <returns>Builder of short.</returns>
     ITypelyBuilderOfShort OfShort();
-    
+
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying string type.
+    /// </summary>
+    /// <returns>Builder of string.</returns>
+    ITypelyBuilderOfString OfString();
+
+#if NET7_0_OR_GREATER
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying TimeOnly type.
+    /// </summary>
+    /// <returns>Builder of TimeOnly.</returns>
+    ITypelyBuilderOfTimeOnly OfTimeOnly();
+#endif    
+
+    /// <summary>
+    /// Returns a builder dedicated to creating a value object with the underlying TimeSpan type.
+    /// </summary>
+    /// <returns>Builder of TimeSpan.</returns>
+    ITypelyBuilderOfTimeSpan OfTimeSpan();
+
     /// <summary>
     /// Returns a builder dedicated to creating a value object with the underlying uint type.
     /// </summary>
     /// <returns>Builder of uint.</returns>
     ITypelyBuilderOfUInt OfUInt();
-    
+
     /// <summary>
     /// Returns a builder dedicated to creating a value object with the underlying ulong type.
     /// </summary>
     /// <returns>Builder of ulong.</returns>
     ITypelyBuilderOfULong OfULong();
-    
+
     /// <summary>
     /// Returns a builder dedicated to creating a value object with the underlying ushort type.
     /// </summary>
@@ -72,7 +136,7 @@ public interface ITypelyBuilder
 /// Base interface for all builders.
 /// </summary>
 /// <typeparam name="TBuilder">Type of the inheriting builder.</typeparam>
-public interface ITypelyBuilder<TBuilder> 
+public interface ITypelyBuilder<TBuilder>
 {
     /// <summary>
     /// Sets the type to generate.

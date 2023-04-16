@@ -2,9 +2,9 @@
 using System.Text.RegularExpressions;
 using Typely.Core;
 
-namespace Typely.Tests.String;
+namespace Typely.Tests.TypeGeneration.String;
 
-public class TypelyStringTests
+public class StringTests
 {
     [Fact] public void Equals_ShouldBe_True() => GenTrueEquals.Sample((x, y) => x.Equals(y));
     [Fact] public void Equals_ShouldBe_False() => GenFalseEquals.Sample((x, y) => !x.Equals(y));

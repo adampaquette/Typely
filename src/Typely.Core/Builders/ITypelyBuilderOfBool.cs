@@ -3,8 +3,7 @@
 /// <summary>
 /// Builder dedicated to creating a value object with the underlying bool type.
 /// </summary>
-public interface ITypelyBuilderOfBool : ITypelyBuilder<ITypelyBuilderOfBool, IRuleBuilderOfBool, bool, IFactoryOfBool>,
-    IComparableRuleBuilder<IRuleBuilderOfBool, bool>
+public interface ITypelyBuilderOfBool : ITypelyBuilder<ITypelyBuilderOfBool, IRuleBuilderOfBool, bool, IFactoryOfBool> 
 {
 }
 
