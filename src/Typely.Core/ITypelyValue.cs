@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Typely.Core;
+﻿namespace Typely.Core;
 
 /// <summary>
 /// Represents a type having an underlying value.
@@ -18,8 +16,8 @@ public interface ITypelyValue<out TValue>
 /// Represents a type that can only be created if validations pass for the underlying value.
 /// </summary>
 /// <typeparam name="TValue">The type of the underlying value.</typeparam>
-/// <typeparam name="TThis">Type inheriting from this interface.</typeparam>
-public interface ITypelyValue<TValue, TThis> : ITypelyValue<TValue> where TThis : ITypelyValue<TValue, TThis>
+/// <typeparam name="TTypelyValue">Type inheriting from this interface.</typeparam>
+public interface ITypelyValue<TValue, TTypelyValue> : ITypelyValue<TValue> where TTypelyValue : ITypelyValue<TValue, TTypelyValue>
 {
 #if NET7_0_OR_GREATER
     /// <summary>
@@ -30,20 +28,20 @@ public interface ITypelyValue<TValue, TThis> : ITypelyValue<TValue> where TThis 
     static abstract ValidationError? Validate(TValue value);
 
     /// <summary>
-    /// Creates a <see cref="TThis"/> if the validation succeeds.
+    /// Creates a <see cref="TTypelyValue"/> if the validation succeeds.
     /// </summary>
     /// <param name="value">The underlying <see cref="TValue"/> value.</param>
-    /// <returns>The created <see cref="TThis"/>.</returns>
+    /// <returns>The created <see cref="TTypelyValue"/>.</returns>
     /// <exception cref="ArgumentException">If validations failed.</exception>
-    static abstract TThis From(TValue value);
+    static abstract TTypelyValue From(TValue value);
 
     /// <summary>
-    /// Tries to create a <see cref="TThis"/> by validating the value first.
+    /// Tries to create a <see cref="TTypelyValue"/> by validating the value first.
     /// </summary>
     /// <param name="value">The underlying <see cref="TValue"/> value.</param>
-    /// <param name="typelyType">The created <see cref="TThis"/>.</param>
+    /// <param name="typelyType">The created <see cref="TTypelyValue"/>.</param>
     /// <param name="validationError">A localized error.</param>
     /// <returns><see langword="true" /> if the type has been created without errors.</returns>
-    static abstract bool TryFrom(TValue value, [MaybeNullWhen(false)] out TThis typelyType, out ValidationError? validationError);
+    static abstract bool TryFrom(TValue value, out TTypelyValue typelyType, out ValidationError? validationError);
 #endif
 }
