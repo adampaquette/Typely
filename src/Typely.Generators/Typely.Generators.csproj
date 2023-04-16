@@ -24,7 +24,7 @@
 
     <!-- Generator dependencies -->
     <ItemGroup Condition="'$(Configuration)'!='Debug'">
-        <PackageReference Include="Typely.Core" Version="1.1.0-alpha" GeneratePathProperty="true" />
+        <PackageReference Include="Typely.Core" Version="1.2.0-alpha" GeneratePathProperty="true" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'=='Debug'"> 
