@@ -25,7 +25,7 @@
     
     <ItemGroup>
         <None Include="$(SourceRoot)../assets/logo-300.png" Pack="true" Visible="false" PackagePath="/" />
-        <None Include="..\nuget-readme.md" Pack="true" PackagePath="\"/>
+        <None Include="..\nuget-readme.md" Pack="true" PackagePath="\" Condition=" '$(MSBuildProjectDirectory)' == '$(SourceRoot)' "/>
         <InternalsVisibleTo Include="$(AssemblyName).Tests" />
     </ItemGroup>
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Typely.Core;
 using Typely.Generators.Extensions;
 using Typely.Generators.Typely.Parsing.TypeBuilders;
 
@@ -33,10 +32,10 @@ internal sealed class Parser
     /// Filter classes having an interface name <see cref="ITypelyConfiguration"/>.
     /// </summary>
     internal static bool IsTypelyConfigurationClass(ClassDeclarationSyntax syntax) => 
-        syntax.HasInterface(nameof(ITypelyConfiguration));
+        syntax.HasInterface(TypelyConfiguration.InterfaceName);
     
     private static bool IsConfigureMethod(SyntaxNode syntaxNode) =>
-        syntaxNode is MethodDeclarationSyntax c && c.Identifier.Text == nameof(ITypelyConfiguration.Configure);
+        syntaxNode is MethodDeclarationSyntax c && c.Identifier.Text == TypelyConfiguration.ConfigureMethodName;
 
     /// <summary>
     /// Filter classes having an interface <see cref="ITypelyConfiguration"/> that matches the 
@@ -47,7 +46,7 @@ internal sealed class Parser
         var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
         var classSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax)!;
 
-        return classSymbol.AllInterfaces.Any(x => x.ToString() == typeof(ITypelyConfiguration).FullName)
+        return classSymbol.AllInterfaces.Any(x => x.ToString() ==TypelyConfiguration.FullInterfaceName)
             ? classDeclarationSyntax
             : null;
     }
