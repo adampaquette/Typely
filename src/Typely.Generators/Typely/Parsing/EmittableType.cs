@@ -110,26 +110,4 @@ internal class EmittableType
     /// </summary>
     /// <param name="message">Error message.</param>
     public void SetCurrentMessage(string message) => CurrentRule!.Message = message;
-
-    /// <summary>
-    /// Clone the rule to make similar types.
-    /// </summary>
-    /// <returns>The copied rule.</returns>
-    // public EmittableType Clone()
-    // {
-    //     var emittableType = new EmittableType(UnderlyingType, Namespace)
-    //     {
-    //         TypeName = TypeName,
-    //         ConstructTypeKind = ConstructTypeKind,
-    //         CurrentRule = CurrentRule,
-    //         Name = Name
-    //     };
-    //
-    //     foreach (var rule in Rules)
-    //     {
-    //         emittableType.Rules.Add(rule);
-    //     }
-    //
-    //     return emittableType;
-    // }
 }
