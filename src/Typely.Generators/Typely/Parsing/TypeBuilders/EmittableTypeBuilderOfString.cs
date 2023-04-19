@@ -1,6 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-using Typely.Core;
-using Typely.Core.Builders;
 using Typely.Generators.Typely.Emitting;
 
 namespace Typely.Generators.Typely.Parsing.TypeBuilders;
@@ -19,21 +17,21 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
         {
             switch (invocation.MemberName)
             {
-                case nameof(ITypelyBuilderOfInt.NotEmpty):
+                case TypelyBuilderOf.NotEmptyMethodName:
                     AddRule(
                         errorCode: ErrorCodes.NotEmpty,
                         rule: $"string.IsNullOrWhiteSpace({Emitter.ValueParameterName})",
-                        message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.NotEmpty));
+                        message: ErrorMessageResource.NotEmpty);
                     continue;
-                case nameof(ITypelyBuilderOfInt.NotEqual):
+                case TypelyBuilderOf.NotEqualMethodName:
                     var value = invocation.GetFirstArgument();
                     AddRule(
                         errorCode: ErrorCodes.NotEqual,
                         rule: $"{Emitter.ValueParameterName}.Equals({value})",
-                        message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.NotEqual),
-                        placeholders: (ValidationPlaceholders.ComparisonValue, value));
+                        message: ErrorMessageResource.NotEqual,
+                        placeholders: (ValidationPlaceholder.ComparisonValue, value));
                     continue;
-                case nameof(ITypelyBuilderOfString.Length):
+                case TypelyBuilderOf.LengthMethodName:
                     if (invocation.ArgumentListSyntax.Arguments.Count == 2)
                     {
                         var min = invocation.GetFirstArgument();
@@ -41,8 +39,8 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
                         AddRule(
                             errorCode: ErrorCodes.Length,
                             rule: $"{Emitter.ValueParameterName}.Length < {min} || {Emitter.ValueParameterName}.Length > {max}",
-                            message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.Length),
-                            (ValidationPlaceholders.MinLength, min), (ValidationPlaceholders.MaxLength, max));
+                            message: ErrorMessageResource.Length,
+                            (ValidationPlaceholder.MinLength, min), (ValidationPlaceholder.MaxLength, max));
                     }
                     else
                     {
@@ -50,67 +48,67 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
                         AddRule(
                             errorCode: ErrorCodes.ExactLength,
                             rule: $"{Emitter.ValueParameterName}.Length != {exactLength}",
-                            message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.ExactLength),
-                            placeholders: (ValidationPlaceholders.ExactLength, exactLength));
+                            message: ErrorMessageResource.ExactLength,
+                            placeholders: (ValidationPlaceholder.ExactLength, exactLength));
                     }
 
                     continue;
-                case nameof(ITypelyBuilderOfString.MinLength):
+                case TypelyBuilderOf.MinLengthMethodName:
                     value = invocation.GetFirstArgument();
                     AddRule(
                         errorCode: ErrorCodes.MinLength,
                         rule: $"{Emitter.ValueParameterName}.Length < {value}",
-                        message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.MinLength),
-                        placeholders: (ValidationPlaceholders.MinLength, value));
+                        message: ErrorMessageResource.MinLength,
+                        placeholders: (ValidationPlaceholder.MinLength, value));
                     continue;
-                case nameof(ITypelyBuilderOfString.MaxLength):
+                case TypelyBuilderOf.MaxLengthMethodName:
                     value = invocation.GetFirstArgument();
                     AddRule(
                         errorCode: ErrorCodes.MaxLength,
                         rule: $"{Emitter.ValueParameterName}.Length > {value}",
-                        message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.MaxLength),
-                        placeholders: (ValidationPlaceholders.MaxLength, value));
+                        message: (ErrorMessageResource.MaxLength),
+                        placeholders: (ValidationPlaceholder.MaxLength, value));
                     continue;
-                case nameof(ITypelyBuilderOfString.Matches):
+                case TypelyBuilderOf.MatchesMethodName:
                     value = invocation.GetFirstArgument();
                     AddRule(
                         errorCode: ErrorCodes.Matches,
                         rule: $"!{value}.IsMatch({Emitter.ValueParameterName})",
-                        message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.Matches),
-                        placeholders: (ValidationPlaceholders.ComparisonValue, value));
+                        message: (ErrorMessageResource.Matches),
+                        placeholders: (ValidationPlaceholder.ComparisonValue, value));
                     EmittableType.AdditionalNamespaces.Add("System.Text.RegularExpressions");
                     continue;
-                case nameof(ITypelyBuilderOfInt.GreaterThan):
+                case TypelyBuilderOf.GreaterThanMethodName:
                     value = invocation.GetFirstArgument();
                     AddRule(
                         errorCode: ErrorCodes.GreaterThan,
                         rule: $"string.Compare({Emitter.ValueParameterName}, {value}, StringComparison.Ordinal) <= 0",
-                        message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.GreaterThan),
-                        placeholders: (ValidationPlaceholders.ComparisonValue, value));
+                        message: (ErrorMessageResource.GreaterThan),
+                        placeholders: (ValidationPlaceholder.ComparisonValue, value));
                     continue;
-                case nameof(ITypelyBuilderOfInt.GreaterThanOrEqualTo):
+                case TypelyBuilderOf.GreaterThanOrEqualToMethodName:
                     value = invocation.GetFirstArgument();
                     AddRule(
                         errorCode: ErrorCodes.GreaterThanOrEqualTo,
                         rule: $"string.Compare({Emitter.ValueParameterName}, {value}, StringComparison.Ordinal) < 0",
-                        message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.GreaterThanOrEqualTo),
-                        placeholders: (ValidationPlaceholders.ComparisonValue, value));
+                        message: (ErrorMessageResource.GreaterThanOrEqualTo),
+                        placeholders: (ValidationPlaceholder.ComparisonValue, value));
                     continue;
-                case nameof(ITypelyBuilderOfInt.LessThan):
+                case TypelyBuilderOf.LessThanMethodName:
                     value = invocation.GetFirstArgument();
                     AddRule(
                         errorCode: ErrorCodes.LessThan,
                         rule: $"string.Compare({Emitter.ValueParameterName}, {value}, StringComparison.Ordinal) >= 0",
-                        message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.LessThan),
-                        placeholders: (ValidationPlaceholders.ComparisonValue, value));
+                        message: (ErrorMessageResource.LessThan),
+                        placeholders: (ValidationPlaceholder.ComparisonValue, value));
                     continue;
-                case nameof(ITypelyBuilderOfInt.LessThanOrEqualTo):
+                case TypelyBuilderOf.LessThanOrEqualToMethodName:
                     value = invocation.GetFirstArgument();
                     AddRule(
                         errorCode: ErrorCodes.LessThanOrEqualTo,
                         rule: $"string.Compare({Emitter.ValueParameterName}, {value}, StringComparison.Ordinal) > 0",
-                        message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.LessThanOrEqualTo),
-                        placeholders: (ValidationPlaceholders.ComparisonValue, value));
+                        message: (ErrorMessageResource.LessThanOrEqualTo),
+                        placeholders: (ValidationPlaceholder.ComparisonValue, value));
                     continue;
             }
 

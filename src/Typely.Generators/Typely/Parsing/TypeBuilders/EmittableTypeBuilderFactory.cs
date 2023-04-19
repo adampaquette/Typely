@@ -1,6 +1,4 @@
-﻿using Typely.Core.Builders;
-
-namespace Typely.Generators.Typely.Parsing.TypeBuilders;
+﻿namespace Typely.Generators.Typely.Parsing.TypeBuilders;
 
 internal static class EmittableTypeBuilderFactory
 {
@@ -13,46 +11,45 @@ internal static class EmittableTypeBuilderFactory
 
         switch (builderType)
         {
-            case nameof(ITypelyBuilder.OfBool):
+            case TypelyBuilder.OfBool:
                 return new EmittableTypeBuilderOfBool(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfByte):
+            case TypelyBuilder.OfByte:
                 return new EmittableTypeBuilderOfByte(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfChar):
+            case TypelyBuilder.OfChar:
                 return new EmittableTypeBuilderOfChar(defaultNamespace, invocations, model);
-            case "OfDateOnly":
+            case TypelyBuilder.OfDateOnly:
                 return new EmittableTypeBuilderOfDateOnly(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfDateTime):
+            case TypelyBuilder.OfDateTime:
                 return new EmittableTypeBuilderOfDateTime(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfDateTimeOffset):
+            case TypelyBuilder.OfDateTimeOffset:
                 return new EmittableTypeBuilderOfDateTimeOffset(defaultNamespace, invocations, model);
-
-            case nameof(ITypelyBuilder.OfInt):
+            case TypelyBuilder.OfInt:
                 return new EmittableTypeBuilderOfInt(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfDecimal):
+            case TypelyBuilder.OfDecimal:
                 return new EmittableTypeBuilderOfDecimal(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfFloat):
+            case TypelyBuilder.OfFloat:
                 return new EmittableTypeBuilderOfFloat(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfGuid):
+            case TypelyBuilder.OfGuid:
                 return new EmittableTypeBuilderOfGuid(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfDouble):
+            case TypelyBuilder.OfDouble:
                 return new EmittableTypeBuilderOfDouble(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfLong):
+            case TypelyBuilder.OfLong:
                 return new EmittableTypeBuilderOfLong(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfSByte):
+            case TypelyBuilder.OfSByte:
                 return new EmittableTypeBuilderOfSByte(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfShort):
+            case TypelyBuilder.OfShort:
                 return new EmittableTypeBuilderOfShort(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfString):
+            case TypelyBuilder.OfString:
                 return new EmittableTypeBuilderOfString(defaultNamespace, invocations, model);
-            case "OfTimeOnly":
+            case TypelyBuilder.OfTimeOnly:
                 return new EmittableTypeBuilderOfTimeOnly(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfTimeSpan):
+            case TypelyBuilder.OfTimeSpan:
                 return new EmittableTypeBuilderOfTimeSpan(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfUInt):
+            case TypelyBuilder.OfUInt:
                 return new EmittableTypeBuilderOfUint(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfULong):
+            case TypelyBuilder.OfULong:
                 return new EmittableTypeBuilderOfULong(defaultNamespace, invocations, model);
-            case nameof(ITypelyBuilder.OfUShort):
+            case TypelyBuilder.OfUShort:
                 return new EmittableTypeBuilderOfUShort(defaultNamespace, invocations, model);
             default: throw new InvalidOperationException($"Unknown builder type: {builderType}");
         }

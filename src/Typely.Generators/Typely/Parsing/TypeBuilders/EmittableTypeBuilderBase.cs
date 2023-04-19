@@ -1,7 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Typely.Core;
-using Typely.Core.Builders;
 using Typely.Generators.Typely.Emitting;
 
 namespace Typely.Generators.Typely.Parsing.TypeBuilders;
@@ -30,16 +28,16 @@ internal class EmittableTypeBuilderBase
     {
         switch (invocation.MemberName)
         {
-            case nameof(ITypelyBuilder<int>.For):
+            case TypelyBuilderOf.ForMethodName:
                 EmittableType.SetTypeName(invocation.GetFirstStringArgument());
                 return true;
-            case nameof(ITypelyBuilder<int>.AsClass):
+            case TypelyBuilderOf.AsClassMethodName:
                 EmittableType.AsClass();
                 return true;
-            case nameof(ITypelyBuilder<int>.AsStruct):
+            case TypelyBuilderOf.AsStructMethodName:
                 EmittableType.AsStruct();
                 return true;
-            case nameof(ITypelyBuilder<int>.WithName):
+            case TypelyBuilderOf.WithNameMethodName:
                 if (invocation.GetFirstExpressionArgument() is ParenthesizedLambdaExpressionSyntax lambdaExpression1)
                 {
                     var expNamespace = GetContainingNamespace(lambdaExpression1);
@@ -52,10 +50,10 @@ internal class EmittableTypeBuilderBase
                 }
 
                 return true;
-            case nameof(ITypelyBuilder<int>.WithNamespace):
+            case TypelyBuilderOf.WithNamespaceMethodName:
                 EmittableType.SetNamespace(invocation.GetFirstStringArgument());
                 return true;
-            case nameof(IRuleBuilderOfInt.AsFactory):
+            case TypelyBuilderOf.AsFactoryMethodName:
                 //TODO : Support as factory to reflet code
                 return true;
             default: return false;
@@ -66,28 +64,28 @@ internal class EmittableTypeBuilderBase
     {
         switch (invocation.MemberName)
         {
-            case nameof(ITypelyBuilderOfInt.NotEmpty):
+            case TypelyBuilderOf.NotEmptyMethodName:
                 AddRule(
                     errorCode: ErrorCodes.NotEmpty,
                     rule: $"{Emitter.ValueParameterName} == default",
-                    message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.NotEmpty));
+                    message: ErrorMessageResource.NotEmpty);
                 return true;
-            case nameof(ITypelyBuilderOfInt.NotEqual):
+            case TypelyBuilderOf.NotEqualMethodName:
                 var value = invocation.GetFirstArgument();
                 AddRule(
                     errorCode: ErrorCodes.NotEqual,
                     rule: $"{Emitter.ValueParameterName}.Equals({value})",
-                    message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.NotEqual),
-                    placeholders: (ValidationPlaceholders.ComparisonValue, value));
+                    message: ErrorMessageResource.NotEqual,
+                    placeholders: (ValidationPlaceholder.ComparisonValue, value));
                 return true;
-            case nameof(ITypelyBuilderOfInt.Must):
+            case TypelyBuilderOf.MustMethodName:
                 value = invocation.GetLambdaBodyOfFirstArgument();
                 AddRule(
                     errorCode: ErrorCodes.Must,
                     rule: $"!({value})",
-                    message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.Must));
+                    message: ErrorMessageResource.Must);
                 return true;
-            case nameof(IRuleBuilderOfInt.WithMessage):
+            case TypelyBuilderOf.WithMessageMethodName:
                 if (invocation.GetFirstExpressionArgument() is ParenthesizedLambdaExpressionSyntax lambdaExpression2)
                 {
                     var expNamespace = GetContainingNamespace(lambdaExpression2);
@@ -100,7 +98,7 @@ internal class EmittableTypeBuilderBase
                 }
 
                 return true;
-            case nameof(IRuleBuilderOfInt.WithErrorCode):
+            case TypelyBuilderOf.WithErrorCodeMethodName:
                 EmittableType.SetCurrentErrorCode(invocation.GetFirstStringArgument());
                 return true;
             default: return false;
@@ -111,37 +109,37 @@ internal class EmittableTypeBuilderBase
     {
         switch (invocation.MemberName)
         {
-            case nameof(ITypelyBuilderOfInt.GreaterThan):
+            case TypelyBuilderOf.GreaterThanMethodName:
                 var value = invocation.GetFirstArgument();
                 AddRule(
                     errorCode: ErrorCodes.GreaterThan,
                     rule: $"{Emitter.ValueParameterName} <= {value}",
-                    message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.GreaterThan),
-                    placeholders: (ValidationPlaceholders.ComparisonValue, value));
+                    message: ErrorMessageResource.GreaterThan,
+                    placeholders: (ValidationPlaceholder.ComparisonValue, value));
                 return true;
-            case nameof(ITypelyBuilderOfInt.GreaterThanOrEqualTo):
+            case TypelyBuilderOf.GreaterThanOrEqualToMethodName:
                 value = invocation.GetFirstArgument();
                 AddRule(
                     errorCode: ErrorCodes.GreaterThanOrEqualTo,
                     rule: $"{Emitter.ValueParameterName} < {value}",
-                    message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.GreaterThanOrEqualTo),
-                    placeholders: (ValidationPlaceholders.ComparisonValue, value));
+                    message: ErrorMessageResource.GreaterThanOrEqualTo,
+                    placeholders: (ValidationPlaceholder.ComparisonValue, value));
                 return true;
-            case nameof(ITypelyBuilderOfInt.LessThan):
+            case TypelyBuilderOf.LessThanMethodName:
                 value = invocation.GetFirstArgument();
                 AddRule(
                     errorCode: ErrorCodes.LessThan,
                     rule: $"{Emitter.ValueParameterName} >= {value}",
-                    message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.LessThan),
-                    placeholders: (ValidationPlaceholders.ComparisonValue, value));
+                    message: ErrorMessageResource.LessThan,
+                    placeholders: (ValidationPlaceholder.ComparisonValue, value));
                 return true;
-            case nameof(ITypelyBuilderOfInt.LessThanOrEqualTo):
+            case TypelyBuilderOf.LessThanOrEqualToMethodName:
                 value = invocation.GetFirstArgument();
                 AddRule(
                     errorCode: ErrorCodes.LessThanOrEqualTo,
                     rule: $"{Emitter.ValueParameterName} > {value}",
-                    message: nameof(ErrorMessages) + "." + nameof(ErrorMessages.LessThanOrEqualTo),
-                    placeholders: (ValidationPlaceholders.ComparisonValue, value));
+                    message: ErrorMessageResource.LessThanOrEqualTo,
+                    placeholders: (ValidationPlaceholder.ComparisonValue, value));
                 return true;
             default: return false;
         }
