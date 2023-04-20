@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.EfCore", "Typely.EfC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.EfCore.Tests", "Typely.EfCore.Tests\Typely.EfCore.Tests.csproj", "{4CB5EE98-F33B-4E53-BCF8-D2449EEA89F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.AspNetCore.Swashbuckle", "Typely.AspNetCore.Swashbuckle\Typely.AspNetCore.Swashbuckle.csproj", "{8941F88E-7923-4A9E-BA35-318459272C01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.AspNetCore.Swashbuckle.Tests", "Typely.AspNetCore.Swashbuckle.Tests\Typely.AspNetCore.Swashbuckle.Tests.csproj", "{6E2F0C81-3A17-4374-BA30-778A17214650}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +63,14 @@ Global
 		{4CB5EE98-F33B-4E53-BCF8-D2449EEA89F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CB5EE98-F33B-4E53-BCF8-D2449EEA89F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CB5EE98-F33B-4E53-BCF8-D2449EEA89F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8941F88E-7923-4A9E-BA35-318459272C01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8941F88E-7923-4A9E-BA35-318459272C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8941F88E-7923-4A9E-BA35-318459272C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8941F88E-7923-4A9E-BA35-318459272C01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E2F0C81-3A17-4374-BA30-778A17214650}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E2F0C81-3A17-4374-BA30-778A17214650}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E2F0C81-3A17-4374-BA30-778A17214650}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E2F0C81-3A17-4374-BA30-778A17214650}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
