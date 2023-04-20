@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Typely.AspNetCore.Tests.Mvc.ModelBinding;
+namespace Typely.AspNetCore.Mvc.Tests.ModelBinding;
 
 public class TestModelBinderProviderContext : ModelBinderProviderContext
 {

@@ -25,9 +25,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.EfCore", "Typely.EfC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.EfCore.Tests", "Typely.EfCore.Tests\Typely.EfCore.Tests.csproj", "{4CB5EE98-F33B-4E53-BCF8-D2449EEA89F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.AspNetCore", "Typely.AspNetCore\Typely.AspNetCore.csproj", "{3ABE1EE1-FE89-44BF-830F-CB05D483B447}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.AspNetCore.Mvc", "Typely.AspNetCore.Mvc\Typely.AspNetCore.Mvc.csproj", "{3ABE1EE1-FE89-44BF-830F-CB05D483B447}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.AspNetCore.Tests", "Typely.AspNetCore.Tests\Typely.AspNetCore.Tests.csproj", "{1CE5FF18-AB21-4928-A37F-16419D301BD0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.AspNetCore.Mvc.Tests", "Typely.AspNetCore.Mvc.Tests\Typely.AspNetCore.Mvc.Tests.csproj", "{1CE5FF18-AB21-4928-A37F-16419D301BD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

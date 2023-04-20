@@ -24,19 +24,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Typely.AspNetCore\Typely.AspNetCore.csproj" />
+      <ProjectReference Include="..\Typely.AspNetCore.Mvc\Typely.AspNetCore.Mvc.csproj" />
       <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
       <ProjectReference Include="..\Typely.Generators\Typely.Generators.csproj" OutputItemType="Analyzer" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Mvc\" />
+        <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Mvc\ModelBinding\TestModelBinderProviderContext.cs">
-        <DependentUpon>ModelBinderProviderContextFixture.cs</DependentUpon>
-      </Compile>
-    </ItemGroup>
-
 </Project>
