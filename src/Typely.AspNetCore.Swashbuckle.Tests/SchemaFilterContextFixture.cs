@@ -1,8 +1,8 @@
 ﻿using AutoFixture;
 using Microsoft.OpenApi.Models;
+using Moq;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
-using Typely.Core;
 
 namespace Typely.AspNetCore.Swashbuckle.Tests;
 
@@ -17,17 +17,17 @@ public class SchemaFilterContextFixture : BaseFixture<SchemaFilterContext>
     public SchemaFilterContextFixture WithType<T>()
     {
         Fixture.Register(() => typeof(T));
-        Fixture.Register(() =>
-        {
-            var repository = new SchemaRepository();
-            repository.RegisterType(GetTypelyValueUnderlyingType(typeof(T)), "id");
-            return repository;
-        });
+        Fixture.Freeze<Mock<ISchemaGenerator>>()
+            .Setup(x =>
+                x.GenerateSchema(It.IsAny<Type>(), It.IsAny<SchemaRepository>(), null, null, null))
+            .Returns(new OpenApiSchema
+            {
+                Type = "string", 
+                Properties = new Dictionary<string, OpenApiSchema>
+                {
+                    ["property1"] = new() { Type = "string" }
+                }
+            });
         return this;
     }
-    
-    private static Type? GetTypelyValueUnderlyingType(Type type) =>
-        type.GetInterfaces()
-            .First(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ITypelyValue<>))
-            .GenericTypeArguments[0];
 }

@@ -13,7 +13,7 @@ public static class SwaggerGenOptionsExtensions
     /// </summary>
     /// <param name="options">The options.</param>
     /// <returns>The options.</returns>
-    public static SwaggerGenOptions UseTypelyValueSchemas(this SwaggerGenOptions options)
+    public static SwaggerGenOptions UseTypelyValueSchemaFilter(this SwaggerGenOptions options)
     {
         options.SchemaFilter<TypelyValueSchemaFilter>();
         return options;
