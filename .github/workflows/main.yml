@@ -35,6 +35,7 @@ jobs:
           dotnet pack --configuration Release ./src/Typely.Core/Typely.Core.csproj
           dotnet pack --configuration Release ./src/Typely.Generators/Typely.Generators.csproj
           dotnet pack --configuration Release ./src/Typely.EfCore/Typely.EfCore.csproj
+          dotnet pack --configuration Release ./src/Typely.AspNetCore.Swashbuckle/Typely.AspNetCore.Swashbuckle.csproj
 
       - name: Publish packages
         run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
