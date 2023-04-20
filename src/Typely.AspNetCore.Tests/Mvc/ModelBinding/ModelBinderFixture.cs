@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Typely.AspNetCore.ModelBinding;
+using Typely.AspNetCore.Mvc.ModelBinding;
 
-namespace Typely.AspNetCore.Tests.ModelBinding;
+namespace Typely.AspNetCore.Tests.Mvc.ModelBinding;
 
 public class ModelBinderFixture
 {

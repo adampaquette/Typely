@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Typely.AspNetCore.ModelBinding;
+using Typely.AspNetCore.Mvc.ModelBinding;
 
 namespace Typely.AspNetCore.Mvc;
 
@@ -9,7 +9,7 @@ namespace Typely.AspNetCore.Mvc;
 public static class MvcOptionsExtensions
 {
     /// <summary>
-    /// Inserts the <see cref="TypelyModelBinderProvider"/>.
+    /// Inserts the <see cref="TypelyValueModelBinderProvider"/>.
     /// </summary>
     /// <param name="options">The options.</param>
     /// <returns>The options.</returns>

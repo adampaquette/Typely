@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.Extensions.Primitives;
 using System.Globalization;
 
-namespace Typely.AspNetCore.Tests.ModelBinding;
+namespace Typely.AspNetCore.Tests.Mvc.ModelBinding;
 
 public class ModelBindingContextFixture
 {

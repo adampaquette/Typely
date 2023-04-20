@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Typely.Core;
 
-namespace Typely.AspNetCore.ModelBinding;
+namespace Typely.AspNetCore.Mvc.ModelBinding;
 
+/// <summary>
+/// Creates a binder for a Typely value.
+/// </summary>
 public class TypelyValueModelBinderProvider : IModelBinderProvider
 {
     public IModelBinder? GetBinder(ModelBinderProviderContext context)

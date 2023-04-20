@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 
-namespace Typely.AspNetCore.Tests.ModelBinding;
+namespace Typely.AspNetCore.Tests.Mvc.ModelBinding;
 
 public class ModelBinderProviderContextFixture
 {
-    private Type? _modelType = null;
+    private Type? _modelType;
 
     public ModelBinderProviderContextFixture WithModelType(Type modelType)
     {

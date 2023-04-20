@@ -29,4 +29,14 @@
       <ProjectReference Include="..\Typely.Generators\Typely.Generators.csproj" OutputItemType="Analyzer" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Mvc\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Mvc\ModelBinding\TestModelBinderProviderContext.cs">
+        <DependentUpon>ModelBinderProviderContextFixture.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>
