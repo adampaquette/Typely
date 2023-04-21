@@ -13,7 +13,7 @@ public static class MvcOptionsExtensions
     /// </summary>
     /// <param name="options">The options.</param>
     /// <returns>The options.</returns>
-    public static MvcOptions UseTypelyModelBinders(this MvcOptions options)
+    public static MvcOptions UseTypelyModelBinderProvider(this MvcOptions options)
     {
         options.ModelBinderProviders.Insert(0, new TypelyValueModelBinderProvider());
         return options;

@@ -8,7 +8,7 @@ public class SwaggerGenOptionsExtensionsTests
     public void UseTypelyValueSchemaFilter_Should_AddTheFilter()
     {
         var options = new SwaggerGenOptions();
-        options.UseTypelyValueSchemaFilter();
+        options.UseTypelySchemaFilter();
         Assert.Single(options.SchemaFilterDescriptors);
     }
 }

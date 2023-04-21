@@ -48,6 +48,7 @@ internal class Emitter
 
             namespace {{t.Namespace}}
             {
+                [TypeConverter(typeof(TypelyTypeConverter<{{underlyingType}}, {{typeName}}>))]
                 [JsonConverter(typeof(TypelyJsonConverter<{{underlyingType}}, {{typeName}}>))]
                 public partial {{constructType}} {{typeName}} : ITypelyValue<{{underlyingType}}, {{typeName}}>, IEquatable<{{typeName}}>, IComparable<{{typeName}}>, IComparable
                 {
@@ -104,10 +105,11 @@ internal class Emitter
         var namespaces = new List<string>
         {
             "System",
+            "System.ComponentModel",
+            "System.Diagnostics.CodeAnalysis",
+            "System.Text.Json.Serialization",
             "Typely.Core",
             "Typely.Core.Converters",
-            "System.Diagnostics.CodeAnalysis",
-            "System.Text.Json.Serialization"
         };
 
         namespaces.AddRange(additionalNamespaces);
