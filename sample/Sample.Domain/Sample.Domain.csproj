@@ -11,4 +11,7 @@
     <ProjectReference Include="..\..\src\Typely.Generators\Typely.Generators.csproj" OutputItemType="Analyzer" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage" />
+  </ItemGroup>
 </Project>
