@@ -22,10 +22,4 @@
     <ProjectReference Include="..\Sample.Infrastructure\Sample.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Typely.AspNetCore">
-      <HintPath>..\..\..\..\Typely\src\Typely.AspNetCore\bin\Debug\net7.0\Typely.AspNetCore.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
