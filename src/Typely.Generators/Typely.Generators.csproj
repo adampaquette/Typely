@@ -33,4 +33,8 @@
             <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />           
         </ItemGroup>
     </Target>
+
+    <ItemGroup>
+        <None Include="nuget-readme.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 </Project>

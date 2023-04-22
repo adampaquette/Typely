@@ -21,4 +21,7 @@
       </EmbeddedResource>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include="nuget-readme.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 </Project>

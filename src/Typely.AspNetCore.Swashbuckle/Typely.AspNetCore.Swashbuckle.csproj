@@ -12,5 +12,8 @@
     <ItemGroup>
       <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
     </ItemGroup>
-
+    
+    <ItemGroup>
+        <None Include="nuget-readme.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 </Project>
