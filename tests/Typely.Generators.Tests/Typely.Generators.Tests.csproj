@@ -28,8 +28,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
-        <ProjectReference Include="..\Typely.Generators\Typely.Generators.csproj" />
+        <ProjectReference Include="..\..\src\Typely.Core\Typely.Core.csproj" />
+        <ProjectReference Include="..\..\src\Typely.Generators\Typely.Generators.csproj" />
     </ItemGroup>
 
     <ItemGroup>
