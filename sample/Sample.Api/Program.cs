@@ -1,15 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using Sample.Domain.ContactAggregate;
 using Sample.Infrastructure;
+using Typely.AspNetCore.Mvc;
+using Typely.AspNetCore.Swashbuckle;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("Sample"));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddControllers(options => options.UseTypelyModelBinderProvider());
-//builder.Services.AddSwaggerGen(options => options.UseTypelySchemaFilter());
 
+//builder.Services.AddControllers(options => options.UseTypelyModelBinderProvider());
+builder.Services.AddSwaggerGen(options => options.UseTypelySchemaFilter());
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
@@ -19,7 +21,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.Run();
 
  var contacts = app.MapGroup("/contacts").WithTags("Contacts");
 

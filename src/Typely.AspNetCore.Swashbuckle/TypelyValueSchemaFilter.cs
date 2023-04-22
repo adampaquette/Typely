@@ -38,5 +38,5 @@ public class TypelyValueSchemaFilter : ISchemaFilter
 
     private static Type? GetTypelyValueTypeOrDefault(Type type) =>
         type.GetInterfaces()
-            .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ITypelyValue<>));
+            .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ITypelyValue<,>));
 }

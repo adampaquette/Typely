@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Typely.AspNetCore.Mvc\Typely.AspNetCore.Mvc.csproj" />
     <ProjectReference Include="..\..\src\Typely.AspNetCore.Swashbuckle\Typely.AspNetCore.Swashbuckle.csproj" />
     <ProjectReference Include="..\Sample.Infrastructure\Sample.Infrastructure.csproj" />
   </ItemGroup>

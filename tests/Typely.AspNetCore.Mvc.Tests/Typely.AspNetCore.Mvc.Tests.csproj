@@ -24,12 +24,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Typely.AspNetCore.Mvc\Typely.AspNetCore.Mvc.csproj" />
-      <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
-      <ProjectReference Include="..\Typely.Generators\Typely.Generators.csproj" OutputItemType="Analyzer" />
+        <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage" />
     </ItemGroup>
 
     <ItemGroup>
-        <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage" />
+      <ProjectReference Include="..\..\src\Typely.AspNetCore.Mvc\Typely.AspNetCore.Mvc.csproj" />
+      <ProjectReference Include="..\..\src\Typely.Generators\Typely.Generators.csproj" OutputItemType="Analyzer" />
     </ItemGroup>
 </Project>

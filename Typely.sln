@@ -38,9 +38,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Domain", "sample\Sam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Infrastructure", "sample\Sample.Infrastructure\Sample.Infrastructure.csproj", "{52B61FF8-73BA-41C6-8BDE-7F436797C8F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.AspNetCore.Mvc", "Typely.AspNetCore.Mvc\Typely.AspNetCore.Mvc.csproj", "{3ABE1EE1-FE89-44BF-830F-CB05D483B447}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.AspNetCore.Mvc", "src\Typely.AspNetCore.Mvc\Typely.AspNetCore.Mvc.csproj", "{86EA7F13-9DB7-4D60-B29B-1E7DC76F613D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.AspNetCore.Mvc.Tests", "Typely.AspNetCore.Mvc.Tests\Typely.AspNetCore.Mvc.Tests.csproj", "{1CE5FF18-AB21-4928-A37F-16419D301BD0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.AspNetCore.Mvc.Tests", "tests\Typely.AspNetCore.Mvc.Tests\Typely.AspNetCore.Mvc.Tests.csproj", "{EAE8A796-BB90-4F37-8E7A-97D0274FBF73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -96,6 +96,14 @@ Global
 		{52B61FF8-73BA-41C6-8BDE-7F436797C8F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52B61FF8-73BA-41C6-8BDE-7F436797C8F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52B61FF8-73BA-41C6-8BDE-7F436797C8F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86EA7F13-9DB7-4D60-B29B-1E7DC76F613D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86EA7F13-9DB7-4D60-B29B-1E7DC76F613D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86EA7F13-9DB7-4D60-B29B-1E7DC76F613D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86EA7F13-9DB7-4D60-B29B-1E7DC76F613D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAE8A796-BB90-4F37-8E7A-97D0274FBF73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAE8A796-BB90-4F37-8E7A-97D0274FBF73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAE8A796-BB90-4F37-8E7A-97D0274FBF73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAE8A796-BB90-4F37-8E7A-97D0274FBF73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,5 +119,6 @@ Global
 		{8E6F1D14-F0E9-4478-A361-1CE3C1AE7167} = {FF24A745-A365-45F5-96D0-13792D2084F2}
 		{5D0C6696-16C4-4C81-87D6-3023A0CAA687} = {FF24A745-A365-45F5-96D0-13792D2084F2}
 		{52B61FF8-73BA-41C6-8BDE-7F436797C8F4} = {FF24A745-A365-45F5-96D0-13792D2084F2}
+		{EAE8A796-BB90-4F37-8E7A-97D0274FBF73} = {4E5AC889-2C3E-4869-9C26-077754E51764}
 	EndGlobalSection
 EndGlobal

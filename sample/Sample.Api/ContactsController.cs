@@ -4,7 +4,7 @@ using Sample.Infrastructure;
 
 namespace Sample.Api;
 
-[Route("api-controller/[controller]/{id}")]
+[Route("api-controller/[controller]")]
 [ApiController]
 public class ContactsController : ControllerBase
 {
@@ -16,8 +16,8 @@ public class ContactsController : ControllerBase
     }
 
     [HttpGet]
-    public string Get(ContactId id) => "lkjlkj" + id;
-    
+    public string Get(ContactId id) => "Hello" + id;
+
     // [HttpGet]
     // public async Task<ActionResult> Get(ContactId id) =>
     //     await _db.Contacts.FindAsync(id) is Contact contact
