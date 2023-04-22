@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Typely.Core\Typely.Core.csproj" />
+    <ProjectReference Include="..\..\src\Typely.Generators\Typely.Generators.csproj" OutputItemType="Analyzer" />
+  </ItemGroup>
+
+</Project>

@@ -1,7 +1,3 @@
-[![Nuget version](https://img.shields.io/nuget/vpre/Typely.Core?label=Typely.Core)](https://www.nuget.org/packages/Typely.Core/)
-[![Nuget version](https://img.shields.io/nuget/vpre/Typely.Core?label=Typely.Generators)](https://www.nuget.org/packages/Typely.Generators/)
-[![GitHub last commit](https://img.shields.io/github/last-commit/adampaquette/Typely)](https://github.com/adampaquette/Typely)
-
 Typely lets you create types easily with a fluent API to embrace Domain-driven design and value objects.
 
 ## Example
