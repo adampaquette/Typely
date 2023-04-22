@@ -12,6 +12,7 @@ public class TypelyTypeConverter<TValue, TTypelyValue> : TypeConverter
     public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType) =>
         sourceType == typeof(TValue) || _underlyingValueConverter.CanConvertFrom(context, sourceType);
 
+    ///return base.CanConvertFrom(context, sourceType);
     /// <inheritdoc/>
     public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType) =>
         destinationType == typeof(TValue) || _underlyingValueConverter.CanConvertTo(context, destinationType);
