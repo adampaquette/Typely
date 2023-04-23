@@ -9,6 +9,9 @@
 [![Nuget version](https://img.shields.io/nuget/vpre/Typely.Core?label=Typely.Core)](https://www.nuget.org/packages/Typely.Core/)
 [![Nuget version](https://img.shields.io/nuget/vpre/Typely.Generators?label=Typely.Generators)](https://www.nuget.org/packages/Typely.Generators/)
 [![Nuget version](https://img.shields.io/nuget/vpre/Typely.EfCore?label=Typely.EfCore)](https://www.nuget.org/packages/Typely.EfCore/)
+[![Nuget version](https://img.shields.io/nuget/vpre/Typely.AspNetCore.Mvc?label=Typely.AspNetCore.Mvc)](https://www.nuget.org/packages/Typely.AspNetCore.Mvc/)
+[![Nuget version](https://img.shields.io/nuget/vpre/Typely.AspNetCore.Swashbuckle?label=Typely.AspNetCore.Swashbuckle)](https://www.nuget.org/packages/Typely.AspNetCore.Swashbuckle/)
+
 
 Typely lets you create types easily with a fluent API to embrace Domain-driven design and value objects.
 
