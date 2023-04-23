@@ -15,7 +15,8 @@ public static class MvcOptionsExtensions
     /// <returns>The options.</returns>
     public static MvcOptions UseTypelyModelBinderProvider(this MvcOptions options)
     {
-        options.ModelBinderProviders.Insert(0, new TypelyValueModelBinderProvider());
+        options.ModelBinderProviders.Add(new TypelyValueModelBinderProvider());
+        //options.ModelBinderProviders.Insert(0, new TypelyValueModelBinderProvider());
         return options;
     }
 }

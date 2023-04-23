@@ -8,7 +8,7 @@ public static class TypelyValue
     /// <summary>
     /// Validates the value object and throw if in error.
     /// </summary>
-    /// <typeparam name="TValue">Underlying type of the value object.</typeparam>
+    /// <typeparam name="TValue">The underlying type of the value object.</typeparam>
     /// <typeparam name="TTypelyValue">Value object's type.</typeparam>
     /// <param name="value">Value to validate.</param>
     /// <exception cref="ValidationException"></exception>

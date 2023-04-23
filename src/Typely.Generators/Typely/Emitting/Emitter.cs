@@ -52,9 +52,7 @@ internal class Emitter
                 [JsonConverter(typeof(TypelyJsonConverter<{{underlyingType}}, {{typeName}}>))]
                 public partial {{constructType}} {{typeName}} : ITypelyValue<{{underlyingType}}, {{typeName}}>, IEquatable<{{typeName}}>, IComparable<{{typeName}}>, IComparable
                 {
-                    public {{underlyingType}} Value { get; private set; }
-
-                    public {{typeName}}() => throw new Exception("Parameterless constructor is not allowed.");
+                    public {{underlyingType}} Value { get; private set; }                    
 
                     public {{typeName}}({{underlyingType}} value)
                     {
