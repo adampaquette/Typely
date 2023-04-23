@@ -15,6 +15,7 @@ public class CompleteTypelyConfiguration : ITypelyConfiguration
         
         builder
             .OfString()
+            .AsClass()
             .For("UserId")
             .WithNamespace("UserAggregate")
             .WithName("Owner identifier")

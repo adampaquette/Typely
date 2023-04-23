@@ -17,9 +17,7 @@ namespace Election
     [JsonConverter(typeof(TypelyJsonConverter<DateOnly, Votes>))]
     public partial struct Votes : ITypelyValue<DateOnly, Votes>, IEquatable<Votes>, IComparable<Votes>, IComparable
     {
-        public DateOnly Value { get; private set; }
-
-        public Votes() => throw new Exception("Parameterless constructor is not allowed.");
+        public DateOnly Value { get; private set; }                    
 
         public Votes(DateOnly value)
         {
@@ -43,7 +41,7 @@ namespace Election
                     });
             }
 
-            if (!(value== new DateOnly(2022,1,1)))
+            if (!(value == new DateOnly(2022,1,1)))
             {
                 return ValidationErrorFactory.Create(value, "Must", ErrorMessages.Must, "Presidency vote");
             }

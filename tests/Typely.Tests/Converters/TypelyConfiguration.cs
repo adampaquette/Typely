@@ -8,5 +8,6 @@ public class TypelyConfiguration : ITypelyConfiguration
     public void Configure(ITypelyBuilder builder)
     {
         builder.OfString().For("StringSerializationTestsType");
+        builder.OfInt().For("IntTypeConverterTestsType");
     }
 }

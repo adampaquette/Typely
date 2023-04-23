@@ -7,8 +7,6 @@ internal class FloatConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfFloat().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfFloat()
             .AsStruct()
             .WithNamespace("Election")

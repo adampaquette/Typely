@@ -15,11 +15,9 @@ namespace Typely.Generators.Tests.Typely.Configurations
 {
     [TypeConverter(typeof(TypelyTypeConverter<string, Code>))]
     [JsonConverter(typeof(TypelyJsonConverter<string, Code>))]
-    public partial struct Code : ITypelyValue<string, Code>, IEquatable<Code>, IComparable<Code>, IComparable
+    public partial class Code : ITypelyValue<string, Code>, IEquatable<Code>, IComparable<Code>, IComparable
     {
-        public string Value { get; private set; }
-
-        public Code() => throw new Exception("Parameterless constructor is not allowed.");
+        public string Value { get; private set; }                    
 
         public Code(string value)
         {

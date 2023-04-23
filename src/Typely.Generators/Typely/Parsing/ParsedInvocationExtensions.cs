@@ -18,7 +18,7 @@ internal static class ParsedInvocationExtensions
 
     public static string GetSecondArgument(this ParsedInvocation parsedInvocation) =>
         parsedInvocation.ArgumentListSyntax.Arguments[1].Expression.ToString();
-    
+
     public static ExpressionSyntax GetFirstExpressionArgument(this ParsedInvocation parsedInvocation) =>
         parsedInvocation.ArgumentListSyntax.Arguments.First().Expression;
 
@@ -28,52 +28,50 @@ internal static class ParsedInvocationExtensions
         return expression switch
         {
             SimpleLambdaExpressionSyntax simpleLambda =>
-                ReplaceParameterInSimpleLambda(simpleLambda, Emitter.ValueParameterName).Body.ToString(),
+                GetLambdaBodyWithReplacedParameter(simpleLambda, Emitter.ValueParameterName).ToString(),
             ParenthesizedLambdaExpressionSyntax parenthesizedlambda =>
-                ReplaceParameterInParenthesizedLambda(parenthesizedlambda, Emitter.ValueParameterName).Body.ToString(),
+                GetLambdaBodyWithReplacedParameter(parenthesizedlambda, Emitter.ValueParameterName).ToString(),
             _ => throw new InvalidOperationException("Expected lambda expression but was " + expression.GetType().Name)
         };
     }
-    
-    private static SimpleLambdaExpressionSyntax ReplaceParameterInSimpleLambda(SimpleLambdaExpressionSyntax lambda,
+
+    private static CSharpSyntaxNode GetLambdaBodyWithReplacedParameter(SimpleLambdaExpressionSyntax lambda,
         string newParameterName)
     {
         var originalParameter = lambda.Parameter;
-        var newParameter = originalParameter.WithIdentifier(SyntaxFactory.Identifier(newParameterName));
 
-        var newBody = lambda.Body.ReplaceNodes(lambda.Body.DescendantNodes().OfType<IdentifierNameSyntax>(),
+        return lambda.Body.ReplaceNodes(lambda.Body.DescendantNodes().OfType<IdentifierNameSyntax>(),
             (originalNode, rewrittenNode) =>
             {
                 if (originalNode.Identifier.Text == originalParameter.Identifier.Text)
                 {
-                    return rewrittenNode.WithIdentifier(SyntaxFactory.Identifier(newParameterName));
+                    var newIdentifier = SyntaxFactory.Identifier(originalNode.Identifier.LeadingTrivia,
+                        newParameterName, originalNode.Identifier.TrailingTrivia);
+
+                    return rewrittenNode.WithIdentifier(newIdentifier);
                 }
 
                 return rewrittenNode;
             });
-
-        return lambda.WithParameter(newParameter).WithBody(newBody);
     }
 
-    private static ParenthesizedLambdaExpressionSyntax ReplaceParameterInParenthesizedLambda(
-        ParenthesizedLambdaExpressionSyntax lambda, string newParameterName)
+    private static CSharpSyntaxNode GetLambdaBodyWithReplacedParameter(ParenthesizedLambdaExpressionSyntax lambda,
+        string newParameterName)
     {
         var originalParameter = lambda.ParameterList.Parameters.First();
-        var newParameter = originalParameter.WithIdentifier(SyntaxFactory.Identifier(newParameterName));
 
-        var newParameterList = lambda.ParameterList.ReplaceNode(originalParameter, newParameter);
-
-        var newBody = lambda.Body.ReplaceNodes(lambda.Body.DescendantNodes().OfType<IdentifierNameSyntax>(),
+        return lambda.Body.ReplaceNodes(lambda.Body.DescendantNodes().OfType<IdentifierNameSyntax>(),
             (originalNode, rewrittenNode) =>
             {
                 if (originalNode.Identifier.Text == originalParameter.Identifier.Text)
                 {
-                    return rewrittenNode.WithIdentifier(SyntaxFactory.Identifier(newParameterName));
+                    var newIdentifier = SyntaxFactory.Identifier(originalNode.Identifier.LeadingTrivia,
+                        newParameterName, originalNode.Identifier.TrailingTrivia);
+
+                    return rewrittenNode.WithIdentifier(newIdentifier);
                 }
 
                 return rewrittenNode;
             });
-
-        return lambda.WithParameterList(newParameterList).WithBody(newBody);
     }
 }

@@ -7,7 +7,6 @@ internal class MultipleConfigurationB : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfInt().For("Votes");
-        //builder.OfString().For("Name");
+        builder.OfInt().For("MultiConfigDiffNamespace");
     }
 }

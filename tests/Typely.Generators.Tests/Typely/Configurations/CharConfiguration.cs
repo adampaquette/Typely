@@ -7,8 +7,6 @@ internal class CharConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfChar().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfChar()
             .AsStruct()
             .WithNamespace("Election")

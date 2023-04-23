@@ -1,4 +1,6 @@
-﻿namespace Typely.AspNetCore.Mvc.Tests.ModelBinding;
+﻿using Typely.AspNetCore.Mvc.ModelBinding;
+
+namespace Typely.AspNetCore.Mvc.Tests.ModelBinding;
 
 public class TypelyValueModelBinderTests
 {
@@ -35,5 +37,29 @@ public class TypelyValueModelBinderTests
         binder!.BindModelAsync(bindingContext);
         
         Assert.Equal(Code.From("ABCD"), bindingContext.Result.Model );
+    }
+    
+    [Fact]
+    public void BindModel_ThrowsArgumentNullException_WhenBindingContextIsNull()
+    {
+        var binder = new TypelyValueModelBinder<string, Code>();
+        Assert.ThrowsAsync<ArgumentNullException>(() => binder!.BindModelAsync(null!));
+    }
+    
+    [Fact]
+    public void BindModel_DoNothing_WhenValueProviderResultIsNone()
+    {
+        var modelType = typeof(Code);
+        var binder = new ModelBinderFixture()
+            .WithModelType(modelType)
+            .Build();
+        var bindingContext = new ModelBindingContextFixture()
+            .WithModelType(modelType)
+            .WithValue(null!)
+            .Build();
+
+        binder!.BindModelAsync(bindingContext);
+        
+        Assert.Null(bindingContext.Result.Model);
     }
 }

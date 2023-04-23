@@ -7,8 +7,6 @@ internal class DateTimeOffsetConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfDateTimeOffset().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfDateTimeOffset()
             .AsStruct()
             .WithNamespace("Election")

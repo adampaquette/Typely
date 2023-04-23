@@ -7,8 +7,6 @@ internal class TimeOnlyConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfTimeOnly().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfTimeOnly()
             .AsStruct()
             .WithNamespace("Election")

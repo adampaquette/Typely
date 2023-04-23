@@ -7,8 +7,6 @@ internal class UIntConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfUInt().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfUInt()
             .AsStruct()
             .WithNamespace("Election")

@@ -7,8 +7,6 @@ internal class ULongConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfULong().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfULong()
             .AsStruct()
             .WithNamespace("Election")

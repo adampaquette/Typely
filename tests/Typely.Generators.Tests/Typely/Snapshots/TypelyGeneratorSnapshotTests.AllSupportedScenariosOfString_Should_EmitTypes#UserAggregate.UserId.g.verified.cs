@@ -16,9 +16,7 @@ namespace UserAggregate
     [JsonConverter(typeof(TypelyJsonConverter<string, UserId>))]
     public partial struct UserId : ITypelyValue<string, UserId>, IEquatable<UserId>, IComparable<UserId>, IComparable
     {
-        public string Value { get; private set; }
-
-        public UserId() => throw new Exception("Parameterless constructor is not allowed.");
+        public string Value { get; private set; }                    
 
         public UserId(string value)
         {
@@ -53,7 +51,7 @@ namespace UserAggregate
                     });
             }
 
-            if (!(value!= "1" && value.ToLower() == "12"))
+            if (!(value != "1" && value.ToLower() == "12"))
             {
                 return ValidationErrorFactory.Create(value, "Must", ErrorMessages.Must, "Owner identifier");
             }

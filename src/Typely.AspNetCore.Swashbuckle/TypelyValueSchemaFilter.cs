@@ -9,7 +9,7 @@ public class TypelyValueSchemaFilter : ISchemaFilter
 {
     public void Apply(OpenApiSchema schema, SchemaFilterContext context)
     {
-        var typelyValueType = TryGetBaseType(context.Type);//GetTypelyValueTypeOrDefault(context.Type);
+        var typelyValueType = GetTypelyValueTypeOrDefault(context.Type);
         if (typelyValueType is null)
         {
             return;
@@ -22,32 +22,19 @@ public class TypelyValueSchemaFilter : ISchemaFilter
         }
 
         schema.Type = valueSchema.Type;
+        schema.Format = valueSchema.Format;
+        schema.Default = valueSchema.Default;
+        schema.Example = valueSchema.Example;
+        schema.Enum = valueSchema.Enum;
+        schema.Minimum = valueSchema.Minimum;
+        schema.Maximum = valueSchema.Maximum;
+        schema.Pattern = valueSchema.Pattern;
         foreach (var (key, prop) in valueSchema.Properties)
         {
             schema.Properties.Add(key, prop);
         }
+    }
 
-        //schema.Type = valueSchema.Type;
-        // schema.Format = valueSchema.Format;
-        // schema.Default = valueSchema.Default;
-        // schema.Example = valueSchema.Example;
-        // schema.Enum = valueSchema.Enum;
-        // schema.Minimum = valueSchema.Minimum;
-        // schema.Maximum = valueSchema.Maximum;
-        // schema.Pattern = valueSchema.Pattern;
-    }
-    static Type? TryGetBaseType(Type type)
-    {
-        try
-        {
-            return type.GetInterface(typeof(ITypelyValue<>).FullName!);
-        }
-        catch (AmbiguousMatchException)
-        {
-            return null;
-        }
-    }
-    
     private static Type? GetTypelyValueTypeOrDefault(Type type) =>
         type.GetInterfaces()
             .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ITypelyValue<,>));

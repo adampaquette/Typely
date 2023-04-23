@@ -24,13 +24,11 @@ internal class Emitter
     {
         if (t.Name == null)
         {
-            //TODO DIAGNOSTIC
             return string.Empty;
         }
 
         if (t.TypeName == null)
         {
-            //TODO DIAGNOSTIC
             return string.Empty;
         }
 
