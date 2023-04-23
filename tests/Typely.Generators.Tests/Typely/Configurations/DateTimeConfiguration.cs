@@ -7,8 +7,6 @@ internal class DateTimeConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfDateTime().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfDateTime()
             .AsStruct()
             .WithNamespace("Election")

@@ -8,11 +8,8 @@ internal class StringConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder) 
     {
-        var vote = builder.OfString().For("Votes").NotEmpty().NotEqual("abc");
-        vote.For("Vote");
-
-        builder.OfString().For("Username");
         builder.OfString().For("Code")
+            .AsClass()
             .Length(4)
             .Length(4, 20)
             .NotEqual("0000")
@@ -22,11 +19,8 @@ internal class StringConfiguration : ITypelyConfiguration
             .LessThan("A")
             .LessThanOrEqualTo("A");
         
-        // Create a reusable factory
         var sf = builder.OfString().AsFactory();
-        
         var sf2 = sf.WithName("Username").AsFactory();
-        
         sf2.For("UserId")
             .WithNamespace("UserAggregate")
             .WithName("Owner identifier")
@@ -34,15 +28,5 @@ internal class StringConfiguration : ITypelyConfiguration
             .NotEqual("0").WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001")
             .MaxLength(20)
             .Must(x => x != "1" && x.ToLower() == "12");
-        
-        // Simplify configurations of similar types.
-        var moment = sf.AsClass()
-            .WithName(() => LocalizedNames.Moment)
-            .MinLength(1).WithMessage(() => LocalizedMessages.MinLengthCustom)
-            .MaxLength(20).WithMessage(() => LocalizedMessages.MaxLengthCustom)
-            .AsFactory();
-        
-        moment.For("Monday");
-        moment.For("Sunday");
     }
 }

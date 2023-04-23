@@ -7,8 +7,6 @@ internal class IntConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfInt().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfInt()
             .AsStruct()
             .WithNamespace("Election")

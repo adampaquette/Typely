@@ -7,8 +7,6 @@ internal class DateOnlyConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfDateOnly().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfDateOnly()
             .AsStruct()
             .WithNamespace("Election")

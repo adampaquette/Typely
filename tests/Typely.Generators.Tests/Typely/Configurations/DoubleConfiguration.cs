@@ -7,8 +7,6 @@ internal class DoubleConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfDouble().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfDouble()
             .AsStruct()
             .WithNamespace("Election")

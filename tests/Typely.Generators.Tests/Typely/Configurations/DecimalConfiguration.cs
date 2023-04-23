@@ -7,8 +7,6 @@ internal class DecimalConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfDecimal().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfDecimal()
             .AsStruct()
             .WithNamespace("Election")

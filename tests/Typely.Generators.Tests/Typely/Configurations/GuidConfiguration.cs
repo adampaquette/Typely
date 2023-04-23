@@ -7,8 +7,6 @@ internal class GuidConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfGuid().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfGuid()
             .AsStruct()
             .WithNamespace("Election")

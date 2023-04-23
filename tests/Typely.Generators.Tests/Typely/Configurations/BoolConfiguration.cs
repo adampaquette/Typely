@@ -7,8 +7,6 @@ internal class BoolConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfBool().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfBool()
             .AsStruct()
             .WithNamespace("Election")

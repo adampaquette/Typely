@@ -7,8 +7,6 @@ internal class ShortConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfShort().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfShort()
             .AsStruct()
             .WithNamespace("Election")

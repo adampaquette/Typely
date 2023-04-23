@@ -7,8 +7,6 @@ internal class TimeSpanConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfTimeSpan().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfTimeSpan()
             .AsStruct()
             .WithNamespace("Election")

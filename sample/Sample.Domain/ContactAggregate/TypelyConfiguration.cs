@@ -8,7 +8,7 @@ internal class TypelyConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfInt().For("ContactId");
+        builder.OfInt().For("ContactId").GreaterThan(0);
         builder.OfString().For("FirstName").MaxLength(100);
         builder.OfString().For("LastName").MaxLength(100);
         builder.OfString().For("Phone").MaxLength(12).Matches(new Regex("[0-9]{3}-[0-9]{3}-[0-9]{4}"));

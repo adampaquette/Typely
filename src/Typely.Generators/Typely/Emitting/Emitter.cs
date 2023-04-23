@@ -24,13 +24,11 @@ internal class Emitter
     {
         if (t.Name == null)
         {
-            //TODO DIAGNOSTIC
             return string.Empty;
         }
 
         if (t.TypeName == null)
         {
-            //TODO DIAGNOSTIC
             return string.Empty;
         }
 
@@ -48,12 +46,11 @@ internal class Emitter
 
             namespace {{t.Namespace}}
             {
+                [TypeConverter(typeof(TypelyTypeConverter<{{underlyingType}}, {{typeName}}>))]
                 [JsonConverter(typeof(TypelyJsonConverter<{{underlyingType}}, {{typeName}}>))]
                 public partial {{constructType}} {{typeName}} : ITypelyValue<{{underlyingType}}, {{typeName}}>, IEquatable<{{typeName}}>, IComparable<{{typeName}}>, IComparable
                 {
-                    public {{underlyingType}} Value { get; private set; }
-
-                    public {{typeName}}() => throw new Exception("Parameterless constructor is not allowed.");
+                    public {{underlyingType}} Value { get; private set; }                    
 
                     public {{typeName}}({{underlyingType}} value)
                     {
@@ -104,10 +101,11 @@ internal class Emitter
         var namespaces = new List<string>
         {
             "System",
+            "System.ComponentModel",
+            "System.Diagnostics.CodeAnalysis",
+            "System.Text.Json.Serialization",
             "Typely.Core",
             "Typely.Core.Converters",
-            "System.Diagnostics.CodeAnalysis",
-            "System.Text.Json.Serialization"
         };
 
         namespaces.AddRange(additionalNamespaces);

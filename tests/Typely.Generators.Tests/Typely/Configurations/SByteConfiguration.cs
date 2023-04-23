@@ -7,8 +7,6 @@ internal class SByteConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfSByte().For("Id").WithName(() => LocalizedNames.CustomName).AsClass();
-        
         var factory = builder.OfSByte()
             .AsStruct()
             .WithNamespace("Election")
