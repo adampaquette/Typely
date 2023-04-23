@@ -31,6 +31,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.Benchmarks", "benchmarks\Typely.Benchmarks\Typely.Benchmarks.csproj", "{2789B037-D0D3-48F9-87E7-A44374AD05B5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{FF24A745-A365-45F5-96D0-13792D2084F2}"
+	ProjectSection(SolutionItems) = preProject
+		sample\README.md = sample\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Api", "sample\Sample.Api\Sample.Api.csproj", "{8E6F1D14-F0E9-4478-A361-1CE3C1AE7167}"
 EndProject
