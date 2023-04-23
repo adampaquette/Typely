@@ -97,7 +97,7 @@ internal class Emitter
     }
 
     /// <summary>
-    /// Support for minimal Api model binding.
+    /// Support for Minimal API model binding.
     /// </summary>
     private string GenerateTryParseIfSupported(string typeName, string underlyingType) => underlyingType == "string"
         ? string.Empty
