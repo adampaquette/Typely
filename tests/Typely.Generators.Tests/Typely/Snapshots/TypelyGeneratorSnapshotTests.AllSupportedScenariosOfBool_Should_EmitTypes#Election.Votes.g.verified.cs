@@ -67,6 +67,18 @@ namespace Election
             }
             return isValid;
         }
+        
+        public static bool TryParse(string? value, IFormatProvider? provider, out Votes valueObject)
+        {
+            if(bool.TryParse(value, out var underlyingValue))
+            {
+                valueObject = From(underlyingValue);
+                return true;
+            }
+                
+            valueObject = default;
+            return false;
+        }
 
         public override string ToString() => Value.ToString();
 

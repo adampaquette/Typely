@@ -72,7 +72,7 @@ namespace UserAggregate
             }
             return isValid;
         }
-
+        
         public override string ToString() => Value.ToString();
 
         public static bool operator !=(UserId left, UserId right) => !(left == right);

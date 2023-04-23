@@ -38,6 +38,18 @@ namespace Typely.Generators.Tests.Typely.Configurations.A
             }
             return isValid;
         }
+        
+        public static bool TryParse(string? value, IFormatProvider? provider, out MultiConfigDiffNamespace valueObject)
+        {
+            if(int.TryParse(value, out var underlyingValue))
+            {
+                valueObject = From(underlyingValue);
+                return true;
+            }
+                
+            valueObject = default;
+            return false;
+        }
 
         public override string ToString() => Value.ToString();
 
