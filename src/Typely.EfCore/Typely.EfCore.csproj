@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <Description>Typely lets you create types easily with a fluent API to embrace Domain-driven design and value objects. This package contains integrations with EF Core.</Description>
-        <Version>1.0.0-alpha</Version>
+        <Version>1.0.1-alpha</Version>
     </PropertyGroup>
 
     <ItemGroup>

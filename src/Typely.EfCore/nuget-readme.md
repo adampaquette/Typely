@@ -1,68 +1,16 @@
 Typely lets you create types easily with a fluent API to embrace Domain-driven design and value objects.
 
-## Example
-
-```csharp
-public class TypesConfiguration : ITypelyConfiguration
-{
-    public void Configure(ITypelyBuilder builder)
-    {
-        builder.OfInt().For("Votes");        
-        builder.OfString().For("Code").Length(4).NotEqual("0000");
-        
-        builder.OfString()
-            .For("UserId")
-            .WithNamespace("UserAggregate")
-            .WithName("Owner identifier")
-            .NotEmpty()
-            .NotEqual("0").WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001")
-            .MaxLength(20);
-
-        builder.OfString()
-            .For("Monday")
-            .AsClass()
-            .WithName(() => LocalizedNames.Moment)
-            .MinLength(1).WithMessage(() => LocalizedMessages.MinLengthCustom)
-            .MaxLength(20).WithMessage(() => LocalizedMessages.MaxLengthCustom);
-    }
-}
-```
+This library lets you use Typely with Entity Framework Core by providing a set of conventions.
 
 # Documentation
 
 - https://docs.typely.net/
 
-# Prerequisites
+# Usage
 
-- Supported .NET versions
-    - .NET 7.0 and greater
-
-# Getting started
-
-Install packages
-```
-dotnet add package Typely.Core
-dotnet add package Typely.Generators
-```
-
-Create a class inheriting from `ITypelyConfiguration`
 ```csharp
-public class TypesConfiguration : ITypelyConfiguration
+protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
 {
-    public void Configure(ITypelyBuilder builder)
-    {
-        builder.OfString().For("FirstName").NotEmpty();    
-    }
-}
-```
-
-Usage
-```csharp
-var firstName = FirstName.From("Adam");
-FirstName.From(""); //Throws ValidationException
-
-if(!FirstName.TryFrom("value", out FirstName instance, out ValidationError? validationError))
-{
-    // Handle error
+    configurationBuilder.Conventions.AddTypelyConventions();
 }
 ```

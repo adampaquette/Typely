@@ -12,7 +12,8 @@ internal static class ConventionModelBuilderExtensions
     /// </summary>
     /// <param name="modelBuilder">Convention model builder</param>
     /// <returns>Declared non-navigation properties implementing <see cref="ITypelyValue{TValue,TTypelyValue}"/>.</returns>
-    public static IEnumerable<IConventionProperty> GetBaseTypeConventionProperties(this IConventionModelBuilder modelBuilder) =>
+    public static IEnumerable<IConventionProperty>
+        GetTypelyValueProperties(this IConventionModelBuilder modelBuilder) =>
         modelBuilder.Metadata
             .GetEntityTypes()
             .SelectMany(x => x.GetDeclaredProperties())

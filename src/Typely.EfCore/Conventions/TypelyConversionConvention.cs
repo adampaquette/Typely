@@ -23,7 +23,7 @@ public class TypelyConversionConvention : IModelFinalizingConvention
     {
         var typelyType = typeof(ITypelyValue<,>);
 
-        foreach (var typelyValueProperty in modelBuilder.GetBaseTypeConventionProperties())
+        foreach (var typelyValueProperty in modelBuilder.GetTypelyValueProperties())
         {
             var underlyingValueType = typelyValueProperty.ClrType
                 .GetInterfaces()
