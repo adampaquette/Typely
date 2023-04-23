@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using Sample.Api;
 using Sample.Domain.ContactAggregate;
 using Sample.Infrastructure;
 using Typely.AspNetCore.Mvc;
@@ -11,14 +9,10 @@ builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("Samp
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-
-//builder.Services.AddControllers();
 builder.Services.AddControllers(options => options.UseTypelyModelBinderProvider());
-//builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(options =>
 {
     options.UseTypelySchemaFilter();
-    options.MapType<MyType>(() => new OpenApiSchema { Type = "string" });
 });
 
 var app = builder.Build();
@@ -30,7 +24,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
-app.Run();
 
  var contacts = app.MapGroup("/contacts").WithTags("Contacts");
 
@@ -38,14 +31,14 @@ app.Run();
      await db.Contacts.ToListAsync());
 
  contacts.MapGet("/{id}", async (int id, AppDbContext db) =>
-     await db.Contacts.FindAsync(id)
+     await db.Contacts.FindAsync(ContactId.From(id))
          is Contact contact
          ? Results.Ok(contact)
          : Results.NotFound());
 
  contacts.MapPut("/{id}", async (int id, Contact request, AppDbContext db) =>
  {
-     var contact = await db.Contacts.FindAsync(id);
+     var contact = await db.Contacts.FindAsync(ContactId.From(id));
 
      if (contact is null) return Results.NotFound();
 
@@ -72,7 +65,7 @@ app.Run();
 
  contacts.MapDelete("/{id}", async (int id, AppDbContext db) =>
  {
-     if (await db.Contacts.FindAsync(id) is Contact contact)
+     if (await db.Contacts.FindAsync(ContactId.From(id)) is Contact contact)
      {
          db.Contacts.Remove(contact);
          await db.SaveChangesAsync();
