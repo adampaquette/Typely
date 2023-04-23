@@ -27,15 +27,15 @@ var contacts = app.MapGroup("/contacts").WithTags("Contacts");
 contacts.MapGet("/", async (AppDbContext db) =>
     await db.Contacts.ToListAsync());
 
-contacts.MapGet("/{id}", async (int id, AppDbContext db) =>
-    await db.Contacts.FindAsync(ContactId.From(id))
+contacts.MapGet("/{id}", async (ContactId id, AppDbContext db) =>
+    await db.Contacts.FindAsync(id)
         is Contact contact
         ? Results.Ok(contact)
         : Results.NotFound());
 
-contacts.MapPut("/{id}", async (int id, Contact request, AppDbContext db) =>
+contacts.MapPut("/{id}", async (ContactId id, Contact request, AppDbContext db) =>
 {
-    var contact = await db.Contacts.FindAsync(ContactId.From(id));
+    var contact = await db.Contacts.FindAsync(id);
 
     if (contact is null) return Results.NotFound();
 
@@ -60,9 +60,9 @@ contacts.MapPost("/", async (Contact contact, AppDbContext db) =>
     return Results.Created($"/contacts/{contact.Id}", contact);
 });
 
-contacts.MapDelete("/{id}", async (int id, AppDbContext db) =>
+contacts.MapDelete("/{id}", async (ContactId id, AppDbContext db) =>
 {
-    if (await db.Contacts.FindAsync(ContactId.From(id)) is Contact contact)
+    if (await db.Contacts.FindAsync(id) is Contact contact)
     {
         db.Contacts.Remove(contact);
         await db.SaveChangesAsync();

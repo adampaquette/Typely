@@ -73,7 +73,7 @@ internal class Emitter
                         }
                         return isValid;
                     }
-
+                    {{GenerateTryParseIfSupported(typeName, underlyingType)}}
                     public override string ToString() => Value.ToString();
 
                     public static bool operator !=({{typeName}} left, {{typeName}} right) => !(left == right);
@@ -95,6 +95,27 @@ internal class Emitter
             }
             """;
     }
+
+    /// <summary>
+    /// Support for Minimal API model binding.
+    /// </summary>
+    private string GenerateTryParseIfSupported(string typeName, string underlyingType) => underlyingType == "string"
+        ? string.Empty
+        : $$"""
+
+                public static bool TryParse(string? value, IFormatProvider? provider, out {{typeName}} valueObject)
+                {
+                    if({{underlyingType}}.TryParse(value, out var underlyingValue))
+                    {
+                        valueObject = From(underlyingValue);
+                        return true;
+                    }
+                        
+                    valueObject = default;
+                    return false;
+                }
+
+        """;
 
     private string BuildNamespaces(IList<EmittableRule> rules, IEnumerable<string> additionalNamespaces)
     {

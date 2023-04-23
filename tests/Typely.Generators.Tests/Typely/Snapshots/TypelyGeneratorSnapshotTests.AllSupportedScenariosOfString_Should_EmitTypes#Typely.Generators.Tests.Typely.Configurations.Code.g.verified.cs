@@ -118,7 +118,7 @@ namespace Typely.Generators.Tests.Typely.Configurations
             }
             return isValid;
         }
-
+        
         public override string ToString() => Value.ToString();
 
         public static bool operator !=(Code left, Code right) => !(left == right);
