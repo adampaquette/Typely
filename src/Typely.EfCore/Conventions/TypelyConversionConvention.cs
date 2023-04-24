@@ -21,19 +21,22 @@ public class TypelyConversionConvention : IModelFinalizingConvention
     public void ProcessModelFinalizing(IConventionModelBuilder modelBuilder,
         IConventionContext<IConventionModelBuilder> context)
     {
-        var typelyType = typeof(ITypelyValue<,>);
-
-        foreach (var typelyValueProperty in modelBuilder.GetTypelyValueProperties())
+        foreach (var property in modelBuilder.GetTypelyValueProperties())
         {
-            var underlyingValueType = typelyValueProperty.ClrType
+            var nullable = property.ClrType.IsGenericType &&
+                           property.ClrType.GetGenericTypeDefinition() == typeof(Nullable<>);
+            var typelyValueType = nullable ? Nullable.GetUnderlyingType(property.ClrType)! : property.ClrType;
+
+            var valueType = typelyValueType
                 .GetInterfaces()
-                .First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typelyType)
+                .First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ITypelyValue<,>))
                 .GetGenericArguments()[0];
 
-            var converterType =
-                typeof(TypelyValueConverter<,>).MakeGenericType(underlyingValueType, typelyValueProperty.ClrType);
+            var converter = nullable
+                ? typeof(NullableTypelyValueConverter<,>).MakeGenericType(valueType, property.ClrType)
+                : typeof(TypelyValueConverter<,>).MakeGenericType(valueType, typelyValueType);
 
-            typelyValueProperty.Builder.HasConverter(converterType);
+            property.Builder.HasConverter(converter);
         }
     }
 }
