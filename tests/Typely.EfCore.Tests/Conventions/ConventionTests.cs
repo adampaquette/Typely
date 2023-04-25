@@ -14,7 +14,9 @@ public class ConventionTests
 
         var person = new Person
         {
-            Id = PersonId.From(1), Email = Email.From("a@a.com"), FirstName = FirstName.From("John")
+            Id = PersonId.From(1), 
+            Email = Email.From("a@a.com"), 
+            FirstName = FirstName.From("John")
         };
         context.Persons.Add(person);
         context.SaveChanges();

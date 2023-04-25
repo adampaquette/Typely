@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Sample.Domain.ContactAggregate;
 using Sample.Infrastructure;
+using Typely.AspNetCore.Http;
 using Typely.AspNetCore.Mvc;
 using Typely.AspNetCore.Swashbuckle;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlite( "Data Source=sample.db"));
+builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlite("Data Source=sample.db"));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -13,6 +14,9 @@ builder.Services.AddControllers(options => options.UseTypelyModelBinderProvider(
 builder.Services.AddSwaggerGen(options => options.UseTypelySchemaFilter());
 
 var app = builder.Build();
+
+// Register this middleware before other middleware components
+app.UseTypelyValidation();
 
 if (app.Environment.IsDevelopment())
 {
@@ -81,9 +85,9 @@ void InitDatabase()
 {
     using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    
+
     db.Database.Migrate();
-    
+
     if (!db.Contacts.Any())
     {
         db.Contacts.Add(new Contact

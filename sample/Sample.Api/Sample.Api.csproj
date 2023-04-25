@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Typely.AspNetCore.Http\Typely.AspNetCore.Http.csproj" />
     <ProjectReference Include="..\..\src\Typely.AspNetCore.Mvc\Typely.AspNetCore.Mvc.csproj" />
     <ProjectReference Include="..\..\src\Typely.AspNetCore.Swashbuckle\Typely.AspNetCore.Swashbuckle.csproj" />
     <ProjectReference Include="..\Sample.Infrastructure\Sample.Infrastructure.csproj" />
@@ -29,5 +30,11 @@
 
   <ItemGroup>
     <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="sample.db" />
+    <None Remove="sample.db-shm" />
+    <None Remove="sample.db-wal" />
   </ItemGroup>
 </Project>

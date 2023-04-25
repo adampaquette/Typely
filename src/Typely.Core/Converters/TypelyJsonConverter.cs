@@ -21,9 +21,9 @@ public class TypelyJsonConverter<TValue, TTypelyValue> : JsonConverter<TTypelyVa
             return default;
         }
 
-        return TTypelyValue.TryFrom(value, out var typelyType, out var errorMessage) 
+        return TTypelyValue.TryFrom(value, out var typelyType, out var validationError) 
             ? typelyType 
-            : throw new JsonException(JsonSerializer.Serialize(errorMessage));
+            : throw new ValidationException(validationError!);
     }
 
     /// <inheritdoc/>
