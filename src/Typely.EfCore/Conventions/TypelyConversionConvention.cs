@@ -32,9 +32,7 @@ public class TypelyConversionConvention : IModelFinalizingConvention
                 .First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ITypelyValue<,>))
                 .GetGenericArguments()[0];
 
-            var converter = nullable
-                ? typeof(NullableTypelyValueConverter<,>).MakeGenericType(valueType, property.ClrType)
-                : typeof(TypelyValueConverter<,>).MakeGenericType(valueType, typelyValueType);
+            var converter = typeof(TypelyValueConverter<,>).MakeGenericType(valueType, typelyValueType);
 
             property.Builder.HasConverter(converter);
         }
