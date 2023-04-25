@@ -12,7 +12,18 @@ public static class TypeExtensions
     /// <returns><see langword="true" /> when the type implements the interface.</returns>
     public static bool ImplementsITypelyValue(this Type type)
     {
+        Type underlyingType;
+
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+        {
+            underlyingType = Nullable.GetUnderlyingType(type)!;
+        }
+        else
+        {
+            underlyingType = type;
+        }
+
         var typelyType = typeof(ITypelyValue<,>);
-        return type.GetInterfaces().Any(x => x.Name == typelyType.Name && x.Namespace == typelyType.Namespace);
+        return underlyingType.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typelyType);
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Reflection;
 using Typely.Core;
 
 namespace Typely.AspNetCore.Swashbuckle;

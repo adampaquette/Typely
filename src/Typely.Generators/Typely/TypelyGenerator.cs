@@ -22,6 +22,8 @@ public class TypelyGenerator : IIncrementalGenerator
                 transform: static (ctx, _) => Parser.GetSemanticTargetForGeneration(ctx))
             .Where(x => x is not null);
 
+        //TODO : Don't use compilation without an IEquatable<> class to hold the cache. The compilation can't be cached effectively.
+        //You should have a value-equatable model which you pass through the pipeline. You should never pass syntax nodes, symbols, compilations, semantic models, etc. through the pipeline.
         var compilationAndClasses = context.CompilationProvider.Combine(classDeclarations.Collect());
 
         context.RegisterSourceOutput(compilationAndClasses, static (spc, source) => Execute(source.Left, source.Right!, spc));
