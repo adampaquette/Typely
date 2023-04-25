@@ -17,6 +17,6 @@ public class AppDbContext : DbContext
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
-        configurationBuilder.Conventions.AddTypelyConventions();
+        //configurationBuilder.Conventions.AddTypelyConventions();
     }
 }
