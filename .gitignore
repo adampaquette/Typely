@@ -352,3 +352,7 @@ MigrationBackup/
 # Verified
 *.received.cs
 *.received.txt
+
+*.db
+*.db-shm
+*.db-wal
