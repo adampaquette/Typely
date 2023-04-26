@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 		README.md = README.md
 		.gitignore = .gitignore
+		.github\workflows\main.yml = .github\workflows\main.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Typely.Generators", "src\Typely.Generators\Typely.Generators.csproj", "{56060B69-59C7-46FC-ABC3-B2C4A0C3EAFD}"
