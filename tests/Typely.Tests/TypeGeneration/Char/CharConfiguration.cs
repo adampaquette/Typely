@@ -7,13 +7,13 @@ public class IntConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
-        builder.OfInt().For("BasicType");
-        builder.OfInt().For("NotEmptyType").NotEmpty();
-        builder.OfInt().For("NotEqualType").NotEqual(10);
-        builder.OfInt().For("GreaterThanType").GreaterThan(10);
-        builder.OfInt().For("GreaterThanOrEqualType").GreaterThanOrEqualTo(10);
-        builder.OfInt().For("LessThanType").LessThan(10);
-        builder.OfInt().For("LessThanOrEqualType").LessThanOrEqualTo(10);
-        builder.OfInt().For("MustType").Must((x) => !x.Equals(10));
+        builder.OfChar().For("BasicType");
+        builder.OfChar().For("NotEmptyType").NotEmpty();
+        builder.OfChar().For("NotEqualType").NotEqual('A');
+        builder.OfChar().For("GreaterThanType").GreaterThan('B');
+        builder.OfChar().For("GreaterThanOrEqualType").GreaterThanOrEqualTo('B');
+        builder.OfChar().For("LessThanType").LessThan('A');
+        builder.OfChar().For("LessThanOrEqualType").LessThanOrEqualTo('A');
+        builder.OfChar().For("MustType").Must((x) => !x.Equals('A'));
     }
 }

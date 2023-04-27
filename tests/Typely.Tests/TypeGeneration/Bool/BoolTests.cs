@@ -19,5 +19,6 @@ public class BoolTests
 
     private Gen<(BasicType, BasicType)> GenTrueEquals => Gen.Bool.Select(x => (BasicType.From(x), BasicType.From(x)));
     private Gen<(BasicType, BasicType)> GenFalseEquals => Gen.Bool.Select(x => (BasicType.From(x), BasicType.From(!x)));
-    private Gen<(bool primitive, BasicType valueObject, BasicType randomObj)> GenComparable => Gen.Select(Gen.Bool, Gen.Bool, (x, y) => (x, BasicType.From(x), BasicType.From(y)));
+    private Gen<(bool primitive, BasicType valueObject, BasicType randomObj)> GenComparable => 
+        Gen.Select(Gen.Bool, Gen.Bool, (x, y) => (x, BasicType.From(x), BasicType.From(y)));
 }
