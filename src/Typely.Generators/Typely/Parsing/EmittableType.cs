@@ -59,6 +59,11 @@ internal class EmittableType
     /// Additional namespaces to import.
     /// </summary>
     public List<string> AdditionalNamespaces { get; } = new();
+
+    /// <summary>
+    /// A set of dynamic properties. For example: MaxLength on string type.
+    /// </summary>
+    public TypeProperties Properties { get; set; } = new();
     
     public EmittableType(string underlyingType, bool isValueType, string configurationNamespace)
     {

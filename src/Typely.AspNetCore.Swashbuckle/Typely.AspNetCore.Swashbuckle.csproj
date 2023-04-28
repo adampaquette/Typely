@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
-        <Version>0.1.4-alpha</Version>
+        <Version>0.1.5-alpha</Version>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'!='Debug'">
-        <PackageReference Include="Typely.Core" Version="1.2.4-alpha" />
+        <PackageReference Include="Typely.Core" Version="1.2.5-alpha" />
     </ItemGroup>
     
     <ItemGroup>

@@ -36,6 +36,7 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
                     {
                         var min = invocation.GetFirstArgument();
                         var max = invocation.GetSecondArgument();
+                        EmittableType.Properties.SetMaxLength(int.Parse(max));
                         AddRule(
                             errorCode: ErrorCodes.Length,
                             rule: $"{Emitter.ValueParameterName}.Length < {min} || {Emitter.ValueParameterName}.Length > {max}",
@@ -45,6 +46,7 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
                     else
                     {
                         var exactLength = invocation.GetFirstArgument();
+                        EmittableType.Properties.SetMaxLength(int.Parse(exactLength));
                         AddRule(
                             errorCode: ErrorCodes.ExactLength,
                             rule: $"{Emitter.ValueParameterName}.Length != {exactLength}",
@@ -63,6 +65,7 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
                     continue;
                 case TypelyBuilderOf.MaxLengthMethodName:
                     value = invocation.GetFirstArgument();
+                    EmittableType.Properties.SetMaxLength(int.Parse(value));
                     AddRule(
                         errorCode: ErrorCodes.MaxLength,
                         rule: $"{Emitter.ValueParameterName}.Length > {value}",

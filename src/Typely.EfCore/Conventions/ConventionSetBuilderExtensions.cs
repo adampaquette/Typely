@@ -21,7 +21,8 @@ public static class ConventionSetBuilderExtensions
     /// <returns>The convention set builder</returns>
     public static ConventionSetBuilder AddTypelyConventions(this ConventionSetBuilder conventionSetBuilder) =>
         conventionSetBuilder
-            .AddTypelyConversionConvention();
+            .AddTypelyConversionConvention()
+            .AddTypelyMaxLengthConvention();
 
     /// <summary>
     /// Apply the value converter <see cref="TypelyValueConverter{TValue,TTypelyValue}"/> as a convention 
@@ -32,6 +33,18 @@ public static class ConventionSetBuilderExtensions
     public static ConventionSetBuilder AddTypelyConversionConvention(this ConventionSetBuilder conventionSetBuilder)
     {
         conventionSetBuilder.Add(_ => new TypelyConversionConvention());
+        return conventionSetBuilder;
+    }
+
+    /// <summary>
+    /// Configures the maximum length of data that can be stored in all <see cref="ITypelyValue{TValue,TTypelyValue}"/>
+    /// properties when a model is being finalized.
+    /// </summary>
+    /// <param name="conventionSetBuilder">Builder for configuring conventions.</param>
+    /// <returns>The convention set builder</returns>
+    public static ConventionSetBuilder AddTypelyMaxLengthConvention(this ConventionSetBuilder conventionSetBuilder)
+    {
+        conventionSetBuilder.Add(_ => new TypelyMaxLengthConvention());
         return conventionSetBuilder;
     }
 }

@@ -15,8 +15,10 @@ namespace Typely.Generators.Tests.Typely.Configurations
 {
     [TypeConverter(typeof(TypelyTypeConverter<string, Code>))]
     [JsonConverter(typeof(TypelyJsonConverter<string, Code>))]
-    public partial class Code : ITypelyValue<string, Code>, IEquatable<Code>, IComparable<Code>, IComparable
+    public partial class Code : ITypelyValue<string, Code>, IEquatable<Code>, IComparable<Code>, IComparable, IMaxLength
     {
+        public static int MaxLength => 4;
+
         public string Value { get; private set; }                    
 
         public Code(string value)

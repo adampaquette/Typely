@@ -19,4 +19,16 @@ public static class TypeExtensions
         var typelyType = typeof(ITypelyValue<,>);
         return underlyingType.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typelyType);
     }
+
+    /// <summary>
+    /// Return the underlying type when nullable or the current type.
+    /// </summary>
+    /// <param name="type">Type.</param>
+    /// <returns>The wrapped type</returns>
+    public static Type GetTypeOrUnderlyingType(this Type type)
+    {
+        var nullable = type.IsGenericType &&
+            type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        return nullable ? Nullable.GetUnderlyingType(type)! : type;
+    }
 }

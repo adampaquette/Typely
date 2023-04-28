@@ -1,18 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using System.Reflection;
 using Typely.Core;
 using Typely.Core.Extensions;
 
 namespace Typely.EfCore.Conventions;
 
 /// <summary>
-/// Apply the value converter <see cref="TypelyValueConverter{TTypelyValue, TValue}"/> as a convention 
-/// to all <see cref="ITypelyValue{TValue,TTypelyValue}"/> properties when a model is being finalized.
+/// Configures the maximum length of data that can be stored in all <see cref="ITypelyValue{TValue,TTypelyValue}"/> 
+/// properties when a model is being finalized.
 /// </summary>
 /// <remarks>
-/// See <see href="https://aka.ms/efcore-docs-conventions">Model building conventions</see> for more information and examples.
+///   See <see href="https://aka.ms/efcore-docs-conventions">Model building conventions</see> for more information and examples.
 /// </remarks>
-public class TypelyConversionConvention : IModelFinalizingConvention
+public class TypelyMaxLengthConvention : IModelFinalizingConvention
 {
     /// <summary>
     /// Called when a model is being finalized.
@@ -22,18 +23,20 @@ public class TypelyConversionConvention : IModelFinalizingConvention
     public void ProcessModelFinalizing(IConventionModelBuilder modelBuilder,
         IConventionContext<IConventionModelBuilder> context)
     {
+        var maxLengthType = typeof(IMaxLength);
+
         foreach (var property in modelBuilder.GetTypelyValueProperties())
         {
             var typelyValueType = property.ClrType.GetTypeOrUnderlyingType();
 
-            var valueType = typelyValueType
-                .GetInterfaces()
-                .First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ITypelyValue<,>))
-                .GetGenericArguments()[0];
+            if (maxLengthType.IsAssignableFrom(typelyValueType))
+            {
+                var getMaxLengthMethod = typelyValueType.GetMethod("get_" + nameof(IMaxLength.MaxLength));
+                var maxLength = (int)getMaxLengthMethod!.Invoke(null, null)!;
 
-            var converter = typeof(TypelyValueConverter<,>).MakeGenericType(valueType, typelyValueType);
+                property.Builder.HasMaxLength(maxLength);
+            }
 
-            property.Builder.HasConverter(converter);
         }
     }
 }
