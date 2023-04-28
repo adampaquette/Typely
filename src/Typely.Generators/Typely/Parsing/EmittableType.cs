@@ -29,12 +29,22 @@ internal class EmittableType
     /// Namespace in witch to associate the value object.
     /// </summary>
     public string Namespace { get; private set; }
+    
+    /// <summary>
+    /// Namespace of the configuration class.
+    /// </summary>
+    public string ConfigurationNamespace { get; private set; }
 
     /// <summary>
     /// Type kind to generate.
     /// </summary>
     public ConstructTypeKind ConstructTypeKind { get; private set; } = ConstructTypeKind.Struct;
 
+    /// <summary>
+    /// A function to normalize the value.
+    /// </summary>
+    public string? NormalizeFunctionBody { get; private set; }
+    
     /// <summary>
     /// A set of rules wich defines the value object.
     /// </summary>
@@ -48,13 +58,14 @@ internal class EmittableType
     /// <summary>
     /// Additional namespaces to import.
     /// </summary>
-    public IList<string> AdditionalNamespaces { get; } = new List<string>();
+    public List<string> AdditionalNamespaces { get; } = new();
     
-    public EmittableType(string underlyingType, bool isValueType, string defaultNamespace)
+    public EmittableType(string underlyingType, bool isValueType, string configurationNamespace)
     {
         UnderlyingType = underlyingType;
         IsValueType = isValueType;
-        Namespace = defaultNamespace;
+        Namespace = configurationNamespace;
+        ConfigurationNamespace = configurationNamespace;
     }
 
     /// <summary>
@@ -79,6 +90,12 @@ internal class EmittableType
     /// <param name="value">Namespace.</param>
     public void SetNamespace(string value) => Namespace = value.Trim();
 
+    /// <summary>
+    /// Sets the function to normalize the value.
+    /// </summary>
+    /// <param name="value">The normalizer function.</param>
+    public void SetNormalizeFunction(string value) => NormalizeFunctionBody = value.Trim();
+    
     /// <summary>
     /// Sets the type as a class.
     /// </summary>

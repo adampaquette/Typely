@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text.Json.Serialization;
 using Typely.Core;
 using Typely.Core.Converters;
@@ -20,14 +21,14 @@ namespace UserAggregate
 
         public UserId(string value)
         {
+            if (value == null) throw new ArgumentNullException(nameof(UserId));
+            value = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value);
             TypelyValue.ValidateAndThrow<string, UserId>(value);
             Value = value;
         }
 
         public static ValidationError? Validate(string value)
         {
-            if (value == null) throw new ArgumentNullException(nameof(UserId));
-
             if (string.IsNullOrWhiteSpace(value))
             {
                 return ValidationErrorFactory.Create(value, "NotEmpty", ErrorMessages.NotEmpty, "Owner identifier");
@@ -63,6 +64,8 @@ namespace UserAggregate
 
         public static bool TryFrom(string value, [MaybeNullWhen(false)] out UserId typelyType, out ValidationError? validationError)
         {
+            if (value == null) throw new ArgumentNullException(nameof(UserId));
+            value = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value);
             validationError = Validate(value);
             var isValid = validationError == null;
             typelyType = default;

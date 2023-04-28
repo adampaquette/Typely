@@ -7,6 +7,7 @@ public static class TypelyBuilderOf
     public const string AsStructMethodName = "AsStruct";
     public const string WithNameMethodName = "WithName";
     public const string WithNamespaceMethodName = "WithNamespace";
+    public const string NormalizeMethodName = "Normalize";
     public const string AsFactoryMethodName = "AsFactory";
     public const string NotEmptyMethodName = "NotEmpty";
     public const string NotEqualMethodName = "NotEqual";

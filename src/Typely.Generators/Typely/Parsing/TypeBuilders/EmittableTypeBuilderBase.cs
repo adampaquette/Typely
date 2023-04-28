@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Typely.Generators.Typely.Emitting;
 
@@ -9,7 +10,6 @@ internal class EmittableTypeBuilderBase
     protected readonly IEnumerable<ParsedInvocation> Invocations;
     protected readonly EmittableType EmittableType;
     private readonly SemanticModel _model;
-
 
     protected EmittableTypeBuilderBase(IEnumerable<ParsedInvocation> invocations, EmittableType emittableType,
         SemanticModel model)
@@ -52,6 +52,17 @@ internal class EmittableTypeBuilderBase
                 return true;
             case TypelyBuilderOf.WithNamespaceMethodName:
                 EmittableType.SetNamespace(invocation.GetFirstStringArgument());
+                return true;
+            case TypelyBuilderOf.NormalizeMethodName:
+                var body = invocation.GetFirstExpressionArgument() as AnonymousFunctionExpressionSyntax;
+                if (body != null)
+                {
+                    var namespaces = GetNamespaces(body.Body);
+                    EmittableType.AdditionalNamespaces.AddRange(namespaces!);
+                }
+
+                var value = invocation.GetLambdaBodyOfFirstArgument();
+                EmittableType.SetNormalizeFunction(value);
                 return true;
             case TypelyBuilderOf.AsFactoryMethodName:
                 //TODO : Support as factory to reflet code
@@ -145,8 +156,14 @@ internal class EmittableTypeBuilderBase
         }
     }
 
-    protected string? GetContainingNamespace(ParenthesizedLambdaExpressionSyntax lambdaExpression) =>
-        _model.GetSymbolInfo(lambdaExpression).Symbol?.ContainingNamespace.ToDisplayString();
+    private IEnumerable<string> GetNamespaces(CSharpSyntaxNode expressionSyntax) => expressionSyntax
+        .DescendantNodes()
+        .SelectMany(node => NamespaceResolver.GetNamespacesFromLambda(node, _model))
+        .Distinct()
+        .Where(x => x != EmittableType.ConfigurationNamespace);
+
+    private string? GetContainingNamespace(ParenthesizedLambdaExpressionSyntax lambdaExpression) =>
+        ModelExtensions.GetSymbolInfo(_model, lambdaExpression).Symbol?.ContainingNamespace.ToDisplayString();
 
     protected void AddRule(string errorCode, string rule,
         string message, params (string Key, object Value)[] placeholders) =>

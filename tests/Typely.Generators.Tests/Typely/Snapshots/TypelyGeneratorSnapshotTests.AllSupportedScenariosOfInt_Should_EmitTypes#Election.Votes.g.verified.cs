@@ -21,6 +21,7 @@ namespace Election
 
         public Votes(int value)
         {
+            value = value + 1;
             TypelyValue.ValidateAndThrow<int, Votes>(value);
             Value = value;
         }
@@ -94,6 +95,7 @@ namespace Election
 
         public static bool TryFrom(int value, [MaybeNullWhen(false)] out Votes typelyType, out ValidationError? validationError)
         {
+            value = value + 1;
             validationError = Validate(value);
             var isValid = validationError == null;
             typelyType = default;

@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Globalization;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using Typely.Core;
 using Typely.Core.Builders;
 
@@ -6,7 +8,7 @@ namespace Typely.Generators.Tests.Typely.Configurations;
 
 internal class StringConfiguration : ITypelyConfiguration
 {
-    public void Configure(ITypelyBuilder builder) 
+    public void Configure(ITypelyBuilder builder)
     {
         builder.OfString().For("Code")
             .AsClass()
@@ -17,8 +19,9 @@ internal class StringConfiguration : ITypelyConfiguration
             .GreaterThan("A")
             .GreaterThanOrEqualTo("A")
             .LessThan("A")
-            .LessThanOrEqualTo("A");
-        
+            .LessThanOrEqualTo("A")
+            .Normalize(x => x.Trim().ToLower());
+
         var sf = builder.OfString().AsFactory();
         var sf2 = sf.WithName("Username").AsFactory();
         sf2.For("UserId")
@@ -27,6 +30,7 @@ internal class StringConfiguration : ITypelyConfiguration
             .NotEmpty()
             .NotEqual("0").WithMessage("{Name} cannot be equal to {ComparisonValue}.").WithErrorCode("ERR001")
             .MaxLength(20)
-            .Must(x => x != "1" && x.ToLower() == "12");
+            .Must(x => x != "1" && x.ToLower() == "12")
+            .Normalize((x) => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
     }
 }
