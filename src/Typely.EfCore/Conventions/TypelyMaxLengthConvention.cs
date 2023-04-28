@@ -6,6 +6,7 @@ using Typely.Core.Extensions;
 
 namespace Typely.EfCore.Conventions;
 
+/// <summary>
 /// Configures the maximum length of data that can be stored in all <see cref="ITypelyValue{TValue,TTypelyValue}"/> 
 /// properties when a model is being finalized.
 /// </summary>
