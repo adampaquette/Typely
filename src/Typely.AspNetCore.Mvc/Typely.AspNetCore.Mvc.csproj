@@ -2,18 +2,17 @@
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
-        <Version>0.1.3-alpha</Version>
+        <Version>0.1.4-alpha</Version>
     </PropertyGroup>
 
-    <ItemGroup><ProjectReference Include="..\Typely.Core\Typely.Core.csproj" /></ItemGroup>
-    <!--    <ItemGroup Condition="'$(Configuration)'=='Debug'">-->
-    <!--      <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />-->
-    <!--    </ItemGroup>-->
-    <!--    -->
-    <!--    <ItemGroup Condition="'$(Configuration)'!='Debug'">-->
-    <!--        <PackageReference Include="Typely.Core" Version="1.2.4-alpha" />-->
-    <!--    </ItemGroup>-->
-    
+    <ItemGroup Condition="'$(Configuration)'=='Debug'">
+        <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)'!='Debug'">
+        <PackageReference Include="Typely.Core" Version="1.2.5-alpha" />
+    </ItemGroup>
+
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />

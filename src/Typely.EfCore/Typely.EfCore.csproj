@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <Description>Typely lets you create types easily with a fluent API to embrace Domain-driven design and value objects. This package contains integrations with EF Core.</Description>
-        <Version>1.0.3-alpha</Version>
+        <Version>1.0.4-alpha</Version>
     </PropertyGroup>
 
     <ItemGroup>
@@ -11,13 +11,13 @@
     </ItemGroup>
     
     <ItemGroup><ProjectReference Include="..\Typely.Core\Typely.Core.csproj" /></ItemGroup>
-<!--    <ItemGroup Condition="'$(Configuration)'=='Debug'">-->
-<!--      <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />-->
-<!--    </ItemGroup>-->
-<!--    -->
-<!--    <ItemGroup Condition="'$(Configuration)'!='Debug'">-->
-<!--        <PackageReference Include="Typely.Core" Version="1.2.4-alpha" />-->
-<!--    </ItemGroup>-->
+    <ItemGroup Condition="'$(Configuration)'=='Debug'">
+      <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup Condition="'$(Configuration)'!='Debug'">
+        <PackageReference Include="Typely.Core" Version="1.2.5-alpha" />
+    </ItemGroup>
 
     <ItemGroup>
         <None Include="nuget-readme.md" Pack="true" PackagePath="\" />
