@@ -16,6 +16,7 @@ internal class IntConfiguration : ITypelyConfiguration
         var vote = factory
             .For("Votes")
             .WithName("Presidency vote")
+            .Normalize(abc => abc + 1)
             .NotEqual(-1);
 
         vote.Must(x => x == 122)

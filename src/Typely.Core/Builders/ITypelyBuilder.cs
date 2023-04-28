@@ -32,7 +32,7 @@ public interface ITypelyBuilder
     /// <returns>Builder of DateOnly.</returns>
     ITypelyBuilderOfDateOnly OfDateOnly();
 #endif
-    
+
     /// <summary>
     /// Returns a builder dedicated to creating a value object with the underlying DateTime type.
     /// </summary>
@@ -105,7 +105,7 @@ public interface ITypelyBuilder
     /// </summary>
     /// <returns>Builder of TimeOnly.</returns>
     ITypelyBuilderOfTimeOnly OfTimeOnly();
-#endif    
+#endif
 
     /// <summary>
     /// Returns a builder dedicated to creating a value object with the underlying TimeSpan type.
@@ -215,6 +215,13 @@ public interface ITypelyBuilder<TBuilder, TRuleBuilder, TValue, TFactory> : ITyp
     /// <param name="predicate">Expression that must be fullfilled.</param>
     /// <returns>Fluent <see cref="TRuleBuilder"/>.</returns>
     TRuleBuilder Must(Expression<Func<TValue, bool>> predicate);
+
+    /// <summary>
+    /// Normalizes the value using the specified expression.
+    /// </summary>
+    /// <param name="normalizer">The normalizer function.</param>
+    /// <returns>Fluent <see cref="TBuilder"/>.</returns>
+    TBuilder Normalize(Expression<Func<TValue, TValue>> normalizer);
 }
 
 /// <summary>

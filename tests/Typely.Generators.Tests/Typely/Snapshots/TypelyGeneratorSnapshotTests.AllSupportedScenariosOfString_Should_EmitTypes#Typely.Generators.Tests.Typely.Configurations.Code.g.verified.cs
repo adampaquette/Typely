@@ -21,14 +21,14 @@ namespace Typely.Generators.Tests.Typely.Configurations
 
         public Code(string value)
         {
+            if (value == null) throw new ArgumentNullException(nameof(Code));
+            value = value.Trim().ToLower();
             TypelyValue.ValidateAndThrow<string, Code>(value);
             Value = value;
         }
 
         public static ValidationError? Validate(string value)
         {
-            if (value == null) throw new ArgumentNullException(nameof(Code));
-
             if (value.Length != 4)
             {
                 return ValidationErrorFactory.Create(value, "ExactLength", ErrorMessages.ExactLength, "Code",
@@ -109,6 +109,8 @@ namespace Typely.Generators.Tests.Typely.Configurations
 
         public static bool TryFrom(string value, [MaybeNullWhen(false)] out Code typelyType, out ValidationError? validationError)
         {
+            if (value == null) throw new ArgumentNullException(nameof(Code));
+            value = value.Trim().ToLower();
             validationError = Validate(value);
             var isValid = validationError == null;
             typelyType = default;
