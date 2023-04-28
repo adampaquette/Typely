@@ -15,8 +15,10 @@ namespace UserAggregate
 {
     [TypeConverter(typeof(TypelyTypeConverter<string, UserId>))]
     [JsonConverter(typeof(TypelyJsonConverter<string, UserId>))]
-    public partial struct UserId : ITypelyValue<string, UserId>, IEquatable<UserId>, IComparable<UserId>, IComparable
+    public partial struct UserId : ITypelyValue<string, UserId>, IEquatable<UserId>, IComparable<UserId>, IComparable, IMaxLength
     {
+        public static int MaxLength => 20;
+
         public string Value { get; private set; }                    
 
         public UserId(string value)
