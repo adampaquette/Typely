@@ -26,18 +26,3 @@ public class TestsController : ControllerBase
         return ValidationProblem();
     }
 }
-
-public class Myaa : ModelError
-{
-    public Myaa(Exception exception) : base(exception)
-    {
-    }
-
-    public Myaa(Exception exception, string? errorMessage) : base(exception, errorMessage)
-    {
-    }
-
-    public Myaa(string? errorMessage) : base(errorMessage)
-    {
-    }
-}
