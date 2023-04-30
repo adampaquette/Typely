@@ -4,6 +4,9 @@ using Typely.Core;
 
 namespace Typely.AspNetCore.Http;
 
+/// <summary>
+/// An <see cref="HttpValidationProblemDetails"/> for validation errors with templated error messages.
+/// </summary>
 public class HttpValidationTemplatedProblemDetails : HttpValidationProblemDetails
 {
     /// <summary>
@@ -17,6 +20,11 @@ public class HttpValidationTemplatedProblemDetails : HttpValidationProblemDetail
         Title = "One or more validation errors occurred.";
     }
 
+    /// <summary>
+    /// Creates a new instance of <see cref="HttpValidationTemplatedProblemDetails"/> from the specified <paramref name="exception"/>.
+    /// </summary>
+    /// <param name="exception">A <see cref="ValidationException"/>.</param>
+    /// <returns>An ASP.NET compatible problem details.</returns>
     public static HttpValidationTemplatedProblemDetails From(ValidationException exception)
     {
         var error = exception.ValidationError;

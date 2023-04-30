@@ -7,14 +7,14 @@ using Typely.Core;
 namespace Typely.AspNetCore.Http;
 
 /// <summary>
-/// Middleware that handle a <see cref="ValidationException"/> to return an <see cref="ErrorResponse"/> as JSON.
+/// Middleware that catches Typely's <see cref="ValidationException"/> and returns an <see cref="HttpValidationTemplatedProblemDetails"/> serialized.
 /// </summary>
-public class TypelyValidationExceptionMiddleware
+public class TypelyValidationResultMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly JsonSerializerOptions _serializerOptions;
 
-    public TypelyValidationExceptionMiddleware(RequestDelegate next)
+    public TypelyValidationResultMiddleware(RequestDelegate next)
     {
         _next = next;
         _serializerOptions =

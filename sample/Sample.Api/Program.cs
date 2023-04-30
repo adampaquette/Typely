@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen(options => options.UseTypelySchemaFilter());
 var app = builder.Build();
 
 // Register this middleware before other middleware components
-app.UseTypelyValidation();
+app.UseTypelyValidationResult();
 
 if (app.Environment.IsDevelopment())
 {

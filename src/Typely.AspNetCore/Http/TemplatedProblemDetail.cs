@@ -1,5 +1,8 @@
 ﻿namespace Typely.AspNetCore.Http;
 
+/// <summary>
+/// A single problem detail with placeholders.
+/// </summary>
 public record TemplatedProblemDetail
 {
     /// <summary>

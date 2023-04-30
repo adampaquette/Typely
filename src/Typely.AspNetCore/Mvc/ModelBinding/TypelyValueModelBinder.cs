@@ -57,7 +57,6 @@ public class TypelyValueModelBinder<TValue, TTypelyValue> : IModelBinder
         }
         catch (Exception ex)
         {
-            // Handle the conversion error by adding an error message to ModelState.
             bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, $"The provided value could not be converted to the required type: {ex.Message}");
         }
 
