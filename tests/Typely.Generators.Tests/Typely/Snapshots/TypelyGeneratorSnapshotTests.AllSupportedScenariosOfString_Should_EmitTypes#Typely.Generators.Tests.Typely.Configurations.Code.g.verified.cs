@@ -109,7 +109,7 @@ namespace Typely.Generators.Tests.Typely.Configurations
 
         public static Code From(string value) => new(value);
 
-        public static bool TryFrom(string value, [MaybeNullWhen(false)] out Code typelyType, out ValidationError? validationError)
+        public static bool TryFrom(string value, out Code typelyType, out ValidationError? validationError)
         {
             if (value == null) throw new ArgumentNullException(nameof(Code));
             value = value.Trim().ToLower();
@@ -131,11 +131,11 @@ namespace Typely.Generators.Tests.Typely.Configurations
 
         public override int GetHashCode() => Value.GetHashCode();
 
-        public bool Equals(Code other) => Value.Equals(other.Value);
+        public bool Equals(Code other) => Value?.Equals(other.Value) ?? false;
 
         public override bool Equals([NotNullWhen(true)] object? obj) => obj is Code && Equals((Code)obj);
 
-        public int CompareTo(Code other) => Value.CompareTo(other.Value);
+        public int CompareTo(Code other) => Value?.CompareTo(other.Value) ?? 1;
 
         public int CompareTo(object? obj) => obj is not Code ? 1 : CompareTo((Code)obj!);
 

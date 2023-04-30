@@ -22,6 +22,7 @@ internal class TypelyConfiguration : ITypelyConfiguration
             .Normalize(x => x.ToUpper());
 
         var title = builder.OfString()
+            .NotEmpty()
             .MaxLength(100)
             .Normalize(x => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(x));
 

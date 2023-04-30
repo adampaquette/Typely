@@ -56,7 +56,7 @@ namespace Election
 
         public static Votes From(bool value) => new(value);
 
-        public static bool TryFrom(bool value, [MaybeNullWhen(false)] out Votes typelyType, out ValidationError? validationError)
+        public static bool TryFrom(bool value, out Votes typelyType, out ValidationError? validationError)
         {
             validationError = Validate(value);
             var isValid = validationError == null;

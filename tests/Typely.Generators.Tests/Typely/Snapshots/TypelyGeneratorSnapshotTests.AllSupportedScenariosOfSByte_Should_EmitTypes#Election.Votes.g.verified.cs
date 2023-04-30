@@ -92,7 +92,7 @@ namespace Election
 
         public static Votes From(sbyte value) => new(value);
 
-        public static bool TryFrom(sbyte value, [MaybeNullWhen(false)] out Votes typelyType, out ValidationError? validationError)
+        public static bool TryFrom(sbyte value, out Votes typelyType, out ValidationError? validationError)
         {
             validationError = Validate(value);
             var isValid = validationError == null;

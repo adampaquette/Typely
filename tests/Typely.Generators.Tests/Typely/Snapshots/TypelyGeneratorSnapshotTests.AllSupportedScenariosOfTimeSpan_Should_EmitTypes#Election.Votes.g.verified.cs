@@ -92,7 +92,7 @@ namespace Election
 
         public static Votes From(TimeSpan value) => new(value);
 
-        public static bool TryFrom(TimeSpan value, [MaybeNullWhen(false)] out Votes typelyType, out ValidationError? validationError)
+        public static bool TryFrom(TimeSpan value, out Votes typelyType, out ValidationError? validationError)
         {
             validationError = Validate(value);
             var isValid = validationError == null;
