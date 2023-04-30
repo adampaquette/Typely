@@ -27,7 +27,7 @@ namespace Typely.Generators.Tests.Typely.Configurations.B
 
         public static MultiConfigDiffNamespace From(int value) => new(value);
 
-        public static bool TryFrom(int value, [MaybeNullWhen(false)] out MultiConfigDiffNamespace typelyType, out ValidationError? validationError)
+        public static bool TryFrom(int value, out MultiConfigDiffNamespace typelyType, out ValidationError? validationError)
         {
             validationError = Validate(value);
             var isValid = validationError == null;

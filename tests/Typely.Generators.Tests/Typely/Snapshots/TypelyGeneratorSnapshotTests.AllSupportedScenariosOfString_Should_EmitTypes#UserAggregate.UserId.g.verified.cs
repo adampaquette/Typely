@@ -64,7 +64,7 @@ namespace UserAggregate
 
         public static UserId From(string value) => new(value);
 
-        public static bool TryFrom(string value, [MaybeNullWhen(false)] out UserId typelyType, out ValidationError? validationError)
+        public static bool TryFrom(string value, out UserId typelyType, out ValidationError? validationError)
         {
             if (value == null) throw new ArgumentNullException(nameof(UserId));
             value = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value);
@@ -86,11 +86,11 @@ namespace UserAggregate
 
         public override int GetHashCode() => Value.GetHashCode();
 
-        public bool Equals(UserId other) => Value.Equals(other.Value);
+        public bool Equals(UserId other) => Value?.Equals(other.Value) ?? false;
 
         public override bool Equals([NotNullWhen(true)] object? obj) => obj is UserId && Equals((UserId)obj);
 
-        public int CompareTo(UserId other) => Value.CompareTo(other.Value);
+        public int CompareTo(UserId other) => Value?.CompareTo(other.Value) ?? 1;
 
         public int CompareTo(object? obj) => obj is not UserId ? 1 : CompareTo((UserId)obj!);
 

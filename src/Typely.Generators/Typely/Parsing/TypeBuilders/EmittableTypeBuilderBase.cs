@@ -65,7 +65,7 @@ internal class EmittableTypeBuilderBase
                 EmittableType.SetNormalizeFunction(value);
                 return true;
             case TypelyBuilderOf.AsFactoryMethodName:
-                //TODO : Support as factory to reflet code
+                //TODO : Support as factory to reflect code
                 return true;
             default: return false;
         }
