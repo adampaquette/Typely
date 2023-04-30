@@ -64,7 +64,7 @@ namespace Typely.Generators.Tests.Typely.Configurations
                 return ValidationErrorFactory.Create(value, "Matches", ErrorMessages.Matches, "Code",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", new Regex(".+") },
+                        { "RegularExpression", new Regex(".+") },
                     });
             }
 

@@ -2,8 +2,9 @@
 
 public static class ValidationPlaceholder
 {
-    public const string ComparisonValue = "ComparisonValue";
-    public const string MinLength = "MinLength";
-    public const string MaxLength = "MaxLength";
-    public const string ExactLength = "ExactLength";
+    public const string ComparisonValue = nameof(ComparisonValue);
+    public const string MinLength = nameof(MinLength);
+    public const string MaxLength = nameof(MaxLength);
+    public const string ExactLength = nameof(ExactLength);
+    public const string RegularExpression = nameof(RegularExpression);
 }

@@ -30,6 +30,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Typely.AspNetCore.Http\Typely.AspNetCore.Http.csproj" />
+      <ProjectReference Include="..\..\src\Typely.AspNetCore\Typely.AspNetCore.csproj" />
     </ItemGroup>
 </Project>

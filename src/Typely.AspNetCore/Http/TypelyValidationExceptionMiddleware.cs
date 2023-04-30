@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System.Net;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Typely.Core;
 
 namespace Typely.AspNetCore.Http;
@@ -13,10 +12,16 @@ namespace Typely.AspNetCore.Http;
 public class TypelyValidationExceptionMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly JsonSerializerOptions _serializerOptions;
 
     public TypelyValidationExceptionMiddleware(RequestDelegate next)
     {
         _next = next;
+        _serializerOptions =
+            new JsonSerializerOptions(JsonSerializerDefaults.Web)
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -31,21 +36,13 @@ public class TypelyValidationExceptionMiddleware
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, ValidationException exception)
+    private Task HandleExceptionAsync(HttpContext context, ValidationException validationException)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
-        var errorResponse = new ErrorResponse
-        {
-            StatusCode = context.Response.StatusCode,
-            ValidationError = exception.ValidationError,
-            StackTrace = context.RequestServices.GetService<IHostEnvironment>()!.IsDevelopment()
-                ? exception.StackTrace
-                : null
-        };
-
-        var errorJson = JsonSerializer.Serialize(errorResponse);
+        var problemDetails = HttpValidationTemplatedProblemDetails.From(validationException);
+        var errorJson = JsonSerializer.Serialize(problemDetails, _serializerOptions);
         return context.Response.WriteAsync(errorJson);
     }
 }

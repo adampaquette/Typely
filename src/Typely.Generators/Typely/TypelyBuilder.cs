@@ -2,24 +2,24 @@
 
 public static class TypelyBuilder
 {
-    public const string OfBool = "OfBool";
-    public const string OfByte = "OfByte";
-    public const string OfChar = "OfChar";
-    public const string OfDateTime = "OfDateTime";
-    public const string OfDateTimeOffset = "OfDateTimeOffset";
-    public const string OfDecimal = "OfDecimal";
-    public const string OfDouble = "OfDouble";
-    public const string OfFloat = "OfFloat";
-    public const string OfGuid = "OfGuid";
-    public const string OfInt = "OfInt";
-    public const string OfLong = "OfLong";
-    public const string OfSByte = "OfSByte";
-    public const string OfShort = "OfShort";
-    public const string OfString = "OfString";
-    public const string OfTimeSpan = "OfTimeSpan";
-    public const string OfUInt = "OfUInt";
-    public const string OfULong = "OfULong";
-    public const string OfUShort = "OfUShort";
-    public const string OfDateOnly = "OfDateOnly";
-    public const string OfTimeOnly = "OfTimeOnly";
+    public const string OfBool = nameof(OfBool);
+    public const string OfByte = nameof(OfByte);
+    public const string OfChar = nameof(OfChar);
+    public const string OfDateTime = nameof(OfDateTime);
+    public const string OfDateTimeOffset = nameof(OfDateTimeOffset);
+    public const string OfDecimal = nameof(OfDecimal);
+    public const string OfDouble = nameof(OfDouble);
+    public const string OfFloat = nameof(OfFloat);
+    public const string OfGuid = nameof(OfGuid);
+    public const string OfInt = nameof(OfInt);
+    public const string OfLong = nameof(OfLong);
+    public const string OfSByte = nameof(OfSByte);
+    public const string OfShort = nameof(OfShort);
+    public const string OfString = nameof(OfString);
+    public const string OfTimeSpan = nameof(OfTimeSpan);
+    public const string OfUInt = nameof(OfUInt);
+    public const string OfULong = nameof(OfULong);
+    public const string OfUShort = nameof(OfUShort);
+    public const string OfDateOnly = nameof(OfDateOnly);
+    public const string OfTimeOnly = nameof(OfTimeOnly);
 }
