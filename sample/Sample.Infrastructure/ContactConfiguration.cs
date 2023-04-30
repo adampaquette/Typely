@@ -12,9 +12,14 @@ public class ContactConfiguration : IEntityTypeConfiguration<Contact>
         builder.Property(x => x.FirstName).IsRequired();
         builder.Property(x => x.LastName).IsRequired();
         builder.Property(x => x.Phone).IsRequired();
-        builder.Property(x => x.Street).IsRequired();
-        builder.Property(x => x.City).IsRequired();
-        builder.Property(x => x.State).IsRequired();
-        builder.Property(x => x.ZipCode).IsRequired();
+        builder.OwnsMany(x => x.Addresses, a =>
+        {
+            a.Property(x => x.Id);
+            a.Property(x => x.CivicNumber).IsRequired();
+            a.Property(x => x.Street).IsRequired();
+            a.Property(x => x.City).IsRequired();
+            a.Property(x => x.State).IsRequired();
+            a.Property(x => x.ZipCode).IsRequired();
+        });
     }
 }

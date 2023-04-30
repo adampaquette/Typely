@@ -9,8 +9,9 @@ internal class TypelyConfiguration : ITypelyConfiguration
 {
     public void Configure(ITypelyBuilder builder)
     {
+        //Contact
         builder.OfInt().For("ContactId").GreaterThan(0);
-        
+
         builder.OfString()
             .For("Phone")
             .MaxLength(12)
@@ -31,5 +32,9 @@ internal class TypelyConfiguration : ITypelyConfiguration
         title.For("Street");
         title.For("City");
         title.For("State");
+
+        //Address
+        builder.OfInt().For("AddressId").GreaterThan(0);
+        builder.OfInt().For("CivicNumber").GreaterThan(0);
     }
 }
