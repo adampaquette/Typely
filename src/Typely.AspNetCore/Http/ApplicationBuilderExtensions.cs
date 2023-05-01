@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Typely.Core;
 
 namespace Typely.AspNetCore.Http;
@@ -9,7 +10,7 @@ namespace Typely.AspNetCore.Http;
 public static class ApplicationBuilderExtensions
 {
     /// <summary>
-    /// Adds a middleware to format Typely's <see cref="ValidationException"/> as JSON.
+    /// Adds a middleware to format Typely's <see cref="ValidationException"/> as JSON compatible with <see cref="HttpValidationProblemDetails"/>.
     /// </summary>
     /// <param name="app">The <see cref="IApplicationBuilder"/> instance this method extends.</param>
     /// <returns>The <see cref="IApplicationBuilder"/>.</returns>

@@ -1,7 +1,7 @@
 ﻿using Typely.AspNetCore.Mvc.ModelBinding;
 using Typely.Core;
 
-namespace Typely.AspNetCore.Mvc.Tests.ModelBinding;
+namespace Typely.AspNetCore.Tests.Mvc.ModelBinding;
 
 public class TypelyValueModelBinderProviderTests
 {

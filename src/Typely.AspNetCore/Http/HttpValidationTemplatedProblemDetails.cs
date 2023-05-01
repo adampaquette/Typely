@@ -5,14 +5,14 @@ using Typely.Core;
 namespace Typely.AspNetCore.Http;
 
 /// <summary>
-/// An <see cref="HttpValidationProblemDetails"/> for validation errors with templated error messages.
+/// An <see cref="HttpValidationProblemDetails"/> for validation errors with message templates.
 /// </summary>
 public class HttpValidationTemplatedProblemDetails : HttpValidationProblemDetails
 {
     /// <summary>
-    /// Gets the templated validation errors associated with this instance of <see cref="HttpValidationTemplatedProblemDetails"/>.
+    /// Gets the templates used to create the error messages.
     /// </summary>
-    public IDictionary<string, TemplatedProblemDetail[]> ErrorTemplates { get; } =
+    public IDictionary<string, TemplatedProblemDetail[]> Templates { get; } =
         new Dictionary<string, TemplatedProblemDetail[]>(StringComparer.Ordinal);
 
     public HttpValidationTemplatedProblemDetails()
@@ -39,7 +39,7 @@ public class HttpValidationTemplatedProblemDetails : HttpValidationProblemDetail
             .Select(x => (x.Key, x.Value?.ToString() ?? "null"))
             .ToDictionary(x => x.Key, y => y.Item2.ToString());
 
-        templatedProblemDetails.ErrorTemplates.Add(error.TypeName,
+        templatedProblemDetails.Templates.Add(error.TypeName,
             new[]
             {
                 new TemplatedProblemDetail

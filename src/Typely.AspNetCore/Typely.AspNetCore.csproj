@@ -21,4 +21,8 @@
         <FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Verify.Xunit" Version="19.14.0" />
+    </ItemGroup>
+
 </Project>

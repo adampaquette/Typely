@@ -1,6 +1,6 @@
 ﻿using Typely.AspNetCore.Mvc.ModelBinding;
 
-namespace Typely.AspNetCore.Mvc.Tests.ModelBinding;
+namespace Typely.AspNetCore.Tests.Mvc.ModelBinding;
 
 public class TypelyValueModelBinderTests
 {

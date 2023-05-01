@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.Extensions.Primitives;
+using Moq;
 using System.Globalization;
 
-namespace Typely.AspNetCore.Mvc.Tests.ModelBinding;
+namespace Typely.AspNetCore.Tests.Mvc.ModelBinding;
 
 public class ModelBindingContextFixture
 {
@@ -28,11 +27,12 @@ public class ModelBindingContextFixture
     
     public ModelBindingContext Build()
     {
-        var modelMetadataProvider = new DefaultModelMetadataProvider(new DefaultCompositeMetadataDetailsProvider(Array.Empty<IMetadataDetailsProvider>()));
+        var metadetailsProvider = new Mock<ICompositeMetadataDetailsProvider>();
+        var modelMetadataProvider = new DefaultModelMetadataProvider(metadetailsProvider.Object);
         
         return new DefaultModelBindingContext
         {
-            ModelMetadata = modelMetadataProvider.GetMetadataForType(_modelType),
+            ModelMetadata = modelMetadataProvider.GetMetadataForType(_modelType!),
             ModelName = "SampleTypelyValue",
             ModelState = new ModelStateDictionary(),
             ValueProvider = new CompositeValueProvider

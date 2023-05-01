@@ -1,7 +1,7 @@
 ﻿using Typely.Core;
 using Typely.Core.Builders;
 
-namespace Typely.AspNetCore.Mvc.Tests.ModelBinding;
+namespace Typely.AspNetCore.Tests.Mvc.ModelBinding;
 
 public class TypelyConfiguration : ITypelyConfiguration
 {

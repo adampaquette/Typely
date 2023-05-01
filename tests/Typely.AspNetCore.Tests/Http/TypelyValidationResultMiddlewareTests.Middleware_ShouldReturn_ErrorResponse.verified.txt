@@ -1,0 +1,23 @@
+﻿{
+  "templates": {
+    "TypeName": [
+      {
+        "code": "ErrorCode",
+        "message": "ErrorMessageWithPlaceholders",
+        "attemptedValue": "AttemptedValue",
+        "typeName": "TypeName",
+        "placeholderValues": {
+          "Placeholder": "PlaceholderValue"
+        }
+      }
+    ]
+  },
+  "errors": {
+    "TypeName": [
+      "ErrorMessageWithPlaceholders"
+    ]
+  },
+  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+  "title": "One or more validation errors occurred.",
+  "status": 400
+}

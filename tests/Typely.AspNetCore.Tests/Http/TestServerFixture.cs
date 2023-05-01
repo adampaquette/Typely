@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
-using System.Net;
+using Typely.AspNetCore.Http;
 using Typely.Core;
 
-namespace Typely.AspNetCore.Http.Tests;
+namespace Typely.AspNetCore.Tests.Http;
 
 public class TestServerFixture
 {
@@ -16,7 +16,7 @@ public class TestServerFixture
         _webHostBuilder = new WebHostBuilder()
             .Configure(app =>
             {
-                app.UseTypelyValidation();
+                app.UseTypelyValidationResult();
                 app.Run(context =>
                 {
                     throw new ValidationException(
@@ -37,7 +37,7 @@ public class TestServerFixture
         _webHostBuilder = new WebHostBuilder()
             .Configure(app =>
             {
-                app.UseTypelyValidation();
+                app.UseTypelyValidationResult();
                 app.Run(async context =>
                 {
                     await context.Response.WriteAsync("Hello World!");
