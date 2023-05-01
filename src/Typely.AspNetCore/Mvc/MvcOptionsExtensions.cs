@@ -9,7 +9,7 @@ namespace Typely.AspNetCore.Mvc;
 public static class MvcOptionsExtensions
 {
     /// <summary>
-    /// Inserts the <see cref="TypelyValueModelBinderProvider"/>.
+    /// Support Typely validations through model binding.
     /// </summary>
     /// <param name="options">The options.</param>
     /// <returns>The options.</returns>

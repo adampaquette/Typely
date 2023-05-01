@@ -1,6 +1,6 @@
 ﻿using Typely.AspNetCore.Mvc.ModelBinding;
 
-namespace Typely.AspNetCore.Mvc.Tests.ModelBinding;
+namespace Typely.AspNetCore.Tests.Mvc.ModelBinding;
 
 public class TypelyValueModelBinderTests
 {
@@ -14,6 +14,24 @@ public class TypelyValueModelBinderTests
         var bindingContext = new ModelBindingContextFixture()
             .WithModelType(modelType)
             .WithValue("ABC")
+            .Build();
+
+        binder!.BindModelAsync(bindingContext);
+        
+        Assert.False(bindingContext.ModelState.IsValid);
+        Assert.NotEmpty(new[] { bindingContext.ModelState.Values.First().Errors.First() });
+    }
+    
+    [Fact]
+    public void BindModel_FillsStateError_WhenModelTypeCantBeConverted()
+    {
+        var modelType = typeof(Id);
+        var binder = new ModelBinderFixture()
+            .WithModelType(modelType)
+            .Build();
+        var bindingContext = new ModelBindingContextFixture()
+            .WithModelType(modelType)
+            .WithValue("j")
             .Build();
 
         binder!.BindModelAsync(bindingContext);

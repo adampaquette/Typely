@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Typely.AspNetCore.Mvc;
 using Typely.AspNetCore.Mvc.ModelBinding;
 
-namespace Typely.AspNetCore.Mvc.Tests;
+namespace Typely.AspNetCore.Tests.Mvc;
 
 public class MvcOptionsTests
 {

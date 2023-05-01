@@ -78,7 +78,7 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
                         errorCode: ErrorCodes.Matches,
                         rule: $"!{value}.IsMatch({Emitter.ValueParameterName})",
                         message: (ErrorMessageResource.Matches),
-                        placeholders: (ValidationPlaceholder.ComparisonValue, value));
+                        placeholders: (ValidationPlaceholder.RegularExpression, value));
                     EmittableType.AdditionalNamespaces.Add("System.Text.RegularExpressions");
                     continue;
                 case TypelyBuilderOf.GreaterThanMethodName:

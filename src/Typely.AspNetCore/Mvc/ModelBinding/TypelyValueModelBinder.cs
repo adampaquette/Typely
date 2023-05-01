@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel;
 using Typely.Core;
 
 namespace Typely.AspNetCore.Mvc.ModelBinding;
@@ -27,15 +28,24 @@ public class TypelyValueModelBinder<TValue, TTypelyValue> : IModelBinder
         }
 
         bindingContext.ModelState.SetModelValue(bindingContext.ModelName, valueProviderResult);
+        
+        try
+        {
+            var converter = TypeDescriptor.GetConverter(valueType);
+            var value = (TValue)converter.ConvertFromString(valueProviderResult.FirstValue!)!;
 
-        var value = (TValue)Convert.ChangeType(valueProviderResult.FirstValue, valueType);
-        if (TTypelyValue.TryFrom(value, out var typelyValue, out var validationError))
-        {
-            bindingContext.Result = ModelBindingResult.Success(typelyValue);
+            if (TTypelyValue.TryFrom(value, out var typelyValue, out var validationError))
+            {
+                bindingContext.Result = ModelBindingResult.Success(typelyValue);
+            }
+            else
+            {
+                bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, validationError!.ErrorMessage);
+            }
         }
-        else
+        catch (Exception ex)
         {
-            bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, validationError!.ErrorMessage);
+            bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, $"The provided value could not be converted to the required type: {ex.Message}");
         }
 
         return Task.CompletedTask;

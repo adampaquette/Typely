@@ -5,7 +5,7 @@ using Typely.Core;
 namespace Typely.AspNetCore.Mvc.ModelBinding;
 
 /// <summary>
-/// Creates a binder for a Typely value.
+/// Provides bindings for <see cref="ITypelyValue{TValue, TTypelyValue}"/>.
 /// </summary>
 public class TypelyValueModelBinderProvider : IModelBinderProvider
 {
