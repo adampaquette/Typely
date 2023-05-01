@@ -19,7 +19,7 @@ app.UseTypelyValidationResult();
 Example of response:
 ````
 {
-  "errorTemplates": {
+  "templates": {
     "ZipCode": [
       {
         "code": "Matches",
@@ -44,7 +44,7 @@ Example of response:
 }
 ````
 
-If you need to add Typely's validation errors into the model state of MVC, use the model binder below: 
+If you want to add validation errors into the model state of MVC during the binding phase of the request, configure the below option: 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options => options.UseTypelyModelBinderProvider());
