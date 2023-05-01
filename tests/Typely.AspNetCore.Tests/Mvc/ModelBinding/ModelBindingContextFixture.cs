@@ -19,7 +19,7 @@ public class ModelBindingContextFixture
         return this;
     }
     
-    public ModelBindingContextFixture WithValue(string value)
+    public ModelBindingContextFixture WithValue(string? value)
     {
         _value = value;
         return this;

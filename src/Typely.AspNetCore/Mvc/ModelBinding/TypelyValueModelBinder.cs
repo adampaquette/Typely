@@ -28,25 +28,13 @@ public class TypelyValueModelBinder<TValue, TTypelyValue> : IModelBinder
         }
 
         bindingContext.ModelState.SetModelValue(bindingContext.ModelName, valueProviderResult);
-
-        if (valueProviderResult.FirstValue == null)
-        {
-            bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, "The value cannot be null.");
-            return Task.CompletedTask;
-        }
-
+        
         try
         {
             var converter = TypeDescriptor.GetConverter(valueType);
-            var value = converter.ConvertFromString(valueProviderResult.FirstValue);
+            var value = (TValue)converter.ConvertFromString(valueProviderResult.FirstValue!)!;
 
-            if (value == null)
-            {
-                bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, "The converter returned a null value.");
-                return Task.CompletedTask;
-            }
-
-            if (TTypelyValue.TryFrom((TValue)value, out var typelyValue, out var validationError))
+            if (TTypelyValue.TryFrom(value, out var typelyValue, out var validationError))
             {
                 bindingContext.Result = ModelBindingResult.Success(typelyValue);
             }
