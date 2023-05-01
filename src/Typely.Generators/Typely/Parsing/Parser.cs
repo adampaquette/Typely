@@ -31,9 +31,9 @@ internal sealed class Parser
     /// <summary>
     /// Filter classes having an interface name <see cref="ITypelyConfiguration"/>.
     /// </summary>
-    internal static bool IsTypelyConfigurationClass(ClassDeclarationSyntax syntax) => 
+    private static bool IsTypelyConfigurationClass(ClassDeclarationSyntax syntax) =>
         syntax.HasInterface(TypelyConfiguration.InterfaceName);
-    
+
     private static bool IsConfigureMethod(SyntaxNode syntaxNode) =>
         syntaxNode is MethodDeclarationSyntax c && c.Identifier.Text == TypelyConfiguration.ConfigureMethodName;
 
@@ -46,7 +46,7 @@ internal sealed class Parser
         var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
         var classSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax)!;
 
-        return classSymbol.AllInterfaces.Any(x => x.ToString() ==TypelyConfiguration.FullInterfaceName)
+        return classSymbol.AllInterfaces.Any(x => x.ToString() == TypelyConfiguration.FullInterfaceName)
             ? classDeclarationSyntax
             : null;
     }
@@ -67,12 +67,13 @@ internal sealed class Parser
     /// </summary>
     /// <param name="syntaxTree">SyntaxTree to parse</param>
     /// <returns>A list of representation of desired user types.</returns>
-    private IEnumerable<EmittableType> GetEmittableTypes(SyntaxTree syntaxTree)
+    public List<EmittableType> GetEmittableTypes(SyntaxTree syntaxTree)
     {
         _cancellationToken.ThrowIfCancellationRequested();
 
         var emittableTypes = new List<EmittableType>();
-        var classSyntaxes = syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>().Where(IsTypelyConfigurationClass).ToList();
+        var classSyntaxes = syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>()
+            .Where(IsTypelyConfigurationClass).ToList();
         var model = _compilation.GetSemanticModel(syntaxTree);
         foreach (var classSyntax in classSyntaxes)
         {
