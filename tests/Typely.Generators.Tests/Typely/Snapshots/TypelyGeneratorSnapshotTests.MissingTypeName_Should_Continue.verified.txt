@@ -1,0 +1,16 @@
+﻿{
+  Diagnostics: [
+    {
+      Id: TYPLY0002,
+      Title: Name missing.,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: : (0,0)-(0,0),
+      Description: ,
+      HelpLink: ,
+      MessageFormat: A type is declared without a user friendly name in the namespace '{0}'.,
+      Message: A type is declared without a user friendly name in the namespace 'Typely.Generators.Tests.Typely.Configurations'.,
+      Category: TypelyGenerator
+    }
+  ]
+}

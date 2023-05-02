@@ -63,7 +63,7 @@ internal class EmittableType
     /// <summary>
     /// A set of dynamic properties. For example: MaxLength on string type.
     /// </summary>
-    public TypeProperties Properties { get; set; } = new();
+    public TypeProperties Properties { get; } = new();
     
     public EmittableType(string underlyingType, bool isValueType, string configurationNamespace)
     {

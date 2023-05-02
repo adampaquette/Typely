@@ -23,13 +23,13 @@ internal sealed class Parser
     }
 
     /// <summary>
-    /// Filter classes having an interface name <see cref="ITypelyConfiguration"/>.
+    /// Filter classes having an interface name "ITypelyConfiguration".
     /// </summary>
     internal static bool IsTypelyConfigurationClass(SyntaxNode syntaxNode) =>
         syntaxNode is ClassDeclarationSyntax c && IsTypelyConfigurationClass(c);
 
     /// <summary>
-    /// Filter classes having an interface name <see cref="ITypelyConfiguration"/>.
+    /// Filter classes having an interface name "ITypelyConfiguration".
     /// </summary>
     private static bool IsTypelyConfigurationClass(ClassDeclarationSyntax syntax) =>
         syntax.HasInterface(TypelyConfiguration.InterfaceName);
@@ -38,7 +38,7 @@ internal sealed class Parser
         syntaxNode is MethodDeclarationSyntax c && c.Identifier.Text == TypelyConfiguration.ConfigureMethodName;
 
     /// <summary>
-    /// Filter classes having an interface <see cref="ITypelyConfiguration"/> that matches the 
+    /// Filter classes having an interface "ITypelyConfiguration" that matches the 
     /// namespace and returns the <see cref="ClassDeclarationSyntax"/>.
     /// </summary>
     internal static ClassDeclarationSyntax? GetSemanticTargetForGeneration(GeneratorSyntaxContext context)
@@ -52,18 +52,7 @@ internal sealed class Parser
     }
 
     /// <summary>
-    /// Execute the different <see cref="ITypelyConfiguration"/> classes founds and generate models of the desired user types.
-    /// </summary>
-    /// <param name="classes">Classes to parse.</param>
-    /// <returns>A list of representation of desired user types.</returns>
-    public IReadOnlyList<EmittableType> GetEmittableTypes(IEnumerable<ClassDeclarationSyntax> classes)
-    {
-        // We enumerate by syntax tree, to minimize impact on performance
-        return classes.GroupBy(x => x.SyntaxTree).SelectMany(x => GetEmittableTypes(x.Key)).ToList().AsReadOnly();
-    }
-
-    /// <summary>
-    /// Execute the different <see cref="ITypelyConfiguration"/> classes and generate models of the desired user types.
+    /// Execute the different "ITypelyConfiguration" classes and generate models of the desired user types.
     /// </summary>
     /// <param name="syntaxTree">SyntaxTree to parse</param>
     /// <returns>A list of representation of desired user types.</returns>
@@ -114,7 +103,7 @@ internal sealed class Parser
     /// Parse each line of code of a method.
     /// </summary>
     /// <param name="methodDeclarationSyntax">The <see cref="MethodDeclarationSyntax"/>.</param>
-    /// <param name="typelyBuilderParameterName">The builder parameter name used in <see cref="ITypelyConfiguration.Configure"/>.</param>
+    /// <param name="typelyBuilderParameterName">The builder parameter name used in "ITypelyConfiguration.Configure".</param>
     /// <param name="model">The <see cref="SemanticModel"/>.</param>
     /// <returns>Return a list of <see cref="ParseDeclarationStatement"/>.</returns>
     private static List<ParsedStatement> ParseStatements(MethodDeclarationSyntax methodDeclarationSyntax,
