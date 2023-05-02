@@ -25,6 +25,9 @@ jobs:
         run: |
          dotnet build --configuration Debug ./Typely.sln
          dotnet build --configuration Release ./Typely.sln
+         cp -f ./src/Typely.Core/bin/Debug/net7.0/Typely.Core.dll ./tests/Typely.EfCore.Tests/bin/Debug/net7.0/Typely.Core.dll
+         cp -f ./src/Typely.Core/bin/Debug/net7.0/Typely.Core.dll ./tests/Typely.AspNetCore.Swashbuckle.Tests/bin/Debug/net7.0/Typely.Core.dll 
+         cp -f ./src/Typely.Core/bin/Debug/net7.0/Typely.Core.dll ./tests/Typely.AspNetCore.Tests/bin/Debug/net7.0/Typely.Core.dll 
 
       - name: Test
         run: dotnet test --no-restore ./Typely.sln /p:CollectCoverage=true /p:CoverletOutput="../Coverage/" /p:MergeWith="../Coverage/coverage.json" /p:CoverletOutputFormat=\"cobertura,json\" /maxcpucount:1
