@@ -26,6 +26,12 @@ internal class ParserFixture : BaseFixture<Parser>
         _syntaxTrees = configClasses.Select(CreateSyntaxTree);
         return this;
     }
+    
+    public ParserFixture WithSyntaxTrees(params SyntaxTree[] syntaxTrees)
+    {
+        _syntaxTrees = syntaxTrees;
+        return this;
+    }
 
     public static SyntaxTree CreateSyntaxTree(Type configClass)
     {
@@ -52,6 +58,5 @@ internal class ParserFixture : BaseFixture<Parser>
             references: new[]
             {
                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(ITypelyConfiguration).Assembly.Location),
             });
 }

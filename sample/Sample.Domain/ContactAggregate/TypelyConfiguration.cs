@@ -11,7 +11,7 @@ internal class TypelyConfiguration : ITypelyConfiguration
     {
         //Contact
         builder.OfInt().For("ContactId").GreaterThan(0);
-
+        
         builder.OfString()
             .For("Phone")
             .MaxLength(12)

@@ -11,13 +11,15 @@ internal class StringConfiguration : ITypelyConfiguration
     {
         builder.OfString().For("Code")
             .AsClass()
-            .Length(4)
+            .WithName(() => "Code")
+            .Length(21)
             .Length(4, 20)
             .NotEqual("0000")
             .Matches(new Regex(".+"))
             .GreaterThan("A")
             .GreaterThanOrEqualTo("A")
             .LessThan("A")
+            .MinLength(2)
             .LessThanOrEqualTo("A")
             .Normalize(x => x.Trim().ToLower());
 

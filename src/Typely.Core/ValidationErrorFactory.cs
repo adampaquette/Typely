@@ -36,14 +36,14 @@ public static class ValidationErrorFactory
             placeholderValues.Add(ValidationPlaceholders.ActualLength, actualLength);
         }
 
-        if (TypelyOptions.Instance.IsSensitiveDataLoggingEnabled)
-        {
-            if (!placeholderValues.ContainsKey(ValidationPlaceholders.Value))
-            {
-                placeholderValues.Add(ValidationPlaceholders.Value, value);
-            }
-            attemptedValue = value;
-        }
+        // if (TypelyOptions.Instance.IsSensitiveDataLoggingEnabled)
+        // {
+        //     if (!placeholderValues.ContainsKey(ValidationPlaceholders.Value))
+        //     {
+        //         placeholderValues.Add(ValidationPlaceholders.Value, value);
+        //     }
+        //     attemptedValue = value;
+        // }
 
         return new ValidationError(errorCode, errorMessageWithPlaceholders, attemptedValue, typeName, placeholderValues);
     }

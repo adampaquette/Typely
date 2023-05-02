@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using Typely.Core;
 using Typely.Core.Converters;
+using Typely.Generators.Tests.Typely.Configurations;
 
 #nullable enable
 
@@ -17,7 +18,7 @@ namespace Typely.Generators.Tests.Typely.Configurations
     [JsonConverter(typeof(TypelyJsonConverter<string, Code>))]
     public partial class Code : ITypelyValue<string, Code>, IEquatable<Code>, IComparable<Code>, IComparable, IMaxLength
     {
-        public static int MaxLength => 4;
+        public static int MaxLength => 20;
 
         public string Value { get; private set; }                    
 
@@ -31,12 +32,12 @@ namespace Typely.Generators.Tests.Typely.Configurations
 
         public static ValidationError? Validate(string value)
         {
-            if (value.Length != 4)
+            if (value.Length != 21)
             {
                 return ValidationErrorFactory.Create(value, "ExactLength", ErrorMessages.ExactLength, "Code",
                     new Dictionary<string, object?>
                     {
-                        { "ExactLength", 4 },
+                        { "ExactLength", 21 },
                     });
             }
 
@@ -92,6 +93,15 @@ namespace Typely.Generators.Tests.Typely.Configurations
                     new Dictionary<string, object?>
                     {
                         { "ComparisonValue", "A" },
+                    });
+            }
+
+            if (value.Length < 2)
+            {
+                return ValidationErrorFactory.Create(value, "MinLength", ErrorMessages.MinLength, "Code",
+                    new Dictionary<string, object?>
+                    {
+                        { "MinLength", 2 },
                     });
             }
 

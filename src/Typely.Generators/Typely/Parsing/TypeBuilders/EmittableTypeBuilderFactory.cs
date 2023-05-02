@@ -51,7 +51,7 @@ internal static class EmittableTypeBuilderFactory
                 return new EmittableTypeBuilderOfULong(defaultNamespace, invocations, model);
             case TypelyBuilder.OfUShort:
                 return new EmittableTypeBuilderOfUShort(defaultNamespace, invocations, model);
-            default: throw new InvalidOperationException($"Unknown builder type: {builderType}");
+            default: throw new NotSupportedException($"Unknown builder type: {builderType}");
         }
     }
 }

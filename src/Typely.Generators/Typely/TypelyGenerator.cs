@@ -44,6 +44,11 @@ public class TypelyGenerator : IIncrementalGenerator
             context.CancellationToken.ThrowIfCancellationRequested();
             
             var source = emitter.Emit(emittableType);
+            if(source is null)
+            {
+                continue;
+            }
+            
             context.AddSource($"{emittableType.Namespace}.{emittableType.TypeName}.g.cs", SourceText.From(source, Encoding.UTF8));
         }
     }

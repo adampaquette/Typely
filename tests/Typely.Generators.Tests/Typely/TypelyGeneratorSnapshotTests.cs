@@ -293,5 +293,16 @@ public class TypelyGeneratorSnapshotTests
         return Verify(driver);
     }
 
+    [Fact]
+    public Task MissingTypeName_Should_Continue()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(MissingTypeNameConfiguration))
+            .Create()
+            .Run();
+
+        return Verify(driver);
+    }
+    
     private SettingsTask Verify(object? target) => Verifier.Verify(target).UseDirectory("Snapshots");
 }
