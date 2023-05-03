@@ -7,7 +7,7 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
 {
     public EmittableTypeBuilderOfString(string defaultNamespace, IEnumerable<ParsedInvocation> invocations,
         SemanticModel model)
-        : base(invocations, new EmittableType("string", false, defaultNamespace), model)
+        : base(invocations, new EmittableTypeBuilder("string", false, defaultNamespace), model)
     {
     }
 
@@ -36,7 +36,7 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
                     {
                         var min = invocation.GetFirstArgument();
                         var max = invocation.GetSecondArgument();
-                        EmittableType.Properties.SetMaxLength(int.Parse(max));
+                        EmittableTypeBuilder.Properties.SetMaxLength(int.Parse(max));
                         AddRule(
                             errorCode: ErrorCodes.Length,
                             rule: $"{Emitter.ValueParameterName}.Length < {min} || {Emitter.ValueParameterName}.Length > {max}",
@@ -46,7 +46,7 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
                     else
                     {
                         var exactLength = invocation.GetFirstArgument();
-                        EmittableType.Properties.SetMaxLength(int.Parse(exactLength));
+                        EmittableTypeBuilder.Properties.SetMaxLength(int.Parse(exactLength));
                         AddRule(
                             errorCode: ErrorCodes.ExactLength,
                             rule: $"{Emitter.ValueParameterName}.Length != {exactLength}",
@@ -65,7 +65,7 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
                     continue;
                 case TypelyBuilderOf.MaxLengthMethodName:
                     value = invocation.GetFirstArgument();
-                    EmittableType.Properties.SetMaxLength(int.Parse(value));
+                    EmittableTypeBuilder.Properties.SetMaxLength(int.Parse(value));
                     AddRule(
                         errorCode: ErrorCodes.MaxLength,
                         rule: $"{Emitter.ValueParameterName}.Length > {value}",
@@ -79,7 +79,7 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
                         rule: $"!{value}.IsMatch({Emitter.ValueParameterName})",
                         message: (ErrorMessageResource.Matches),
                         placeholders: (ValidationPlaceholder.RegularExpression, value));
-                    EmittableType.AdditionalNamespaces.Add("System.Text.RegularExpressions");
+                    EmittableTypeBuilder.AdditionalNamespaces.Add("System.Text.RegularExpressions");
                     continue;
                 case TypelyBuilderOf.GreaterThanMethodName:
                     value = invocation.GetFirstArgument();
@@ -123,6 +123,6 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
             throw new NotSupportedException(invocation.MemberName);
         }
 
-        return EmittableType;
+        return EmittableTypeBuilder.Build();
     }
 }

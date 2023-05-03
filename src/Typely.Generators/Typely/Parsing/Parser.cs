@@ -7,7 +7,7 @@ using Typely.Generators.Typely.Parsing.TypeBuilders;
 namespace Typely.Generators.Typely.Parsing;
 
 /// <summary>
-/// Parse a <see cref="ClassDeclarationSyntax"/> and generates a list of <see cref="EmittableType"/>.
+/// Parse a <see cref="ClassDeclarationSyntax"/> and generates a list of <see cref="EmittableTypeBuilder"/>.
 /// </summary>
 internal sealed class Parser
 {
@@ -63,6 +63,12 @@ internal sealed class Parser
         var emittableTypes = new List<EmittableType>();
         var classSyntaxes = syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>()
             .Where(IsTypelyConfigurationClass).ToList();
+
+        /*TODO : Remove get sementic model if possible
+         *This is very bad: get the semantic model from the syntax provider transform context
+         *If you can, I would highly suggest moving to ForAttributeWithMetadataName. It will make your generator
+         * significantly more performant (on the order of literally 99x) 
+         */
         var model = _compilation.GetSemanticModel(syntaxTree);
         foreach (var classSyntax in classSyntaxes)
         {
@@ -221,9 +227,4 @@ internal sealed class Parser
             throw new NotSupportedException(syntaxNode.ToString());
         }
     }
-
-    // private void Diag(DiagnosticDescriptor desc, Location? location, params object?[]? messageArgs)
-    // {
-    //     _reportDiagnostic(Diagnostic.Create(desc, location, messageArgs));
-    // }
 }

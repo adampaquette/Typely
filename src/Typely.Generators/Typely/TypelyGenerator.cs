@@ -24,6 +24,8 @@ public class TypelyGenerator : IIncrementalGenerator
             .Combine(context.CompilationProvider)
             .WithComparer(new ClassProviderComparer());
 
+        //TODO : Syntax (producing a comparable enumerable of EmittableType) -> SelectMany (flattening the enumerables)
+        //RegisterSourceOutput on an IncrementalValuesProvider<EmittableType>
         context.RegisterSourceOutput(classProvider, static (spc, source) => Execute(source.Item1!,source.Item2 ,spc));
     }
 

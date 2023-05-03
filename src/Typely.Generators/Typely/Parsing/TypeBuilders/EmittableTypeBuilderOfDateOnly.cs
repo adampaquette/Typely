@@ -5,7 +5,7 @@ namespace Typely.Generators.Typely.Parsing.TypeBuilders;
 internal class EmittableTypeBuilderOfDateOnly : EmittableTypeBuilderBase, IEmittableTypeBuilder
 {
     public EmittableTypeBuilderOfDateOnly(string defaultNamespace, IEnumerable<ParsedInvocation> invocations, SemanticModel model)
-        : base(invocations, new EmittableType("DateOnly", true, defaultNamespace), model)
+        : base(invocations, new EmittableTypeBuilder("DateOnly", true, defaultNamespace), model)
     {
     }
 
@@ -21,6 +21,6 @@ internal class EmittableTypeBuilderOfDateOnly : EmittableTypeBuilderBase, IEmitt
             throw new NotSupportedException(invocation.MemberName);
         }
 
-        return EmittableType;
+        return EmittableTypeBuilder.Build();
     }
 }

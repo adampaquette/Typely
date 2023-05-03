@@ -5,7 +5,7 @@ namespace Typely.Generators.Typely.Parsing.TypeBuilders;
 internal class EmittableTypeBuilderOfFloat : EmittableTypeBuilderBase, IEmittableTypeBuilder
 {
     public EmittableTypeBuilderOfFloat(string defaultNamespace, IEnumerable<ParsedInvocation> invocations, SemanticModel model)
-        : base(invocations, new EmittableType("float", true, defaultNamespace), model)
+        : base(invocations, new EmittableTypeBuilder("float", true, defaultNamespace), model)
     {
     }
 
@@ -21,6 +21,6 @@ internal class EmittableTypeBuilderOfFloat : EmittableTypeBuilderBase, IEmittabl
             throw new NotSupportedException(invocation.MemberName);
         }
 
-        return EmittableType;
+        return EmittableTypeBuilder.Build();
     }
 }

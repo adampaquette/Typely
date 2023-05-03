@@ -5,7 +5,7 @@ namespace Typely.Generators.Typely.Parsing.TypeBuilders;
 internal class EmittableTypeBuilderOfSByte : EmittableTypeBuilderBase, IEmittableTypeBuilder
 {
     public EmittableTypeBuilderOfSByte(string defaultNamespace, IEnumerable<ParsedInvocation> invocations, SemanticModel model)
-        : base(invocations, new EmittableType("sbyte", true, defaultNamespace), model)
+        : base(invocations, new EmittableTypeBuilder("sbyte", true, defaultNamespace), model)
     {
     }
 
@@ -21,6 +21,6 @@ internal class EmittableTypeBuilderOfSByte : EmittableTypeBuilderBase, IEmittabl
             throw new NotSupportedException(invocation.MemberName);
         }
 
-        return EmittableType;
+        return EmittableTypeBuilder.Build();
     }
 }

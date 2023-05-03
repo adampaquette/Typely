@@ -5,7 +5,7 @@ namespace Typely.Generators.Typely.Parsing.TypeBuilders;
 internal class EmittableTypeBuilderOfDateTime : EmittableTypeBuilderBase, IEmittableTypeBuilder
 {
     public EmittableTypeBuilderOfDateTime(string defaultNamespace, IEnumerable<ParsedInvocation> invocations, SemanticModel model)
-        : base(invocations, new EmittableType("DateTime", true, defaultNamespace), model)
+        : base(invocations, new EmittableTypeBuilder("DateTime", true, defaultNamespace), model)
     {
     }
 
@@ -21,6 +21,6 @@ internal class EmittableTypeBuilderOfDateTime : EmittableTypeBuilderBase, IEmitt
             throw new NotSupportedException(invocation.MemberName);
         }
 
-        return EmittableType;
+        return EmittableTypeBuilder.Build();
     }
 }

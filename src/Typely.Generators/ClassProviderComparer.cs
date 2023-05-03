@@ -12,6 +12,7 @@ public class ClassProviderComparer : IEqualityComparer<(ClassDeclarationSyntax S
         (ClassDeclarationSyntax Syntax, Compilation Compilation) x,
         (ClassDeclarationSyntax Syntax, Compilation Compilation) y)
     {
+        //TODO : holds onto potentially unbounded numbers of syntax trees and previous compilations
         return x.Syntax.Equals(y.Syntax);
     }
 

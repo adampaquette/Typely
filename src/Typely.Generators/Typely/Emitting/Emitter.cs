@@ -136,7 +136,7 @@ internal class Emitter
 
         """;
 
-    private string BuildNamespaces(IList<EmittableRule> rules, IEnumerable<string> additionalNamespaces)
+    private string BuildNamespaces(IReadOnlyList<EmittableRule> rules, IReadOnlyList<string> additionalNamespaces)
     {
         var namespaces = new List<string>
         {
@@ -215,7 +215,7 @@ internal class Emitter
         return builder.ToString();
     }
 
-    private static string GenerateValidationPlaceholders(Dictionary<string, object?> placeholders)
+    private static string GenerateValidationPlaceholders(IReadOnlyDictionary<string, object?> placeholders)
     {
         if (!placeholders.Any())
         {

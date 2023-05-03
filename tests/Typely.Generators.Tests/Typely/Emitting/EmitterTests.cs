@@ -11,9 +11,9 @@ public class EmitterTests
     {
         var diagnostics = new List<Diagnostic>();
         var emitter = new Emitter(diagnostic => diagnostics.Add(diagnostic), CancellationToken.None);
-        var emittableType = new EmittableType("int", true, "namespace");
+        var emittableType = new EmittableTypeBuilder("int", true, "namespace");
         emittableType.SetName("aa");
-        emitter.Emit(emittableType);
+        emitter.Emit(emittableType.Build());
         Assert.NotEmpty(diagnostics);
     }
     
@@ -22,8 +22,8 @@ public class EmitterTests
     {
         var diagnostics = new List<Diagnostic>();
         var emitter = new Emitter(diagnostic => diagnostics.Add(diagnostic), CancellationToken.None);
-        var emittableType = new EmittableType("int", true, "namespace");
-        emitter.Emit(emittableType);
+        var emittableType = new EmittableTypeBuilder("int", true, "namespace");
+        emitter.Emit(emittableType.Build());
         Assert.NotEmpty(diagnostics);
     }
 }
