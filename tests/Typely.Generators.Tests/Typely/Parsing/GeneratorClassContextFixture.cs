@@ -1,33 +1,39 @@
 ﻿using AutoFixture;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Typely.Core;
-using Typely.Generators.Typely.Parsing;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Typely.Generators.Typely;
 
 namespace Typely.Generators.Tests.Typely.Parsing;
 
-internal class ParserFixture : BaseFixture<Parser>
+internal class GeneratorClassContextFixture : BaseFixture<GeneratorClassContext>
 {
     private IEnumerable<SyntaxTree> _syntaxTrees = new List<SyntaxTree>();
-    public Compilation Compilation { get; private set; } = null!;
 
-    public ParserFixture()
+    public GeneratorClassContextFixture()
     {
         Fixture.Register(() =>
         {
-            Compilation = CreateCompilation(_syntaxTrees);
-            return Compilation;
+            var compilation = CreateCompilation(_syntaxTrees);
+            var classSyntax = compilation.SyntaxTrees
+                .First()
+                .GetRoot()
+                .DescendantNodes()
+                .OfType<ClassDeclarationSyntax>()
+                .First();
+
+            return new GeneratorClassContext(classSyntax, compilation.GetSemanticModel(classSyntax.SyntaxTree));
         });
         Fixture.Register(() => CancellationToken.None);
     }
 
-    public ParserFixture WithConfigurations(params Type[] configClasses)
+    public GeneratorClassContextFixture WithConfigurations(params Type[] configClasses)
     {
         _syntaxTrees = configClasses.Select(CreateSyntaxTree);
         return this;
     }
     
-    public ParserFixture WithSyntaxTrees(params SyntaxTree[] syntaxTrees)
+    public GeneratorClassContextFixture WithSyntaxTrees(params SyntaxTree[] syntaxTrees)
     {
         _syntaxTrees = syntaxTrees;
         return this;

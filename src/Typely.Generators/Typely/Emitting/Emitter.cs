@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
-using System.Text;
+﻿using System.Text;
 using Typely.Generators.Typely.Parsing;
 
 namespace Typely.Generators.Typely.Emitting;

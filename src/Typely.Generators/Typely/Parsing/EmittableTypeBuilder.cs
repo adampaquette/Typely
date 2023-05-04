@@ -1,4 +1,6 @@
-﻿namespace Typely.Generators.Typely.Parsing;
+﻿using System.Collections.Immutable;
+
+namespace Typely.Generators.Typely.Parsing;
 
 /// <summary>
 /// Contains metadata of a type to generate.
@@ -142,8 +144,8 @@ internal class EmittableTypeBuilder
         ConfigurationNamespace,
         ConstructTypeKind,
         NormalizeFunctionBody,
-        Rules.Select(r => r.Build()).ToList(),
-        AdditionalNamespaces,
+        Rules.Select(r => r.Build()).ToImmutableArray(),
+        AdditionalNamespaces.ToImmutableArray(),
         Properties
     );
 }
