@@ -52,7 +52,7 @@ internal static class Parser
         CancellationToken cancellationToken) 
     {
         var emittableTypes = new List<EmittableType>();
-        var classSyntaxes = context!.ClassDeclarationSyntax
+        var classSyntaxes = context!.Value.ClassDeclarationSyntax
             .SyntaxTree
             .GetRoot()
             .DescendantNodes()
@@ -64,7 +64,7 @@ internal static class Parser
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var classEmittableTypes = ParseClass(classSyntax, context.SemanticModel);
+            var classEmittableTypes = ParseClass(classSyntax, context.Value.SemanticModel);
             emittableTypes.AddRange(classEmittableTypes);
         }
 

@@ -8,6 +8,7 @@ namespace Typely.Generators.Typely.Emitting;
 /// </summary>
 internal static class Emitter
 {
+    private static int Count = 0;
     public const string ValueParameterName = "value";
     
     /// <summary>
@@ -18,6 +19,7 @@ internal static class Emitter
     /// <returns></returns>
     public static string Emit(EmittableType emittableType, CancellationToken cancellationToken)
     {
+        Count++;
         var typeName = emittableType.TypeName!;
         var namespaces = BuildNamespaces(emittableType.Rules, emittableType.AdditionalNamespaces);
         var underlyingType = emittableType.UnderlyingType;
@@ -38,7 +40,7 @@ internal static class Emitter
             #nullable enable
 
             namespace {{emittableType.Namespace}}
-            {
+            {//{{Count}}
                 [TypeConverter(typeof(TypelyTypeConverter<{{underlyingType}}, {{typeName}}>))]
                 [JsonConverter(typeof(TypelyJsonConverter<{{underlyingType}}, {{typeName}}>))]
                 public partial {{constructType}} {{typeName}} : ITypelyValue<{{underlyingType}}, {{typeName}}>, IEquatable<{{typeName}}>, IComparable<{{typeName}}>, IComparable{{maxLengthInterface}}
