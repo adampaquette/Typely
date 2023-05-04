@@ -15,43 +15,40 @@ public class TypelyGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var classProvider = context.SyntaxProvider
+        var emittableTypeProvider = context.SyntaxProvider
             .CreateSyntaxProvider(
-                predicate: static (node, _) => Parser.IsTypelyConfigurationClass(node),
-                transform: static (ctx, _) => Parser.GetSemanticTargetForGeneration(ctx))
+                predicate: Parser.IsTypelyConfigurationClass,
+                transform: Parser.GetSemanticTargetForGeneration)
             .Where(x => x is not null)
-            .Select((x, _) => x!)
-            .Combine(context.CompilationProvider)
-            .WithComparer(new ClassProviderComparer());
-
-        //TODO : Syntax (producing a comparable enumerable of EmittableType) -> SelectMany (flattening the enumerables)
-        //RegisterSourceOutput on an IncrementalValuesProvider<EmittableType>
-        context.RegisterSourceOutput(classProvider, static (spc, source) => Execute(source.Item1!,source.Item2 ,spc));
+            .SelectMany(Parser.GetEmittableTypes);
+        
+        context.RegisterSourceOutput(emittableTypeProvider, AddEmittedSource);
     }
-
-    private static void Execute(ClassDeclarationSyntax classSyntax, Compilation compilation, SourceProductionContext context)
+    
+    /// <summary>
+    /// Emit the source code for a value object and add it to the <see cref="SourceProductionContext"/>.
+    /// </summary>
+    /// <param name="context">Context for source production.</param>
+    /// <param name="emittableType">The type to generate.</param>
+    private static void AddEmittedSource(SourceProductionContext context, EmittableType emittableType)
     {
-        var parser = new Parser(compilation, context.ReportDiagnostic, context.CancellationToken);
-        var emittableTypes = parser.GetEmittableTypes(classSyntax.SyntaxTree);
-
-        if (!emittableTypes.Any())
+        if (emittableType.Name == null)
         {
+            context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.NameMissing, Location.None,
+                emittableType.Namespace));
             return;
         }
 
-        var emitter = new Emitter(context.ReportDiagnostic, context.CancellationToken);
-
-        foreach (var emittableType in emittableTypes)
+        if (emittableType.TypeName == null)
         {
-            context.CancellationToken.ThrowIfCancellationRequested();
-            
-            var source = emitter.Emit(emittableType);
-            if(source is null)
-            {
-                continue;
-            }
-            
-            context.AddSource($"{emittableType.Namespace}.{emittableType.TypeName}.g.cs", SourceText.From(source, Encoding.UTF8));
+            context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.TypeNameMissing, Location.None,
+                emittableType.Namespace));
+            return;
         }
+
+        var source = Emitter.Emit(emittableType, context.CancellationToken);
+
+        context.AddSource($"{emittableType.Namespace}.{emittableType.TypeName}.g.cs",
+            SourceText.From(source, Encoding.UTF8));
     }
 }

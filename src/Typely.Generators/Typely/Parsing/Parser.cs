@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections.Immutable;
 using Typely.Generators.Extensions;
 using Typely.Generators.Typely.Parsing.TypeBuilders;
 
@@ -9,23 +10,12 @@ namespace Typely.Generators.Typely.Parsing;
 /// <summary>
 /// Parse a <see cref="ClassDeclarationSyntax"/> and generates a list of <see cref="EmittableTypeBuilder"/>.
 /// </summary>
-internal sealed class Parser
+internal static class Parser
 {
-    private readonly CancellationToken _cancellationToken;
-    private readonly Compilation _compilation;
-    private readonly Action<Diagnostic> _reportDiagnostic;
-
-    public Parser(Compilation compilation, Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
-    {
-        _compilation = compilation;
-        _cancellationToken = cancellationToken;
-        _reportDiagnostic = reportDiagnostic;
-    }
-
     /// <summary>
     /// Filter classes having an interface name "ITypelyConfiguration".
     /// </summary>
-    internal static bool IsTypelyConfigurationClass(SyntaxNode syntaxNode) =>
+    internal static bool IsTypelyConfigurationClass(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
         syntaxNode is ClassDeclarationSyntax c && IsTypelyConfigurationClass(c);
 
     /// <summary>
@@ -39,44 +29,46 @@ internal sealed class Parser
 
     /// <summary>
     /// Filter classes having an interface "ITypelyConfiguration" that matches the 
-    /// namespace and returns the <see cref="ClassDeclarationSyntax"/>.
+    /// namespace and returns the <see cref="GeneratorClassContext"/>.
     /// </summary>
-    internal static ClassDeclarationSyntax? GetSemanticTargetForGeneration(GeneratorSyntaxContext context)
+    internal static GeneratorClassContext? GetSemanticTargetForGeneration(GeneratorSyntaxContext context,
+        CancellationToken cancellationToken)
     {
         var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
         var classSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax)!;
 
         return classSymbol.AllInterfaces.Any(x => x.ToString() == TypelyConfiguration.FullInterfaceName)
-            ? classDeclarationSyntax
+            ? new GeneratorClassContext(classDeclarationSyntax, context.SemanticModel)
             : null;
     }
 
     /// <summary>
     /// Execute the different "ITypelyConfiguration" classes and generate models of the desired user types.
     /// </summary>
-    /// <param name="syntaxTree">SyntaxTree to parse</param>
+    /// <param name="context">The generator's context.</param>
+    /// <param name="cancellationToken">A token to notify the operation should be cancelled.</param>
     /// <returns>A list of representation of desired user types.</returns>
-    public List<EmittableType> GetEmittableTypes(SyntaxTree syntaxTree)
+    internal static ImmutableArray<EmittableType> GetEmittableTypes(GeneratorClassContext? context,
+        CancellationToken cancellationToken) 
     {
-        _cancellationToken.ThrowIfCancellationRequested();
-
         var emittableTypes = new List<EmittableType>();
-        var classSyntaxes = syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>()
-            .Where(IsTypelyConfigurationClass).ToList();
+        var classSyntaxes = context!.ClassDeclarationSyntax
+            .SyntaxTree
+            .GetRoot()
+            .DescendantNodes()
+            .OfType<ClassDeclarationSyntax>()
+            .Where(IsTypelyConfigurationClass)
+            .ToList();
 
-        /*TODO : Remove get sementic model if possible
-         *This is very bad: get the semantic model from the syntax provider transform context
-         *If you can, I would highly suggest moving to ForAttributeWithMetadataName. It will make your generator
-         * significantly more performant (on the order of literally 99x) 
-         */
-        var model = _compilation.GetSemanticModel(syntaxTree);
         foreach (var classSyntax in classSyntaxes)
         {
-            var classEmittableTypes = ParseClass(classSyntax, model);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var classEmittableTypes = ParseClass(classSyntax, context.SemanticModel);
             emittableTypes.AddRange(classEmittableTypes);
         }
 
-        return emittableTypes;
+        return emittableTypes.ToImmutableArray();
     }
 
     /// <summary>
@@ -85,7 +77,7 @@ internal sealed class Parser
     /// <param name="classSyntax">The class to parse.</param>
     /// <param name="model">The <see cref="SemanticModel"/>.</param>
     /// <returns>A list of <see cref="EmittableType"/>.</returns>
-    private IEnumerable<EmittableType> ParseClass(ClassDeclarationSyntax classSyntax, SemanticModel model)
+    private static IEnumerable<EmittableType> ParseClass(ClassDeclarationSyntax classSyntax, SemanticModel model)
     {
         var methodSyntax = classSyntax.DescendantNodes()
             .OfType<MethodDeclarationSyntax>()
