@@ -8,5 +8,6 @@ public class MissingTypeNameConfiguration : ITypelyConfiguration
     public void Configure(ITypelyBuilder builder)
     {
         builder.OfBool();
+        builder.OfBool().WithName("BoolWithName");
     }
 }

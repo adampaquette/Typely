@@ -2,16 +2,14 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Reflection;
-using Typely.Generators.Typely;
 
 namespace Typely.Generators.Tests.Typely.Parsing;
 
-internal class GeneratorSyntaxContextFixture : BaseFixture<GeneratorSyntaxContext>
+internal class ParserContextFixture : BaseFixture<ParserContext>
 {
     private IEnumerable<SyntaxTree> _syntaxTrees = new List<SyntaxTree>();
 
-    public GeneratorSyntaxContextFixture()
+    public ParserContextFixture()
     {
         Fixture.Register(() =>
         {
@@ -23,26 +21,17 @@ internal class GeneratorSyntaxContextFixture : BaseFixture<GeneratorSyntaxContex
                 .OfType<ClassDeclarationSyntax>()
                 .First();
 
-            var constructorInfo = typeof(GeneratorSyntaxContext).GetConstructor(
-                BindingFlags.Instance | BindingFlags.NonPublic,
-                null,
-                new Type[] {typeof(SyntaxNode), typeof(Lazy<SemanticModel>), typeof(ISyntaxHelper) },
-                null);
-
-            GeneratorSyntaxContext generatorSyntaxContext = constructorInfo.Invoke(new object[] { /* constructor parameter values */ }) as GeneratorSyntaxContext;
-            
-            return new GeneratorSyntaxContext{ Node = { classSyntax, compilation.GetSemanticModel(classSyntax.SyntaxTree))};
+            return new ParserContext(classSyntax, compilation.GetSemanticModel(classSyntax.SyntaxTree));
         });
-        Fixture.Register(() => CancellationToken.None);
     }
 
-    public GeneratorSyntaxContextFixture WithConfigurations(params Type[] configClasses)
+    public ParserContextFixture WithConfigurations(params Type[] configClasses)
     {
         _syntaxTrees = configClasses.Select(CreateSyntaxTree);
         return this;
     }
     
-    public GeneratorSyntaxContextFixture WithSyntaxTrees(params SyntaxTree[] syntaxTrees)
+    public ParserContextFixture WithSyntaxTrees(params SyntaxTree[] syntaxTrees)
     {
         _syntaxTrees = syntaxTrees;
         return this;

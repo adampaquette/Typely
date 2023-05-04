@@ -1,7 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Collections.Immutable;
 using Typely.Generators.Extensions;
 using Typely.Generators.Typely.Parsing.TypeBuilders;
 
@@ -30,25 +29,36 @@ internal static class Parser
     private static bool IsTypelyConfigurationClass(SemanticModel model, ClassDeclarationSyntax classDeclarationSyntax)
     {
         var classSymbol = model.GetDeclaredSymbol(classDeclarationSyntax)!;
-        return !classSymbol.AllInterfaces.Any(x => x.ToString() == TypelyConfiguration.FullInterfaceName);
+        return classSymbol.AllInterfaces.Any(x => x.ToString() == TypelyConfiguration.FullInterfaceName);
     }
-    
+
     /// <summary>
     /// Filter classes having an interface "ITypelyConfiguration" and generate models of the desired user types.
     /// </summary>
     /// <param name="context">The generator's context.</param>
     /// <param name="cancellationToken">A token to notify the operation should be cancelled.</param>
     /// <returns>A list of representation of desired user types.</returns>
-    internal static IReadOnlyList<EmittableType>? GetEmittableTypesForClasses(GeneratorSyntaxContext context,
-        CancellationToken cancellationToken) 
+    internal static IReadOnlyList<EmittableType>? GetEmittableTypesForClass(GeneratorSyntaxContext context,
+        CancellationToken cancellationToken)
     {
         var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
 
-        if (!IsTypelyConfigurationClass(context.SemanticModel, classDeclarationSyntax))
-        {
-            return null;
-        }
+        return IsTypelyConfigurationClass(context.SemanticModel, classDeclarationSyntax)
+            ? GetEmittableTypesForClass(classDeclarationSyntax, context.SemanticModel, cancellationToken)
+            : null;
+    }
 
+    /// <summary>
+    /// Filter classes having an interface "ITypelyConfiguration" and generate models of the desired user types.
+    /// </summary>
+    /// <param name="context">The generator's context.</param>
+    /// <param name="semanticModel"></param>
+    /// <param name="cancellationToken">A token to notify the operation should be cancelled.</param>
+    /// <param name="classDeclarationSyntax">The class containing the specification.</param>
+    /// <returns>A list of representation of desired user types.</returns>
+    internal static IReadOnlyList<EmittableType> GetEmittableTypesForClass(
+        ClassDeclarationSyntax classDeclarationSyntax, SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
         var emittableTypes = new List<EmittableType>();
         var classSyntaxes = classDeclarationSyntax.SyntaxTree
             .GetRoot()
@@ -61,7 +71,7 @@ internal static class Parser
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var classEmittableTypes = ParseClass(classSyntax, context.SemanticModel);
+            var classEmittableTypes = ParseClass(classSyntax, semanticModel);
             emittableTypes.AddRange(classEmittableTypes);
         }
 

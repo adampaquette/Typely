@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Typely.Generators.Typely.Parsing;
 
 namespace Typely.Generators.Tests.Typely.Parsing;
@@ -8,11 +9,13 @@ public class ParserTests
     [Fact]
     public void ParenthesizedDeclarationConfiguration_Should_Throw()
     {
-        var generatorClassContext = new GeneratorSyntaxContextFixture()
+        var context = new ParserContextFixture()
             .WithConfigurations(typeof(ParenthesizedDeclarationConfiguration))
             .Create();
-        
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() =>
+            Parser.GetEmittableTypesForClass(context.ClassDeclarationSyntax, context.SemanticModel,
+                CancellationToken.None));
     }
 
     [Fact]
@@ -32,11 +35,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForByte()
     {
@@ -54,11 +56,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForChar()
     {
@@ -76,11 +77,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForDateOnly()
     {
@@ -98,11 +98,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForDateTime()
     {
@@ -120,11 +119,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForDecimal()
     {
@@ -142,11 +140,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForDouble()
     {
@@ -164,11 +161,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForFloat()
     {
@@ -186,11 +182,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForGuid()
     {
@@ -208,11 +203,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForInt()
     {
@@ -230,11 +224,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForLong()
     {
@@ -252,11 +245,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForSByte()
     {
@@ -274,11 +266,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForShort()
     {
@@ -296,11 +287,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForString()
     {
@@ -318,11 +308,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForTimeOnly()
     {
@@ -340,11 +329,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForUInt()
     {
@@ -362,11 +350,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForULong()
     {
@@ -384,11 +371,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForUShort()
     {
@@ -406,11 +392,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForTimeSpan()
     {
@@ -428,11 +413,10 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
     }
-    
+
     [Fact]
     public void UnsupportedMemberNames_Should_Throw_ForDateTimeOffset()
     {
@@ -450,9 +434,14 @@ public class ParserTests
                 }
             }
             """);
-        
-        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
+
+        Assert.Throws<NotSupportedException>(() => GetEmittableTypes(syntaxTree));
+    }
+
+    private static IReadOnlyList<EmittableType> GetEmittableTypes(SyntaxTree syntaxTree)
+    {
+        var context = new ParserContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        return Parser.GetEmittableTypesForClass(context.ClassDeclarationSyntax, context.SemanticModel,
+            CancellationToken.None);
     }
 }
-

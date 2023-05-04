@@ -17,7 +17,7 @@ public class TypelyGenerator : IIncrementalGenerator
         var emittableTypeProvider = context.SyntaxProvider
             .CreateSyntaxProvider(
                 predicate: Parser.IsTypelyConfigurationClass,
-                transform: Parser.GetEmittableTypesForClasses)
+                transform: Parser.GetEmittableTypesForClass)
             .Where(x => x is not null)
             .SelectMany((emittableTypes, _) => emittableTypes!);
         
