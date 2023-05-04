@@ -2,15 +2,16 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Reflection;
 using Typely.Generators.Typely;
 
 namespace Typely.Generators.Tests.Typely.Parsing;
 
-internal class GeneratorClassContextFixture : BaseFixture<GeneratorClassContext>
+internal class GeneratorSyntaxContextFixture : BaseFixture<GeneratorSyntaxContext>
 {
     private IEnumerable<SyntaxTree> _syntaxTrees = new List<SyntaxTree>();
 
-    public GeneratorClassContextFixture()
+    public GeneratorSyntaxContextFixture()
     {
         Fixture.Register(() =>
         {
@@ -22,18 +23,26 @@ internal class GeneratorClassContextFixture : BaseFixture<GeneratorClassContext>
                 .OfType<ClassDeclarationSyntax>()
                 .First();
 
-            return new GeneratorClassContext(classSyntax, compilation.GetSemanticModel(classSyntax.SyntaxTree));
+            var constructorInfo = typeof(GeneratorSyntaxContext).GetConstructor(
+                BindingFlags.Instance | BindingFlags.NonPublic,
+                null,
+                new Type[] {typeof(SyntaxNode), typeof(Lazy<SemanticModel>), typeof(ISyntaxHelper) },
+                null);
+
+            GeneratorSyntaxContext generatorSyntaxContext = constructorInfo.Invoke(new object[] { /* constructor parameter values */ }) as GeneratorSyntaxContext;
+            
+            return new GeneratorSyntaxContext{ Node = { classSyntax, compilation.GetSemanticModel(classSyntax.SyntaxTree))};
         });
         Fixture.Register(() => CancellationToken.None);
     }
 
-    public GeneratorClassContextFixture WithConfigurations(params Type[] configClasses)
+    public GeneratorSyntaxContextFixture WithConfigurations(params Type[] configClasses)
     {
         _syntaxTrees = configClasses.Select(CreateSyntaxTree);
         return this;
     }
     
-    public GeneratorClassContextFixture WithSyntaxTrees(params SyntaxTree[] syntaxTrees)
+    public GeneratorSyntaxContextFixture WithSyntaxTrees(params SyntaxTree[] syntaxTrees)
     {
         _syntaxTrees = syntaxTrees;
         return this;

@@ -24,36 +24,33 @@ internal static class Parser
     private static bool IsTypelyConfigurationClass(ClassDeclarationSyntax syntax) =>
         syntax.HasInterface(TypelyConfiguration.InterfaceName);
 
-    private static bool IsConfigureMethod(SyntaxNode syntaxNode) =>
-        syntaxNode is MethodDeclarationSyntax c && c.Identifier.Text == TypelyConfiguration.ConfigureMethodName;
-
     /// <summary>
-    /// Filter classes having an interface "ITypelyConfiguration" that matches the 
-    /// namespace and returns the <see cref="GeneratorClassContext"/>.
+    /// Filter classes having an interface full name "Typely.Core.ITypelyConfiguration".
     /// </summary>
-    internal static GeneratorClassContext? GetSemanticTargetForGeneration(GeneratorSyntaxContext context,
-        CancellationToken cancellationToken)
+    private static bool IsTypelyConfigurationClass(SemanticModel model, ClassDeclarationSyntax classDeclarationSyntax)
     {
-        var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
-        var classSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax)!;
-
-        return classSymbol.AllInterfaces.Any(x => x.ToString() == TypelyConfiguration.FullInterfaceName)
-            ? new GeneratorClassContext(classDeclarationSyntax, context.SemanticModel)
-            : null;
+        var classSymbol = model.GetDeclaredSymbol(classDeclarationSyntax)!;
+        return !classSymbol.AllInterfaces.Any(x => x.ToString() == TypelyConfiguration.FullInterfaceName);
     }
-
+    
     /// <summary>
-    /// Execute the different "ITypelyConfiguration" classes and generate models of the desired user types.
+    /// Filter classes having an interface "ITypelyConfiguration" and generate models of the desired user types.
     /// </summary>
     /// <param name="context">The generator's context.</param>
     /// <param name="cancellationToken">A token to notify the operation should be cancelled.</param>
     /// <returns>A list of representation of desired user types.</returns>
-    internal static ImmutableArray<EmittableType> GetEmittableTypes(GeneratorClassContext? context,
+    internal static IReadOnlyList<EmittableType>? GetEmittableTypesForClasses(GeneratorSyntaxContext context,
         CancellationToken cancellationToken) 
     {
+        var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
+
+        if (!IsTypelyConfigurationClass(context.SemanticModel, classDeclarationSyntax))
+        {
+            return null;
+        }
+
         var emittableTypes = new List<EmittableType>();
-        var classSyntaxes = context!.Value.ClassDeclarationSyntax
-            .SyntaxTree
+        var classSyntaxes = classDeclarationSyntax.SyntaxTree
             .GetRoot()
             .DescendantNodes()
             .OfType<ClassDeclarationSyntax>()
@@ -64,19 +61,22 @@ internal static class Parser
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var classEmittableTypes = ParseClass(classSyntax, context.Value.SemanticModel);
+            var classEmittableTypes = ParseClass(classSyntax, context.SemanticModel);
             emittableTypes.AddRange(classEmittableTypes);
         }
 
-        return emittableTypes.ToImmutableArray();
+        return emittableTypes;
     }
+
+    /// <summary>
+    /// Filter methods having a name that matches <see cref="TypelyConfiguration.ConfigureMethodName"/>.
+    /// </summary>
+    private static bool IsConfigureMethod(SyntaxNode syntaxNode) =>
+        syntaxNode is MethodDeclarationSyntax { Identifier.Text: TypelyConfiguration.ConfigureMethodName };
 
     /// <summary>
     /// Parse a <see cref="ClassDeclarationSyntax"/> and generate a list of <see cref="EmittableType"/>.
     /// </summary>
-    /// <param name="classSyntax">The class to parse.</param>
-    /// <param name="model">The <see cref="SemanticModel"/>.</param>
-    /// <returns>A list of <see cref="EmittableType"/>.</returns>
     private static IEnumerable<EmittableType> ParseClass(ClassDeclarationSyntax classSyntax, SemanticModel model)
     {
         var methodSyntax = classSyntax.DescendantNodes()

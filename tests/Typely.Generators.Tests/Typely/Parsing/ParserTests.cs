@@ -8,11 +8,11 @@ public class ParserTests
     [Fact]
     public void ParenthesizedDeclarationConfiguration_Should_Throw()
     {
-        var generatorClassContext = new GeneratorClassContextFixture()
+        var generatorClassContext = new GeneratorSyntaxContextFixture()
             .WithConfigurations(typeof(ParenthesizedDeclarationConfiguration))
             .Create();
         
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
 
     [Fact]
@@ -33,8 +33,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -55,8 +55,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -77,8 +77,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -99,8 +99,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -121,8 +121,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -143,8 +143,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -165,8 +165,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -187,8 +187,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -209,8 +209,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -231,8 +231,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -253,8 +253,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -275,8 +275,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -297,8 +297,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -319,8 +319,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -341,8 +341,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -363,8 +363,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -385,8 +385,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -407,8 +407,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -429,8 +429,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
     
     [Fact]
@@ -451,8 +451,8 @@ public class ParserTests
             }
             """);
         
-        var generatorClassContext = new GeneratorClassContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypes(generatorClassContext, CancellationToken.None));
+        var generatorClassContext = new GeneratorSyntaxContextFixture().WithSyntaxTrees(syntaxTree).Create();
+        Assert.Throws<NotSupportedException>(() => Parser.GetEmittableTypesForClasses(generatorClassContext, CancellationToken.None));
     }
 }
 
