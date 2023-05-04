@@ -1,8 +1,10 @@
-﻿namespace Typely.Generators.Typely.Parsing;
+﻿using System.Collections.Immutable;
+
+namespace Typely.Generators.Typely.Parsing;
 
 internal record EmittableType(string UnderlyingType, bool IsValueType, string? TypeName, string? Name, string Namespace,
     string ConfigurationNamespace, ConstructTypeKind ConstructTypeKind, string? NormalizeFunctionBody,
-    IReadOnlyList<EmittableRule> Rules, IReadOnlyList<string> AdditionalNamespaces, TypeProperties Properties)
+    ImmutableArray<EmittableRule> Rules, ImmutableArray<string> AdditionalNamespaces, TypeProperties Properties)
 {
     /// <summary>
     /// Type wrapped by the value object.
@@ -47,12 +49,12 @@ internal record EmittableType(string UnderlyingType, bool IsValueType, string? T
     /// <summary>
     /// A set of rules wich defines the value object.
     /// </summary>
-    public IReadOnlyList<EmittableRule> Rules { get; } = Rules;
+    public ImmutableArray<EmittableRule> Rules { get; } = Rules;
 
     /// <summary>
     /// Additional namespaces to import.
     /// </summary>
-    public IReadOnlyList<string> AdditionalNamespaces { get; } = AdditionalNamespaces;
+    public ImmutableArray<string> AdditionalNamespaces { get; } = AdditionalNamespaces;
 
     /// <summary>
     /// A set of dynamic properties. For example: MaxLength on string type.
