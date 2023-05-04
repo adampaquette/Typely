@@ -40,7 +40,7 @@ internal static class Emitter
             #nullable enable
 
             namespace {{emittableType.Namespace}}
-            {
+            {//{{Count}}
                 [TypeConverter(typeof(TypelyTypeConverter<{{underlyingType}}, {{typeName}}>))]
                 [JsonConverter(typeof(TypelyJsonConverter<{{underlyingType}}, {{typeName}}>))]
                 public partial {{constructType}} {{typeName}} : ITypelyValue<{{underlyingType}}, {{typeName}}>, IEquatable<{{typeName}}>, IComparable<{{typeName}}>, IComparable{{maxLengthInterface}}
