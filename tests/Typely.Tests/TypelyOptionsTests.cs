@@ -13,7 +13,7 @@ public class TypelyOptionsTests
         var validationError = TypelyOptionTestsType.Validate(expectedValue)!;
         TypelyOptions.Instance.EnableSensitiveDataLogging(false);
 
-        Assert.Equal(expectedValue, validationError.PlaceholderValues[ValidationPlaceholders.Value]);
+        Assert.Equal(expectedValue.ToString(), validationError.PlaceholderValues[ValidationPlaceholders.Value]);
     }
     
     [Fact]

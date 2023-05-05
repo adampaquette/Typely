@@ -166,6 +166,6 @@ internal class EmittableTypeBuilderBase
         ModelExtensions.GetSymbolInfo(_model, lambdaExpression).Symbol?.ContainingNamespace.ToDisplayString();
 
     protected void AddRule(string errorCode, string rule,
-        string message, params (string Key, object Value)[] placeholders) =>
+        string message, params (string Key, string Value)[] placeholders) =>
         EmittableTypeBuilder.AddRule(EmittableRuleBuilder.From(errorCode, rule, message, placeholders));
 }

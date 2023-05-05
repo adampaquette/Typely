@@ -16,13 +16,13 @@ public static class ValidationErrorFactory
     /// <param name="placeholderValues">List of the placeholders with their values.</param>
     /// <returns>A <see cref="ValidationError"/>.</returns>
     public static ValidationError Create<TValue>(TValue value, string errorCode,
-        string errorMessageWithPlaceholders, string typeName, Dictionary<string, object?>? placeholderValues = null)
+        string errorMessageWithPlaceholders, string typeName, Dictionary<string, string?>? placeholderValues = null)
     {
-        object? attemptedValue = null;
+        string? attemptedValue = null;
 
         if (placeholderValues == null)
         {
-            placeholderValues = new Dictionary<string, object?>();
+            placeholderValues = new Dictionary<string, string?>();
         }
 
         if (!placeholderValues.ContainsKey(ValidationPlaceholders.Name))
@@ -33,7 +33,7 @@ public static class ValidationErrorFactory
         if (typeof(TValue) == typeof(string))
         {
             var actualLength = (value as string)?.Length ?? 0;
-            placeholderValues.Add(ValidationPlaceholders.ActualLength, actualLength);
+            placeholderValues.Add(ValidationPlaceholders.ActualLength, actualLength.ToString());
         }
 
         // if (TypelyOptions.Instance.IsSensitiveDataLoggingEnabled)

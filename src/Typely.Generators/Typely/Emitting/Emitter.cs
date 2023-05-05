@@ -40,7 +40,7 @@ internal static class Emitter
             #nullable enable
 
             namespace {{emittableType.Namespace}}
-            {//{{Count}}
+            {
                 [TypeConverter(typeof(TypelyTypeConverter<{{underlyingType}}, {{typeName}}>))]
                 [JsonConverter(typeof(TypelyJsonConverter<{{underlyingType}}, {{typeName}}>))]
                 public partial {{constructType}} {{typeName}} : ITypelyValue<{{underlyingType}}, {{typeName}}>, IEquatable<{{typeName}}>, IComparable<{{typeName}}>, IComparable{{maxLengthInterface}}
@@ -203,7 +203,7 @@ internal static class Emitter
         return builder.ToString();
     }
 
-    private static string GenerateValidationPlaceholders(IReadOnlyDictionary<string, object?> placeholders)
+    private static string GenerateValidationPlaceholders(IReadOnlyDictionary<string, string> placeholders)
     {
         if (!placeholders.Any())
         {
@@ -212,14 +212,14 @@ internal static class Emitter
 
         var builder = new StringBuilder("""
             ,
-                                new Dictionary<string, object?>
+                                new Dictionary<string, string>
                                 {
             """)
             .AppendLine();
 
         foreach (var placeholder in placeholders)
         {
-            builder.AppendLine($$"""                        { "{{placeholder.Key}}", {{placeholder.Value}} },""");
+            builder.AppendLine($$"""                        { "{{placeholder.Key}}", "{{placeholder.Value}}" },""");
         }
 
         return builder.Append("                    });")

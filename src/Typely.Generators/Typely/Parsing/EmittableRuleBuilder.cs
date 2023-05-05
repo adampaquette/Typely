@@ -23,7 +23,7 @@ internal class EmittableRuleBuilder
     /// <summary>
     /// Contains the list of variables and values that can be formatted into the error message.
     /// </summary>
-    public Dictionary<string, object?> PlaceholderValues { get; } = new();
+    public Dictionary<string, string> PlaceholderValues { get; } = new();
 
     /// <summary>
     /// Private constructor.
@@ -66,7 +66,7 @@ internal class EmittableRuleBuilder
     /// <returns>A <see cref="EmittableRuleBuilder"/></returns>
     /// <remarks>It replaces variable with constants inside the rule.</remarks>
     public static EmittableRuleBuilder From(string errorCode, string rule, string message,
-        params (string Key, object Value)[] placeholders)
+        params (string Key, string Value)[] placeholders)
     {
         var emittableRule = new EmittableRuleBuilder(errorCode, rule, message);
         foreach (var placeholder in placeholders)
