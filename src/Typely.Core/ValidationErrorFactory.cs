@@ -16,13 +16,13 @@ public static class ValidationErrorFactory
     /// <param name="placeholderValues">List of the placeholders with their values.</param>
     /// <returns>A <see cref="ValidationError"/>.</returns>
     public static ValidationError Create<TValue>(TValue value, string errorCode,
-        string errorMessageWithPlaceholders, string typeName, Dictionary<string, string?>? placeholderValues = null)
+        string errorMessageWithPlaceholders, string typeName, Dictionary<string, string>? placeholderValues = null)
     {
         string? attemptedValue = null;
 
         if (placeholderValues == null)
         {
-            placeholderValues = new Dictionary<string, string?>();
+            placeholderValues = new Dictionary<string, string>();
         }
 
         if (!placeholderValues.ContainsKey(ValidationPlaceholders.Name))

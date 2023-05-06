@@ -11,7 +11,7 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
     {
     }
 
-    public EmittableType Build()
+    public override EmittableType? Build()
     {
         foreach (var invocation in Invocations)
         {
@@ -39,7 +39,8 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
                         EmittableTypeBuilder.Properties.SetMaxLength(int.Parse(max));
                         AddRule(
                             errorCode: ErrorCodes.Length,
-                            rule: $"{Emitter.ValueParameterName}.Length < {min} || {Emitter.ValueParameterName}.Length > {max}",
+                            rule:
+                            $"{Emitter.ValueParameterName}.Length < {min} || {Emitter.ValueParameterName}.Length > {max}",
                             message: ErrorMessageResource.Length,
                             (ValidationPlaceholder.MinLength, min), (ValidationPlaceholder.MaxLength, max));
                     }
@@ -115,14 +116,9 @@ internal class EmittableTypeBuilderOfString : EmittableTypeBuilderBase, IEmittab
                     continue;
             }
 
-            if (TryHandleInvocation(invocation))
-            {
-                continue;
-            }
-
-            throw new NotSupportedException(invocation.MemberName);
+            TryHandleInvocation(invocation);
         }
 
-        return EmittableTypeBuilder.Build();
+        return EmittableTypeBuilder.TypeName == null ? null : EmittableTypeBuilder.Build();
     }
 }

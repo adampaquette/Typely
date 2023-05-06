@@ -101,7 +101,10 @@ internal static class Parser
         foreach (var parsedStatement in parsedStatements)
         {
             var emittableType = EmittableTypeBuilderFactory.Create(defaultNamespace, parsedStatement).Build();
-            emittableTypes.Add(emittableType);
+            if (emittableType != null)
+            {
+                emittableTypes.Add(emittableType);
+            }
         }
 
         return emittableTypes;
@@ -134,6 +137,14 @@ internal static class Parser
             else if (bodySyntaxNode is LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
             {
                 ParseDeclarationStatement(parsedStatementVariables, parsedExpression, localDeclarationStatementSyntax);
+            }
+
+            //Parse failed for this statement, skip it. 
+            if (parsedExpression.Root == string.Empty && parsedStatements.Contains(parsedExpression))
+            {
+                parsedStatements.Remove(parsedExpression);
+                //We don't want to invalidate the whole class because of a single statement.
+                continue;
             }
 
             if (DoesNotUseBuilderParameter(parsedExpression))
@@ -223,10 +234,6 @@ internal static class Parser
         else if (syntaxNode is IdentifierNameSyntax nameSyntax)
         {
             parsed.Root = nameSyntax.Identifier.Text;
-        }
-        else
-        {
-            throw new NotSupportedException(syntaxNode.ToString());
         }
     }
 }

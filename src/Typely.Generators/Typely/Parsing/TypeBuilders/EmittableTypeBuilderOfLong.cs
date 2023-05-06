@@ -8,19 +8,4 @@ internal class EmittableTypeBuilderOfLong : EmittableTypeBuilderBase, IEmittable
         : base(invocations, new EmittableTypeBuilder("long", true, defaultNamespace), model)
     {
     }
-
-    public EmittableType Build()
-    {
-        foreach (var invocation in Invocations)
-        {
-            if (TryHandleInvocation(invocation))
-            {
-                continue;
-            }
-            
-            throw new NotSupportedException(invocation.MemberName);
-        }
-
-        return EmittableTypeBuilder.Build();
-    }
 }

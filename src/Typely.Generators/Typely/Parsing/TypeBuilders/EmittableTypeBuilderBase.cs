@@ -19,6 +19,16 @@ internal class EmittableTypeBuilderBase
         _model = model;
     }
 
+    public virtual EmittableType? Build()
+    {
+        foreach (var invocation in Invocations)
+        {
+            TryHandleInvocation(invocation);
+        }
+
+        return EmittableTypeBuilder.TypeName == null ? null : EmittableTypeBuilder.Build();
+    }
+    
     protected bool TryHandleInvocation(ParsedInvocation invocation) =>
         TryHandleCommonInvocation(invocation) ||
         TryHandleValidationInvocation(invocation) ||

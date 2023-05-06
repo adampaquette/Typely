@@ -8,19 +8,4 @@ internal class EmittableTypeBuilderOfSByte : EmittableTypeBuilderBase, IEmittabl
         : base(invocations, new EmittableTypeBuilder("sbyte", true, defaultNamespace), model)
     {
     }
-
-    public EmittableType Build()
-    {
-        foreach (var invocation in Invocations)
-        {
-            if (TryHandleInvocation(invocation))
-            {
-                continue;
-            }
-
-            throw new NotSupportedException(invocation.MemberName);
-        }
-
-        return EmittableTypeBuilder.Build();
-    }
 }
