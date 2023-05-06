@@ -21,6 +21,6 @@ public class EmittableTypeTests
             "namespace", "configNamespace", ConstructTypeKind.Struct, null,
             rules, new List<string> { "System" }.ToImmutableArray(), new TypeProperties());
 
-        Assert.Equal(type1, type2);
+        Assert.True(type1.Equals(type2));
     }
 }

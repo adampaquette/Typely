@@ -1,6 +1,6 @@
 ﻿namespace Typely.Generators.Typely.Parsing;
 
-public class TypeProperties : Dictionary<string, object>
+public class TypeProperties : Dictionary<string, string>
 {
     public const string MaxLength = nameof(MaxLength);
     
@@ -8,13 +8,13 @@ public class TypeProperties : Dictionary<string, object>
     {
         if (!ContainsKey(MaxLength))
         {
-            Add(MaxLength, value);
+            Add(MaxLength, value.ToString());
         }
         else
         {
-            if ((int)this[MaxLength] > value)
+            if (int.Parse(this[MaxLength]) > value)
             {
-                this[MaxLength] = value;
+                this[MaxLength] = value.ToString();
             }
         }
     }

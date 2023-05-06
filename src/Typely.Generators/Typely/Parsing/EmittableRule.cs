@@ -46,7 +46,7 @@ internal class EmittableRule : IEquatable<EmittableRule>
         return ErrorCode == other.ErrorCode &&
                Rule == other.Rule &&
                Message == other.Message &&
-               DictionaryEquals(PlaceholderValues, other.PlaceholderValues);
+               DictionaryComparer<string, string>.Default.Equals(PlaceholderValues, other.PlaceholderValues);
     }
     
     private bool DictionaryEquals(IReadOnlyDictionary<string, string> dict1, IReadOnlyDictionary<string, string> dict2)

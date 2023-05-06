@@ -13,6 +13,6 @@ public class EmittableRuleTests
         var rule2 = new EmittableRule("string", "Name", "Name",
             new Dictionary<string, string> { { "MaxLength", "10" } });
 
-        Assert.Equal(rule1, rule2);
+        Assert.True(rule1.Equals(rule2));
     }
 }
