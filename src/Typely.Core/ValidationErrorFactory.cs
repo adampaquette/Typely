@@ -18,7 +18,7 @@ public static class ValidationErrorFactory
     public static ValidationError Create<TValue>(TValue value, string errorCode,
         string errorMessageWithPlaceholders, string typeName, Dictionary<string, object?>? placeholderValues = null)
     {
-        object? attemptedValue = null;
+        string? attemptedValue = null;
 
         if (placeholderValues == null)
         {
@@ -33,7 +33,7 @@ public static class ValidationErrorFactory
         if (typeof(TValue) == typeof(string))
         {
             var actualLength = (value as string)?.Length ?? 0;
-            placeholderValues.Add(ValidationPlaceholders.ActualLength, actualLength);
+            placeholderValues.Add(ValidationPlaceholders.ActualLength, actualLength.ToString());
         }
 
         // if (TypelyOptions.Instance.IsSensitiveDataLoggingEnabled)

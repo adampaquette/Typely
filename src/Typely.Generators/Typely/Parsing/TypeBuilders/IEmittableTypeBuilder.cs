@@ -2,5 +2,5 @@
 
 internal interface IEmittableTypeBuilder
 {
-    EmittableType Build();
+    EmittableType? Build();
 }

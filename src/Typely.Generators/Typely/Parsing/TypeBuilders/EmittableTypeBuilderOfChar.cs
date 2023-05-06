@@ -5,22 +5,7 @@ namespace Typely.Generators.Typely.Parsing.TypeBuilders;
 internal class EmittableTypeBuilderOfChar : EmittableTypeBuilderBase, IEmittableTypeBuilder
 {
     public EmittableTypeBuilderOfChar(string defaultNamespace, IEnumerable<ParsedInvocation> invocations, SemanticModel model)
-        : base(invocations, new EmittableType("char", true, defaultNamespace), model)
+        : base(invocations, new EmittableTypeBuilder("char", true, defaultNamespace), model)
     {
-    }
-
-    public EmittableType Build()
-    {
-        foreach (var invocation in Invocations)
-        {
-            if (TryHandleInvocation(invocation))
-            {
-                continue;
-            }
-            
-            throw new NotSupportedException(invocation.MemberName);
-        }
-
-        return EmittableType;
     }
 }

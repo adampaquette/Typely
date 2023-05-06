@@ -60,7 +60,7 @@ public class ValidationError
         var errorMessage = errorMessageWithPlaceholders;
         foreach (var placeholder in placeholderValues)
         {
-            errorMessage = errorMessage.Replace("{" + placeholder.Key + "}", placeholder.Value?.ToString());
+            errorMessage = errorMessage.Replace("{" + placeholder.Key + "}", placeholder.Value?.ToString() ?? string.Empty);
         }
         return errorMessage;
     }

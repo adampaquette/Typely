@@ -7,25 +7,14 @@ using Typely.Generators.Typely.Parsing.TypeBuilders;
 namespace Typely.Generators.Typely.Parsing;
 
 /// <summary>
-/// Parse a <see cref="ClassDeclarationSyntax"/> and generates a list of <see cref="EmittableType"/>.
+/// Parse a <see cref="ClassDeclarationSyntax"/> and generates a list of <see cref="EmittableTypeBuilder"/>.
 /// </summary>
-internal sealed class Parser
+internal static class Parser
 {
-    private readonly CancellationToken _cancellationToken;
-    private readonly Compilation _compilation;
-    private readonly Action<Diagnostic> _reportDiagnostic;
-
-    public Parser(Compilation compilation, Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
-    {
-        _compilation = compilation;
-        _cancellationToken = cancellationToken;
-        _reportDiagnostic = reportDiagnostic;
-    }
-
     /// <summary>
     /// Filter classes having an interface name "ITypelyConfiguration".
     /// </summary>
-    internal static bool IsTypelyConfigurationClass(SyntaxNode syntaxNode) =>
+    internal static bool IsTypelyConfigurationClass(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
         syntaxNode is ClassDeclarationSyntax c && IsTypelyConfigurationClass(c);
 
     /// <summary>
@@ -34,39 +23,55 @@ internal sealed class Parser
     private static bool IsTypelyConfigurationClass(ClassDeclarationSyntax syntax) =>
         syntax.HasInterface(TypelyConfiguration.InterfaceName);
 
-    private static bool IsConfigureMethod(SyntaxNode syntaxNode) =>
-        syntaxNode is MethodDeclarationSyntax c && c.Identifier.Text == TypelyConfiguration.ConfigureMethodName;
+    /// <summary>
+    /// Filter classes having an interface full name "Typely.Core.ITypelyConfiguration".
+    /// </summary>
+    private static bool IsTypelyConfigurationClass(SemanticModel model, ClassDeclarationSyntax classDeclarationSyntax)
+    {
+        var classSymbol = model.GetDeclaredSymbol(classDeclarationSyntax)!;
+        return classSymbol.AllInterfaces.Any(x => x.ToString() == TypelyConfiguration.FullInterfaceName);
+    }
 
     /// <summary>
-    /// Filter classes having an interface "ITypelyConfiguration" that matches the 
-    /// namespace and returns the <see cref="ClassDeclarationSyntax"/>.
+    /// Filter classes having an interface "ITypelyConfiguration" and generate models of the desired user types.
     /// </summary>
-    internal static ClassDeclarationSyntax? GetSemanticTargetForGeneration(GeneratorSyntaxContext context)
+    /// <param name="context">The generator's context.</param>
+    /// <param name="cancellationToken">A token to notify the operation should be cancelled.</param>
+    /// <returns>A list of representation of desired user types.</returns>
+    internal static IReadOnlyList<EmittableType>? GetEmittableTypesForClass(GeneratorSyntaxContext context,
+        CancellationToken cancellationToken)
     {
         var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
-        var classSymbol = context.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax)!;
 
-        return classSymbol.AllInterfaces.Any(x => x.ToString() == TypelyConfiguration.FullInterfaceName)
-            ? classDeclarationSyntax
+        return IsTypelyConfigurationClass(context.SemanticModel, classDeclarationSyntax)
+            ? GetEmittableTypesForClass(classDeclarationSyntax, context.SemanticModel, cancellationToken)
             : null;
     }
 
     /// <summary>
-    /// Execute the different "ITypelyConfiguration" classes and generate models of the desired user types.
+    /// Filter classes having an interface "ITypelyConfiguration" and generate models of the desired user types.
     /// </summary>
-    /// <param name="syntaxTree">SyntaxTree to parse</param>
+    /// <param name="context">The generator's context.</param>
+    /// <param name="semanticModel"></param>
+    /// <param name="cancellationToken">A token to notify the operation should be cancelled.</param>
+    /// <param name="classDeclarationSyntax">The class containing the specification.</param>
     /// <returns>A list of representation of desired user types.</returns>
-    public List<EmittableType> GetEmittableTypes(SyntaxTree syntaxTree)
+    internal static IReadOnlyList<EmittableType> GetEmittableTypesForClass(
+        ClassDeclarationSyntax classDeclarationSyntax, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
-        _cancellationToken.ThrowIfCancellationRequested();
-
         var emittableTypes = new List<EmittableType>();
-        var classSyntaxes = syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>()
-            .Where(IsTypelyConfigurationClass).ToList();
-        var model = _compilation.GetSemanticModel(syntaxTree);
+        var classSyntaxes = classDeclarationSyntax.SyntaxTree
+            .GetRoot()
+            .DescendantNodes()
+            .OfType<ClassDeclarationSyntax>()
+            .Where(IsTypelyConfigurationClass)
+            .ToList();
+
         foreach (var classSyntax in classSyntaxes)
         {
-            var classEmittableTypes = ParseClass(classSyntax, model);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var classEmittableTypes = ParseClass(classSyntax, semanticModel);
             emittableTypes.AddRange(classEmittableTypes);
         }
 
@@ -74,12 +79,15 @@ internal sealed class Parser
     }
 
     /// <summary>
+    /// Filter methods having a name that matches <see cref="TypelyConfiguration.ConfigureMethodName"/>.
+    /// </summary>
+    private static bool IsConfigureMethod(SyntaxNode syntaxNode) =>
+        syntaxNode is MethodDeclarationSyntax { Identifier.Text: TypelyConfiguration.ConfigureMethodName };
+
+    /// <summary>
     /// Parse a <see cref="ClassDeclarationSyntax"/> and generate a list of <see cref="EmittableType"/>.
     /// </summary>
-    /// <param name="classSyntax">The class to parse.</param>
-    /// <param name="model">The <see cref="SemanticModel"/>.</param>
-    /// <returns>A list of <see cref="EmittableType"/>.</returns>
-    private IEnumerable<EmittableType> ParseClass(ClassDeclarationSyntax classSyntax, SemanticModel model)
+    private static IEnumerable<EmittableType> ParseClass(ClassDeclarationSyntax classSyntax, SemanticModel model)
     {
         var methodSyntax = classSyntax.DescendantNodes()
             .OfType<MethodDeclarationSyntax>()
@@ -93,7 +101,10 @@ internal sealed class Parser
         foreach (var parsedStatement in parsedStatements)
         {
             var emittableType = EmittableTypeBuilderFactory.Create(defaultNamespace, parsedStatement).Build();
-            emittableTypes.Add(emittableType);
+            if (emittableType != null)
+            {
+                emittableTypes.Add(emittableType);
+            }
         }
 
         return emittableTypes;
@@ -126,6 +137,14 @@ internal sealed class Parser
             else if (bodySyntaxNode is LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
             {
                 ParseDeclarationStatement(parsedStatementVariables, parsedExpression, localDeclarationStatementSyntax);
+            }
+
+            //Parse failed for this statement, skip it. 
+            if (parsedExpression.Root == string.Empty && parsedStatements.Contains(parsedExpression))
+            {
+                parsedStatements.Remove(parsedExpression);
+                //We don't want to invalidate the whole class because of a single statement.
+                continue;
             }
 
             if (DoesNotUseBuilderParameter(parsedExpression))
@@ -216,14 +235,5 @@ internal sealed class Parser
         {
             parsed.Root = nameSyntax.Identifier.Text;
         }
-        else
-        {
-            throw new NotSupportedException(syntaxNode.ToString());
-        }
     }
-
-    // private void Diag(DiagnosticDescriptor desc, Location? location, params object?[]? messageArgs)
-    // {
-    //     _reportDiagnostic(Diagnostic.Create(desc, location, messageArgs));
-    // }
 }

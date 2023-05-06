@@ -8,17 +8,27 @@ namespace Typely.Generators.Typely.Parsing.TypeBuilders;
 internal class EmittableTypeBuilderBase
 {
     protected readonly IEnumerable<ParsedInvocation> Invocations;
-    protected readonly EmittableType EmittableType;
+    protected readonly EmittableTypeBuilder EmittableTypeBuilder;
     private readonly SemanticModel _model;
 
-    protected EmittableTypeBuilderBase(IEnumerable<ParsedInvocation> invocations, EmittableType emittableType,
+    protected EmittableTypeBuilderBase(IEnumerable<ParsedInvocation> invocations, EmittableTypeBuilder emittableTypeBuilder,
         SemanticModel model)
     {
         Invocations = invocations;
-        EmittableType = emittableType;
+        EmittableTypeBuilder = emittableTypeBuilder;
         _model = model;
     }
 
+    public virtual EmittableType? Build()
+    {
+        foreach (var invocation in Invocations)
+        {
+            TryHandleInvocation(invocation);
+        }
+
+        return EmittableTypeBuilder.TypeName == null ? null : EmittableTypeBuilder.Build();
+    }
+    
     protected bool TryHandleInvocation(ParsedInvocation invocation) =>
         TryHandleCommonInvocation(invocation) ||
         TryHandleValidationInvocation(invocation) ||
@@ -29,40 +39,40 @@ internal class EmittableTypeBuilderBase
         switch (invocation.MemberName)
         {
             case TypelyBuilderOf.ForMethodName:
-                EmittableType.SetTypeName(invocation.GetFirstStringArgument());
+                EmittableTypeBuilder.SetTypeName(invocation.GetFirstStringArgument());
                 return true;
             case TypelyBuilderOf.AsClassMethodName:
-                EmittableType.AsClass();
+                EmittableTypeBuilder.AsClass();
                 return true;
             case TypelyBuilderOf.AsStructMethodName:
-                EmittableType.AsStruct();
+                EmittableTypeBuilder.AsStruct();
                 return true;
             case TypelyBuilderOf.WithNameMethodName:
                 if (invocation.GetFirstExpressionArgument() is ParenthesizedLambdaExpressionSyntax lambdaExpression1)
                 {
                     var expNamespace = GetContainingNamespace(lambdaExpression1);
-                    EmittableType.AdditionalNamespaces.Add(expNamespace!);
-                    EmittableType.SetName(lambdaExpression1.Body.ToString());
+                    EmittableTypeBuilder.AdditionalNamespaces.Add(expNamespace!);
+                    EmittableTypeBuilder.SetName(lambdaExpression1.Body.ToString());
                 }
                 else
                 {
-                    EmittableType.SetName($"\"{invocation.GetFirstStringArgument()}\"");
+                    EmittableTypeBuilder.SetName($"\"{invocation.GetFirstStringArgument()}\"");
                 }
 
                 return true;
             case TypelyBuilderOf.WithNamespaceMethodName:
-                EmittableType.SetNamespace(invocation.GetFirstStringArgument());
+                EmittableTypeBuilder.SetNamespace(invocation.GetFirstStringArgument());
                 return true;
             case TypelyBuilderOf.NormalizeMethodName:
                 var body = invocation.GetFirstExpressionArgument() as AnonymousFunctionExpressionSyntax;
                 if (body != null)
                 {
                     var namespaces = GetNamespaces(body.Body);
-                    EmittableType.AdditionalNamespaces.AddRange(namespaces!);
+                    EmittableTypeBuilder.AdditionalNamespaces.AddRange(namespaces!);
                 }
 
                 var value = invocation.GetLambdaBodyOfFirstArgument();
-                EmittableType.SetNormalizeFunction(value);
+                EmittableTypeBuilder.SetNormalizeFunction(value);
                 return true;
             case TypelyBuilderOf.AsFactoryMethodName:
                 //TODO : Support as factory to reflect code
@@ -100,17 +110,17 @@ internal class EmittableTypeBuilderBase
                 if (invocation.GetFirstExpressionArgument() is ParenthesizedLambdaExpressionSyntax lambdaExpression2)
                 {
                     var expNamespace = GetContainingNamespace(lambdaExpression2);
-                    EmittableType.AdditionalNamespaces.Add(expNamespace!);
-                    EmittableType.SetCurrentMessage(lambdaExpression2.Body.ToString());
+                    EmittableTypeBuilder.AdditionalNamespaces.Add(expNamespace!);
+                    EmittableTypeBuilder.SetCurrentMessage(lambdaExpression2.Body.ToString());
                 }
                 else
                 {
-                    EmittableType.SetCurrentMessage($"\"{invocation.GetFirstStringArgument()}\"");
+                    EmittableTypeBuilder.SetCurrentMessage($"\"{invocation.GetFirstStringArgument()}\"");
                 }
 
                 return true;
             case TypelyBuilderOf.WithErrorCodeMethodName:
-                EmittableType.SetCurrentErrorCode(invocation.GetFirstStringArgument());
+                EmittableTypeBuilder.SetCurrentErrorCode(invocation.GetFirstStringArgument());
                 return true;
             default: return false;
         }
@@ -160,12 +170,12 @@ internal class EmittableTypeBuilderBase
         .DescendantNodes()
         .SelectMany(node => NamespaceResolver.GetNamespacesFromLambda(node, _model))
         .Distinct()
-        .Where(x => x != EmittableType.ConfigurationNamespace);
+        .Where(x => x != EmittableTypeBuilder.ConfigurationNamespace);
 
     private string? GetContainingNamespace(ParenthesizedLambdaExpressionSyntax lambdaExpression) =>
         ModelExtensions.GetSymbolInfo(_model, lambdaExpression).Symbol?.ContainingNamespace.ToDisplayString();
 
     protected void AddRule(string errorCode, string rule,
-        string message, params (string Key, object Value)[] placeholders) =>
-        EmittableType.AddRule(EmittableRule.From(errorCode, rule, message, placeholders));
+        string message, params (string Key, string Value)[] placeholders) =>
+        EmittableTypeBuilder.AddRule(EmittableRuleBuilder.From(errorCode, rule, message, placeholders));
 }
