@@ -35,9 +35,9 @@ namespace Election
             if (value.Equals(1))
             {
                 return ValidationErrorFactory.Create(value, "NotEqual", ErrorMessages.NotEqual, "Presidency vote",
-                    new Dictionary<string, object?>
+                    new Dictionary<string, string>
                     {
-                        { "ComparisonValue", 1 },
+                        { "ComparisonValue", "1" },
                     });
             }
 
@@ -54,36 +54,36 @@ namespace Election
             if (value <= 10)
             {
                 return ValidationErrorFactory.Create(value, "GreaterThan", LocalizedMessages.CustomMessage, "Presidency vote",
-                    new Dictionary<string, object?>
+                    new Dictionary<string, string>
                     {
-                        { "ComparisonValue", 10 },
+                        { "ComparisonValue", "10" },
                     });
             }
 
             if (value < 10)
             {
                 return ValidationErrorFactory.Create(value, "GreaterThanOrEqualTo", A.CustomLocalization.Value, "Presidency vote",
-                    new Dictionary<string, object?>
+                    new Dictionary<string, string>
                     {
-                        { "ComparisonValue", 10 },
+                        { "ComparisonValue", "10" },
                     });
             }
 
             if (value >= 20)
             {
                 return ValidationErrorFactory.Create(value, "LessThan", ErrorMessages.LessThan, "Presidency vote",
-                    new Dictionary<string, object?>
+                    new Dictionary<string, string>
                     {
-                        { "ComparisonValue", 20 },
+                        { "ComparisonValue", "20" },
                     });
             }
 
             if (value > 20)
             {
                 return ValidationErrorFactory.Create(value, "LessThanOrEqualTo", ErrorMessages.LessThanOrEqualTo, "Presidency vote",
-                    new Dictionary<string, object?>
+                    new Dictionary<string, string>
                     {
-                        { "ComparisonValue", 20 },
+                        { "ComparisonValue", "20" },
                     });
             }
 

@@ -1,4 +1,6 @@
-﻿namespace Typely.Generators.Typely.Parsing;
+﻿using System.Collections.Immutable;
+
+namespace Typely.Generators.Typely.Parsing;
 
 /// <summary>
 /// Contains the metadata of a rule to be emitted.
@@ -77,5 +79,6 @@ internal class EmittableRuleBuilder
         return emittableRule;
     }
 
-    public EmittableRule Build() => new(ErrorCode, Rule, Message, PlaceholderValues);
+    public EmittableRule Build() =>
+        new(ErrorCode, Rule, Message, PlaceholderValues.ToImmutableDictionary());
 }

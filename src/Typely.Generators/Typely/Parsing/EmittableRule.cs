@@ -25,10 +25,10 @@ internal class EmittableRule : IEquatable<EmittableRule>
     /// <summary>
     /// Contains the list of variables and values that can be formatted into the error message.
     /// </summary>
-    public IReadOnlyDictionary<string, string> PlaceholderValues { get; }
+    public ImmutableDictionary<string, string> PlaceholderValues { get; }
 
     public EmittableRule(string errorCode, string rule, string message,
-        IReadOnlyDictionary<string, string> placeholderValues)
+        ImmutableDictionary<string, string> placeholderValues)
     {
         ErrorCode = errorCode;
         Rule = rule;
@@ -49,27 +49,6 @@ internal class EmittableRule : IEquatable<EmittableRule>
                DictionaryComparer<string, string>.Default.Equals(PlaceholderValues, other.PlaceholderValues);
     }
     
-    private bool DictionaryEquals(IReadOnlyDictionary<string, string> dict1, IReadOnlyDictionary<string, string> dict2)
-    {
-        if (Equals(dict1, dict2))
-        {
-            return true;
-        }
-
-        if (dict1.Count != dict2.Count)
-        {
-            return false;
-        }
-
-        foreach (var keyValuePair in dict1)
-        {
-            if (!dict2.TryGetValue(keyValuePair.Key, out var value)) return false;
-            if (keyValuePair.Value != value) return false;
-        }
-
-        return true;
-    }
-
     public override bool Equals(object? obj) => Equals(obj as EmittableRule);
 
     public override int GetHashCode()
