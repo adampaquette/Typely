@@ -25,7 +25,7 @@ public class TestServerFixture
                             "ErrorMessageWithPlaceholders",
                             "AttemptedValue",
                             "TypeName",
-                            new Dictionary<string, string> { { "Placeholder", "PlaceholderValue" } }));
+                            new Dictionary<string, object?> { { "Placeholder", "PlaceholderValue" } }));
                 });
             });
 

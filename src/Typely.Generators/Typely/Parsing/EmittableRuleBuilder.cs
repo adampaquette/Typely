@@ -25,7 +25,7 @@ internal class EmittableRuleBuilder
     /// <summary>
     /// Contains the list of variables and values that can be formatted into the error message.
     /// </summary>
-    public Dictionary<string, string> PlaceholderValues { get; } = new();
+    public Dictionary<string, object?> PlaceholderValues { get; } = new();
 
     /// <summary>
     /// Private constructor.

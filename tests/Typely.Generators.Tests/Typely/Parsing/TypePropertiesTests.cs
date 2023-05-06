@@ -1,4 +1,5 @@
-﻿using Typely.Generators.Typely.Parsing;
+﻿using Typely.Generators.Comparers;
+using Typely.Generators.Typely.Parsing;
 
 namespace Typely.Generators.Tests.Typely.Parsing;
 
@@ -13,6 +14,6 @@ public class TypePropertiesTests
         var typeProperties2 = new TypeProperties();
         typeProperties2.SetMaxLength(10);
 
-        Assert.True(DictionaryComparer<string, string>.Default.Equals(typeProperties1, typeProperties2));
+        Assert.True(DictionaryComparer<string, object>.Default.Equals(typeProperties1, typeProperties2));
     }
 }

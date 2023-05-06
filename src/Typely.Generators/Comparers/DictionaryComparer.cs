@@ -1,4 +1,4 @@
-﻿namespace Typely.Generators;
+﻿namespace Typely.Generators.Comparers;
 
 public class DictionaryComparer<TKey, TValue> : IEqualityComparer<IDictionary<TKey, TValue>>
     where TKey : notnull
@@ -14,14 +14,32 @@ public class DictionaryComparer<TKey, TValue> : IEqualityComparer<IDictionary<TK
 
     public bool Equals(IDictionary<TKey, TValue>? dict1, IDictionary<TKey, TValue>? dict2)
     {
-        if (ReferenceEquals(dict1, dict2)) return true;
-        if (dict1 is null || dict2 is null) return false;
-        if (dict1.Count != dict2.Count) return false;
+        if (ReferenceEquals(dict1, dict2))
+        {
+            return true;
+        }
+
+        if (dict1 is null || dict2 is null)
+        {
+            return false;
+        }
+
+        if (dict1.Count != dict2.Count)
+        {
+            return false;
+        }
 
         foreach (var keyValuePair in dict1)
         {
-            if (!dict2.TryGetValue(keyValuePair.Key, out var value)) return false;
-            if (!_valueComparer.Equals(keyValuePair.Value, value)) return false;
+            if (!dict2.TryGetValue(keyValuePair.Key, out var value))
+            {
+                return false;
+            }
+
+            if (!_valueComparer.Equals(keyValuePair.Value, value))
+            {
+                return false;
+            }
         }
 
         return true;

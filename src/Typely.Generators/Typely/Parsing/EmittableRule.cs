@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using Typely.Generators.Comparers;
 
 namespace Typely.Generators.Typely.Parsing;
 
@@ -25,10 +26,10 @@ internal class EmittableRule : IEquatable<EmittableRule>
     /// <summary>
     /// Contains the list of variables and values that can be formatted into the error message.
     /// </summary>
-    public ImmutableDictionary<string, string> PlaceholderValues { get; }
+    public ImmutableDictionary<string, object?> PlaceholderValues { get; }
 
     public EmittableRule(string errorCode, string rule, string message,
-        ImmutableDictionary<string, string> placeholderValues)
+        ImmutableDictionary<string, object?> placeholderValues)
     {
         ErrorCode = errorCode;
         Rule = rule;
@@ -46,7 +47,7 @@ internal class EmittableRule : IEquatable<EmittableRule>
         return ErrorCode == other.ErrorCode &&
                Rule == other.Rule &&
                Message == other.Message &&
-               DictionaryComparer<string, string>.Default.Equals(PlaceholderValues, other.PlaceholderValues);
+               DictionaryComparer<string, object?>.Default.Equals(PlaceholderValues, other.PlaceholderValues);
     }
     
     public override bool Equals(object? obj) => Equals(obj as EmittableRule);
@@ -57,7 +58,7 @@ internal class EmittableRule : IEquatable<EmittableRule>
         hash = hash * 23 + ErrorCode.GetHashCode();
         hash = hash * 23 + Rule.GetHashCode();
         hash = hash * 23 + Message.GetHashCode();
-        hash = hash * 23 + PlaceholderValues.GetHashCode();
+        hash = hash * 23 + DictionaryComparer<string, object?>.Default.GetHashCode(PlaceholderValues);
         return hash;
     }
 }

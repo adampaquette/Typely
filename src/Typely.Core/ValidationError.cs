@@ -34,7 +34,7 @@ public class ValidationError
     /// <summary>
     /// List of placeholders with their values.
     /// </summary>
-    public Dictionary<string, string> PlaceholderValues { get; }
+    public Dictionary<string, object?> PlaceholderValues { get; }
 
     /// <summary>
     /// Constructor of <see cref="ValidationError"/>.
@@ -45,7 +45,7 @@ public class ValidationError
     /// <param name="attemptedValue">The value that caused the error.</param>
     /// <param name="typeName">The name of the calss or struct to create.</param>
     /// <param name="placeholderValues">List of the placeholders with their values.</param>
-    public ValidationError(string errorCode, string errorMessageWithPlaceholders, string? attemptedValue, string typeName, Dictionary<string, string> placeholderValues)
+    public ValidationError(string errorCode, string errorMessageWithPlaceholders, object? attemptedValue, string typeName, Dictionary<string, object?> placeholderValues)
     {
         ErrorCode = errorCode;
         ErrorMessageWithPlaceholders = errorMessageWithPlaceholders;
@@ -55,12 +55,12 @@ public class ValidationError
         ErrorMessage = FormatErrorMessage(errorMessageWithPlaceholders, placeholderValues);
     }
 
-    private string FormatErrorMessage(string errorMessageWithPlaceholders, Dictionary<string, string> placeholderValues)
+    private string FormatErrorMessage(string errorMessageWithPlaceholders, Dictionary<string, object?> placeholderValues)
     {
         var errorMessage = errorMessageWithPlaceholders;
         foreach (var placeholder in placeholderValues)
         {
-            errorMessage = errorMessage.Replace("{" + placeholder.Key + "}", placeholder.Value);
+            errorMessage = errorMessage.Replace("{" + placeholder.Key + "}", placeholder.Value?.ToString() ?? string.Empty);
         }
         return errorMessage;
     }

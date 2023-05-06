@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using Typely.Generators.Comparers;
 
 namespace Typely.Generators.Typely.Parsing;
 
@@ -17,12 +18,12 @@ internal class EmittableType : IEquatable<EmittableType>
     /// <summary>
     /// Name of the class of struct to generate.
     /// </summary>
-    public string? TypeName { get; }
+    public string TypeName { get; }
 
     /// <summary>
     /// Name of the type used in error messages.
     /// </summary>
-    public string? Name { get; }
+    public string Name { get; }
 
     /// <summary>
     /// Namespace in witch to associate the value object.
@@ -59,7 +60,7 @@ internal class EmittableType : IEquatable<EmittableType>
     /// </summary>
     public TypeProperties Properties { get; }
 
-    public EmittableType(string underlyingType, bool isValueType, string? typeName, string? name, string ns,
+    public EmittableType(string underlyingType, bool isValueType, string typeName, string name, string ns,
         string configurationNamespace, ConstructTypeKind constructTypeKind, string? normalizeFunctionBody,
         ImmutableArray<EmittableRule> rules, ImmutableArray<string> additionalNamespaces, TypeProperties properties)
     {
@@ -88,54 +89,39 @@ internal class EmittableType : IEquatable<EmittableType>
             return true;
         }
 
-        return UnderlyingType == other.UnderlyingType && 
+        return UnderlyingType == other.UnderlyingType &&
                IsValueType == other.IsValueType &&
-               TypeName == other.TypeName && 
-               Name == other.Name && 
+               TypeName == other.TypeName &&
+               Name == other.Name &&
                Namespace == other.Namespace &&
-               ConfigurationNamespace == other.ConfigurationNamespace && 
+               ConfigurationNamespace == other.ConfigurationNamespace &&
                ConstructTypeKind == other.ConstructTypeKind &&
-               NormalizeFunctionBody == other.NormalizeFunctionBody && 
+               NormalizeFunctionBody == other.NormalizeFunctionBody &&
                ImmutableArrayComparer<EmittableRule>.Default.Equals(Rules, other.Rules) &&
-               ImmutableArrayComparer<string>.Default.Equals(AdditionalNamespaces, other.AdditionalNamespaces) && 
-               DictionaryComparer<string, string>.Default.Equals(Properties, other.Properties);
+               ImmutableArrayComparer<string>.Default.Equals(AdditionalNamespaces, other.AdditionalNamespaces) &&
+               DictionaryComparer<string, object>.Default.Equals(Properties, other.Properties);
     }
 
-    public override bool Equals(object? obj)
-    {
-        if (ReferenceEquals(null, obj))
-        {
-            return false;
-        }
-
-        if (ReferenceEquals(this, obj))
-        {
-            return true;
-        }
-
-        if (obj.GetType() != this.GetType())
-        {
-            return false;
-        }
-
-        return Equals((EmittableType)obj);
-    }
+    public override bool Equals(object? obj) => Equals(obj as EmittableType);
 
     public override int GetHashCode()
     {
         unchecked
         {
-            var hashCode = UnderlyingType.GetHashCode();
-            hashCode = (hashCode * 397) ^ IsValueType.GetHashCode();
-            hashCode = (hashCode * 397) ^ (TypeName != null ? TypeName.GetHashCode() : 0);
-            hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
-            hashCode = (hashCode * 397) ^ Namespace.GetHashCode();
-            hashCode = (hashCode * 397) ^ ConfigurationNamespace.GetHashCode();
-            hashCode = (hashCode * 397) ^ (int)ConstructTypeKind;
-            hashCode = (hashCode * 397) ^ (NormalizeFunctionBody != null ? NormalizeFunctionBody.GetHashCode() : 0);
-            hashCode = (hashCode * 397) ^ Rules.GetHashCode();
-            hashCode = (hashCode * 397) ^ AdditionalNamespaces.GetHashCode();
-            hashCode = (hashCode * 397) ^ Properties.GetHashCode();
+            int hashCode = 17;
+
+            hashCode = hashCode * 23 + UnderlyingType.GetHashCode();
+            hashCode = hashCode * 23 + IsValueType.GetHashCode();
+            hashCode = hashCode * 23 + TypeName.GetHashCode();
+            hashCode = hashCode * 23 + Name.GetHashCode();
+            hashCode = hashCode * 23 + Namespace.GetHashCode();
+            hashCode = hashCode * 23 + ConfigurationNamespace.GetHashCode();
+            hashCode = hashCode * 23 + ((int)ConstructTypeKind).GetHashCode();
+            hashCode = hashCode * 23 + (NormalizeFunctionBody?.GetHashCode() ?? 0);
+            hashCode = hashCode * 23 + ImmutableArrayComparer<EmittableRule>.Default.GetHashCode(Rules);
+            hashCode = hashCode * 23 + ImmutableArrayComparer<string>.Default.GetHashCode(AdditionalNamespaces);
+            hashCode = hashCode * 23 + DictionaryComparer<string, object>.Default.GetHashCode(Properties);
+
             return hashCode;
         }
     }

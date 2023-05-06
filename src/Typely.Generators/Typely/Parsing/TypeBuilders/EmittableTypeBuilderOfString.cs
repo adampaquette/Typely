@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using System.Text.RegularExpressions;
 using Typely.Generators.Typely.Emitting;
 
 namespace Typely.Generators.Typely.Parsing.TypeBuilders;

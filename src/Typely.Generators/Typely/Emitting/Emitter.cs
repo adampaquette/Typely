@@ -8,7 +8,6 @@ namespace Typely.Generators.Typely.Emitting;
 /// </summary>
 internal static class Emitter
 {
-    private static int Count = 0;
     public const string ValueParameterName = "value";
     
     /// <summary>
@@ -19,9 +18,8 @@ internal static class Emitter
     /// <returns></returns>
     public static string Emit(EmittableType emittableType, CancellationToken cancellationToken)
     {
-        Count++;
         var typeName = emittableType.TypeName!;
-        var namespaces = BuildNamespaces(emittableType.Rules, emittableType.AdditionalNamespaces);
+        var namespaces = BuildNamespaces(emittableType);
         var underlyingType = emittableType.UnderlyingType;
         var constructType = GetConstructType(emittableType.ConstructTypeKind);
         var validationBlock = GenerateValidations(emittableType, cancellationToken);
@@ -40,7 +38,7 @@ internal static class Emitter
             #nullable enable
 
             namespace {{emittableType.Namespace}}
-            {//{{Count}}
+            {
                 [TypeConverter(typeof(TypelyTypeConverter<{{underlyingType}}, {{typeName}}>))]
                 [JsonConverter(typeof(TypelyJsonConverter<{{underlyingType}}, {{typeName}}>))]
                 public partial {{constructType}} {{typeName}} : ITypelyValue<{{underlyingType}}, {{typeName}}>, IEquatable<{{typeName}}>, IComparable<{{typeName}}>, IComparable{{maxLengthInterface}}
@@ -123,8 +121,7 @@ internal static class Emitter
 
         """;
 
-    private static string BuildNamespaces(IReadOnlyList<EmittableRule> rules,
-        IReadOnlyList<string> additionalNamespaces)
+    private static string BuildNamespaces(EmittableType emittableType)
     {
         var namespaces = new List<string>
         {
@@ -136,9 +133,9 @@ internal static class Emitter
             "Typely.Core.Converters",
         };
 
-        namespaces.AddRange(additionalNamespaces);
+        namespaces.AddRange(emittableType.AdditionalNamespaces);
 
-        if (rules.Any())
+        if (emittableType.Rules.Any())
         {
             namespaces.Add("System.Collections.Generic");
         }
@@ -203,7 +200,7 @@ internal static class Emitter
         return builder.ToString();
     }
 
-    private static string GenerateValidationPlaceholders(IReadOnlyDictionary<string, string> placeholders)
+    private static string GenerateValidationPlaceholders(IReadOnlyDictionary<string, object?> placeholders)
     {
         if (!placeholders.Any())
         {
@@ -212,14 +209,14 @@ internal static class Emitter
 
         var builder = new StringBuilder("""
             ,
-                                new Dictionary<string, string>
+                                new Dictionary<string, object?>
                                 {
             """)
             .AppendLine();
 
         foreach (var placeholder in placeholders)
         {
-            builder.AppendLine($$"""                        { "{{placeholder.Key}}", "{{placeholder.Value}}" },""");
+            builder.AppendLine($$"""                        { "{{placeholder.Key}}", {{placeholder.Value}} },""");
         }
 
         return builder.Append("                    });")

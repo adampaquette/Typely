@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 
-namespace Typely.Generators;
+namespace Typely.Generators.Comparers;
 
 public class ImmutableArrayComparer<T> : IEqualityComparer<ImmutableArray<T>>
 {

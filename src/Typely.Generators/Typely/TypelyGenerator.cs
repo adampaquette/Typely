@@ -31,20 +31,6 @@ public class TypelyGenerator : IIncrementalGenerator
     /// <param name="emittableType">The type to generate.</param>
     private static void AddEmittedSource(SourceProductionContext context, EmittableType emittableType)
     {
-        if (emittableType.Name == null)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.NameMissing, Location.None,
-                emittableType.Namespace));
-            return;
-        }
-
-        if (emittableType.TypeName == null)
-        {
-            context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.TypeNameMissing, Location.None,
-                emittableType.Namespace));
-            return;
-        }
-
         var source = Emitter.Emit(emittableType, context.CancellationToken);
 
         context.AddSource($"{emittableType.Namespace}.{emittableType.TypeName}.g.cs",
