@@ -7,7 +7,7 @@ public class TypelyJsonConverterTests
 {
     internal class BasicClass
     {
-        public StringSerializationTestsType Prop { get; set; }
+        public StringSerializationTestsType? Prop { get; set; }
     }
 
     [Fact]
@@ -16,7 +16,7 @@ public class TypelyJsonConverterTests
         {           
             var obj = StringSerializationTestsType.From(x);
             var serialized = JsonSerializer.Serialize(obj);
-            return JsonSerializer.Deserialize<StringSerializationTestsType>(serialized).Equals(obj);
+            return JsonSerializer.Deserialize<StringSerializationTestsType>(serialized)!.Equals(obj);
         });
 
     [Fact]
@@ -26,6 +26,6 @@ public class TypelyJsonConverterTests
     
         var actual = JsonSerializer.Deserialize<BasicClass>(obj)!;
     
-        Assert.Null(actual.Prop.Value);
+        Assert.Null(actual.Prop?.Value);
     }
 }

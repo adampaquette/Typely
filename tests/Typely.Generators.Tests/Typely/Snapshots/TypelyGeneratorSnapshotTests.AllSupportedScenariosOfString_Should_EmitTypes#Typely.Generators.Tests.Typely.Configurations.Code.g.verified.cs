@@ -20,11 +20,16 @@ namespace Typely.Generators.Tests.Typely.Configurations
     {
         public static int MaxLength => 20;
 
-        public string Value { get; private set; }                    
+        public string Value { get;  }
+
+        private Code(string value, bool bypassValidation)
+        {
+            Value = value;
+        }
 
         public Code(string value)
         {
-            if (value == null) throw new ArgumentNullException(nameof(Code));
+            ArgumentNullException.ThrowIfNull(value, nameof(Code));
             value = value.Trim().ToLower();
             TypelyValue.ValidateAndThrow<string, Code>(value);
             Value = value;
@@ -119,35 +124,33 @@ namespace Typely.Generators.Tests.Typely.Configurations
 
         public static Code From(string value) => new(value);
 
-        public static bool TryFrom(string value, out Code typelyType, out ValidationError? validationError)
+        public static bool TryFrom(string value, out Code? typelyType, out ValidationError? validationError)
         {
-            if (value == null) throw new ArgumentNullException(nameof(Code));
+            ArgumentNullException.ThrowIfNull(value, nameof(Code));
             value = value.Trim().ToLower();
             validationError = Validate(value);
             var isValid = validationError == null;
-            typelyType = default;
-            if (isValid)
-            {
-                typelyType.Value = value;
-            }
+
+            typelyType = isValid ? new Code(value, true) : null;
+
             return isValid;
         }
         
         public override string ToString() => Value.ToString();
 
-        public static bool operator !=(Code left, Code right) => !(left == right);
+        public static bool operator !=(Code? left, Code? right) => !(left == right);
 
-        public static bool operator ==(Code left, Code right) => left.Equals(right);
+        public static bool operator ==(Code? left, Code? right) => left?.Equals(right) ?? false;
 
         public override int GetHashCode() => Value.GetHashCode();
 
-        public bool Equals(Code other) => Value?.Equals(other.Value) ?? false;
+        public bool Equals(Code? other) => other != null && Value.Equals(other.Value);
 
-        public override bool Equals([NotNullWhen(true)] object? obj) => obj is Code && Equals((Code)obj);
+        public override bool Equals([NotNullWhen(true)] object? obj) => obj is Code type && Equals(type);
 
-        public int CompareTo(Code other) => Value?.CompareTo(other.Value) ?? 1;
-
-        public int CompareTo(object? obj) => obj is not Code ? 1 : CompareTo((Code)obj!);
+        public int CompareTo(Code? other) => other == null ? 1 : Value.CompareTo(other.Value);
+                                                                            
+        public int CompareTo(object? obj) => obj is not Code type ? 1 : CompareTo(type);
 
         public static explicit operator string(Code value) => value.Value;
     }

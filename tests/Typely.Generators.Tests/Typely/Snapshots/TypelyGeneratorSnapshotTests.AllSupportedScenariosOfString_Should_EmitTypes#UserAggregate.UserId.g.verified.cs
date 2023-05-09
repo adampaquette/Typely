@@ -15,15 +15,20 @@ namespace UserAggregate
 {
     [TypeConverter(typeof(TypelyTypeConverter<string, UserId>))]
     [JsonConverter(typeof(TypelyJsonConverter<string, UserId>))]
-    public partial struct UserId : ITypelyValue<string, UserId>, IEquatable<UserId>, IComparable<UserId>, IComparable, IMaxLength
+    public partial class UserId : ITypelyValue<string, UserId>, IEquatable<UserId>, IComparable<UserId>, IComparable, IMaxLength
     {
         public static int MaxLength => 20;
 
-        public string Value { get; private set; }                    
+        public string Value { get;  }
+
+        private UserId(string value, bool bypassValidation)
+        {
+            Value = value;
+        }
 
         public UserId(string value)
         {
-            if (value == null) throw new ArgumentNullException(nameof(UserId));
+            ArgumentNullException.ThrowIfNull(value, nameof(UserId));
             value = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value);
             TypelyValue.ValidateAndThrow<string, UserId>(value);
             Value = value;
@@ -64,35 +69,33 @@ namespace UserAggregate
 
         public static UserId From(string value) => new(value);
 
-        public static bool TryFrom(string value, out UserId typelyType, out ValidationError? validationError)
+        public static bool TryFrom(string value, out UserId? typelyType, out ValidationError? validationError)
         {
-            if (value == null) throw new ArgumentNullException(nameof(UserId));
+            ArgumentNullException.ThrowIfNull(value, nameof(UserId));
             value = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value);
             validationError = Validate(value);
             var isValid = validationError == null;
-            typelyType = default;
-            if (isValid)
-            {
-                typelyType.Value = value;
-            }
+
+            typelyType = isValid ? new UserId(value, true) : null;
+
             return isValid;
         }
         
         public override string ToString() => Value.ToString();
 
-        public static bool operator !=(UserId left, UserId right) => !(left == right);
+        public static bool operator !=(UserId? left, UserId? right) => !(left == right);
 
-        public static bool operator ==(UserId left, UserId right) => left.Equals(right);
+        public static bool operator ==(UserId? left, UserId? right) => left?.Equals(right) ?? false;
 
         public override int GetHashCode() => Value.GetHashCode();
 
-        public bool Equals(UserId other) => Value?.Equals(other.Value) ?? false;
+        public bool Equals(UserId? other) => other != null && Value.Equals(other.Value);
 
-        public override bool Equals([NotNullWhen(true)] object? obj) => obj is UserId && Equals((UserId)obj);
+        public override bool Equals([NotNullWhen(true)] object? obj) => obj is UserId type && Equals(type);
 
-        public int CompareTo(UserId other) => Value?.CompareTo(other.Value) ?? 1;
-
-        public int CompareTo(object? obj) => obj is not UserId ? 1 : CompareTo((UserId)obj!);
+        public int CompareTo(UserId? other) => other == null ? 1 : Value.CompareTo(other.Value);
+                                                                            
+        public int CompareTo(object? obj) => obj is not UserId type ? 1 : CompareTo(type);
 
         public static explicit operator string(UserId value) => value.Value;
     }

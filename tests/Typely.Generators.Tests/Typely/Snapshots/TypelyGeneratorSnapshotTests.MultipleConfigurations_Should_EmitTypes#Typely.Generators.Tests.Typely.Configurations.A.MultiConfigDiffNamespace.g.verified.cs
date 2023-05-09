@@ -15,7 +15,7 @@ namespace Typely.Generators.Tests.Typely.Configurations.A
     [JsonConverter(typeof(TypelyJsonConverter<int, MultiConfigDiffNamespace>))]
     public partial struct MultiConfigDiffNamespace : ITypelyValue<int, MultiConfigDiffNamespace>, IEquatable<MultiConfigDiffNamespace>, IComparable<MultiConfigDiffNamespace>, IComparable
     {
-        public int Value { get; private set; }                    
+        public int Value { get; private set; }
 
         public MultiConfigDiffNamespace(int value)
         {
