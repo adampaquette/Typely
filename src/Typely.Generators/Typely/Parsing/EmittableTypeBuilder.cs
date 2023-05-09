@@ -11,7 +11,7 @@ internal class EmittableTypeBuilder
     /// Type wrapped by the value object.
     /// </summary>
     public string UnderlyingType { get; }
-    
+
     /// <summary>
     /// Indicates if the type is a value type.
     /// </summary>
@@ -31,7 +31,7 @@ internal class EmittableTypeBuilder
     /// Namespace in witch to associate the value object.
     /// </summary>
     public string Namespace { get; private set; }
-    
+
     /// <summary>
     /// Namespace of the configuration class.
     /// </summary>
@@ -40,13 +40,13 @@ internal class EmittableTypeBuilder
     /// <summary>
     /// Type kind to generate.
     /// </summary>
-    public ConstructTypeKind ConstructTypeKind { get; private set; } = ConstructTypeKind.Struct;
+    public ConstructTypeKind? ConstructTypeKind { get; private set; }
 
     /// <summary>
     /// A function to normalize the value.
     /// </summary>
     public string? NormalizeFunctionBody { get; private set; }
-    
+
     /// <summary>
     /// A set of rules wich defines the value object.
     /// </summary>
@@ -66,7 +66,7 @@ internal class EmittableTypeBuilder
     /// A set of dynamic properties. For example: MaxLength on string type.
     /// </summary>
     public TypeProperties Properties { get; } = new();
-    
+
     public EmittableTypeBuilder(string underlyingType, bool isValueType, string configurationNamespace)
     {
         UnderlyingType = underlyingType;
@@ -102,16 +102,16 @@ internal class EmittableTypeBuilder
     /// </summary>
     /// <param name="value">The normalizer function.</param>
     public void SetNormalizeFunction(string value) => NormalizeFunctionBody = value.Trim();
-    
+
     /// <summary>
     /// Sets the type as a class.
     /// </summary>
-    public void AsClass() => ConstructTypeKind = ConstructTypeKind.Class;
+    public void AsClass() => ConstructTypeKind = Parsing.ConstructTypeKind.Class;
 
     /// <summary>
     /// Sets the type as a struct.
     /// </summary>
-    public void AsStruct() => ConstructTypeKind = ConstructTypeKind.Struct;
+    public void AsStruct() => ConstructTypeKind = Parsing.ConstructTypeKind.Struct;
 
     /// <summary>
     /// Adds a rule to the type.
@@ -142,7 +142,7 @@ internal class EmittableTypeBuilder
         Name!,
         Namespace,
         ConfigurationNamespace,
-        ConstructTypeKind,
+        ConstructTypeKind ?? (IsValueType ? Parsing.ConstructTypeKind.Struct : Parsing.ConstructTypeKind.Class),
         NormalizeFunctionBody,
         Rules.Select(r => r.Build()).ToImmutableArray(),
         AdditionalNamespaces.ToImmutableArray(),

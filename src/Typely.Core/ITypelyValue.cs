@@ -42,6 +42,6 @@ public interface ITypelyValue<TValue, TTypelyValue> : ITypelyValue<TValue> where
     /// <param name="typelyType">The created <see cref="TTypelyValue"/>.</param>
     /// <param name="validationError">A localized error.</param>
     /// <returns><see langword="true" /> if the type has been created without errors.</returns>
-    static abstract bool TryFrom(TValue value, out TTypelyValue typelyType, out ValidationError? validationError);
+    static abstract bool TryFrom(TValue value, out TTypelyValue? typelyType, out ValidationError? validationError);
 #endif
 }

@@ -37,4 +37,13 @@
     <ItemGroup>
         <None Include="nuget-readme.md" Pack="true" PackagePath="\" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Typely\Emitting\Emitter.Struct.cs">
+        <DependentUpon>Emitter.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Typely\Emitting\Emitter.Class.cs">
+        <DependentUpon>Emitter.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>

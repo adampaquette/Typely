@@ -31,7 +31,9 @@ public class TypelyGenerator : IIncrementalGenerator
     /// <param name="emittableType">The type to generate.</param>
     private static void AddEmittedSource(SourceProductionContext context, EmittableType emittableType)
     {
-        var source = Emitter.Emit(emittableType, context.CancellationToken);
+        context.CancellationToken.ThrowIfCancellationRequested();
+        
+        var source = Emitter.Emit(emittableType);
 
         context.AddSource($"{emittableType.Namespace}.{emittableType.TypeName}.g.cs",
             SourceText.From(source, Encoding.UTF8));
