@@ -89,11 +89,19 @@ namespace UserAggregate
 
         public override int GetHashCode() => Value.GetHashCode();
 
-        public bool Equals(UserId? other) => other != null && Value.Equals(other.Value);
+        public bool Equals(UserId? other)
+        {
+            if(ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return !ReferenceEquals(other, null) && Value.Equals(other.Value);
+        }
 
         public override bool Equals([NotNullWhen(true)] object? obj) => obj is UserId type && Equals(type);
 
-        public int CompareTo(UserId? other) => other == null ? 1 : Value.CompareTo(other.Value);
+        public int CompareTo(UserId? other) => ReferenceEquals(other, null) ? 1 : Value.CompareTo(other.Value);
                                                                             
         public int CompareTo(object? obj) => obj is not UserId type ? 1 : CompareTo(type);
 

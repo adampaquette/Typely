@@ -62,11 +62,19 @@ internal static partial class Emitter
 
                     public override int GetHashCode() => Value.GetHashCode();
 
-                    public bool Equals({{typeName}}? other) => other != null && Value.Equals(other.Value);
+                    public bool Equals({{typeName}}? other)
+                    {
+                        if(ReferenceEquals(this, other))
+                        {
+                            return true;
+                        }
+
+                        return !ReferenceEquals(other, null) && Value.Equals(other.Value);
+                    }
 
                     public override bool Equals([NotNullWhen(true)] object? obj) => obj is {{typeName}} type && Equals(type);
 
-                    public int CompareTo({{typeName}}? other) => other == null ? 1 : Value.CompareTo(other.Value);
+                    public int CompareTo({{typeName}}? other) => ReferenceEquals(other, null) ? 1 : Value.CompareTo(other.Value);
                                                                                         
                     public int CompareTo(object? obj) => obj is not {{typeName}} type ? 1 : CompareTo(type);
 

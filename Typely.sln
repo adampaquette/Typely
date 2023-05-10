@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.AspNetCore.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.AspNetCore", "src\Typely.AspNetCore\Typely.AspNetCore.csproj", "{D3795CB9-9334-4155-B0AB-4ACA518FE70F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typely.Isolated.Tests", "tests\Typely.Isolated.Tests\Typely.Isolated.Tests.csproj", "{BB69461E-0A00-4F3D-B902-5F7ED455E186}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,10 @@ Global
 		{D3795CB9-9334-4155-B0AB-4ACA518FE70F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3795CB9-9334-4155-B0AB-4ACA518FE70F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3795CB9-9334-4155-B0AB-4ACA518FE70F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB69461E-0A00-4F3D-B902-5F7ED455E186}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB69461E-0A00-4F3D-B902-5F7ED455E186}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB69461E-0A00-4F3D-B902-5F7ED455E186}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB69461E-0A00-4F3D-B902-5F7ED455E186}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,5 +131,6 @@ Global
 		{5D0C6696-16C4-4C81-87D6-3023A0CAA687} = {FF24A745-A365-45F5-96D0-13792D2084F2}
 		{52B61FF8-73BA-41C6-8BDE-7F436797C8F4} = {FF24A745-A365-45F5-96D0-13792D2084F2}
 		{19222CE8-BB2F-43C9-88AD-D63A07045A1A} = {4E5AC889-2C3E-4869-9C26-077754E51764}
+		{BB69461E-0A00-4F3D-B902-5F7ED455E186} = {4E5AC889-2C3E-4869-9C26-077754E51764}
 	EndGlobalSection
 EndGlobal

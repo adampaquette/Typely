@@ -13,7 +13,7 @@ public class TypelyJsonConverterTests
     [Fact]
     public void SystemTextJson_Serialize_RoundTrip() =>
         Gen.String.Sample(x =>
-        {           
+        {
             var obj = StringSerializationTestsType.From(x);
             var serialized = JsonSerializer.Serialize(obj);
             return JsonSerializer.Deserialize<StringSerializationTestsType>(serialized)!.Equals(obj);

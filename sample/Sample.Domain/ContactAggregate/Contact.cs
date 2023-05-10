@@ -3,8 +3,8 @@
 public class Contact
 {
     public ContactId Id { get; set; }
-    public FirstName FirstName { get; set; }
-    public LastName LastName { get; set; }
+    public required FirstName FirstName { get; set; }
+    public required LastName LastName { get; set; }
     public Phone? Phone { get; set; }
     public PhoneType? PhoneType { get; set; }
     

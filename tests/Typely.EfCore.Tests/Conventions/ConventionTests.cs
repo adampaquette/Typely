@@ -25,7 +25,6 @@ public class ConventionTests
     }
 
     private static ServiceProvider CreateServiceProvider() => new ServiceCollection()
-        .AddEntityFrameworkInMemoryDatabase()
         .AddDbContext<MyDbContext>(options => options.UseInMemoryDatabase("MyDb"))
         .BuildServiceProvider();
 }

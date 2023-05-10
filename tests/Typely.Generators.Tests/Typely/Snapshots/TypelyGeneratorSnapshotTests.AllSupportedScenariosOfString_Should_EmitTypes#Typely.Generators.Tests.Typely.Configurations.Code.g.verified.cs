@@ -51,8 +51,8 @@ namespace Typely.Generators.Tests.Typely.Configurations
                 return ValidationErrorFactory.Create(value, "Length", ErrorMessages.Length, "Code",
                     new Dictionary<string, object?>
                     {
-                        { "MinLength", 4 },
                         { "MaxLength", 20 },
+                        { "MinLength", 4 },
                     });
             }
 
@@ -144,11 +144,19 @@ namespace Typely.Generators.Tests.Typely.Configurations
 
         public override int GetHashCode() => Value.GetHashCode();
 
-        public bool Equals(Code? other) => other != null && Value.Equals(other.Value);
+        public bool Equals(Code? other)
+        {
+            if(ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return !ReferenceEquals(other, null) && Value.Equals(other.Value);
+        }
 
         public override bool Equals([NotNullWhen(true)] object? obj) => obj is Code type && Equals(type);
 
-        public int CompareTo(Code? other) => other == null ? 1 : Value.CompareTo(other.Value);
+        public int CompareTo(Code? other) => ReferenceEquals(other, null) ? 1 : Value.CompareTo(other.Value);
                                                                             
         public int CompareTo(object? obj) => obj is not Code type ? 1 : CompareTo(type);
 

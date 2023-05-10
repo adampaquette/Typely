@@ -82,12 +82,6 @@ internal static partial class Emitter
         return string.Join("\n", namespaces.Distinct().OrderBy(x => x).Select(x => $"using {x};"));
     }
 
-    private static string GetConstructType(ConstructTypeKind objectType) => objectType switch
-    {
-        ConstructTypeKind.Struct => "struct",
-        _ => "class"
-    };
-
     private static string GenerateSafeNormalize(EmittableType emittableType)
     {
         var builder = new StringBuilder();
@@ -152,7 +146,7 @@ internal static partial class Emitter
             """)
             .AppendLine();
 
-        foreach (var placeholder in placeholders)
+        foreach (var placeholder in placeholders.OrderBy(x => x.Key))
         {
             builder.AppendLine($$"""                        { "{{placeholder.Key}}", {{placeholder.Value}} },""");
         }

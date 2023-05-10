@@ -7,7 +7,7 @@ using Typely.AspNetCore.Mvc;
 using Typely.AspNetCore.Swashbuckle;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlite("Data Source=sample.db"));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=sample.db"));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -52,7 +52,8 @@ void InitDatabase()
             {
                 new()
                 {
-                    Street = Street.From("123 Main St."),
+                    CivicNumber = CivicNumber.From(123),
+                    Street = Street.From("Main St."),
                     City = City.From("Anytown"),
                     State = State.From("CA"),
                     ZipCode = ZipCode.From("A1P2W3")
