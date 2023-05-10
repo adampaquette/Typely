@@ -1,6 +1,6 @@
-﻿using Typely.Generators.Tests.Typely.Configurations;
-using Typely.Generators.Tests.Typely.Configurations.A;
-using Typely.Generators.Tests.Typely.Configurations.B;
+﻿using Typely.Generators.Tests.Typely.Specifications;
+using Typely.Generators.Tests.Typely.Specifications.A;
+using Typely.Generators.Tests.Typely.Specifications.B;
 
 namespace Typely.Generators.Tests.Typely;
 
@@ -11,7 +11,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfBool_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(BoolConfiguration))
+            .WithConfigurations(typeof(BoolSpecification))
             .Create()
             .Run();
         
@@ -22,7 +22,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfByte_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(ByteConfiguration))
+            .WithConfigurations(typeof(ByteSpecification))
             .Create()
             .Run();
         
@@ -33,7 +33,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfChar_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(CharConfiguration))
+            .WithConfigurations(typeof(CharSpecification))
             .Create()
             .Run();
         
@@ -44,7 +44,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfDateOnly_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(DateOnlyConfiguration))
+            .WithConfigurations(typeof(DateOnlySpecification))
             .Create()
             .Run();
         
@@ -55,7 +55,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfDateTime_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(DateTimeConfiguration))
+            .WithConfigurations(typeof(DateTimeSpecification))
             .Create()
             .Run();
         
@@ -66,7 +66,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfDateTimeOffset_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(DateTimeOffsetConfiguration))
+            .WithConfigurations(typeof(DateTimeOffsetSpecification))
             .Create()
             .Run();
         
@@ -77,7 +77,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfInt_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(IntConfiguration))
+            .WithConfigurations(typeof(IntSpecification))
             .Create()
             .Run();
         
@@ -88,7 +88,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfDecimal_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(DecimalConfiguration))
+            .WithConfigurations(typeof(DecimalSpecification))
             .Create()
             .Run();
         
@@ -99,7 +99,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfFloat_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(FloatConfiguration))
+            .WithConfigurations(typeof(FloatSpecification))
             .Create()
             .Run();
         
@@ -110,7 +110,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfGuid_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(GuidConfiguration))
+            .WithConfigurations(typeof(GuidSpecification))
             .Create()
             .Run();
         
@@ -121,7 +121,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfDouble_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(DoubleConfiguration))
+            .WithConfigurations(typeof(DoubleSpecification))
             .Create()
             .Run();
         
@@ -132,7 +132,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfLong_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(LongConfiguration))
+            .WithConfigurations(typeof(LongSpecification))
             .Create()
             .Run();
         
@@ -143,7 +143,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfSByte_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(SByteConfiguration))
+            .WithConfigurations(typeof(SByteSpecification))
             .Create()
             .Run();
         
@@ -154,7 +154,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfShort_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(ShortConfiguration))
+            .WithConfigurations(typeof(ShortSpecification))
             .Create()
             .Run();
         
@@ -165,7 +165,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfString_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(StringConfiguration))
+            .WithConfigurations(typeof(StringSpecification))
             .Create()
             .Run();
         
@@ -176,7 +176,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfTimeOnly_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(TimeOnlyConfiguration))
+            .WithConfigurations(typeof(TimeOnlySpecification))
             .Create()
             .Run();
         
@@ -187,7 +187,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfTimeSpan_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(TimeSpanConfiguration))
+            .WithConfigurations(typeof(TimeSpanSpecification))
             .Create()
             .Run();
         
@@ -198,7 +198,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfUInt_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(UIntConfiguration))
+            .WithConfigurations(typeof(UIntSpecification))
             .Create()
             .Run();
         
@@ -209,7 +209,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfULong_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(ULongConfiguration))
+            .WithConfigurations(typeof(ULongSpecification))
             .Create()
             .Run();
 
@@ -220,7 +220,7 @@ public class TypelyGeneratorSnapshotTests
     public Task AllSupportedScenariosOfUShort_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(UShortConfiguration))
+            .WithConfigurations(typeof(UShortSpecification))
             .Create()
             .Run();
         
@@ -231,7 +231,7 @@ public class TypelyGeneratorSnapshotTests
     public Task MultipleConfigurations_Should_EmitTypes()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(MultipleConfigurationA), typeof(MultipleConfigurationB))
+            .WithConfigurations(typeof(MultipleSpecificationA), typeof(MultipleSpecificationB))
             .Create()
             .Run();
 
@@ -242,7 +242,7 @@ public class TypelyGeneratorSnapshotTests
     public Task EmptyConfiguration_Should_NotThrow()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(EmptyConfiguration))
+            .WithConfigurations(typeof(EmptySpecification))
             .Create()
             .Run();
 
@@ -253,7 +253,7 @@ public class TypelyGeneratorSnapshotTests
     public Task NamespaceConfiguration_Should_NotThrow()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(NamespaceConfiguration))
+            .WithConfigurations(typeof(NamespaceSpecification))
             .Create()
             .Run();
 
@@ -264,7 +264,7 @@ public class TypelyGeneratorSnapshotTests
     public Task WrappedNamespaceConfiguration_Should_NotThrow()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(ParentClass.WrappedNamespaceConfiguration))
+            .WithConfigurations(typeof(ParentClass.WrappedNamespaceSpecification))
             .Create()
             .Run();
 
@@ -275,7 +275,7 @@ public class TypelyGeneratorSnapshotTests
     public Task NoNamespaceConfiguration_Should_NotThrow()
     {
         var driver = new TypelyGeneratorDriverFixture()
-            .WithConfigurations(typeof(NoNamespaceConfiguration))
+            .WithConfigurations(typeof(NoNamespaceSpecification))
             .Create()
             .Run();
 

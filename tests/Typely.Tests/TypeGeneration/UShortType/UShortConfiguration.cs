@@ -3,9 +3,9 @@ using Typely.Core.Builders;
 
 namespace Typely.Tests.TypeGeneration.UShortType;
 
-public class IntConfiguration : ITypelyConfiguration
+public class IntSpecification : ITypelySpecification
 {
-    public void Configure(ITypelyBuilder builder)
+    public void Create(ITypelyBuilder builder)
     {
         builder.OfInt().For("BasicType");
         builder.OfInt().For("NotEmptyType").NotEmpty();

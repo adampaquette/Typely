@@ -28,6 +28,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Typely.AspNetCore.Swashbuckle\Typely.AspNetCore.Swashbuckle.csproj" />
+      <ProjectReference Include="..\..\src\Typely.Core\Typely.Core.csproj" />
       <ProjectReference Include="..\..\src\Typely.Generators\Typely.Generators.csproj" OutputItemType="Analyzer" />
     </ItemGroup>
 

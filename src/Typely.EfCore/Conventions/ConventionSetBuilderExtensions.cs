@@ -26,7 +26,7 @@ public static class ConventionSetBuilderExtensions
 
     /// <summary>
     /// Apply the value converter <see cref="TypelyValueConverter{TValue,TTypelyValue}"/> as a convention 
-    /// to all <see cref="ITypelyValue{TValue,TTypelyValue}"/> properties when a model is being finalized.
+    /// to all <see cref="ITypelyValue{TValue, TTypelyValue}"/> properties when a model is being finalized.
     /// </summary>
     /// <param name="conventionSetBuilder">Builder for configuring conventions.</param>
     /// <returns>The convention set builder</returns>

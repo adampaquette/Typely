@@ -27,9 +27,9 @@ public class ParserTests
 
             namespace Typely.Generators.Tests.Typely.Configurations;
 
-            public class NotSupportedMember : ITypelyConfiguration
+            public class NotSupportedMember : ITypelySpecification
             {
-                public void Configure(ITypelyBuilder builder)
+                public void Create(ITypelyBuilder builder)
                 {
                     builder.OfBool().WithUnsupportedMember();
                     builder.OfBool().For("Type1");
@@ -50,9 +50,9 @@ public class ParserTests
 
             namespace Typely.Generators.Tests.Typely.Configurations;
 
-            public class NotSupportedMember : ITypelyConfiguration
+            public class NotSupportedMember : ITypelySpecification
             {
-                public void Configure(ITypelyBuilder builder)
+                public void Create(ITypelyBuilder builder)
                 {
                     builder.OfBool().For("Type1");
                     builder.OfBool().For("Type2").WithError

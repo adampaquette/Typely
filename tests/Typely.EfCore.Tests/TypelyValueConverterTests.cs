@@ -3,9 +3,9 @@ using Typely.Core.Builders;
 
 namespace Typely.EfCore.Tests;
 
-public class TypelyConfiguration : ITypelyConfiguration
+public class TypelySpecification : ITypelySpecification
 {
-    public void Configure(ITypelyBuilder builder)
+    public void Create(ITypelyBuilder builder)
     {
         builder.OfString().For("MyString");
     }

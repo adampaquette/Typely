@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using Typely.Core;
 using Typely.Core.Converters;
-using Typely.Generators.Tests.Typely.Configurations;
+using Typely.Generators.Tests.Typely.Specifications;
 
 #nullable enable
 
