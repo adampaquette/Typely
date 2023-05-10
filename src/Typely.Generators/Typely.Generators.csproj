@@ -4,17 +4,17 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <IsRoslynComponent>true</IsRoslynComponent>
         <Description>Typely: Unleashing the power of value object creation with a fluent Api. This package contains type generators.</Description>
-        <Version>1.4.6-alpha</Version>
+        <Version>1.5.0</Version>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" PrivateAssets="all"/>
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.CSharp" Version="4.4.0" />
+        <PackageReference Include="Microsoft.CSharp" Version="4.4.0"/>
         <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.4.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -29,21 +29,21 @@
     </PropertyGroup>
 
     <Target Name="GetDependencyTargetPaths">
-        <ItemGroup>          
-            <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />           
+        <ItemGroup>
+            <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
         </ItemGroup>
     </Target>
 
     <ItemGroup>
-        <None Include="nuget-readme.md" Pack="true" PackagePath="\" />
+        <None Include="nuget-readme.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Typely\Emitting\Emitter.Struct.cs">
-        <DependentUpon>Emitter.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Typely\Emitting\Emitter.Class.cs">
-        <DependentUpon>Emitter.cs</DependentUpon>
-      </Compile>
+        <Compile Update="Typely\Emitting\Emitter.Struct.cs">
+            <DependentUpon>Emitter.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Typely\Emitting\Emitter.Class.cs">
+            <DependentUpon>Emitter.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 </Project>

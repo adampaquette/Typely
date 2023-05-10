@@ -1,6 +1,6 @@
 Typely: Unleashing the power of value object creation with a fluent Api.
 
-This library lets you use Typely in ASP.NET Core MVC projects by generating OpenAPI documentation with Swashbuckle.
+This library lets you use Typely in ASP.NET Core by generating OpenAPI documentation with Swashbuckle.
 
 # Documentation
 
