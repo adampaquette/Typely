@@ -17,7 +17,7 @@ Typely lets you create types easily with a fluent API to embrace Domain-driven d
 ## Example
 
 ```csharp
-public class TypesConfiguration : ITypelySpecification
+public class TypesSpecification : ITypelySpecification
 {
     public void Create(ITypelyBuilder builder)
     {
@@ -61,7 +61,7 @@ dotnet add package Typely.Generators
 
 Create a class inheriting from `ITypelySpecification`
 ```csharp
-public class TypesConfiguration : ITypelySpecification
+public class TypesSpecification : ITypelySpecification
 {
     public void Create(ITypelyBuilder builder)
     {
