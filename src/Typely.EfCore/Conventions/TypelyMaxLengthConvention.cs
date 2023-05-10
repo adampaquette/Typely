@@ -35,7 +35,6 @@ public class TypelyMaxLengthConvention : IModelFinalizingConvention
 
                 property.Builder.HasMaxLength(maxLength);
             }
-
         }
     }
 }

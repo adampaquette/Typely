@@ -14,4 +14,8 @@
   <ItemGroup>
     <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="aaa.cs" />
+  </ItemGroup>
 </Project>

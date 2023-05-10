@@ -16,12 +16,8 @@ public class TypelyJsonConverter<TValue, TTypelyValue> : JsonConverter<TTypelyVa
     public override TTypelyValue? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var value = JsonSerializer.Deserialize<TValue>(ref reader, options);
-        if(value is null)
-        {
-            return default;
-        }
 
-        return TTypelyValue.TryFrom(value, out var typelyType, out var validationError) 
+        return TTypelyValue.TryFrom(value!, out var typelyType, out var validationError) 
             ? typelyType 
             : throw new ValidationException(validationError!);
     }

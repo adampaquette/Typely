@@ -18,17 +18,14 @@ public static class ValidationErrorFactory
     public static ValidationError Create<TValue>(TValue value, string errorCode,
         string errorMessageWithPlaceholders, string typeName, Dictionary<string, object?>? placeholderValues = null)
     {
-        string? attemptedValue = null;
+        object? attemptedValue = null;
 
         if (placeholderValues == null)
         {
             placeholderValues = new Dictionary<string, object?>();
         }
 
-        if (!placeholderValues.ContainsKey(ValidationPlaceholders.Name))
-        {
-            placeholderValues.Add(ValidationPlaceholders.Name, typeName);
-        }
+        placeholderValues.TryAdd(ValidationPlaceholders.Name, typeName);
 
         if (typeof(TValue) == typeof(string))
         {
@@ -36,14 +33,11 @@ public static class ValidationErrorFactory
             placeholderValues.Add(ValidationPlaceholders.ActualLength, actualLength.ToString());
         }
 
-        // if (TypelyOptions.Instance.IsSensitiveDataLoggingEnabled)
-        // {
-        //     if (!placeholderValues.ContainsKey(ValidationPlaceholders.Value))
-        //     {
-        //         placeholderValues.Add(ValidationPlaceholders.Value, value);
-        //     }
-        //     attemptedValue = value;
-        // }
+        if (TypelyOptions.Instance.IsSensitiveDataLoggingEnabled)
+        {
+            placeholderValues.TryAdd(ValidationPlaceholders.Value, value);
+            attemptedValue = value;
+        }
 
         return new ValidationError(errorCode, errorMessageWithPlaceholders, attemptedValue, typeName, placeholderValues);
     }

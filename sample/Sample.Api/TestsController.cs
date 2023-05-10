@@ -18,7 +18,6 @@ public class TestsController : ControllerBase
     public IActionResult ValidationProblem(Contact contact)
     {
         var error = new ValidationError("A", "AAA", null, "type", new Dictionary<string, object?>());
-        var exp = new ValidationException(error);
 
         ModelState.AddModelError("FirstName", "Validation error message");
         return ValidationProblem();

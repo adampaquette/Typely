@@ -194,17 +194,16 @@ internal static class Parser
     {
         while (classSyntax.Parent != null)
         {
-            if (classSyntax.Parent is NamespaceDeclarationSyntax namespaceDeclarationSyntax)
+            switch (classSyntax.Parent)
             {
-                return namespaceDeclarationSyntax.Name.ToString();
+                case NamespaceDeclarationSyntax namespaceDeclarationSyntax:
+                    return namespaceDeclarationSyntax.Name.ToString();
+                case FileScopedNamespaceDeclarationSyntax fileScopedNamespaceDeclarationSyntax:
+                    return fileScopedNamespaceDeclarationSyntax.Name.ToString();
+                default:
+                    classSyntax = classSyntax.Parent;
+                    break;
             }
-
-            if (classSyntax.Parent is FileScopedNamespaceDeclarationSyntax fileScopedNamespaceDeclarationSyntax)
-            {
-                return fileScopedNamespaceDeclarationSyntax.Name.ToString();
-            }
-
-            classSyntax = classSyntax.Parent;
         }
 
         return string.Empty;

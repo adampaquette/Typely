@@ -17,7 +17,7 @@ namespace Election
     [JsonConverter(typeof(TypelyJsonConverter<DateOnly, Votes>))]
     public partial struct Votes : ITypelyValue<DateOnly, Votes>, IEquatable<Votes>, IComparable<Votes>, IComparable
     {
-        public DateOnly Value { get; private set; }                    
+        public DateOnly Value { get; private set; }
 
         public Votes(DateOnly value)
         {
