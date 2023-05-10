@@ -1,4 +1,4 @@
-Typely lets you create types easily with a fluent API to embrace Domain-driven design and value objects.
+Typely: Unleashing the power of value object creation with a fluent Api.
 
 This library lets you use Typely in ASP.NET Core MVC projects by generating OpenAPI documentation with Swashbuckle.
 

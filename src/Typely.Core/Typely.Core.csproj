@@ -2,10 +2,10 @@
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
-        <Description>Typely lets you create types easily with a fluent API to embrace Domain-driven design and value objects. This package contains interfaces that a consumer must implement.</Description>
-        <Version>1.2.5-alpha</Version>
+        <Description>Typely: Unleashing the power of value object creation with a fluent Api. This package contains interfaces that a consumer must implement.</Description>
+        <Version>1.3.0</Version>
     </PropertyGroup>
-
+     
     <ItemGroup>
       <Compile Update="ErrorMessages.Designer.cs">
         <DesignTime>True</DesignTime>

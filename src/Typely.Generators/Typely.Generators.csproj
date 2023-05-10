@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <IsRoslynComponent>true</IsRoslynComponent>
-        <Description>Typely lets you create types easily with a fluent API to embrace Domain-driven design and value objects. This package contains type generators.</Description>
+        <Description>Typely: Unleashing the power of value object creation with a fluent Api. This package contains type generators.</Description>
         <Version>1.4.6-alpha</Version>
         <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     </PropertyGroup>
