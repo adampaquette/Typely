@@ -12,7 +12,7 @@
 [![Nuget version](https://img.shields.io/nuget/vpre/Typely.AspNetCore?label=Typely.AspNetCore)](https://www.nuget.org/packages/Typely.AspNetCore/)
 [![Nuget version](https://img.shields.io/nuget/vpre/Typely.AspNetCore.Swashbuckle?label=Typely.AspNetCore.Swashbuckle)](https://www.nuget.org/packages/Typely.AspNetCore.Swashbuckle/)
 
-Typely lets you create types easily with a fluent API to embrace Domain-driven design and value objects.
+Typely: Unleashing the power of value object creation with a fluent Api.
 
 ## Example
 
