@@ -3,8 +3,11 @@
 namespace Typely.Core;
 
 /// <summary>
-/// Gives an Api to configure the creation of value objects.
+/// Represent a specification of how to create value objects. 
 /// </summary>
+/// <remarks>
+/// The class will be parsed as text by the generator. You cannot create and use custom functions inside the class.
+/// </remarks>
 public interface ITypelySpecification
 {
     /// <summary>

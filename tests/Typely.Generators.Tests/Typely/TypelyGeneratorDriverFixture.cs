@@ -47,9 +47,9 @@ internal class TypelyGeneratorDriverFixture : BaseFixture<TypelyGeneratorDriver>
         pathFromNamespace = Regex.Replace(pathFromNamespace, @"(.+)\/(.+)\+(.+)", "$1/$3");
         
         //Add base path for class without namespace
-        if (!pathFromNamespace.Contains("/Typely/Configurations/"))
+        if (!pathFromNamespace.Contains("/Typely/Specifications/"))
         {
-            pathFromNamespace = $"Typely/Configurations/{pathFromNamespace}";
+            pathFromNamespace = $"Typely/Specifications/{pathFromNamespace}";
         }
 
         return  Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"../../../{pathFromNamespace}.cs");
