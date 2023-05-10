@@ -12,28 +12,28 @@ namespace Typely.Generators.Typely.Parsing;
 internal static class Parser
 {
     /// <summary>
-    /// Filter classes having an interface name "ITypelyConfiguration".
+    /// Filter classes having an interface name "ITypelySpecification".
     /// </summary>
     internal static bool IsTypelyConfigurationClass(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
         syntaxNode is ClassDeclarationSyntax c && IsTypelyConfigurationClass(c);
 
     /// <summary>
-    /// Filter classes having an interface name "ITypelyConfiguration".
+    /// Filter classes having an interface name "ITypelySpecification".
     /// </summary>
     private static bool IsTypelyConfigurationClass(ClassDeclarationSyntax syntax) =>
-        syntax.HasInterface(TypelyConfiguration.InterfaceName);
+        syntax.HasInterface(TypelySpecification.InterfaceName);
 
     /// <summary>
-    /// Filter classes having an interface full name "Typely.Core.ITypelyConfiguration".
+    /// Filter classes having an interface full name "Typely.Core.ITypelySpecification".
     /// </summary>
     private static bool IsTypelyConfigurationClass(SemanticModel model, ClassDeclarationSyntax classDeclarationSyntax)
     {
         var classSymbol = model.GetDeclaredSymbol(classDeclarationSyntax)!;
-        return classSymbol.AllInterfaces.Any(x => x.ToString() == TypelyConfiguration.FullInterfaceName);
+        return classSymbol.AllInterfaces.Any(x => x.ToString() == TypelySpecification.FullInterfaceName);
     }
 
     /// <summary>
-    /// Filter classes having an interface "ITypelyConfiguration" and generate models of the desired user types.
+    /// Filter classes having an interface "ITypelySpecification" and generate models of the desired user types.
     /// </summary>
     /// <param name="context">The generator's context.</param>
     /// <param name="cancellationToken">A token to notify the operation should be cancelled.</param>
@@ -49,7 +49,7 @@ internal static class Parser
     }
 
     /// <summary>
-    /// Filter classes having an interface "ITypelyConfiguration" and generate models of the desired user types.
+    /// Filter classes having an interface "ITypelySpecification" and generate models of the desired user types.
     /// </summary>
     /// <param name="context">The generator's context.</param>
     /// <param name="semanticModel"></param>
@@ -79,10 +79,10 @@ internal static class Parser
     }
 
     /// <summary>
-    /// Filter methods having a name that matches <see cref="TypelyConfiguration.ConfigureMethodName"/>.
+    /// Filter methods having a name that matches <see cref="TypelySpecification.MethodName"/>.
     /// </summary>
-    private static bool IsConfigureMethod(SyntaxNode syntaxNode) =>
-        syntaxNode is MethodDeclarationSyntax { Identifier.Text: TypelyConfiguration.ConfigureMethodName };
+    private static bool IsCreateMethod(SyntaxNode syntaxNode) =>
+        syntaxNode is MethodDeclarationSyntax { Identifier.Text: TypelySpecification.MethodName };
 
     /// <summary>
     /// Parse a <see cref="ClassDeclarationSyntax"/> and generate a list of <see cref="EmittableType"/>.
@@ -91,7 +91,7 @@ internal static class Parser
     {
         var methodSyntax = classSyntax.DescendantNodes()
             .OfType<MethodDeclarationSyntax>()
-            .First(IsConfigureMethod);
+            .First(IsCreateMethod);
 
         var emittableTypes = new List<EmittableType>();
         var typelyBuilderParameterName = methodSyntax.ParameterList.Parameters.First().Identifier.Text;
@@ -114,14 +114,14 @@ internal static class Parser
     /// Parse each line of code of a method.
     /// </summary>
     /// <param name="methodDeclarationSyntax">The <see cref="MethodDeclarationSyntax"/>.</param>
-    /// <param name="typelyBuilderParameterName">The builder parameter name used in "ITypelyConfiguration.Configure".</param>
+    /// <param name="typelyBuilderParameterName">The builder parameter name used in "ITypelySpecification.Configure".</param>
     /// <param name="model">The <see cref="SemanticModel"/>.</param>
     /// <returns>Return a list of <see cref="ParseDeclarationStatement"/>.</returns>
     private static List<ParsedStatement> ParseStatements(MethodDeclarationSyntax methodDeclarationSyntax,
         string typelyBuilderParameterName, SemanticModel model)
     {
         var bodySyntaxNodes = methodDeclarationSyntax.Body!.DescendantNodes()
-            .Where(x => x is ExpressionStatementSyntax || x is LocalDeclarationStatementSyntax);
+            .Where(x => x is ExpressionStatementSyntax or LocalDeclarationStatementSyntax);
         var parsedStatements = new List<ParsedStatement>();
         var parsedStatementVariables = new Dictionary<string, ParsedStatement>();
 

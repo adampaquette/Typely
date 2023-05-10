@@ -62,6 +62,6 @@ internal class TypelyGeneratorDriverFixture : BaseFixture<TypelyGeneratorDriver>
             references: new[]
             {
                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(ITypelyConfiguration).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(ITypelySpecification).Assembly.Location),
             });
 }
