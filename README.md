@@ -128,7 +128,7 @@ It supports many validation errors without using exceptions.
 
 ## Validation errors
 
-The following middleware allows you to return neatly structured Json error responses compatible `Microsoft.AspNetCore.Http.HttpValidationProblemDetails`.
+The following middleware allows you to return neatly structured Json error responses compatible with `Microsoft.AspNetCore.Http.HttpValidationProblemDetails`.
 
 ### Configuration
 ```csharp
@@ -178,7 +178,7 @@ To add support for OpenAPI specs and Swagger UI, include `Typely.AspNetCore.Swas
 ```
 dotnet add package Typely.AspNetCore.Swashbuckle
 ```
-Usage:
+## Configuration
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSwaggerGen(options => options.UseTypelySchemaFilter());
@@ -195,7 +195,7 @@ To use your value objects with EF Core, include `Typely.EfCore` in your projects
 dotnet add package Typely.EfCore
 ```
 ## Configuration
-Apply Typely conventions to your `DbContext` to automatically configure the database. By default, the conventions will tell EF Core how to save and load your primitives and set the maximum data length. 
+Apply Typely conventions to your `DbContext` to automatically configure the database. By default, the conventions will tell EF Core how to save and load your value objects and set the maximum data length. 
 ```csharp
 protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
 {
