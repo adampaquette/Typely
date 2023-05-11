@@ -12,7 +12,7 @@
 [![Nuget version](https://img.shields.io/nuget/vpre/Typely.AspNetCore?label=Typely.AspNetCore)](https://www.nuget.org/packages/Typely.AspNetCore/)
 [![Nuget version](https://img.shields.io/nuget/vpre/Typely.AspNetCore.Swashbuckle?label=Typely.AspNetCore.Swashbuckle)](https://www.nuget.org/packages/Typely.AspNetCore.Swashbuckle/)
 
-Typely: Unleashing the power of value object creation with a fluent Api.
+Unleashing the power of value object creation with a fluent Api.
 
 ## Example
 
@@ -55,33 +55,33 @@ public class TypesSpecification : ITypelySpecification
 
 # Getting started
 
-Install packages
-```
-dotnet add package Typely.Core
-dotnet add package Typely.Generators
-```
+1. Install packages
+    ```
+    dotnet add package Typely.Core
+    dotnet add package Typely.Generators
+    ```
 
-Create a class inheriting from `ITypelySpecification`
-```csharp
-public class TypesSpecification : ITypelySpecification
-{
-    public void Create(ITypelyBuilder builder)
+2. Create a class inheriting from `ITypelySpecification`
+    ```csharp
+    public class TypesSpecification : ITypelySpecification
     {
-        builder.OfString().For("FirstName").NotEmpty();    
+        public void Create(ITypelyBuilder builder)
+        {
+            builder.OfString().For("FirstName").NotEmpty();    
+        }
     }
-}
-```
+    ```
 
-Usage
-```csharp
-var firstName = FirstName.From("Adam");
-FirstName.From(""); //Throws ValidationException
+3. Usage
+    ```csharp
+    var firstName = FirstName.From("Adam");
+    FirstName.From(""); //Throws ValidationException
 
-if(!FirstName.TryFrom("value", out FirstName instance, out ValidationError? validationError))
-{
-    // Handle error
-}
-```
+    if(!FirstName.TryFrom("value", out FirstName instance, out ValidationError? validationError))
+    {
+        // Handle error
+    }
+    ```
 
 # Json Serialization
 
@@ -89,7 +89,11 @@ Serialization using System.Text.Json is supported by default and will only write
 
 # ASP.NET Core
 
-To use Typely in ASP.NET Core projects with support for validation handling and MVC model binding, add the following nuget package:
+[![Nuget version](https://img.shields.io/nuget/vpre/Typely.AspNetCore?label=Typely.AspNetCore)](https://www.nuget.org/packages/Typely.AspNetCore/)
+
+To support validation handling and MVC model binding, include `Typely.AspNetCore` in your projects.
+
+## Nuget package
 ```
 dotnet add package Typely.AspNetCore
 ```
@@ -97,12 +101,27 @@ dotnet add package Typely.AspNetCore
 ## Model binding
 
 - By default Minimal Apis are supported by implementing a `TryParse` function for generated types.
-- Post requests are supported by the `TypelyJsonConverter`.
+- Post requests are supported by `TypelyJsonConverter`.
 - Other bindings are supported by `TypelyTypeConverter`.
+
+These are included by default with `Typely.Core`.
+
+## Model state
+
+If you want to add validation errors into the model state of MVC during the binding phase of the request, configure the option below: 
+### Configuration
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers(options => options.UseTypelyModelBinderProvider());
+```
+
+It supports many validation errors without using exceptions.
 
 ## Validation errors
 
-You can return well formatted Json error responses with the following middleware:
+The following middleware allows you to return neatly structured Json error responses compatible `Microsoft.AspNetCore.Http.HttpValidationProblemDetails`.
+
+### Configuration
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
@@ -111,9 +130,9 @@ var app = builder.Build();
 app.UseTypelyValidationResult();
 ```
 
-It catches a `ValidationException` thrown by Typely and return a compatible `Microsoft.AspNetCore.Http.HttpValidationProblemDetails` class serialized.
+It works by catching a `ValidationException` thrown by Typely and returns a list of errors associated to their value object type name as well as the templates used, if you want to modfify the messages in your client application.
 
-Example of response:
+### Example of response:
 ```json
 {
   "templates": {
@@ -141,12 +160,54 @@ Example of response:
 }
 ```
 
-## Model state
+# OpenAPI
 
-If you want to add validation errors into the model state of MVC during the binding phase of the request, configure the below option: 
+[![Nuget version](https://img.shields.io/nuget/vpre/Typely.AspNetCore.Swashbuckle?label=Typely.AspNetCore.Swashbuckle)](https://www.nuget.org/packages/Typely.AspNetCore.Swashbuckle/)
+
+To add support for OpenAPI specs and Swagger UI, include `Typely.AspNetCore.Swashbuckle` in your projects.
+## Nuget package
+```
+dotnet add package Typely.AspNetCore.Swashbuckle
+```
+Usage:
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers(options => options.UseTypelyModelBinderProvider());
+builder.Services.AddSwaggerGen(options => options.UseTypelySchemaFilter());
 ```
 
-It supports many validation errors without using exceptions.
+# Entity Framework Core
+
+[![Nuget version](https://img.shields.io/nuget/vpre/Typely.EfCore?label=Typely.EfCore)](https://www.nuget.org/packages/Typely.EfCore/)
+
+To use your value objects with EF Core, include `Typely.EfCore` in your projects.
+
+## Nuget package
+```
+dotnet add package Typely.EfCore
+```
+## Configuration
+Apply Typely conventions to your `DbContext` to automatically configure the database. By default, the conventions will tell EF Core how to save and load your primitives and set the maximum data length.
+```csharp
+protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+{
+    configurationBuilder.Conventions.AddTypelyConventions();
+    //OR
+    configurationBuilder.Conventions
+        .AddTypelyConversionConvention()
+        .AddTypelyMaxLengthConvention();
+}
+```
+If you don't use conventions, you can configure your types manually:
+```csharp
+builder.Property(x => x.LastName)
+    .IsRequired()
+    .HasMaxLength(LastName.MaxLength)
+    .HasConversion<TypelyValueConverter<string, LastName>>();
+```
+You can also override the default conventions:
+```csharp
+builder.Property(x => x.FirstName)
+    .IsRequired(false)
+    .HasMaxLength(80)
+    .HasConversion((x) => x + "-custom-conversion", (x) => FirstName.Create(x.Replace("-custom-conversion", "")));
+```
