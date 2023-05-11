@@ -22,17 +22,19 @@ public class TypesSpecification : ITypelySpecification
     public void Create(ITypelyBuilder builder)
     {
         builder.OfInt().For("ContactId").GreaterThan(0);
+        
+        builder.OfString()
+            .For("InsuranceCode")
+            .NotEmpty()
+            .Length(10)
+            .Must(x => x.StartsWith("A91"))
+            .Normalize(x => x.ToUpper());
 
         builder.OfString()
             .For("Phone")
             .MaxLength(12)
             .Matches(new Regex("[0-9]{3}-[0-9]{3}-[0-9]{4}"));
         
-        builder.OfString()
-            .For("ZipCode")
-            .Matches(new Regex(@"^((\d{5}-\d{4})|(\d{5})|([A-Z|a-z]\d[A-Z|a-z]\d[A-Z|a-z]\d))$"))
-            .Normalize(x => x.ToUpper());
-
         var title = builder.OfString()
             .NotEmpty()
             .MaxLength(100)
@@ -40,6 +42,13 @@ public class TypesSpecification : ITypelySpecification
 
         title.For("FirstName");
         title.For("LastName");
+
+        builder.OfDecimal()
+            .For("CouponDiscount")
+            .WithName("Coupon discount")
+            .NotEmpty().WithMessage("{Name} cannot be empty").WithErrorCode("ERR-001")
+            .GreaterThan(0).WithMessage(() => LocalizedMessages.CustomMessage)
+            .LessThanOrEqualTo(24.99M);
     }
 }
 ```
@@ -186,7 +195,7 @@ To use your value objects with EF Core, include `Typely.EfCore` in your projects
 dotnet add package Typely.EfCore
 ```
 ## Configuration
-Apply Typely conventions to your `DbContext` to automatically configure the database. By default, the conventions will tell EF Core how to save and load your primitives and set the maximum data length.
+Apply Typely conventions to your `DbContext` to automatically configure the database. By default, the conventions will tell EF Core how to save and load your primitives and set the maximum data length. 
 ```csharp
 protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
 {
@@ -197,17 +206,15 @@ protected override void ConfigureConventions(ModelConfigurationBuilder configura
         .AddTypelyMaxLengthConvention();
 }
 ```
-If you don't use conventions, you can configure your types manually:
+If you don't use conventions, you can configure your types manually. Typely will generate a `MaxLength` property when using a validation that sets the maximum length.
 ```csharp
 builder.Property(x => x.LastName)
-    .IsRequired()
     .HasMaxLength(LastName.MaxLength)
     .HasConversion<TypelyValueConverter<string, LastName>>();
 ```
 You can also override the default conventions:
 ```csharp
 builder.Property(x => x.FirstName)
-    .IsRequired(false)
     .HasMaxLength(80)
     .HasConversion((x) => x + "-custom-conversion", (x) => FirstName.Create(x.Replace("-custom-conversion", "")));
 ```
