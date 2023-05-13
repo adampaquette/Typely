@@ -25,7 +25,6 @@ public class TypesSpecification : ITypelySpecification
         
         builder.OfString()
             .For("InsuranceCode")
-            .NotEmpty()
             .Length(10)
             .Must(x => x.StartsWith("A91"))
             .Normalize(x => x.ToUpper());
