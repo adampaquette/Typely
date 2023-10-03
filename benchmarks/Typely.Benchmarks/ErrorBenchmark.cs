@@ -20,16 +20,16 @@ public class ErrorBenchmark
     }
 
     [Benchmark]
-    public void ReturnValidationError() => new ValidationError("ERR001", "Parameter must not be empty.", _val, "Param");
+    public void ReturnValidationError() => new ValidationErrorTest("ERR001", "Parameter must not be empty.", _val, "Param");
 }
 
-public class ValidationError
+public class ValidationErrorTest
 {
     public string ErrorCode { get; init; }
     public string ErrorMessage { get; init; }
     public object AttemptedValue { get; init; }
     public object Source { get; init; }
-    public ValidationError(string errorCode, string errorMessage, object attemptedValue, object source)
+    public ValidationErrorTest(string errorCode, string errorMessage, object attemptedValue, object source)
     {
         ErrorCode = errorCode;
         ErrorMessage = errorMessage;
