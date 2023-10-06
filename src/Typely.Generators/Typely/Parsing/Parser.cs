@@ -14,19 +14,19 @@ internal static class Parser
     /// <summary>
     /// Filter classes having an interface name "ITypelySpecification".
     /// </summary>
-    internal static bool IsTypelyConfigurationClass(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
-        syntaxNode is ClassDeclarationSyntax c && IsTypelyConfigurationClass(c);
+    internal static bool IsTypelySpecificationClass(SyntaxNode syntaxNode, CancellationToken cancellationToken) =>
+        syntaxNode is ClassDeclarationSyntax c && IsTypelySpecificationClass(c);
 
     /// <summary>
     /// Filter classes having an interface name "ITypelySpecification".
     /// </summary>
-    private static bool IsTypelyConfigurationClass(ClassDeclarationSyntax syntax) =>
+    private static bool IsTypelySpecificationClass(ClassDeclarationSyntax syntax) =>
         syntax.HasInterface(TypelySpecification.InterfaceName);
 
     /// <summary>
     /// Filter classes having an interface full name "Typely.Core.ITypelySpecification".
     /// </summary>
-    private static bool IsTypelyConfigurationClass(SemanticModel model, ClassDeclarationSyntax classDeclarationSyntax)
+    private static bool IsTypelySpecificationClass(SemanticModel model, ClassDeclarationSyntax classDeclarationSyntax)
     {
         var classSymbol = model.GetDeclaredSymbol(classDeclarationSyntax)!;
         return classSymbol.AllInterfaces.Any(x => x.ToString() == TypelySpecification.FullInterfaceName);
@@ -43,7 +43,7 @@ internal static class Parser
     {
         var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
 
-        return IsTypelyConfigurationClass(context.SemanticModel, classDeclarationSyntax)
+        return IsTypelySpecificationClass(context.SemanticModel, classDeclarationSyntax)
             ? GetEmittableTypesForClass(classDeclarationSyntax, context.SemanticModel, cancellationToken)
             : null;
     }
@@ -64,7 +64,7 @@ internal static class Parser
             .GetRoot()
             .DescendantNodes()
             .OfType<ClassDeclarationSyntax>()
-            .Where(IsTypelyConfigurationClass)
+            .Where(IsTypelySpecificationClass)
             .ToList();
 
         foreach (var classSyntax in classSyntaxes)
