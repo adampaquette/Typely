@@ -32,16 +32,16 @@ namespace Election
                 return ValidationErrorFactory.Create(value, "ERR-001", "The value cannot be empty", "Presidency vote");
             }
 
-            if (value.Equals(new DateTimeOffset(new DateTime(2022,1,1))))
+            if (value.Equals(new DateTimeOffset(new DateTime(2022, 1, 1))))
             {
                 return ValidationErrorFactory.Create(value, "NotEqual", ErrorMessages.NotEqual, "Presidency vote",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", new DateTimeOffset(new DateTime(2022,1,1)) },
+                        { "ComparisonValue", new DateTimeOffset(new DateTime(2022, 1, 1)) },
                     });
             }
 
-            if (!(value == new DateTimeOffset(new DateTime(2022,1,1))))
+            if (!(value == new DateTimeOffset(new DateTime(2022, 1, 1))))
             {
                 return ValidationErrorFactory.Create(value, "Must", ErrorMessages.Must, "Presidency vote");
             }
@@ -51,39 +51,39 @@ namespace Election
                 return ValidationErrorFactory.Create(value, "Must", ErrorMessages.Must, "Presidency vote");
             }
 
-            if (value <= new DateTimeOffset(new DateTime(2022,1,1)))
+            if (value <= new DateTimeOffset(new DateTime(2022, 1, 1)))
             {
                 return ValidationErrorFactory.Create(value, "GreaterThan", LocalizedMessages.CustomMessage, "Presidency vote",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", new DateTimeOffset(new DateTime(2022,1,1)) },
+                        { "ComparisonValue", new DateTimeOffset(new DateTime(2022, 1, 1)) },
                     });
             }
 
-            if (value < new DateTimeOffset(new DateTime(2022,1,1)))
+            if (value < new DateTimeOffset(new DateTime(2022, 1, 1)))
             {
                 return ValidationErrorFactory.Create(value, "GreaterThanOrEqualTo", A.CustomLocalization.Value, "Presidency vote",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", new DateTimeOffset(new DateTime(2022,1,1)) },
+                        { "ComparisonValue", new DateTimeOffset(new DateTime(2022, 1, 1)) },
                     });
             }
 
-            if (value >= new DateTimeOffset(new DateTime(2022,1,1)))
+            if (value >= new DateTimeOffset(new DateTime(2022, 1, 1)))
             {
                 return ValidationErrorFactory.Create(value, "LessThan", ErrorMessages.LessThan, "Presidency vote",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", new DateTimeOffset(new DateTime(2022,1,1)) },
+                        { "ComparisonValue", new DateTimeOffset(new DateTime(2022, 1, 1)) },
                     });
             }
 
-            if (value > new DateTimeOffset(new DateTime(2022,1,1)))
+            if (value > new DateTimeOffset(new DateTime(2022, 1, 1)))
             {
                 return ValidationErrorFactory.Create(value, "LessThanOrEqualTo", ErrorMessages.LessThanOrEqualTo, "Presidency vote",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", new DateTimeOffset(new DateTime(2022,1,1)) },
+                        { "ComparisonValue", new DateTimeOffset(new DateTime(2022, 1, 1)) },
                     });
             }
 
@@ -104,6 +104,9 @@ namespace Election
             return isValid;
         }
         
+        public static bool TryParse(string? value, out Votes valueObject) =>
+            TryParse(value, null, out valueObject);
+
         public static bool TryParse(string? value, IFormatProvider? provider, out Votes valueObject)
         {
             if(DateTimeOffset.TryParse(value, out var underlyingValue))

@@ -40,24 +40,47 @@ internal static partial class Emitter
         var interrogationPoint = emittableType.ConstructTypeKind == ConstructTypeKind.Struct ? string.Empty : "?";
         var underlyingType = emittableType.UnderlyingType;
         var typeName = emittableType.TypeName;
-        
-        return underlyingType == "string"
-            ? string.Empty
-            : $$"""
 
-                public static bool TryParse(string? value, IFormatProvider? provider, out {{typeName}}{{interrogationPoint}} valueObject)
-                {
-                    if({{underlyingType}}.TryParse(value, out var underlyingValue))
-                    {
-                        valueObject = From(underlyingValue);
-                        return true;
-                    }
-                        
-                    valueObject = {{defaultValue}};
-                    return false;
-                }
+        if (underlyingType == "string")
+        {
+            return $$"""
+                     
+                             public static bool TryParse(string? value, out {{typeName}}{{interrogationPoint}} valueObject) =>
+                                 TryParse(value, null, out valueObject);
+                     
+                             public static bool TryParse(string? value, IFormatProvider? provider, out {{typeName}}{{interrogationPoint}} valueObject)
+                             {
+                                if(value is null)
+                                {
+                                    valueObject = null;
+                                    return false;
+                                }
+                             
+                                 valueObject = From(value!);
+                                 return true;
+                             }
 
-        """;
+                     """;
+        }
+
+        return $$"""
+                 
+                         public static bool TryParse(string? value, out {{typeName}}{{interrogationPoint}} valueObject) =>
+                             TryParse(value, null, out valueObject);
+                 
+                         public static bool TryParse(string? value, IFormatProvider? provider, out {{typeName}}{{interrogationPoint}} valueObject)
+                         {
+                             if({{underlyingType}}.TryParse(value, out var underlyingValue))
+                             {
+                                 valueObject = From(underlyingValue);
+                                 return true;
+                             }
+                                 
+                             valueObject = {{defaultValue}};
+                             return false;
+                         }
+
+                 """;
     }
 
     private static string BuildNamespaces(EmittableType emittableType)

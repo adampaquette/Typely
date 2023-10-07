@@ -39,6 +39,9 @@ namespace Typely.Generators.Tests.Typely.Specifications.B
             return isValid;
         }
         
+        public static bool TryParse(string? value, out MultiConfigDiffNamespace valueObject) =>
+            TryParse(value, null, out valueObject);
+
         public static bool TryParse(string? value, IFormatProvider? provider, out MultiConfigDiffNamespace valueObject)
         {
             if(int.TryParse(value, out var underlyingValue))

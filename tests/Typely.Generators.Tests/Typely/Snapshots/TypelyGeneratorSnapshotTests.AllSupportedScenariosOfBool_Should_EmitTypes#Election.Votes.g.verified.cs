@@ -68,6 +68,9 @@ namespace Election
             return isValid;
         }
         
+        public static bool TryParse(string? value, out Votes valueObject) =>
+            TryParse(value, null, out valueObject);
+
         public static bool TryParse(string? value, IFormatProvider? provider, out Votes valueObject)
         {
             if(bool.TryParse(value, out var underlyingValue))

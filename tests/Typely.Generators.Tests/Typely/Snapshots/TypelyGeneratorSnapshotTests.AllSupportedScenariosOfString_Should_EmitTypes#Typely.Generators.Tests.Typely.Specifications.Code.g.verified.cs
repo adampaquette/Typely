@@ -136,6 +136,21 @@ namespace Typely.Generators.Tests.Typely.Specifications
             return isValid;
         }
         
+        public static bool TryParse(string? value, out Code? valueObject) =>
+            TryParse(value, null, out valueObject);
+
+        public static bool TryParse(string? value, IFormatProvider? provider, out Code? valueObject)
+        {
+           if(value is null)
+           {
+               valueObject = null;
+               return false;
+           }
+        
+            valueObject = From(value!);
+            return true;
+        }
+
         public override string ToString() => Value.ToString();
 
         public static bool operator !=(Code? left, Code? right) => !(left == right);

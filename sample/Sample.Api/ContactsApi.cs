@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Sample.Domain.ContactAggregate;
 using Sample.Infrastructure;
 
@@ -54,6 +55,11 @@ public static class ContactsApi
             }
 
             return Results.NotFound();
+        });
+
+        contacts.MapGet("/search", ([FromQuery] FirstName firstName, AppDbContext db) =>
+        {
+            return Results.Ok(db.Contacts.Where(c => ((string)c.FirstName).Contains(firstName.Value)));
         });
 
         return webApplication;
