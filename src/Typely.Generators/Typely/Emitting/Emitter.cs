@@ -45,14 +45,14 @@ internal static partial class Emitter
         {
             return $$"""
                      
-                             public static bool TryParse(string? value, out {{typeName}}{{interrogationPoint}} valueObject) =>
+                             public static bool TryParse(string? value, out {{typeName}} valueObject) =>
                                  TryParse(value, null, out valueObject);
                      
-                             public static bool TryParse(string? value, IFormatProvider? provider, out {{typeName}}{{interrogationPoint}} valueObject)
+                             public static bool TryParse(string? value, IFormatProvider? provider, out {{typeName}} valueObject)
                              {
                                 if(value is null)
                                 {
-                                    valueObject = null;
+                                    valueObject = default!;
                                     return false;
                                 }
                              

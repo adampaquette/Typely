@@ -46,4 +46,8 @@
             <DependentUpon>Emitter.cs</DependentUpon>
         </Compile>
     </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
+    </ItemGroup>
 </Project>

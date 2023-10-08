@@ -69,7 +69,10 @@ public class ParserTests
     private static IReadOnlyList<EmittableType> GetEmittableTypes(SyntaxTree syntaxTree)
     {
         var context = new ParserContextFixture().WithSyntaxTrees(syntaxTree).Create();
-        return Parser.GetEmittableTypesForClass(context.ClassDeclarationSyntax, context.SemanticModel,
-            CancellationToken.None);
+        return Parser.GetEmittableTypesAndDiagnosticsForClass(context.ClassDeclarationSyntax, context.SemanticModel,
+            CancellationToken.None)
+            .Where(x => x.Diagnostic is not null)
+            .Select(x => x.EmittableType!)
+            .ToList();
     }
 }

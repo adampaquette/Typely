@@ -38,13 +38,13 @@ internal static class Parser
     /// <param name="context">The generator's context.</param>
     /// <param name="cancellationToken">A token to notify the operation should be cancelled.</param>
     /// <returns>A list of representation of desired user types.</returns>
-    internal static IReadOnlyList<EmittableType>? GetEmittableTypesForClass(GeneratorSyntaxContext context,
+    internal static IReadOnlyList<EmittableTypeOrDiagnostic>? GetEmittableTypesAndDiagnosticsForClass(GeneratorSyntaxContext context,
         CancellationToken cancellationToken)
     {
         var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
 
         return IsTypelySpecificationClass(context.SemanticModel, classDeclarationSyntax)
-            ? GetEmittableTypesForClass(classDeclarationSyntax, context.SemanticModel, cancellationToken)
+            ? GetEmittableTypesAndDiagnosticsForClass(classDeclarationSyntax, context.SemanticModel, cancellationToken)
             : null;
     }
 
@@ -56,10 +56,10 @@ internal static class Parser
     /// <param name="cancellationToken">A token to notify the operation should be cancelled.</param>
     /// <param name="classDeclarationSyntax">The class containing the specification.</param>
     /// <returns>A list of representation of desired user types.</returns>
-    internal static IReadOnlyList<EmittableType> GetEmittableTypesForClass(
+    internal static IReadOnlyList<EmittableTypeOrDiagnostic> GetEmittableTypesAndDiagnosticsForClass(
         ClassDeclarationSyntax classDeclarationSyntax, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
-        var emittableTypes = new List<EmittableType>();
+        var emittableTypes = new List<EmittableTypeOrDiagnostic>();
         var classSyntaxes = classDeclarationSyntax.SyntaxTree
             .GetRoot()
             .DescendantNodes()
@@ -87,27 +87,32 @@ internal static class Parser
     /// <summary>
     /// Parse a <see cref="ClassDeclarationSyntax"/> and generate a list of <see cref="EmittableType"/>.
     /// </summary>
-    private static IEnumerable<EmittableType> ParseClass(ClassDeclarationSyntax classSyntax, SemanticModel model)
+    private static IEnumerable<EmittableTypeOrDiagnostic> ParseClass(ClassDeclarationSyntax classSyntax,
+        SemanticModel model)
     {
         var methodSyntax = classSyntax.DescendantNodes()
             .OfType<MethodDeclarationSyntax>()
             .First(IsCreateMethod);
 
-        var emittableTypes = new List<EmittableType>();
+        var emittableTypeOrDiagnostics = new List<EmittableTypeOrDiagnostic>();
         var typelyBuilderParameterName = methodSyntax.ParameterList.Parameters.First().Identifier.Text;
-        var parsedStatements = ParseStatements(methodSyntax, typelyBuilderParameterName, model);
+        var parsedStatementsResult = ParseStatements(methodSyntax, typelyBuilderParameterName, model);
         var defaultNamespace = GetNamespace(classSyntax);
 
-        foreach (var parsedStatement in parsedStatements)
+        foreach (var parsedStatement in parsedStatementsResult.ParsedStatements)
         {
             var emittableType = EmittableTypeBuilderFactory.Create(defaultNamespace, parsedStatement).Build();
             if (emittableType != null)
             {
-                emittableTypes.Add(emittableType);
+                emittableTypeOrDiagnostics.Add(new EmittableTypeOrDiagnostic(emittableType));
             }
         }
 
-        return emittableTypes;
+        var diagnostics =
+            parsedStatementsResult.Diagnostics.Select(diagnostic => new EmittableTypeOrDiagnostic(diagnostic));
+        emittableTypeOrDiagnostics.AddRange(diagnostics);
+
+        return emittableTypeOrDiagnostics;
     }
 
     /// <summary>
@@ -116,14 +121,16 @@ internal static class Parser
     /// <param name="methodDeclarationSyntax">The <see cref="MethodDeclarationSyntax"/>.</param>
     /// <param name="typelyBuilderParameterName">The builder parameter name used in "ITypelySpecification.Configure".</param>
     /// <param name="model">The <see cref="SemanticModel"/>.</param>
+    /// <param name="diagnostics">List of diagnostics to fill.</param>
     /// <returns>Return a list of <see cref="ParseDeclarationStatement"/>.</returns>
-    private static List<ParsedStatement> ParseStatements(MethodDeclarationSyntax methodDeclarationSyntax,
+    private static ParsedStatementsResult ParseStatements(MethodDeclarationSyntax methodDeclarationSyntax,
         string typelyBuilderParameterName, SemanticModel model)
     {
         var bodySyntaxNodes = methodDeclarationSyntax.Body!.DescendantNodes()
             .Where(x => x is ExpressionStatementSyntax or LocalDeclarationStatementSyntax);
         var parsedStatements = new List<ParsedStatement>();
         var parsedStatementVariables = new Dictionary<string, ParsedStatement>();
+        var diagnostics = new List<Diagnostic>();
 
         foreach (var bodySyntaxNode in bodySyntaxNodes)
         {
@@ -132,11 +139,12 @@ internal static class Parser
             if (bodySyntaxNode is ExpressionStatementSyntax expressionStatementSyntax)
             {
                 parsedStatements.Add(parsedStatement);
-                ParseInvocationExpression(expressionStatementSyntax.Expression, parsedStatement);
+                ParseInvocationExpression(expressionStatementSyntax.Expression, parsedStatement, diagnostics);
             }
             else if (bodySyntaxNode is LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
             {
-                ParseDeclarationStatement(parsedStatementVariables, parsedStatement, localDeclarationStatementSyntax);
+                ParseDeclarationStatement(parsedStatementVariables, parsedStatement, localDeclarationStatementSyntax,
+                    diagnostics);
             }
 
             if (IsStatementInvalid(parsedStatement))
@@ -148,8 +156,7 @@ internal static class Parser
             MergeStatementVariable(parsedStatement);
         }
 
-        return parsedStatements;
-
+        return new ParsedStatementsResult { ParsedStatements = parsedStatements, Diagnostics = diagnostics };
 
         void MergeStatementVariable(ParsedStatement parsedStatement)
         {
@@ -173,7 +180,7 @@ internal static class Parser
             if (UseStatementVariable(parsedStatement))
             {
                 return !parsedStatementVariables.ContainsKey(parsedStatement.Root) ||
-                 !parsedStatementVariables[parsedStatement.Root].IsValid();
+                       !parsedStatementVariables[parsedStatement.Root].IsValid();
             }
 
             return false;
@@ -189,11 +196,12 @@ internal static class Parser
     /// </summary>
     private static void ParseDeclarationStatement(
         Dictionary<string, ParsedStatement> parsedExpressionVariables,
-        ParsedStatement parsed, LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
+        ParsedStatement parsed, LocalDeclarationStatementSyntax localDeclarationStatementSyntax,
+        List<Diagnostic> diagnostics)
     {
         var variable = localDeclarationStatementSyntax.Declaration.Variables.First();
         parsedExpressionVariables.Add(variable.Identifier.Text, parsed);
-        ParseInvocationExpression(variable.Initializer!.Value, parsed);
+        ParseInvocationExpression(variable.Initializer!.Value, parsed, diagnostics);
     }
 
     /// <summary>
@@ -222,7 +230,7 @@ internal static class Parser
     /// Parse a <see cref="SyntaxNode"/> as an <see cref="InvocationExpressionSyntax"/> to get the member name and the argument list.
     /// </summary>
     private static void ParseInvocationExpression(ExpressionSyntax syntaxNode,
-        ParsedStatement parsed)
+        ParsedStatement parsed, List<Diagnostic> diagnostics)
     {
         // ex: builder.OfInt().For("Vote").WithNamespace("UserAggregate").WithName("Vote")
         if (syntaxNode is InvocationExpressionSyntax invocationExpressionSyntax)
@@ -235,7 +243,13 @@ internal static class Parser
                 parsed.Invocations.Insert(0, new ParsedInvocation(argumentList, memberName));
 
                 // ex: builder.OfInt().For("Vote").WithNamespace("UserAggregate").WithName()
-                ParseInvocationExpression(memberAccessExpressionSyntax.Expression, parsed);
+                ParseInvocationExpression(memberAccessExpressionSyntax.Expression, parsed, diagnostics);
+            }
+            else
+            {
+                var diagnostic = Diagnostic.Create(DiagnosticDescriptors.UnsupportedExpression,
+                    invocationExpressionSyntax.GetLocation(), invocationExpressionSyntax.Expression);
+                diagnostics.Add(diagnostic);
             }
         }
         // ex: builder
@@ -243,5 +257,11 @@ internal static class Parser
         {
             parsed.Root = nameSyntax.Identifier.Text;
         }
+    }
+
+    private struct ParsedStatementsResult
+    {
+        public List<ParsedStatement> ParsedStatements { get; set; }
+        public List<Diagnostic> Diagnostics { get; set; }
     }
 }

@@ -17,7 +17,7 @@ public class TypelyValueSchemaFilterTests
         _filter.Apply(schema, context);
 
         Assert.Equal("string", schema.Type);
-        Assert.Equal(1, schema.Properties.Values.Count);
+        Assert.Single(schema.Properties.Values);
     }
 
     [Fact]
@@ -31,6 +31,6 @@ public class TypelyValueSchemaFilterTests
         _filter.Apply(schema, context);
 
         Assert.Null(schema.Type);
-        Assert.Equal(0, schema.Properties.Values.Count);
+        Assert.Empty(schema.Properties.Values);
     }
 }
