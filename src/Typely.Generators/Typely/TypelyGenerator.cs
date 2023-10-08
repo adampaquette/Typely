@@ -14,16 +14,24 @@ public class TypelyGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var emittableTypeProvider = context.SyntaxProvider
+        var emittableTypeOrDiagnosticProvider = context.SyntaxProvider
             .CreateSyntaxProvider(
                 predicate: Parser.IsTypelySpecificationClass,
-                transform: Parser.GetEmittableTypesForClass)
+                transform: Parser.GetEmittableTypesAndDiagnosticsForClass)
             .Where(x => x is not null)
             .SelectMany((emittableTypes, _) => emittableTypes!);
+
+        var diagnosticProvider = emittableTypeOrDiagnosticProvider.Where(x => x.Diagnostic is not null)
+            .Select(selector: (x, _) => x.Diagnostic!);
+
+        context.RegisterSourceOutput(diagnosticProvider, AddDiagnostic);
         
-        context.RegisterSourceOutput(emittableTypeProvider, AddEmittedSource);
+        var emittableTypesProvider = emittableTypeOrDiagnosticProvider.Where(x => x.EmittableType is not null)
+            .Select(selector: (x, _) => x.EmittableType!);
+        
+        context.RegisterSourceOutput(emittableTypesProvider, AddEmittedSource);
     }
-    
+
     /// <summary>
     /// Emit the source code for a value object and add it to the <see cref="SourceProductionContext"/>.
     /// </summary>
@@ -32,10 +40,17 @@ public class TypelyGenerator : IIncrementalGenerator
     private static void AddEmittedSource(SourceProductionContext context, EmittableType emittableType)
     {
         context.CancellationToken.ThrowIfCancellationRequested();
-        
+
         var source = Emitter.Emit(emittableType);
 
         context.AddSource($"{emittableType.Namespace}.{emittableType.TypeName}.g.cs",
             SourceText.From(source, Encoding.UTF8));
+    }
+    
+    private static void AddDiagnostic(SourceProductionContext context, Diagnostic diagnostic)
+    {
+        context.CancellationToken.ThrowIfCancellationRequested();
+
+        context.ReportDiagnostic(diagnostic);
     }
 }

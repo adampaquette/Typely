@@ -17,7 +17,7 @@ public class CompleteTypelySpecification : ITypelySpecification
             .OfString()
             .AsClass()
             .For("UserId")
-            .WithNamespace("UserAggregate")
+            .WithNamespace("UserAggregate1")
             .WithName("Owner identifier")
             .AsStruct()
             .NotEmpty().WithMessage("'Name' cannot be empty.").WithErrorCode("ERR001")

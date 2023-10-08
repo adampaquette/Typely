@@ -41,7 +41,7 @@ namespace Election
                     });
             }
 
-            if (!(value == new TimeSpan(2022, 1, 1)))
+            if (!(value == new TimeSpan(2022,1,1)))
             {
                 return ValidationErrorFactory.Create(value, "Must", ErrorMessages.Must, "Presidency vote");
             }
@@ -51,39 +51,39 @@ namespace Election
                 return ValidationErrorFactory.Create(value, "Must", ErrorMessages.Must, "Presidency vote");
             }
 
-            if (value <= new TimeSpan(2022, 1, 1))
+            if (value <= new TimeSpan(2022,1,1))
             {
                 return ValidationErrorFactory.Create(value, "GreaterThan", LocalizedMessages.CustomMessage, "Presidency vote",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", new TimeSpan(2022, 1, 1) },
+                        { "ComparisonValue", new TimeSpan(2022,1,1) },
                     });
             }
 
-            if (value < new TimeSpan(2022, 1, 1))
+            if (value < new TimeSpan(2022,1,1))
             {
                 return ValidationErrorFactory.Create(value, "GreaterThanOrEqualTo", A.CustomLocalization.Value, "Presidency vote",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", new TimeSpan(2022, 1, 1) },
+                        { "ComparisonValue", new TimeSpan(2022,1,1) },
                     });
             }
 
-            if (value >= new TimeSpan(2022, 1, 1))
+            if (value >= new TimeSpan(2022,1,1))
             {
                 return ValidationErrorFactory.Create(value, "LessThan", ErrorMessages.LessThan, "Presidency vote",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", new TimeSpan(2022, 1, 1) },
+                        { "ComparisonValue", new TimeSpan(2022,1,1) },
                     });
             }
 
-            if (value > new TimeSpan(2022, 1, 1))
+            if (value > new TimeSpan(2022,1,1))
             {
                 return ValidationErrorFactory.Create(value, "LessThanOrEqualTo", ErrorMessages.LessThanOrEqualTo, "Presidency vote",
                     new Dictionary<string, object?>
                     {
-                        { "ComparisonValue", new TimeSpan(2022, 1, 1) },
+                        { "ComparisonValue", new TimeSpan(2022,1,1) },
                     });
             }
 

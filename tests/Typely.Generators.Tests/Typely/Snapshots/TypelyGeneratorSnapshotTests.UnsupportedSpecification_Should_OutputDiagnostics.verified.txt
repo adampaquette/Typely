@@ -1,0 +1,24 @@
+﻿{
+  Diagnostics: [
+    {
+      Id: TYP0001,
+      Title: Unsupported expression,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: {CurrentDirectory}../../..//Typely/Specifications/DiagnosticsSpecification.cs: (9,8)-(9,46),
+      MessageFormat: The use of '{0}' is not allowed in a TypelySpecification,
+      Message: The use of 'CreateTypeFromUnsupportedCall' is not allowed in a TypelySpecification,
+      Category: Design
+    },
+    {
+      Id: TYP0001,
+      Title: Unsupported expression,
+      Severity: Error,
+      WarningLevel: 0,
+      Location: {CurrentDirectory}../../..//Typely/Specifications/DiagnosticsSpecification.cs: (11,26)-(11,64),
+      MessageFormat: The use of '{0}' is not allowed in a TypelySpecification,
+      Message: The use of 'CreateTypeFromUnsupportedCall' is not allowed in a TypelySpecification,
+      Category: Design
+    }
+  ]
+}
