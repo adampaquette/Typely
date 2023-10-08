@@ -13,4 +13,6 @@ internal class ParsedStatement
     public SemanticModel SemanticModel { get; }
 
     public List<ParsedInvocation> Invocations { get; } = new();
+
+    public bool IsValid() => !string.IsNullOrWhiteSpace(Root);
 }

@@ -292,6 +292,17 @@ public class TypelyGeneratorSnapshotTests
 
         return Verify(driver);
     }
+    
+    [Fact]
+    public Task UnsupportedSpecification_Should_OutputDiagnostics()
+    {
+        var driver = new TypelyGeneratorDriverFixture()
+            .WithConfigurations(typeof(DiagnosticsSpecification))
+            .Create()
+            .Run();
+
+        return Verify(driver);
+    }
 
     private SettingsTask Verify(object? target) => Verifier.Verify(target).UseDirectory("Snapshots");
 }

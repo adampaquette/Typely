@@ -127,35 +127,59 @@ internal static class Parser
 
         foreach (var bodySyntaxNode in bodySyntaxNodes)
         {
-            var parsedExpression = new ParsedStatement(model);
+            var parsedStatement = new ParsedStatement(model);
 
             if (bodySyntaxNode is ExpressionStatementSyntax expressionStatementSyntax)
             {
-                parsedStatements.Add(parsedExpression);
-                ParseInvocationExpression(expressionStatementSyntax.Expression, parsedExpression);
+                parsedStatements.Add(parsedStatement);
+                ParseInvocationExpression(expressionStatementSyntax.Expression, parsedStatement);
             }
             else if (bodySyntaxNode is LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
             {
-                ParseDeclarationStatement(parsedStatementVariables, parsedExpression, localDeclarationStatementSyntax);
+                ParseDeclarationStatement(parsedStatementVariables, parsedStatement, localDeclarationStatementSyntax);
             }
 
-            //Parse failed for this statement, skip it. 
-            if (parsedExpression.Root == string.Empty && parsedStatements.Contains(parsedExpression))
+            if (IsStatementInvalid(parsedStatement))
             {
-                parsedStatements.Remove(parsedExpression);
-                //We don't want to invalidate the whole class because of a single statement.
+                parsedStatements.Remove(parsedStatement);
                 continue;
             }
 
-            if (DoesNotUseBuilderParameter(parsedExpression))
-            {
-                MergeVariableInvocations(parsedStatementVariables, parsedExpression);
-            }
+            MergeStatementVariable(parsedStatement);
         }
 
         return parsedStatements;
 
-        bool DoesNotUseBuilderParameter(ParsedStatement invocationResult) =>
+
+        void MergeStatementVariable(ParsedStatement parsedStatement)
+        {
+            if (!UseStatementVariable(parsedStatement))
+            {
+                return;
+            }
+
+            var parsedStatementVariable = parsedStatementVariables[parsedStatement.Root];
+            parsedStatement.Invocations.InsertRange(0, parsedStatementVariable.Invocations);
+            parsedStatement.Root = parsedStatementVariable.Root;
+        }
+
+        bool IsStatementInvalid(ParsedStatement parsedStatement)
+        {
+            if (!parsedStatement.IsValid())
+            {
+                return true;
+            }
+
+            if (UseStatementVariable(parsedStatement))
+            {
+                return !parsedStatementVariables.ContainsKey(parsedStatement.Root) ||
+                 !parsedStatementVariables[parsedStatement.Root].IsValid();
+            }
+
+            return false;
+        }
+
+        bool UseStatementVariable(ParsedStatement invocationResult) =>
             invocationResult.Root != typelyBuilderParameterName;
     }
 
@@ -170,21 +194,6 @@ internal static class Parser
         var variable = localDeclarationStatementSyntax.Declaration.Variables.First();
         parsedExpressionVariables.Add(variable.Identifier.Text, parsed);
         ParseInvocationExpression(variable.Initializer!.Value, parsed);
-    }
-
-    /// <summary>
-    /// Combine the invocations of the root variable with the current parsed expression.
-    /// </summary>
-    /// <param name="parsedExpressionVariables">List of variables containing a series of invocations.</param>
-    /// <param name="parsedStatement">A line of code already parsed.</param>
-    private static void MergeVariableInvocations(
-        Dictionary<string, ParsedStatement> parsedExpressionVariables,
-        ParsedStatement parsedStatement)
-    {
-        var parsedExpressionVariable = parsedExpressionVariables[parsedStatement.Root];
-
-        parsedStatement.Invocations.InsertRange(0, parsedExpressionVariable.Invocations);
-        parsedStatement.Root = parsedExpressionVariable.Root;
     }
 
     /// <summary>
