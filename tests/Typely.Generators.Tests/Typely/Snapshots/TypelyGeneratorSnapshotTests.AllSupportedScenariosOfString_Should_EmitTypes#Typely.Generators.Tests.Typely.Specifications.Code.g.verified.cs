@@ -136,14 +136,14 @@ namespace Typely.Generators.Tests.Typely.Specifications
             return isValid;
         }
         
-        public static bool TryParse(string? value, out Code? valueObject) =>
+        public static bool TryParse(string? value, out Code valueObject) =>
             TryParse(value, null, out valueObject);
 
-        public static bool TryParse(string? value, IFormatProvider? provider, out Code? valueObject)
+        public static bool TryParse(string? value, IFormatProvider? provider, out Code valueObject)
         {
            if(value is null)
            {
-               valueObject = null;
+               valueObject = default!;
                return false;
            }
         

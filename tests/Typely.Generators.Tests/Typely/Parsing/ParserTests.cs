@@ -71,7 +71,7 @@ public class ParserTests
         var context = new ParserContextFixture().WithSyntaxTrees(syntaxTree).Create();
         return Parser.GetEmittableTypesAndDiagnosticsForClass(context.ClassDeclarationSyntax, context.SemanticModel,
             CancellationToken.None)
-            .Where(x => x.Diagnostic is not null)
+            .Where(x => x.EmittableType is not null)
             .Select(x => x.EmittableType!)
             .ToList();
     }

@@ -14,10 +14,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(BoolSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfByte_Should_EmitTypes()
     {
@@ -25,10 +25,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(ByteSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfChar_Should_EmitTypes()
     {
@@ -36,10 +36,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(CharSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfDateOnly_Should_EmitTypes()
     {
@@ -47,10 +47,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(DateOnlySpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfDateTime_Should_EmitTypes()
     {
@@ -58,10 +58,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(DateTimeSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfDateTimeOffset_Should_EmitTypes()
     {
@@ -69,10 +69,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(DateTimeOffsetSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfInt_Should_EmitTypes()
     {
@@ -80,10 +80,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(IntSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfDecimal_Should_EmitTypes()
     {
@@ -91,10 +91,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(DecimalSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfFloat_Should_EmitTypes()
     {
@@ -102,10 +102,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(FloatSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfGuid_Should_EmitTypes()
     {
@@ -113,10 +113,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(GuidSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfDouble_Should_EmitTypes()
     {
@@ -124,10 +124,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(DoubleSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfLong_Should_EmitTypes()
     {
@@ -135,10 +135,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(LongSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfSByte_Should_EmitTypes()
     {
@@ -146,10 +146,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(SByteSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfShort_Should_EmitTypes()
     {
@@ -157,10 +157,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(ShortSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfString_Should_EmitTypes()
     {
@@ -168,10 +168,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(StringSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfTimeOnly_Should_EmitTypes()
     {
@@ -179,10 +179,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(TimeOnlySpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfTimeSpan_Should_EmitTypes()
     {
@@ -190,10 +190,10 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(TimeSpanSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task AllSupportedScenariosOfUInt_Should_EmitTypes()
     {
@@ -201,7 +201,7 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(UIntSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
 
@@ -223,7 +223,7 @@ public class TypelyGeneratorSnapshotTests
             .WithConfigurations(typeof(UShortSpecification))
             .Create()
             .Run();
-        
+
         return Verify(driver);
     }
 
@@ -248,7 +248,7 @@ public class TypelyGeneratorSnapshotTests
 
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task NamespaceConfiguration_Should_NotThrow()
     {
@@ -259,7 +259,7 @@ public class TypelyGeneratorSnapshotTests
 
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task WrappedNamespaceConfiguration_Should_NotThrow()
     {
@@ -270,7 +270,7 @@ public class TypelyGeneratorSnapshotTests
 
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task NoNamespaceConfiguration_Should_NotThrow()
     {
@@ -292,7 +292,7 @@ public class TypelyGeneratorSnapshotTests
 
         return Verify(driver);
     }
-    
+
     [Fact]
     public Task UnsupportedSpecification_Should_OutputDiagnostics()
     {

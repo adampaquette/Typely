@@ -42,17 +42,17 @@ internal class TypelyGeneratorDriverFixture : BaseFixture<TypelyGeneratorDriver>
     private static string GetFilePath(Type configClass)
     {
         var pathFromNamespace = configClass.FullName!.Replace("Typely.Generators.Tests", "").Replace(".", "/");
-        
+
         //Remove nested class path
         pathFromNamespace = Regex.Replace(pathFromNamespace, @"(.+)\/(.+)\+(.+)", "$1/$3");
-        
+
         //Add base path for class without namespace
         if (!pathFromNamespace.Contains("/Typely/Specifications/"))
         {
             pathFromNamespace = $"Typely/Specifications/{pathFromNamespace}";
         }
 
-        return  Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"../../../{pathFromNamespace}.cs");
+        return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"../../../{pathFromNamespace}.cs");
     }
 
     private static Compilation CreateCompilation(IEnumerable<SyntaxTree> syntaxTrees) =>

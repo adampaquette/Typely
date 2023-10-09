@@ -12,7 +12,7 @@ internal class FloatSpecification : ITypelySpecification
             .WithNamespace("Election")
             .NotEmpty().WithMessage("The value cannot be empty").WithErrorCode("ERR-001")
             .AsFactory();
-        
+
         var vote = factory
             .For("Votes")
             .WithName("Presidency vote")

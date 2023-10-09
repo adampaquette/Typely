@@ -81,14 +81,14 @@ namespace UserAggregate
             return isValid;
         }
         
-        public static bool TryParse(string? value, out UserId? valueObject) =>
+        public static bool TryParse(string? value, out UserId valueObject) =>
             TryParse(value, null, out valueObject);
 
-        public static bool TryParse(string? value, IFormatProvider? provider, out UserId? valueObject)
+        public static bool TryParse(string? value, IFormatProvider? provider, out UserId valueObject)
         {
            if(value is null)
            {
-               valueObject = null;
+               valueObject = default!;
                return false;
            }
         

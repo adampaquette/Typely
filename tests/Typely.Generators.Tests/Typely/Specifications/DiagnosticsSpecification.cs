@@ -8,12 +8,12 @@ internal class DiagnosticsSpecification : ITypelySpecification
     public void Create(ITypelyBuilder builder)
     {
         builder.OfString().For("Unsupported").UnsupportedExtension();
-        
+
         CreateTypeFromUnsupportedCall(builder);
-        
+
         var unsupported = CreateTypeFromUnsupportedCall(builder);
         unsupported.NotEmpty();
-        
+
         builder.OfString().For("ShouldGenerate");
     }
 
