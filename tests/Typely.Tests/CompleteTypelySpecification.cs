@@ -21,6 +21,6 @@ public class CompleteTypelySpecification : ITypelySpecification
             .WithName("Owner identifier")
             .AsStruct()
             .NotEmpty().WithMessage("'Name' cannot be empty.").WithErrorCode("ERR001")
-            .NotEqual("1"); 
+            .NotEqual("1");
     }
 }

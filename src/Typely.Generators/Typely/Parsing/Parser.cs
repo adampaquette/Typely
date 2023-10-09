@@ -20,8 +20,8 @@ internal static class Parser
     /// <summary>
     /// Filter classes having an interface name "ITypelySpecification".
     /// </summary>
-    private static bool IsTypelySpecificationClass(ClassDeclarationSyntax syntax) =>
-        syntax.HasInterface(TypelySpecification.InterfaceName);
+    internal static bool IsTypelySpecificationClass(ClassDeclarationSyntax syntax) =>
+        syntax.HasInterface(SymbolNames.ITypelySpecificationName);
 
     /// <summary>
     /// Filter classes having an interface full name "Typely.Core.ITypelySpecification".
@@ -29,7 +29,7 @@ internal static class Parser
     private static bool IsTypelySpecificationClass(SemanticModel model, ClassDeclarationSyntax classDeclarationSyntax)
     {
         var classSymbol = model.GetDeclaredSymbol(classDeclarationSyntax)!;
-        return classSymbol.AllInterfaces.Any(x => x.ToString() == TypelySpecification.FullInterfaceName);
+        return classSymbol.AllInterfaces.Any(x => x.ToString() == SymbolNames.ITypelySpecification);
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ internal static class Parser
     /// Filter methods having a name that matches <see cref="TypelySpecification.MethodName"/>.
     /// </summary>
     private static bool IsCreateMethod(SyntaxNode syntaxNode) =>
-        syntaxNode is MethodDeclarationSyntax { Identifier.Text: TypelySpecification.MethodName };
+        syntaxNode is MethodDeclarationSyntax { Identifier.Text: SymbolNames.CreateMethod };
 
     /// <summary>
     /// Parse a <see cref="ClassDeclarationSyntax"/> and generate a list of <see cref="EmittableType"/>.
@@ -264,9 +264,11 @@ internal static class Parser
             }
             else
             {
-                var diagnostic = Diagnostic.Create(DiagnosticDescriptors.UnsupportedExpression,
-                    invocationExpressionSyntax.GetLocation(), invocationExpressionSyntax.Expression);
-                diagnostics.Add(diagnostic);
+                diagnostics.Add(Diagnostic.Create(
+                    DiagnosticDescriptors.TYP0001_UnsupportedExpression,
+                    invocationExpressionSyntax.GetLocation(),
+                    invocationExpressionSyntax.Expression));
+
                 return false;
             }
         }
@@ -277,9 +279,11 @@ internal static class Parser
         }
         else
         {
-            var diagnostic = Diagnostic.Create(DiagnosticDescriptors.UnsupportedExpression, syntaxNode.GetLocation(),
-                syntaxNode);
-            diagnostics.Add(diagnostic);
+            diagnostics.Add(Diagnostic.Create(
+                DiagnosticDescriptors.TYP0001_UnsupportedExpression,
+                syntaxNode.GetLocation(),
+                syntaxNode));
+            
             return false;
         }
 
@@ -290,21 +294,23 @@ internal static class Parser
         {
             if (!SupportedMembers.All.Contains(memberName))
             {
-                var diagnostic = Diagnostic.Create(DiagnosticDescriptors.UnsupportedExpression,
+                diagnostics.Add(Diagnostic.Create(
+                    DiagnosticDescriptors.TYP0001_UnsupportedExpression,
                     memberAccessExpressionSyntax.GetLocation(),
-                    memberAccessExpressionSyntax.Name.GetText());
-                diagnostics.Add(diagnostic);
+                    memberAccessExpressionSyntax.Name.GetText()));
+                
                 return false;
             }
 
             if (argumentList.Arguments.Any() &&
                 argumentList.Arguments.First().Expression is IdentifierNameSyntax identifierNameSyntax)
             {
-                var diagnostic = Diagnostic.Create(DiagnosticDescriptors.UnsupportedParameter,
+                diagnostics.Add(Diagnostic.Create(
+                    DiagnosticDescriptors.TYP0002_UnsupportedParameter,
                     memberAccessExpressionSyntax.GetLocation(),
                     identifierNameSyntax.Identifier.Text,
-                    memberAccessExpressionSyntax.Name.GetText());
-                diagnostics.Add(diagnostic);
+                    memberAccessExpressionSyntax.Name.GetText()));
+                
                 return false;
             }
 
