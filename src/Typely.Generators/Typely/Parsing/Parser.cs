@@ -80,7 +80,7 @@ internal static class Parser
     }
 
     /// <summary>
-    /// Filter methods having a name that matches <seSymbolNames.CreateMethodthodName"/>.
+    /// Filter methods having a name that matches <see cref="TypelySpecification.MethodName"/>.
     /// </summary>
     private static bool IsCreateMethod(SyntaxNode syntaxNode) =>
         syntaxNode is MethodDeclarationSyntax { Identifier.Text: SymbolNames.CreateMethod };

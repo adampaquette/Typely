@@ -49,5 +49,5 @@ public class TypelySpecificationAnalyserTests
     }
 
     private async Task<ImmutableArray<Diagnostic>> GetDiagnostics<TSpec>() =>
-        await AnalyserVerifier.GetDiagnostics<TypelySpecificationAnalyser, TSpec>();
+        await AnalyserRunner.GetDiagnostics<TypelySpecificationAnalyser, TSpec>();
 }

@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 
 namespace Typely.Generators.Tests.Analysers;
 
-internal static class AnalyserVerifier
+internal static class AnalyserRunner
 {
     private const string CS5001_ProgramDoesNotContainValidEntryPointId = "CS5001";
     private const string CS0012_TypeIsDefinedInAnAssemblyThatIsNotReferenced = "CS0012";
