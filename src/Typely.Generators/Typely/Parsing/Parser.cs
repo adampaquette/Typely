@@ -38,7 +38,8 @@ internal static class Parser
     /// <param name="context">The generator's context.</param>
     /// <param name="cancellationToken">A token to notify the operation should be cancelled.</param>
     /// <returns>A list of representation of desired user types.</returns>
-    internal static IReadOnlyList<EmittableTypeOrDiagnostic>? GetEmittableTypesAndDiagnosticsForClass(GeneratorSyntaxContext context,
+    internal static IReadOnlyList<EmittableTypeOrDiagnostic>? GetEmittableTypesAndDiagnosticsForClass(
+        GeneratorSyntaxContext context,
         CancellationToken cancellationToken)
     {
         var classDeclarationSyntax = (ClassDeclarationSyntax)context.Node;
@@ -139,21 +140,32 @@ internal static class Parser
             if (bodySyntaxNode is ExpressionStatementSyntax expressionStatementSyntax)
             {
                 parsedStatements.Add(parsedStatement);
-                ParseInvocationExpression(expressionStatementSyntax.Expression, parsedStatement, diagnostics);
+                if (!ParseInvocationExpression(expressionStatementSyntax.Expression, parsedStatement, diagnostics))
+                {
+                    RemoveStatement();
+                    continue;
+                }
             }
             else if (bodySyntaxNode is LocalDeclarationStatementSyntax localDeclarationStatementSyntax)
             {
-                ParseDeclarationStatement(parsedStatementVariables, parsedStatement, localDeclarationStatementSyntax,
-                    diagnostics);
+                if (!ParseDeclarationStatement(parsedStatementVariables, parsedStatement,
+                        localDeclarationStatementSyntax,
+                        diagnostics))
+                {
+                    RemoveStatement();
+                    continue;
+                }
             }
 
             if (IsStatementInvalid(parsedStatement))
             {
-                parsedStatements.Remove(parsedStatement);
+                RemoveStatement();
                 continue;
             }
 
             MergeStatementVariable(parsedStatement);
+
+            void RemoveStatement() => parsedStatements.Remove(parsedStatement);
         }
 
         return new ParsedStatementsResult { ParsedStatements = parsedStatements, Diagnostics = diagnostics };
@@ -194,14 +206,14 @@ internal static class Parser
     /// Parse a <see cref="LocalDeclarationStatementSyntax"/>.
     /// ex: var vote = builder.OfInt().For("Vote");
     /// </summary>
-    private static void ParseDeclarationStatement(
+    private static bool ParseDeclarationStatement(
         Dictionary<string, ParsedStatement> parsedExpressionVariables,
         ParsedStatement parsed, LocalDeclarationStatementSyntax localDeclarationStatementSyntax,
         List<Diagnostic> diagnostics)
     {
         var variable = localDeclarationStatementSyntax.Declaration.Variables.First();
         parsedExpressionVariables.Add(variable.Identifier.Text, parsed);
-        ParseInvocationExpression(variable.Initializer!.Value, parsed, diagnostics);
+        return ParseInvocationExpression(variable.Initializer!.Value, parsed, diagnostics);
     }
 
     /// <summary>
@@ -229,7 +241,7 @@ internal static class Parser
     /// <summary>
     /// Parse a <see cref="SyntaxNode"/> as an <see cref="InvocationExpressionSyntax"/> to get the member name and the argument list.
     /// </summary>
-    private static void ParseInvocationExpression(ExpressionSyntax syntaxNode,
+    private static bool ParseInvocationExpression(ExpressionSyntax syntaxNode,
         ParsedStatement parsed, List<Diagnostic> diagnostics)
     {
         // ex: builder.OfInt().For("Vote").WithNamespace("UserAggregate").WithName("Vote")
@@ -238,8 +250,15 @@ internal static class Parser
             if (invocationExpressionSyntax.Expression is MemberAccessExpressionSyntax memberAccessExpressionSyntax)
             {
                 var memberName = memberAccessExpressionSyntax.Name.Identifier.Text;
-                var argumentList = invocationExpressionSyntax.ArgumentList;
+                if (!SupportedMembers.All.Contains(memberName))
+                {
+                    var diagnostic = Diagnostic.Create(DiagnosticDescriptors.UnsupportedExpression,
+                        memberAccessExpressionSyntax.GetLocation(), memberAccessExpressionSyntax.Name.GetText());
+                    diagnostics.Add(diagnostic);
+                    return false;
+                }
 
+                var argumentList = invocationExpressionSyntax.ArgumentList;
                 parsed.Invocations.Insert(0, new ParsedInvocation(argumentList, memberName));
 
                 // ex: builder.OfInt().For("Vote").WithNamespace("UserAggregate").WithName()
@@ -250,6 +269,7 @@ internal static class Parser
                 var diagnostic = Diagnostic.Create(DiagnosticDescriptors.UnsupportedExpression,
                     invocationExpressionSyntax.GetLocation(), invocationExpressionSyntax.Expression);
                 diagnostics.Add(diagnostic);
+                return false;
             }
         }
         // ex: builder
@@ -257,6 +277,8 @@ internal static class Parser
         {
             parsed.Root = nameSyntax.Identifier.Text;
         }
+
+        return true;
     }
 
     private struct ParsedStatementsResult
