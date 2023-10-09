@@ -250,15 +250,13 @@ internal static class Parser
             if (invocationExpressionSyntax.Expression is MemberAccessExpressionSyntax memberAccessExpressionSyntax)
             {
                 var memberName = memberAccessExpressionSyntax.Name.Identifier.Text;
-                if (!SupportedMembers.All.Contains(memberName))
+                var argumentList = invocationExpressionSyntax.ArgumentList;
+
+                if (!IsExpressionValid(memberName, memberAccessExpressionSyntax, argumentList))
                 {
-                    var diagnostic = Diagnostic.Create(DiagnosticDescriptors.UnsupportedExpression,
-                        memberAccessExpressionSyntax.GetLocation(), memberAccessExpressionSyntax.Name.GetText());
-                    diagnostics.Add(diagnostic);
                     return false;
                 }
 
-                var argumentList = invocationExpressionSyntax.ArgumentList;
                 parsed.Invocations.Insert(0, new ParsedInvocation(argumentList, memberName));
 
                 // ex: builder.OfInt().For("Vote").WithNamespace("UserAggregate").WithName()
@@ -277,8 +275,41 @@ internal static class Parser
         {
             parsed.Root = nameSyntax.Identifier.Text;
         }
+        else
+        {
+            var diagnostic = Diagnostic.Create(DiagnosticDescriptors.UnsupportedExpression, syntaxNode.GetLocation(),
+                syntaxNode);
+            diagnostics.Add(diagnostic);
+            return false;
+        }
 
         return true;
+
+        bool IsExpressionValid(string memberName, MemberAccessExpressionSyntax memberAccessExpressionSyntax,
+            ArgumentListSyntax argumentList)
+        {
+            if (!SupportedMembers.All.Contains(memberName))
+            {
+                var diagnostic = Diagnostic.Create(DiagnosticDescriptors.UnsupportedExpression,
+                    memberAccessExpressionSyntax.GetLocation(),
+                    memberAccessExpressionSyntax.Name.GetText());
+                diagnostics.Add(diagnostic);
+                return false;
+            }
+
+            if (argumentList.Arguments.Any() &&
+                argumentList.Arguments.First().Expression is IdentifierNameSyntax identifierNameSyntax)
+            {
+                var diagnostic = Diagnostic.Create(DiagnosticDescriptors.UnsupportedParameter,
+                    memberAccessExpressionSyntax.GetLocation(),
+                    identifierNameSyntax.Identifier.Text,
+                    memberAccessExpressionSyntax.Name.GetText());
+                diagnostics.Add(diagnostic);
+                return false;
+            }
+
+            return true;
+        }
     }
 
     private struct ParsedStatementsResult

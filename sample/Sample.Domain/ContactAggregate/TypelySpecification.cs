@@ -9,6 +9,12 @@ internal class TypelySpecification : ITypelySpecification
 {
     public void Create(ITypelyBuilder builder)
     {
+        const string myVar1 = "MyVar1";
+        string myVar2 = "MyVar2";
+        
+        builder.OfString().For(myVar1);
+        builder.OfString().For(myVar2);
+        
         //Contact
         builder.OfInt().For("ContactId").GreaterThan(0);
         
