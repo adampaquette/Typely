@@ -6,8 +6,8 @@
       Severity: Error,
       WarningLevel: 0,
       Location: {CurrentDirectory}../../..//Typely/Specifications/DiagnosticsSpecification.cs: (11,30)-(11,38),
-      MessageFormat: The use of '{0}' is not allowed in a TypelySpecification.,
-      Message: The use of '"MyVar1"' is not allowed in a TypelySpecification.,
+      MessageFormat: The use of '{0}' is not supported in a TypelySpecification.,
+      Message: The use of '"MyVar1"' is not supported in a TypelySpecification.,
       Category: Design
     },
     {
@@ -16,8 +16,8 @@
       Severity: Error,
       WarningLevel: 0,
       Location: {CurrentDirectory}../../..//Typely/Specifications/DiagnosticsSpecification.cs: (12,24)-(12,32),
-      MessageFormat: The use of '{0}' is not allowed in a TypelySpecification.,
-      Message: The use of '"MyVar2"' is not allowed in a TypelySpecification.,
+      MessageFormat: The use of '{0}' is not supported in a TypelySpecification.,
+      Message: The use of '"MyVar2"' is not supported in a TypelySpecification.,
       Category: Design
     },
     {
@@ -26,8 +26,8 @@
       Severity: Error,
       WarningLevel: 0,
       Location: {CurrentDirectory}../../..//Typely/Specifications/DiagnosticsSpecification.cs: (14,8)-(14,30),
-      MessageFormat: '{0}' is not allowed as a parameter of '{1}' in the TypelySpecification. Instead use a string constant.,
-      Message: 'myVar1' is not allowed as a parameter of 'For' in the TypelySpecification. Instead use a string constant.,
+      MessageFormat: '{0}' is not supported as a parameter of '{1}' in the TypelySpecification. Instead use a string constant.,
+      Message: 'myVar1' is not supported as a parameter of 'For' in the TypelySpecification. Instead use a string constant.,
       Category: Design
     },
     {
@@ -36,8 +36,8 @@
       Severity: Error,
       WarningLevel: 0,
       Location: {CurrentDirectory}../../..//Typely/Specifications/DiagnosticsSpecification.cs: (15,8)-(15,30),
-      MessageFormat: '{0}' is not allowed as a parameter of '{1}' in the TypelySpecification. Instead use a string constant.,
-      Message: 'myVar2' is not allowed as a parameter of 'For' in the TypelySpecification. Instead use a string constant.,
+      MessageFormat: '{0}' is not supported as a parameter of '{1}' in the TypelySpecification. Instead use a string constant.,
+      Message: 'myVar2' is not supported as a parameter of 'For' in the TypelySpecification. Instead use a string constant.,
       Category: Design
     },
     {
@@ -46,8 +46,8 @@
       Severity: Error,
       WarningLevel: 0,
       Location: {CurrentDirectory}../../..//Typely/Specifications/DiagnosticsSpecification.cs: (16,8)-(16,30),
-      MessageFormat: '{0}' is not allowed as a parameter of '{1}' in the TypelySpecification. Instead use a string constant.,
-      Message: 'TypeName' is not allowed as a parameter of 'For' in the TypelySpecification. Instead use a string constant.,
+      MessageFormat: '{0}' is not supported as a parameter of '{1}' in the TypelySpecification. Instead use a string constant.,
+      Message: 'TypeName' is not supported as a parameter of 'For' in the TypelySpecification. Instead use a string constant.,
       Category: Design
     },
     {
@@ -56,8 +56,8 @@
       Severity: Error,
       WarningLevel: 0,
       Location: {CurrentDirectory}../../..//Typely/Specifications/DiagnosticsSpecification.cs: (17,8)-(17,66),
-      MessageFormat: The use of '{0}' is not allowed in a TypelySpecification.,
-      Message: The use of 'UnsupportedExtension' is not allowed in a TypelySpecification.,
+      MessageFormat: The use of '{0}' is not supported in a TypelySpecification.,
+      Message: The use of 'UnsupportedExtension' is not supported in a TypelySpecification.,
       Category: Design
     },
     {
@@ -66,8 +66,8 @@
       Severity: Error,
       WarningLevel: 0,
       Location: {CurrentDirectory}../../..//Typely/Specifications/DiagnosticsSpecification.cs: (19,8)-(19,46),
-      MessageFormat: The use of '{0}' is not allowed in a TypelySpecification.,
-      Message: The use of 'CreateTypeFromUnsupportedCall' is not allowed in a TypelySpecification.,
+      MessageFormat: The use of '{0}' is not supported in a TypelySpecification.,
+      Message: The use of 'CreateTypeFromUnsupportedCall' is not supported in a TypelySpecification.,
       Category: Design
     },
     {
@@ -76,8 +76,8 @@
       Severity: Error,
       WarningLevel: 0,
       Location: {CurrentDirectory}../../..//Typely/Specifications/DiagnosticsSpecification.cs: (21,26)-(21,64),
-      MessageFormat: The use of '{0}' is not allowed in a TypelySpecification.,
-      Message: The use of 'CreateTypeFromUnsupportedCall' is not allowed in a TypelySpecification.,
+      MessageFormat: The use of '{0}' is not supported in a TypelySpecification.,
+      Message: The use of 'CreateTypeFromUnsupportedCall' is not supported in a TypelySpecification.,
       Category: Design
     }
   ]
