@@ -39,7 +39,7 @@ public class TypelyValidationResultMiddleware
     private Task HandleExceptionAsync(HttpContext context, ValidationException validationException)
     {
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        context.Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
 
         var problemDetails = HttpValidationTemplatedProblemDetails.From(validationException);
         var errorJson = JsonSerializer.Serialize(problemDetails, _serializerOptions);
