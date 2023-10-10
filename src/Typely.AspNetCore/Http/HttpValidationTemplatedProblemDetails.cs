@@ -30,7 +30,7 @@ public class HttpValidationTemplatedProblemDetails : HttpValidationProblemDetail
         var error = exception.ValidationError;
         var templatedProblemDetails = new HttpValidationTemplatedProblemDetails
         {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1", Status = (int)HttpStatusCode.BadRequest,
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1", Status = (int)HttpStatusCode.UnprocessableEntity,
         };
 
         templatedProblemDetails.Errors.Add(error.TypeName, new[] { error.ErrorMessage });
