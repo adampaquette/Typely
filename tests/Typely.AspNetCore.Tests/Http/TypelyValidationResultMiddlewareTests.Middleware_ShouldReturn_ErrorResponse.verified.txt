@@ -19,5 +19,5 @@
   },
   "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
   "title": "One or more validation errors occurred.",
-  "status": 400
+  "status": 422
 }
