@@ -12,7 +12,7 @@
 [![Nuget version](https://img.shields.io/nuget/vpre/Typely.AspNetCore?label=Typely.AspNetCore)](https://www.nuget.org/packages/Typely.AspNetCore/)
 [![Nuget version](https://img.shields.io/nuget/vpre/Typely.AspNetCore.Swashbuckle?label=Typely.AspNetCore.Swashbuckle)](https://www.nuget.org/packages/Typely.AspNetCore.Swashbuckle/)
 
-Unleashing the power of value object creation with a fluent Api.
+Unleashing the power of domain primitives creation with a fluent Api. Based on a source generator and code analyzer.
 
 ## Example
 
