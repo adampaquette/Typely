@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)'!='Debug'">
-        <PackageReference Include="Typely.Core" Version="1.4.0" />
+        <PackageReference Include="Typely.Core" Version="1.2.0" />
     </ItemGroup>
 
     <ItemGroup>
