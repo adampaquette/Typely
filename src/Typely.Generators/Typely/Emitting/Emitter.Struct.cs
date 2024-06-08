@@ -28,10 +28,15 @@ internal static partial class Emitter
             {
                 [TypeConverter(typeof(TypelyTypeConverter<{{underlyingType}}, {{typeName}}>))]
                 [JsonConverter(typeof(TypelyJsonConverter<{{underlyingType}}, {{typeName}}>))]
-                public partial struct {{typeName}} : ITypelyValue<{{underlyingType}}, {{typeName}}>, IEquatable<{{typeName}}>, IComparable<{{typeName}}>, IComparable{{maxLengthInterface}}
+                public readonly partial struct {{typeName}} : ITypelyValue<{{underlyingType}}, {{typeName}}>, IEquatable<{{typeName}}>, IComparable<{{typeName}}>, IComparable{{maxLengthInterface}}
                 {{{properties}}
-                    public {{underlyingType}} Value { get; private set; }
+                    public {{underlyingType}} Value { get; init; }
 
+                    private {{typeName}}({{underlyingType}} value, bool byPassValidation)
+                    {
+                        Value = value;
+                    }
+            
                     public {{typeName}}({{underlyingType}} value)
                     {
                         {{safeNormalize}}TypelyValue.ValidateAndThrow<{{underlyingType}}, {{typeName}}>(value);
@@ -46,11 +51,7 @@ internal static partial class Emitter
                     {
                         {{safeNormalize}}validationError = Validate(value);
                         var isValid = validationError == null;
-                        typelyType = default;
-                        if (isValid)
-                        {
-                            typelyType.Value = value;
-                        }
+                        typelyType = isValid ? new(value, true) : default;
                         return isValid;
                     }
                     {{tryParseIfPresent}}
