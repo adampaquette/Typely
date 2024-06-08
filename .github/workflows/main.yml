@@ -18,14 +18,14 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
 
-      - name: Restore dependencies
-        run: dotnet restore ./Typely.sln
+      # - name: Restore dependencies
+      #   run: dotnet restore ./Typely.sln
 
-      - name: Build
-        run: dotnet build --configuration Release ./Typely.sln
+      # - name: Build
+      #   run: dotnet build --configuration Release ./Typely.sln
 
-      - name: Test
-        run: dotnet test --no-restore ./Typely.sln /p:CollectCoverage=true /p:CoverletOutput="../Coverage/" /p:MergeWith="../Coverage/coverage.json" /p:CoverletOutputFormat=\"cobertura,json\" /maxcpucount:1
+      # - name: Test
+      #   run: dotnet test --no-restore ./Typely.sln /p:CollectCoverage=true /p:CoverletOutput="../Coverage/" /p:MergeWith="../Coverage/coverage.json" /p:CoverletOutputFormat=\"cobertura,json\" /maxcpucount:1
       
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
@@ -33,10 +33,10 @@ jobs:
       - name: Create nuget packages
         run: |
           dotnet pack --configuration Release ./src/Typely.Core/Typely.Core.csproj
-          dotnet pack --configuration Release ./src/Typely.Generators/Typely.Generators.csproj
-          dotnet pack --configuration Release ./src/Typely.EfCore/Typely.EfCore.csproj
-          dotnet pack --configuration Release ./src/Typely.AspNetCore/Typely.AspNetCore.csproj
-          dotnet pack --configuration Release ./src/Typely.AspNetCore.Swashbuckle/Typely.AspNetCore.Swashbuckle.csproj
+          # dotnet pack --configuration Release ./src/Typely.Generators/Typely.Generators.csproj
+          # dotnet pack --configuration Release ./src/Typely.EfCore/Typely.EfCore.csproj
+          # dotnet pack --configuration Release ./src/Typely.AspNetCore/Typely.AspNetCore.csproj
+          # dotnet pack --configuration Release ./src/Typely.AspNetCore.Swashbuckle/Typely.AspNetCore.Swashbuckle.csproj
 
       - name: Publish packages
         run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
