@@ -4,7 +4,6 @@ using Typely.Generators.Tests.Typely.Specifications.B;
 
 namespace Typely.Generators.Tests.Typely;
 
-[UsesVerify]
 public class TypelyGeneratorSnapshotTests
 {
     [Fact]

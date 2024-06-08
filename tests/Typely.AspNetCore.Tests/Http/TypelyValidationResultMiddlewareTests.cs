@@ -2,7 +2,6 @@ using System.Text.Json.Nodes;
 
 namespace Typely.AspNetCore.Tests.Http;
 
-[UsesVerify]
 public class TypelyValidationResultMiddlewareTests
 {
     [Fact]
@@ -17,7 +16,7 @@ public class TypelyValidationResultMiddlewareTests
     }
 
     [Fact]
-    public async void Middleware_Should_PassThrough()
+    public async Task Middleware_Should_PassThrough()
     {
         var server = new TestServerFixture().WithTypelyMiddleware().Create();
         var response = await server.CreateClient().GetAsync("/");
