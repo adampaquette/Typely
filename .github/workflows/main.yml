@@ -18,14 +18,14 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
 
-      # - name: Restore dependencies
-      #   run: dotnet restore ./Typely.sln
+      - name: Restore dependencies
+        run: dotnet restore ./Typely.sln
 
-      # - name: Build
-      #   run: dotnet build --configuration Release ./Typely.sln
+      - name: Build
+        run: dotnet build --configuration Release ./Typely.sln
 
-      # - name: Test
-      #   run: dotnet test --no-restore ./Typely.sln /p:CollectCoverage=true /p:CoverletOutput="../Coverage/" /p:MergeWith="../Coverage/coverage.json" /p:CoverletOutputFormat=\"cobertura,json\" /maxcpucount:1
+      - name: Test
+        run: dotnet test --no-restore ./Typely.sln /p:CollectCoverage=true /p:CoverletOutput="../Coverage/" /p:MergeWith="../Coverage/coverage.json" /p:CoverletOutputFormat=\"cobertura,json\" /maxcpucount:1
       
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
