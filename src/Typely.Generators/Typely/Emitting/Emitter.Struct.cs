@@ -30,7 +30,7 @@ internal static partial class Emitter
                 [JsonConverter(typeof(TypelyJsonConverter<{{underlyingType}}, {{typeName}}>))]
                 public readonly partial struct {{typeName}} : ITypelyValue<{{underlyingType}}, {{typeName}}>, IEquatable<{{typeName}}>, IComparable<{{typeName}}>, IComparable{{maxLengthInterface}}
                 {{{properties}}
-                    public {{underlyingType}} Value { get; init; }
+                    public {{underlyingType}} Value { get; }
 
                     private {{typeName}}({{underlyingType}} value, bool byPassValidation)
                     {

@@ -13,9 +13,14 @@ namespace Typely.Generators.Tests.Typely.Specifications.B
 {
     [TypeConverter(typeof(TypelyTypeConverter<int, MultiConfigDiffNamespace>))]
     [JsonConverter(typeof(TypelyJsonConverter<int, MultiConfigDiffNamespace>))]
-    public partial struct MultiConfigDiffNamespace : ITypelyValue<int, MultiConfigDiffNamespace>, IEquatable<MultiConfigDiffNamespace>, IComparable<MultiConfigDiffNamespace>, IComparable
+    public readonly partial struct MultiConfigDiffNamespace : ITypelyValue<int, MultiConfigDiffNamespace>, IEquatable<MultiConfigDiffNamespace>, IComparable<MultiConfigDiffNamespace>, IComparable
     {
-        public int Value { get; private set; }
+        public int Value { get; }
+
+        private MultiConfigDiffNamespace(int value, bool byPassValidation)
+        {
+            Value = value;
+        }
 
         public MultiConfigDiffNamespace(int value)
         {
@@ -31,11 +36,7 @@ namespace Typely.Generators.Tests.Typely.Specifications.B
         {
             validationError = Validate(value);
             var isValid = validationError == null;
-            typelyType = default;
-            if (isValid)
-            {
-                typelyType.Value = value;
-            }
+            typelyType = isValid ? new(value, true) : default;
             return isValid;
         }
         
