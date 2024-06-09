@@ -15,9 +15,14 @@ namespace Election
 {
     [TypeConverter(typeof(TypelyTypeConverter<uint, Votes>))]
     [JsonConverter(typeof(TypelyJsonConverter<uint, Votes>))]
-    public partial struct Votes : ITypelyValue<uint, Votes>, IEquatable<Votes>, IComparable<Votes>, IComparable
+    public readonly partial struct Votes : ITypelyValue<uint, Votes>, IEquatable<Votes>, IComparable<Votes>, IComparable
     {
-        public uint Value { get; private set; }
+        public uint Value { get; }
+
+        private Votes(uint value, bool byPassValidation)
+        {
+            Value = value;
+        }
 
         public Votes(uint value)
         {
@@ -96,11 +101,7 @@ namespace Election
         {
             validationError = Validate(value);
             var isValid = validationError == null;
-            typelyType = default;
-            if (isValid)
-            {
-                typelyType.Value = value;
-            }
+            typelyType = isValid ? new(value, true) : default;
             return isValid;
         }
         
