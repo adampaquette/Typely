@@ -2,7 +2,6 @@
 
 namespace Typely.Tests;
 
-[UsesVerify]
 public class ValidationErrorTests
 {
     [Fact]

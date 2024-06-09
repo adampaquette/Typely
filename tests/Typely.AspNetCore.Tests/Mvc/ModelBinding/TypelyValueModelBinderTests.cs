@@ -17,11 +17,11 @@ public class TypelyValueModelBinderTests
             .Build();
 
         binder!.BindModelAsync(bindingContext);
-        
+
         Assert.False(bindingContext.ModelState.IsValid);
         Assert.NotEmpty(new[] { bindingContext.ModelState.Values.First().Errors.First() });
     }
-    
+
     [Fact]
     public void BindModel_FillsStateError_WhenModelTypeCantBeConverted()
     {
@@ -35,11 +35,11 @@ public class TypelyValueModelBinderTests
             .Build();
 
         binder!.BindModelAsync(bindingContext);
-        
+
         Assert.False(bindingContext.ModelState.IsValid);
         Assert.NotEmpty(new[] { bindingContext.ModelState.Values.First().Errors.First() });
     }
-    
+
     [Fact]
     public void BindModel_BindsValue_WhenModelTypeValid()
     {
@@ -53,17 +53,17 @@ public class TypelyValueModelBinderTests
             .Build();
 
         binder!.BindModelAsync(bindingContext);
-        
-        Assert.Equal(Code.From("ABCD"), bindingContext.Result.Model );
+
+        Assert.Equal(Code.From("ABCD"), bindingContext.Result.Model);
     }
-    
+
     [Fact]
-    public void BindModel_ThrowsArgumentNullException_WhenBindingContextIsNull()
+    public async Task BindModel_ThrowsArgumentNullException_WhenBindingContextIsNull()
     {
         var binder = new TypelyValueModelBinder<string, Code>();
-        Assert.ThrowsAsync<ArgumentNullException>(() => binder!.BindModelAsync(null!));
+        await Assert.ThrowsAsync<ArgumentNullException>(async () => await binder!.BindModelAsync(null!));
     }
-    
+
     [Fact]
     public void BindModel_DoNothing_WhenValueProviderResultIsNone()
     {
@@ -77,7 +77,7 @@ public class TypelyValueModelBinderTests
             .Build();
 
         binder!.BindModelAsync(bindingContext);
-        
+
         Assert.Null(bindingContext.Result.Model);
     }
 }
