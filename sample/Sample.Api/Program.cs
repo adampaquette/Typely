@@ -7,7 +7,11 @@ using Typely.AspNetCore.Mvc;
 using Typely.AspNetCore.Swashbuckle;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=sample.db"));
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlite("Data Source=sample.db");
+    options.EnableSensitiveDataLogging();
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
