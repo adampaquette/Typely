@@ -73,7 +73,9 @@ public class ValueObjectLibrariesBenchmark
         {
             if (value < 0)
             {
+#pragma warning disable VOG032
                 throw new Exception();
+#pragma warning restore VOG032
             }
         }
     }

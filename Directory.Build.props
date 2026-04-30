@@ -4,24 +4,44 @@
         <SourceRoot>$(MSBuildThisFileDirectory)</SourceRoot>
     </PropertyGroup>
     
-	<PropertyGroup>		
-		<LangVersion>latest</LangVersion>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
+    <!-- Common properties for all projects -->
+    <PropertyGroup>
+        <LangVersion>preview</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TargetFramework>net9.0</TargetFramework>
+        <EnablePreviewFeatures>true</EnablePreviewFeatures>
+    </PropertyGroup>
+
+    <!-- Versioning properties -->
+    <PropertyGroup>
+        <!-- Major.Minor.Patch -->
+        <VersionPrefix>9.0.0</VersionPrefix>
+        <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+        <FileVersion>$(VersionPrefix)</FileVersion>
+        <!-- Optional version suffix for pre-release versions -->
+        <VersionSuffix Condition="'$(Configuration)' == 'Debug'">preview</VersionSuffix>
+    </PropertyGroup>
 
     <!-- Set common assembly and nuget properties -->
-	<PropertyGroup>
-		<Authors>Adam Paquette</Authors>
+    <PropertyGroup>
+        <Authors>Adam Paquette</Authors>
         <Product>Typely</Product>
-		<RepositoryUrl>https://github.com/adampaquette/Typely</RepositoryUrl>
+        <RepositoryUrl>https://github.com/typely-io/Typely</RepositoryUrl>
         <PackageProjectUrl>https://docs.typely.net/</PackageProjectUrl>        
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RespositoryType>git</RespositoryType>
         <PackageIcon>logo-300.png</PackageIcon>
         <PackageTags>Typerly Value Object Fluent Primitive Source Generator Validation C# .NET</PackageTags>
         <PackageReadmeFile>nuget-readme.md</PackageReadmeFile>
-	</PropertyGroup>
+        <!-- Enable Source Link -->
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <!-- Deterministic builds -->
+        <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+    </PropertyGroup>
     
     <ItemGroup>
         <None Include="$(SourceRoot)/assets/logo-300.png" Pack="true" Visible="false" PackagePath="/" />        
@@ -32,17 +52,11 @@
     <PropertyGroup>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <NoWarn>$(NoWarn);NU5128</NoWarn>
-    </PropertyGroup>
-
-    <!-- Versioning properties -->
-    <PropertyGroup>
-        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <AnalysisLevel>preview-all</AnalysisLevel>
     </PropertyGroup>
 
     <!-- For Debug builds -->
     <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
-        <VersionSuffix Condition=" '$(VersionSuffix)'=='' ">dev</VersionSuffix>
-        <!-- There are currently limitations to package in debug with dependencies -->
         <IsPackable>false</IsPackable> 
     </PropertyGroup>
 
@@ -50,4 +64,9 @@
     <PropertyGroup>
         <PackageOutputPath Condition=" '$(PackageOutputPath)'=='' ">$(SourceRoot)/artifacts</PackageOutputPath>
     </PropertyGroup>
+
+    <!-- Common package references for all projects -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+    </ItemGroup>
 </Project>

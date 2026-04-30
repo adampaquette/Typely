@@ -356,3 +356,5 @@ MigrationBackup/
 *.db
 *.db-shm
 *.db-wal
+# JetBrains Rider
+.idea/

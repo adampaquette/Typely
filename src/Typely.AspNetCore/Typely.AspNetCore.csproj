@@ -1,28 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <Version>8.0.0</Version>
+        <Description>Typely: Unleashing the power of value object creation with a fluent Api. This package contains ASP.NET Core integration features.</Description>
     </PropertyGroup>
 
+    <!-- Development reference -->
     <ItemGroup Condition="'$(Configuration)'=='Debug'">
-        <ProjectReference Include="..\Typely.Core\Typely.Core.csproj"/>
+        <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
     </ItemGroup>
 
+    <!-- Production reference -->
     <ItemGroup Condition="'$(Configuration)'!='Debug'">
-        <PackageReference Include="Typely.Core" Version="8.0.0"/>
+        <PackageReference Include="Typely.Core" Version="$(VersionPrefix)" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="nuget-readme.md" Pack="true" PackagePath="\"/>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
 
     <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App" Version="2.2.8"/>
+        <None Include="nuget-readme.md" Pack="true" PackagePath="\" />
     </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Verify.Xunit" Version="25.0.1" />
-    </ItemGroup>
-
 </Project>

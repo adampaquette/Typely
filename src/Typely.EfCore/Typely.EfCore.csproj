@@ -1,21 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
         <Description>Typely: Unleashing the power of value object creation with a fluent Api. This package contains integrations with EF Core.</Description>
-        <Version>8.0.0</Version>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
     </ItemGroup>
 
+    <!-- Development reference -->
     <ItemGroup Condition="'$(Configuration)'=='Debug'">
         <ProjectReference Include="..\Typely.Core\Typely.Core.csproj" />
     </ItemGroup>
 
+    <!-- Production reference -->
     <ItemGroup Condition="'$(Configuration)'!='Debug'">
-        <PackageReference Include="Typely.Core" Version="8.0.0" />
+        <PackageReference Include="Typely.Core" Version="$(VersionPrefix)" />
     </ItemGroup>
 
     <ItemGroup>
