@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="https://github.com/adampaquette/Typely/blob/main/assets/logo-300.png" />
+  <img src="https://github.com/typely-io/Typely/blob/main/assets/logo-300.png" />
 </p>
 
-[![build](https://github.com/adampaquette/Typely/actions/workflows/main.yml/badge.svg)](https://github.com/adampaquette/Typely/actions/workflows/main.yml)
-[![GitHub last commit](https://img.shields.io/github/last-commit/adampaquette/Typely)](https://github.com/adampaquette/Typely)
+[![build](https://github.com/typely-io/Typely/actions/workflows/main.yml/badge.svg)](https://github.com/typely-io/Typely/actions/workflows/main.yml)
+[![GitHub last commit](https://img.shields.io/github/last-commit/adampaquette/Typely)](https://github.com/typely-io/Typely)
 [![codecov](https://codecov.io/gh/adampaquette/Typely/branch/main/graph/badge.svg?token=C14WN6VG1H)](https://codecov.io/gh/adampaquette/Typely)
 
 [![Nuget version](https://img.shields.io/nuget/vpre/Typely.Core?label=Typely.Core)](https://www.nuget.org/packages/Typely.Core/)
