@@ -1,42 +1,168 @@
 name: pipeline
 
-on: [push]
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_NOLOGO: true
+
+permissions: read-all
 
 jobs:
+  # Always run build and tests
   build:
-
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dotnet-version: ['8.0']
-
+    
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3
+      - uses: actions/checkout@v4
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+          dotnet-quality: 'preview'
 
       - name: Restore dependencies
         run: dotnet restore ./Typely.sln
 
       - name: Build
-        run: dotnet build --configuration Release ./Typely.sln
+        run: dotnet build --configuration Release --no-restore ./Typely.sln
 
       - name: Test
-        run: dotnet test --no-restore ./Typely.sln /p:CollectCoverage=true /p:CoverletOutput="../Coverage/" /p:MergeWith="../Coverage/coverage.json" /p:CoverletOutputFormat=\"cobertura,json\" /maxcpucount:1
-      
+        run: dotnet test --no-build --configuration Release ./Typely.sln /p:CollectCoverage=true /p:CoverletOutput="../Coverage/" /p:MergeWith="../Coverage/coverage.json" /p:CoverletOutputFormat=\"cobertura,json\" /maxcpucount:1
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Create nuget packages
+  # Separate job for publishing with additional security checks
+  publish:
+    needs: build
+    if: |
+      github.event_name == 'push' &&
+      startsWith(github.ref, 'refs/tags/v') &&
+      github.repository == 'typely-io/Typely' &&
+      contains(github.event.head_commit.author.email, '@typely.io')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+          dotnet-quality: 'preview'
+
+      # Verify tag format
+      - name: Verify tag format
         run: |
-          dotnet pack --configuration Release ./src/Typely.Core/Typely.Core.csproj
-          dotnet pack --configuration Release ./src/Typely.Generators/Typely.Generators.csproj
-          dotnet pack --configuration Release ./src/Typely.EfCore/Typely.EfCore.csproj
-          dotnet pack --configuration Release ./src/Typely.AspNetCore/Typely.AspNetCore.csproj
-          dotnet pack --configuration Release ./src/Typely.AspNetCore.Swashbuckle/Typely.AspNetCore.Swashbuckle.csproj
+          if [[ ! "${{ github.ref }}" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid tag format. Must match vX.Y.Z"
+            exit 1
+          fi
 
-      - name: Publish packages
-        run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+      # Verify tag matches version in Directory.Build.props
+      - name: Verify version match
+        run: |
+          TAG_VERSION=$(echo ${{ github.ref }} | sed 's/refs\/tags\/v//')
+          PROPS_VERSION=$(grep -oP '(?<=<VersionPrefix>)[^<]+' Directory.Build.props)
+          if [ "$TAG_VERSION" != "$PROPS_VERSION" ]; then
+            echo "Tag version ($TAG_VERSION) does not match Directory.Build.props version ($PROPS_VERSION)"
+            exit 1
+          fi
+
+      - name: Restore dependencies
+        run: dotnet restore ./Typely.sln
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore ./Typely.sln
+
+      # Create and publish Core package with retry logic
+      - name: Create and Publish Core Package
+        run: |
+          dotnet pack --configuration Release --no-build ./src/Typely.Core/Typely.Core.csproj
+          for i in {1..3}; do
+            if dotnet nuget push "./artifacts/Typely.Core.*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate; then
+              break
+            fi
+            if [ $i -eq 3 ]; then
+              echo "Failed to publish Core package after 3 attempts"
+              exit 1
+            fi
+            sleep 30
+          done
+          sleep 60
+
+      # Create and publish Generators package with retry logic
+      - name: Create and Publish Generators Package
+        run: |
+          dotnet pack --configuration Release --no-build ./src/Typely.Generators/Typely.Generators.csproj
+          for i in {1..3}; do
+            if dotnet nuget push "./artifacts/Typely.Generators.*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate; then
+              break
+            fi
+            if [ $i -eq 3 ]; then
+              echo "Failed to publish Generators package after 3 attempts"
+              exit 1
+            fi
+            sleep 30
+          done
+          sleep 30
+
+      # Create and publish dependent packages with retry logic
+      - name: Create and Publish Dependent Packages
+        run: |
+          # Pack all dependent packages
+          dotnet pack --configuration Release --no-build ./src/Typely.EfCore/Typely.EfCore.csproj
+          dotnet pack --configuration Release --no-build ./src/Typely.AspNetCore/Typely.AspNetCore.csproj
+          dotnet pack --configuration Release --no-build ./src/Typely.AspNetCore.Swashbuckle/Typely.AspNetCore.csproj
+          
+          # Function for publishing with retry
+          publish_with_retry() {
+            local package=$1
+            for i in {1..3}; do
+              if dotnet nuget push "$package" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate; then
+                return 0
+              fi
+              if [ $i -eq 3 ]; then
+                echo "Failed to publish $package after 3 attempts"
+                return 1
+              fi
+              sleep 30
+            done
+          }
+          
+          # Publish each package with retry
+          publish_with_retry "./artifacts/Typely.EfCore.*.nupkg" || exit 1
+          publish_with_retry "./artifacts/Typely.AspNetCore.*.nupkg" || exit 1
+          publish_with_retry "./artifacts/Typely.AspNetCore.Swashbuckle.*.nupkg" || exit 1
+
+      # Create GitHub Release
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./artifacts/*.nupkg
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Notify on success
+      - name: Notify Success
+        if: success()
+        run: |
+          echo "::notice::Successfully published version ${{ github.ref_name }}"
